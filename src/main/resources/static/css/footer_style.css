@@ -1,0 +1,28 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    padding-bottom:60px; /* 等於或稍大於footer的高度 */
+    box-sizing: border-box; /* 確保padding不會影響到總體高度的計算 */
+}
+
+main {
+    padding: 20px;
+    min-height: calc(100vh - 160px); /* 根據header和footer的高度調整 */
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60px; /* 設置footer的固定高度 */
+    background-color: #002548;
+    color: white;
+    text-align: center;
+    padding: 5px 0;
+    box-sizing: border-box;
+}

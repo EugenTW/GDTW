@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <title>GDTW</title>
+    <link rel="stylesheet" href="css/short_url.css">
+</head>
+
+<body>
+    <!-- 匯入 Header -->
+    <div id="header"></div>
+    
+    <div class="index-context">
+        <h2>歡迎使用GDTW短網址服務</h2>
+        <p>免費無廣告且二段式跳轉降低資安風險</p>
+    </div>
+    
+    <div class="to-short-url">       
+        <input type="text" id="long_url" placeholder="請輸入網址" maxlength="200">
+        <button type="button" id="generate">生成短網址</button>
+        <br>
+        <br>
+        <lo>點擊下方黃框複製生成的短網址</lo>
+        <div id="shorten_url" onclick="copyToClipboard()">即將生成的短網址</div>        
+    </div>
+
+    <div class="main-context">
+    <h3>使用說明</h3>
+    <ol>1. 貼上您想要縮短的網址並按下"縮短網址"按鈕，即可生成短網址。本站支援最長250字的原始網址。</ol>
+    <ol>2. 為提升安全性，本站提供的短網址不會直接跳轉目標網址，而是會先跳轉至本站頁面顯示對應的完整網址，再由使用者自行決定使否前往。</ol>
+    <ol>3. 生成的短網址沒有使用效期，若碰上異常狀況包含但不限於硬體故障、資料庫異常、營運終止等不可抗力則不保證永久有效，請自行保管好原始網址。</ol>
+    <ol>4. 使用本服務時就表示已同意本站的所有使用條款。</ol>
+    </div>
+
+    
+
+    <!-- 匯入 Footer -->
+    <div id="footer"></div>
+
+    <!-- JavaScript 用於加載共用元件 -->
+    <script src="js/header&footer_script.js"></script>
+    <script src="js/short_url_script.js"></script>
+</body>
+
+</html>
