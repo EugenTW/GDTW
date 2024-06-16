@@ -27,7 +27,7 @@ public class IdEncoderDecoderService {
 
     public static Integer decodeId(String encoded) {
         if (encoded.length() != 4) {
-            throw new IllegalArgumentException("編碼字符串必須是4個字符長");
+            throw new IllegalArgumentException("The encoded string should have exactly 4 characters.");
         }
         int id = 0;
         for (int i = 0; i < 4; i++) {
