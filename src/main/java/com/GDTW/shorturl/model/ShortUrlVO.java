@@ -1,5 +1,6 @@
 package com.GDTW.shorturl.model;
 
+import com.GDTW.user.model.WebUserVO;
 import jakarta.persistence.*;
 
 import java.io.Serial;
@@ -35,6 +36,10 @@ public class ShortUrlVO implements Serializable {
 
     @Column(name = "su_status")
     private Integer suStatus;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "u_Id", referencedColumnName = "u_id")
+    private WebUserVO user;
 
     public ShortUrlVO() {}
 
@@ -92,5 +97,13 @@ public class ShortUrlVO implements Serializable {
 
     public void setSuStatus(Integer suStatus) {
         this.suStatus = suStatus;
+    }
+
+    public WebUserVO getUser() {
+        return user;
+    }
+
+    public void setUser(WebUserVO user) {
+        this.user = user;
     }
 }
