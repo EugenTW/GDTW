@@ -6,23 +6,25 @@ html {
 body {
     margin: 0;
     padding: 0;
-    padding-bottom:60px; /* 等於或稍大於footer的高度 */
-    box-sizing: border-box; /* 確保padding不會影響到總體高度的計算 */
+    padding-bottom:60px;
+    box-sizing: border-box; 
 }
 
 main {
     padding: 20px;
-    min-height: calc(100vh - 160px); /* 根據header和footer的高度調整 */
+    min-height: calc(100vh - 160px); 
 }
 
 footer {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 60px; /* 設置footer的固定高度 */
+    height: 40px; 
     background-color: #002548;
     color: white;
     text-align: center;
-    padding: 5px 0;
     box-sizing: border-box;
+    display: flex;
+    align-items: center; 
+    justify-content: center;
 }
