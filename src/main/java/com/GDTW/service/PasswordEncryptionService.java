@@ -1,6 +1,8 @@
 package com.GDTW.service;
 import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.stereotype.Service;
 
+@Service
 public class PasswordEncryptionService {
 
     public static String encryptPassword(String plainPassword) {

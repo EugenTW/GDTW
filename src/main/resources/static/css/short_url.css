@@ -1,5 +1,5 @@
 .index-context {
-    padding: 70px 20px 0px 0px;
+    padding: 60px 20px 0px 0px;
     text-align: center;
     width: 80%;
     margin-top: 90px;
@@ -62,7 +62,8 @@ body {
     width: 300px;
     height: 75px;
     background-color: lightyellow;
-    color: rgb(147, 147, 147);
+    color: rgb(0, 0, 0);
+    font-size: 18px;
     text-align: center;
     line-height: 75px;  /* Centers text vertically */
     border: 2px solid yellow;

@@ -3,16 +3,11 @@ package com.GDTW.shorturl.model;
 import com.GDTW.user.model.WebUserVO;
 import jakarta.persistence.*;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name = "short_url")
-public class ShortUrlVO implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class ShortUrlVO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

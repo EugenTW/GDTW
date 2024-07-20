@@ -13,10 +13,16 @@ public interface ShortUrlJpa extends JpaRepository<ShortUrlVO, Integer> {
     @Query("FROM ShortUrlVO WHERE suId = :suId")
     ShortUrlVO findBySuId(Integer suId);
 
+    @Query("SELECT s.suShortenedUrl FROM ShortUrlVO s WHERE s.suId = :suId")
+    String findSuShortenedUrlBySuId(@Param("suId") Integer suId);
+
+    @Query("SELECT s.suOriginalUrl FROM ShortUrlVO s WHERE s.suId = :suId")
+    String findOriginalUrlBySuId(@Param("suId") Integer suId);
+
     @Query("SELECT CASE WHEN s.user IS NOT NULL THEN TRUE ELSE FALSE END FROM ShortUrlVO s WHERE s.suId = :suId")
-    boolean existsUIdBySuId(@Param("suId") Integer suId);
+    boolean checkShortUrlCreator(@Param("suId") Integer suId);
 
     @Query("SELECT CASE WHEN s.suStatus = 0 THEN TRUE ELSE FALSE END FROM ShortUrlVO s WHERE s.suId = :suId")
-    boolean isShortUrlValid(@Param("suId") Integer suId);
+    boolean checkShortUrlStatus(@Param("suId") Integer suId);
 
 }

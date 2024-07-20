@@ -1,13 +1,36 @@
+$(document).ready(function() {
+    $("#generate").click(function() {
+        var longUrl = $("#long_url").val();
+        if (longUrl) {
+            $.ajax({
+                url: '/su_api/create_new_short_url',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ originalUrl: longUrl }),
+                success: function(response) {
+                    console.log("Response received: ", response); 
+                    $("#shorten_url").text(response).css("background-color", "yellow");
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    var errorMessage = "Error: " + xhr.responseText;
+                    $("#shorten_url").text(errorMessage).css("background-color", "red");
+                }
+            });
+        } else {
+            alert("請輸入一個網址");
+        }
+    });
+});
+
 function copyToClipboard() {
     const copyText = document.getElementById("shorten_url");
     const textArea = document.createElement("textarea");
-    textArea.value = copyText.textContent;  // 使用textContent以防HTML標籤被複製
+    textArea.value = copyText.textContent;  
     document.body.appendChild(textArea);
     textArea.select();
     document.execCommand("copy");
     document.body.removeChild(textArea);
 
-    // 顯示提示訊息
     const alertDiv = document.createElement("div");
     alertDiv.textContent = "短網址已複製到剪貼簿";
     alertDiv.style.position = "fixed";
@@ -21,9 +44,7 @@ function copyToClipboard() {
     alertDiv.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.2)";
     document.body.appendChild(alertDiv);
 
-    // 1.5 秒後自動關閉提示訊息
     setTimeout(function(){
         document.body.removeChild(alertDiv);
     }, 1500);
 }
-

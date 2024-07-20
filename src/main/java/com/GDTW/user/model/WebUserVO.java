@@ -2,15 +2,9 @@ package com.GDTW.user.model;
 
 import jakarta.persistence.*;
 
-import java.io.Serial;
-import java.io.Serializable;
-
 @Entity
 @Table(name = "web_user")
-public class WebUserVO implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class WebUserVO{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
