@@ -26,7 +26,13 @@ public class ShortUrlRestController {
             String currentUrl = request.getRequestURL().toString();
             String baseUrl = currentUrl.substring(0, currentUrl.indexOf(request.getRequestURI()));
             String originalUrl = shortUrlRequest.getOriginalUrl();
-            String originalIp = request.getRemoteAddr();
+
+            String originalIp = request.getHeader("X-Forwarded-For");
+            if (originalIp == null || originalIp.isEmpty()) {
+                originalIp = request.getRemoteAddr();
+            } else {
+                originalIp = originalIp.split(",")[0];
+            }
 
             System.out.println("Original URL: " + originalUrl);
             System.out.println("Original IP: " + originalIp);
