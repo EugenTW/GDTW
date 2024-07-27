@@ -12,20 +12,23 @@ public class ShortUrlController {
 
     @GetMapping("/short_url")
     public String shortUrl() {
-        return "redirect:/short_url.html";
+        return "forward:/short_url.html";
     }
 
     @GetMapping("/short_url_redirection")
     public String shortUrlRedirection() {
-        return "redirect:/short_url_redirection.html";
-    }
+        return "forward:/short_url_redirection.html";   }
+
+    @GetMapping("/404_short_url")
+    public String shortUrl404Redirection() {
+        return "forward:/404_short_url.html";   }
 
     @GetMapping("/s/{code}")
     public void redirectToPage(@PathVariable String code, HttpServletResponse response) throws IOException {
         if (code.matches("\\w{4}")) {
-            response.sendRedirect("/short_url_redirection.html?code=" + code);
+            response.sendRedirect("/short_url_redirection?code=" + code);
         } else {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            response.sendRedirect("/404_short_url");
         }
     }
 }

@@ -17,7 +17,7 @@ $(document).ready(function() {
                 }
             });
         } else {
-            alert("請輸入一個網址");
+            alert("請輸入一個網址 / Please enter a valid url.");
         }
     });
 });
@@ -32,7 +32,7 @@ function copyToClipboard() {
     document.body.removeChild(textArea);
 
     const alertDiv = document.createElement("div");
-    alertDiv.textContent = "短網址已複製到剪貼簿";
+    alertDiv.textContent = "短網址已複製到剪貼簿 / The short url is copied!";
     alertDiv.style.position = "fixed";
     alertDiv.style.top = "50%";
     alertDiv.style.left = "50%";

@@ -3,8 +3,10 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>GDTW</title>
-    <link rel="stylesheet" href="css/short_url.css">   
+    <title>GDTW - Short Url</title>
+    <link rel="stylesheet" href="/css/short_url.css">  
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+s 
 </head>
 
 <body>
@@ -12,17 +14,19 @@
     <div id="header"></div>
     
     <div class="index-context">
-        <h2>歡迎使用GDTW短網址服務</h2>
+        <h3>歡迎使用GDTW短網址服務</h3>
+        <h3>Welcome to GDTW Short URL Service</h3>
         <p>免費無廣告且二段式跳轉降低資安風險</p>
+        <p>Free, ad-free, and with two-step redirection to reduce security risks</p>
     </div>
     
     <div class="to-short-url">       
-        <input type="text" id="long_url" placeholder="請輸入網址" maxlength="200">
-        <button type="button" id="generate">生成短網址</button>
+        <input type="text" id="long_url" placeholder="請輸入網址 / Please enter a URL." maxlength="200">
+        <button type="button" id="generate">生成短網址<br>Generate Short URL</button>
         <br>
         <br>
-        <lo>點擊下方黃框複製生成的短網址</lo>
-        <div id="shorten_url" onclick="copyToClipboard()">即將生成的短網址</div>        
+        <lo>點擊下方黃框複製生成的短網址<br>Click the yellow box below to copy the generated short URL</lo>
+        <div id="shorten_url" onclick="copyToClipboard()">即將生成的短網址<br>Short URL will be generated here</div>        
     </div>
 
     <div class="main-context">
@@ -31,17 +35,20 @@
     <ol>2. 為提升安全性，本站提供的短網址不會直接跳轉目標網址，而是會先跳轉至本站頁面顯示對應的完整網址，再由使用者自行決定使否前往。</ol>
     <ol>3. 生成的短網址沒有使用效期，若碰上異常狀況包含但不限於硬體故障、資料庫異常、營運終止等不可抗力則不保證永久有效，請自行保管好原始網址。</ol>
     <ol>4. 使用本服務時就表示已同意本站的所有使用條款。</ol>
-    </div>
-
-    
+    <h3>Instructions</h3>
+    <li>Paste the URL you want to shorten and click the "Generate Short URL" button to create a short URL. This site supports URLs up to 200 characters long.</li>
+    <li>To enhance security, the short URLs provided by this site will not directly redirect to the target URL. Instead, they will first redirect to a page on this site displaying the full corresponding URL, allowing the user to decide whether to proceed.</li>
+    <li>The generated short URLs do not have an expiration date. However, in cases of anomalies, including but not limited to hardware failure, database issues, or cessation of operations, the short URLs may not remain valid indefinitely. Please keep the original URL safe.</li>
+    <li>By using this service, you agree to all the terms of use of this site.</li>
+    </div>    
 
     <!-- 匯入 Footer -->
     <div id="footer"></div>
 
     <!-- JavaScript 用於加載共用元件 -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="js/header&footer_script.js"></script>  
-    <script src="js/short_url_script.js"></script>    
+    <script src="/js/header&footer_script.js"></script>  
+    <script src="/js/short_url_script.js"></script>    
 </body>
 
 </html>
