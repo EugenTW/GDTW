@@ -28,15 +28,11 @@ a {
     text-decoration: none;
 }
 
-.image-container {
-    text-align: center;
-    margin-top: 5px;
-    margin-bottom: 5px;
-}
-
 .image-container img {
-    max-width: 300px;
-    display: block;
-    margin: 0 auto;
-    margin-bottom: 0px;
+    text-align: center;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    border: 3px solid #ffffff;
+    border-radius: 10px;
+    max-width: 150px;
 }

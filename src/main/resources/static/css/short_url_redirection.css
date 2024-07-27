@@ -70,14 +70,14 @@ body {
 .button-container {
     display: flex;
     justify-content: center;
-    gap: 50px;
+    gap: 30px;
 }
 
 .button {
-    width: 150px;
+    width: 200px;
     height: 50px;
     color: black;
-    font-size: 16px;
+    font-size: 14px;
     border-radius: 10px;
     cursor: pointer;
 }
@@ -101,8 +101,8 @@ body {
 }
 
 .data-display.large-box.original-url {
-    width: 600px;        /* 初始寬度設定為1200px */
-    height: 400px;       /* 初始高度設定為250px */
+    width: 600px;        
+    height: 400px;       
     background-color: #ffffe0; /* 背景顏色設為淺黃色 */
     border: 1px solid yellow; /* 外框為明黃色 */
     padding: 10px;       /* 內邊距10px */
@@ -115,7 +115,7 @@ body {
 
 @media (max-width: 576px) {
     .data-display.large-box.original-url {
-        width: 100%;          /* 寬度設為100% */
+        width: 95%;          /* 寬度設為100% */
         max-width: 550px;     /* 最大寬度為550px */
         height: auto;         /* 高度自動調整 */
     }

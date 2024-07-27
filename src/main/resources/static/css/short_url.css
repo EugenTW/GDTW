@@ -44,7 +44,7 @@ body {
 }
 
 #generate {
-    width: 120px;
+    width: 300px;
     height: 60px;
     background-color: darkblue;
     color: white;
@@ -59,7 +59,7 @@ body {
 }
 
 #shorten_url {
-    width: 300px;
+    width: 500px;
     height: 75px;
     background-color: lightyellow;
     color: rgb(0, 0, 0);
