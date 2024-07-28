@@ -46,7 +46,7 @@ body {
 #generate {
     width: 300px;
     height: 60px;
-    background-color: darkblue;
+    background-color: rgb(1, 1, 98);
     color: white;
     border: 2px solid lightblue;
     border-radius: 10px;
@@ -55,20 +55,22 @@ body {
 }
 
 #generate:hover {
-    background-color: #0056b3;
+    background-color: #0925a0;
 }
 
 #shorten_url {
-    width: 500px;
-    height: 75px;
-    background-color: lightyellow;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
+    width: 400px;
+    height: 80px;
+    background-color: rgb(252, 252, 185);
     color: rgb(0, 0, 0);
-    font-size: 18px;
-    text-align: center;
-    line-height: 75px;  /* Centers text vertically */
-    border: 2px solid yellow;
+    font-size: 16px;
+    border: 3px solid rgb(255, 157, 0);
     border-radius: 10px;
     cursor: pointer;
-    margin-top: 20px;
 }
 

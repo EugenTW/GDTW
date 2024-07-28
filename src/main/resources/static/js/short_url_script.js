@@ -10,6 +10,9 @@ $(document).ready(function() {
                 success: function(response) {
                     console.log("Response received: ", response); 
                     $("#shorten_url").text(response).css("background-color", "yellow");
+
+                    // Rebind click event to ensure it works after content update
+                    $("#shorten_url").off('click').on('click', copyToClipboard);
                 },
                 error: function(xhr, textStatus, errorThrown) {
                     var errorMessage = "Error: " + xhr.responseText;
@@ -25,7 +28,7 @@ $(document).ready(function() {
 function copyToClipboard() {
     const copyText = document.getElementById("shorten_url");
     const textArea = document.createElement("textarea");
-    textArea.value = copyText.textContent;  
+    textArea.value = copyText.textContent;
     document.body.appendChild(textArea);
     textArea.select();
     document.execCommand("copy");

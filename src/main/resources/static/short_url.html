@@ -5,8 +5,7 @@
     <meta charset="UTF-8">
     <title>GDTW - Short Url</title>
     <link rel="stylesheet" href="/css/short_url.css">  
-    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
-s 
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">     
 </head>
 
 <body>
@@ -22,11 +21,10 @@ s
     
     <div class="to-short-url">       
         <input type="text" id="long_url" placeholder="請輸入網址 / Please enter a URL." maxlength="200">
-        <button type="button" id="generate">生成短網址<br>Generate Short URL</button>
+        <button type="button" id="generate">生成短網址<br>Generate Short URL</button>        
         <br>
-        <br>
-        <lo>點擊下方黃框複製生成的短網址<br>Click the yellow box below to copy the generated short URL</lo>
-        <div id="shorten_url" onclick="copyToClipboard()">即將生成的短網址<br>Short URL will be generated here</div>        
+        <p>點擊下方黃框複製生成的短網址<br>Click the yellow box below to copy the generated short URL</p>
+        <div id="shorten_url" onclick="copyToClipboard()">即將生成的短網址 / Short URL will be generated here.</div>             
     </div>
 
     <div class="main-context">
@@ -46,7 +44,7 @@ s
     <div id="footer"></div>
 
     <!-- JavaScript 用於加載共用元件 -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/js/jquery-3.6.0.js"></script>
     <script src="/js/header&footer_script.js"></script>  
     <script src="/js/short_url_script.js"></script>    
 </body>

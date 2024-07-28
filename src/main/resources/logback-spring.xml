@@ -4,7 +4,8 @@
     <!-- 日誌輸出的路徑 -->
     <property name="LOG_HOME" value="./logs" />
     <!-- 日誌的格式 -->
-    <property name="LOG_PATTERN" value="%d{yyyy-MM-dd} %p %t %c - %m%n" />
+    <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss} %p %t %c - %m%n%xException{5}" />
+
 
     <!-- 控制台日誌輸出 -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
