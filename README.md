@@ -3,4 +3,4 @@
 
 目前已上線 版本v1.1.5
 
-https://gdtw.duckdns.org/index.html
+https://gdtw.duckdns.org/
