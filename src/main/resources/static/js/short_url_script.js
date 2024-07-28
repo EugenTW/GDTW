@@ -26,28 +26,40 @@ $(document).ready(function() {
 });
 
 function copyToClipboard() {
-    const copyText = document.getElementById("shorten_url");
-    const textArea = document.createElement("textarea");
-    textArea.value = copyText.textContent;
-    document.body.appendChild(textArea);
-    textArea.select();
-    document.execCommand("copy");
-    document.body.removeChild(textArea);
+    const copyText = document.getElementById("shorten_url").textContent;
 
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(copyText).then(() => {
+            showAlert("短網址已複製到剪貼簿 / The short URL is copied!", "lightgreen");
+        }).catch(err => {
+            console.error('Failed to copy text: ', err);
+        });
+    } else {        
+        const textArea = document.createElement("textarea");
+        textArea.value = copyText;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textArea);
+        showAlert("短網址已複製到剪貼簿 / The short URL is copied!", "lightgreen");
+    }
+}
+
+function showAlert(message, color) {
     const alertDiv = document.createElement("div");
-    alertDiv.textContent = "短網址已複製到剪貼簿 / The short url is copied!";
+    alertDiv.textContent = message;
     alertDiv.style.position = "fixed";
     alertDiv.style.top = "50%";
     alertDiv.style.left = "50%";
     alertDiv.style.transform = "translate(-50%, -50%)";
-    alertDiv.style.backgroundColor = "lightgreen";
+    alertDiv.style.backgroundColor = color;
     alertDiv.style.border = "2px solid green";
     alertDiv.style.padding = "10px";
     alertDiv.style.borderRadius = "5px";
     alertDiv.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.2)";
     document.body.appendChild(alertDiv);
 
-    setTimeout(function(){
+    setTimeout(function() {
         document.body.removeChild(alertDiv);
     }, 1500);
 }

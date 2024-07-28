@@ -11,7 +11,7 @@
 
 	<groupId>com.GDTW</groupId>
 	<artifactId>Eugen</artifactId>
-	<version>1.1.5-SNAPSHOT</version>
+	<version>1.1.6-SNAPSHOT</version>
 	<name>GDTW</name>
 	<description>GDTW project for Spring Boot</description>
 
@@ -50,6 +50,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
+		<!-- Spring Redis -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
 		</dependency>
 
 		<!-- Springdoc OpenAPI UI -->
