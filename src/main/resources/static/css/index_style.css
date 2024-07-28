@@ -18,7 +18,7 @@ body {
 }
 
 .image-container img {
-  max-width: 300px;
+  max-width: 300px;  
   display: block;
   margin: 0 auto;
   margin-bottom: 0px;
