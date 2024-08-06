@@ -1,5 +1,5 @@
 .index-context {
-    padding: 60px 5px 0px 0px;
+    padding: 65px 5px 0px 0px;
     text-align: center;
     width: 80%;
     margin-top: 90px;
@@ -54,11 +54,11 @@ body {
 .data-display {
     width: 350px;
     height: 40px;
-    background-color: #e7e7e7;
-    color: black;
+    background-color: #210d6c;
+    color: #FFFFFF;
     text-align: center;
     line-height: 40px;
-    border: 3px solid rgb(87, 87, 87);
+    border: 3px solid #a48bff;
     border-radius: 10px;
     font-size: 16px;
 }
@@ -99,9 +99,10 @@ body {
 .data-display.large-box.original-url {
     width: 600px;    
     min-height: 100px;    
+    color: #000;
     height: auto;         /* 高度自動調整 */     
-    background-color: #ffffdd; /* 背景顏色設為淺黃色 */
-    border: 3px solid rgb(255, 208, 0); /* 外框為明黃色 */
+    background-color: #ffffce; /* 背景顏色設為淺黃色 */
+    border: 3px solid rgb(255, 149, 0); /* 外框為明黃色 */
     padding: 10px;       /* 內邊距10px */
     font-size: 16px;     /* 字體大小 */
     line-height: 1.5;    /* 行高 */

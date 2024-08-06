@@ -5,8 +5,14 @@ body {
   background-color: rgb(0, 0, 0);
 }
 
+.index-context h3 {
+  margin-top: 5px; /* 調整上邊距 */
+  margin-bottom: 5px; /* 調整下邊距 */
+  line-height: 1.2; /* 調整行高 */
+}
+
 .index-context {
-  padding: 60px 0px 0px 0px;
+  padding: 70px 0px 0px 0px;
   text-align: center;
   color: #f3f3f3;
 }
@@ -21,5 +27,7 @@ body {
   max-width: 250px;  
   display: block;
   margin: 0 auto;
-  margin-bottom: 0px;
+  margin-bottom: 0px;  
+  border-radius: 5px;
+  border: 2px solid #fffdca;
 }
