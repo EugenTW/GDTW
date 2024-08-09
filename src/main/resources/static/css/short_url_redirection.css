@@ -124,7 +124,7 @@ body {
     border: 2px solid #fffccd;;
     border-radius: 10px;
     width: 100%;
-    max-width: 125px;
+    max-width: 150px;
 }
 
 @media (max-width: 576px) {

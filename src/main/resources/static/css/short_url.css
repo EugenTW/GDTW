@@ -16,16 +16,16 @@ body {
 }
 
 .index-context h3 {
-    margin-top: 5px; /* 調整上邊距 */
-    margin-bottom: 5px; /* 調整下邊距 */
-    line-height: 1.2; /* 調整行高 */
+    margin-top: 3px; /* 調整上邊距 */
+    margin-bottom: 3px; /* 調整下邊距 */
+    line-height: 1.1; /* 調整行高 */
 }
 
 .main-context, .to-short-url{
     text-align: justify;
     width: 80%;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 3px;
+    margin-bottom: 3px;
     margin-left: auto;
     margin-right: auto;
     color: #ffffff; 
@@ -44,7 +44,7 @@ body {
     max-width: 900px;
     padding: 10px;
     font-size: 16px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     box-sizing: border-box;
     border: 3px solid #39ce59;
     border-radius: 5px;
@@ -52,7 +52,7 @@ body {
 
 #generate {
     width: 300px;
-    height: 60px;
+    height: 50px;
     background-color: rgb(1, 1, 98);
     color: white;
     border: 3px solid rgb(182, 237, 255);
@@ -66,13 +66,13 @@ body {
 }
 
 #shorten_url {
-    margin-top: 5px;
-    margin-bottom: 5px;
+    margin-top: 3px;
+    margin-bottom: 3px;
     display: flex;
     align-items: center; 
     justify-content: center; 
     width: 400px;
-    height: 50px;
+    height: 40px;
     background-color: rgb(252, 252, 185);
     color: rgb(0, 0, 0);
     font-size: 16px;
@@ -94,14 +94,14 @@ body {
     border: 2px solid #fffccd;
     border-radius: 10px;
     width: 100%;
-    max-width: 125px;
+    max-width: 150px;
 }
 
 .reminder {
     color: #ffffff;
     text-align: center;
-    margin-top: 5px; /* 調整上邊距 */
-    margin-bottom: 5px; /* 調整下邊距 */
+    margin-top: 3px; /* 調整上邊距 */
+    margin-bottom: 3px; /* 調整下邊距 */
     line-height: 1.2; /* 調整行高 */
 }
 
