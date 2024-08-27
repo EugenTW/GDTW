@@ -46,8 +46,8 @@ body {
 .reminder {
     color: #ffffff;
     text-align: center;
-    margin-top: 5px; /* 調整上邊距 */
-    margin-bottom: 5px; /* 調整下邊距 */
+    margin-top: 3px; /* 調整上邊距 */
+    margin-bottom: 3px; /* 調整下邊距 */
     line-height: 1.2; /* 調整行高 */
 }
 
