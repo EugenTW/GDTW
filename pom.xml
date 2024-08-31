@@ -10,7 +10,7 @@
 	</parent>
 
 	<groupId>com.GDTW</groupId>
-	<artifactId>Eugen</artifactId>
+	<artifactId>GDTW_Web</artifactId>
 	<name>GDTW</name>
 	<description>GDTW project for Spring Boot</description>
 
