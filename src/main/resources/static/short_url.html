@@ -4,6 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <title>GDTW - Short Url</title>
+    <meta property="og:title" content="GDTW - Short URL Service" />
+    <meta property="og:description" content="Free Short URL Service!" />
+    <meta property="og:image" content="https://gdtw.org/images/logo_s.jpg"/>      
+    <meta property="og:url" content="https://gdtw.org/short_url" />
+    <meta property="og:type" content="website" />       
     <link rel="stylesheet" href="/css/short_url.css">  
     <link rel="icon" href="/images/favicon.ico" type="image/x-icon">     
 </head>
@@ -15,16 +20,17 @@
     <div class="index-context">
         <h3>歡迎使用GDTW短網址服務</h3>
         <h3>Welcome to GDTW Short URL Service</h3>
-        <p>免費無廣告且二段式跳轉降低資安風險</p>
-        <p>Free, ad-free, and with two-step redirection to reduce security risks</p>
+        <p  class="reminder">免費無廣告且二段式跳轉降低資安風險<br>Free, ad-free, and with two-step redirection to reduce security risks</p>
     </div>
-    
+    <div class="image-container">
+        <img src="/images/logo_s.jpg" alt="logo_s">
+    </div>
     <div class="to-short-url">       
         <input type="text" id="long_url" placeholder="請輸入網址 / Please enter a URL." maxlength="200">
         <button type="button" id="generate">生成短網址<br>Generate Short URL</button>        
         <br>
-        <p>點擊下方黃框複製生成的短網址<br>Click the yellow box below to copy the generated short URL</p>
-        <div id="shorten_url" onclick="copyToClipboard()">即將生成的短網址 / Short URL will be generated here.</div>             
+        <p class="reminder">點擊下方黃框複製生成的短網址<br>Click the yellow box below to copy the generated short URL</p>
+        <div id="shorten_url" class="reminder" onclick="copyToClipboard()">即將生成的短網址<br>Short URL will be generated here.</div>             
     </div>
 
     <div class="main-context">
@@ -44,7 +50,7 @@
     <div id="footer"></div>
 
     <!-- JavaScript 用於加載共用元件 -->
-    <script src="/js/jquery-3.6.0.js"></script>
+    <script src="/js/jquery-3.7.1-min.js"></script>
     <script src="/js/header&footer_script.js"></script>  
     <script src="/js/short_url_script.js"></script>    
 </body>

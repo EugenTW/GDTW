@@ -10,13 +10,13 @@
 	</parent>
 
 	<groupId>com.GDTW</groupId>
-	<artifactId>Eugen</artifactId>
-	<version>1.1.5-SNAPSHOT</version>
+	<artifactId>GDTW_Web</artifactId>
+	<version>1.2.0</version>
 	<name>GDTW</name>
 	<description>GDTW project for Spring Boot</description>
 
 	<properties>
-		<java.version>11</java.version>
+		<java.version>21</java.version>
 	</properties>
 
 	<dependencies>
@@ -52,6 +52,12 @@
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 
+		<!-- Spring Redis -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+
 		<!-- Springdoc OpenAPI UI -->
 		<dependency>
 			<groupId>org.springdoc</groupId>
@@ -73,6 +79,15 @@
 			<artifactId>jbcrypt</artifactId>
 			<version>0.4</version>
 		</dependency>
+
+		<!-- Auto Sitemap -->
+		<dependency>
+			<groupId>com.github.dfabulich</groupId>
+			<artifactId>sitemapgen4j</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+
+
 	</dependencies>
 
 	<build>

@@ -4,6 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <title>GDTW - Short Url Redirection</title>   
+    <meta property="og:title" content="GDTW - Short URL Redirection" />
+    <meta property="og:description" content="Free Short URL Redirection Service!" />
+    <meta property="og:image" content="https://gdtw.org/images/logo_s.jpg"/>      
+    <meta property="og:url" content="https://gdtw.org/short_url_redirection" />
+    <meta property="og:type" content="website" />    
     <link rel="stylesheet" href="/css/short_url_redirection.css">
     <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
 </head>
@@ -15,27 +20,22 @@
     <div class="index-context">
         <h3>歡迎使用GDTW短網址服務</h3>
         <h3>Welcome to GDTW Short URL Service</h3>
-        <p>免費無廣告且二段式跳轉降低資安風險</p>
-        <p>Free, ad-free, and with two-step redirection to reduce security risks</p>
+        <p  class="reminder">免費無廣告且二段式跳轉降低資安風險<br>Free, ad-free, and with two-step redirection to reduce security risks</p>
     </div>
-
+    <div class="image-container">
+        <img src="/images/logo_s.jpg" alt="logo_s">
+    </div>
     <div class="short-url-direction">
-        <lo class="note">您使用的短網址</lo>
-        <p class="note">The short URL you used</p>
+        <p class="reminder">您使用的短網址<br>The short URL you used</p>
         <div class="data-display small-box shorten-url">            
         </div>
-        <br>
         <div class="button-container">
             <button type="button" class="button red">取消並回首頁<br>Cancel & Return Home</button>
             <button type="button" class="button green">前往目標網站<br>Go to Target Website</button>
         </div>
-        <br>
-        <lo class="note">請檢查下方原始網址安全性</lo>
-        <lo class="note">Please check the safety of the original URL below</lo>
+        <p class="reminder">請檢查下方原始網址安全性<br>Please check the safety of the original URL below</p>
         <div class="data-display large-box original-url">                     
-        </div>
-        
-
+        </div>    
     </div>
 
     <div class="main-context">
@@ -55,7 +55,7 @@
     <div id="footer"></div>
 
     <!-- JavaScript 用於加載共用元件 -->
-    <script src="/js/jquery-3.6.0.js"></script>
+    <script src="/js/jquery-3.7.1-min.js"></script>
     <script src="/js/header&footer_script.js"></script>
     <script src="/js/short_url_redirection_script.js"></script>
 </body>

@@ -1,5 +1,5 @@
 .index-context {
-    padding: 60px 20px 0px 0px;
+    padding: 65px 20px 0px 0px;
     text-align: center;
     width: 80%;
     margin-top: 90px;
@@ -15,12 +15,17 @@ body {
     background-color: rgb(0, 0, 0);    
 }
 
+.index-context h3 {
+    margin-top: 3px; /* 調整上邊距 */
+    margin-bottom: 3px; /* 調整下邊距 */
+    line-height: 1.1; /* 調整行高 */
+}
 
 .main-context, .to-short-url{
     text-align: justify;
     width: 80%;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 3px;
+    margin-bottom: 3px;
     margin-left: auto;
     margin-right: auto;
     color: #ffffff; 
@@ -35,42 +40,68 @@ body {
 
 #long_url {
     width: 100%;
+    min-width: 500px;
+    max-width: 900px;
     padding: 10px;
     font-size: 16px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     box-sizing: border-box;
-    border: 1px solid #ccc;
+    border: 3px solid #39ce59;
     border-radius: 5px;
 }
 
 #generate {
     width: 300px;
-    height: 60px;
+    height: 50px;
     background-color: rgb(1, 1, 98);
     color: white;
-    border: 2px solid lightblue;
+    border: 3px solid rgb(182, 237, 255);
     border-radius: 10px;
     font-size: 16px;
     cursor: pointer;
 }
 
 #generate:hover {
-    background-color: #0925a0;
+    background-color: #1332be;
 }
 
 #shorten_url {
-    margin-top: 5px;
-    margin-bottom: 5px;
+    margin-top: 3px;
+    margin-bottom: 3px;
     display: flex;
     align-items: center; 
     justify-content: center; 
     width: 400px;
-    height: 80px;
+    height: 40px;
     background-color: rgb(252, 252, 185);
     color: rgb(0, 0, 0);
     font-size: 16px;
     border: 3px solid rgb(255, 157, 0);
     border-radius: 10px;
     cursor: pointer;
+}
+
+.image-container{
+    text-align: center;
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+}
+
+.image-container img {
+    text-align: center;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    border: 2px solid #fffccd;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 150px;
+}
+
+.reminder {
+    color: #ffffff;
+    text-align: center;
+    margin-top: 3px; /* 調整上邊距 */
+    margin-bottom: 3px; /* 調整下邊距 */
+    line-height: 1.2; /* 調整行高 */
 }
 

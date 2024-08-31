@@ -1,0 +1,9 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /api/
+
+# Allow all user agents to access everything else
+Allow: /
+
+# Specify the location of the sitemap
+Sitemap: https://gdtw.org/sitemap.xml

@@ -24,7 +24,7 @@ $(document).ready(function() {
                 
                 $('.original-url').text(response);
                 
-                
+                // 綠色按鈕點擊事件
                 $('.button.green').on('click', function() {
                     window.location.href = response;
                 });
