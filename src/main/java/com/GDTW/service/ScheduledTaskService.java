@@ -37,22 +37,15 @@ public class ScheduledTaskService {
         logger.info("Daily statistics is saved successfully and old date is removed.");
     }
 
-    @PreDestroy
-    @Transactional
-    public void onShutdown() {
-        saveStatistics();
-        logger.info("Daily statistics is saved successfully before shut down.");
-    }
-
-    private void saveStatistics() {
-        // Define the date format YYYY-MMM-DD with English locale
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MMM-dd", Locale.ENGLISH);
+    public void saveStatistics() {
+        // Define the date format YYYY-MM-DD
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
         String currentDateStr = LocalDate.now().format(formatter);
 
         // Convert String to Date
         Date currentDate;
         try {
-            currentDate = new SimpleDateFormat("yyyy-MMM-dd").parse(currentDateStr);
+            currentDate = new SimpleDateFormat("yyyy-MM-dd").parse(currentDateStr);
         } catch (ParseException e) {
             throw new RuntimeException("Failed to parse date", e);
         }
@@ -94,4 +87,5 @@ public class ScheduledTaskService {
         // Clear the Redis data for the current day
         statisticService.clearStatisticsForDate(LocalDate.now());
     }
+
 }
