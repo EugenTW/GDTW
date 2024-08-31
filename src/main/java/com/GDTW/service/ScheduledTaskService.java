@@ -3,6 +3,8 @@ package com.GDTW.service;
 import com.GDTW.dailystatistic.model.DailyStatisticJpa;
 import com.GDTW.dailystatistic.model.DailyStatisticVO;
 import jakarta.annotation.PreDestroy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +19,8 @@ import java.util.Locale;
 @Service
 public class ScheduledTaskService {
 
+    private static final Logger logger = LoggerFactory.getLogger(ScheduledTaskService.class);
+
     private final StatisticService statisticService;
     private final DailyStatisticJpa dailyStatisticJpa;
 
@@ -30,12 +34,14 @@ public class ScheduledTaskService {
     @Transactional
     public void collectAndSaveStatistics() {
         saveStatistics();
+        logger.info("Daily statistics is saved successfully and old date is removed.");
     }
 
     @PreDestroy
     @Transactional
     public void onShutdown() {
         saveStatistics();
+        logger.info("Daily statistics is saved successfully before shut down.");
     }
 
     private void saveStatistics() {

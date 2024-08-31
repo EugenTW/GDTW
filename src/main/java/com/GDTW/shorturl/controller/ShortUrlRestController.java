@@ -5,7 +5,8 @@ import com.GDTW.shorturl.model.CreateShortUrlRequestDTO;
 import com.GDTW.shorturl.model.GetOriginalUrlDTO;
 import com.GDTW.shorturl.model.ShortUrlService;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/su_api")
 public class ShortUrlRestController {
+
+    private static final Logger logger = LoggerFactory.getLogger(ShortUrlRestController.class);
 
     private final ShortUrlService shortUrlService;
     private final StatisticService statisticService;
@@ -28,9 +31,10 @@ public class ShortUrlRestController {
 
     @PostMapping("/create_new_short_url")
     public ResponseEntity<String> createNewShortUrl(@RequestBody CreateShortUrlRequestDTO shortUrlRequest, HttpServletRequest request) {
+        String originalUrl = shortUrlRequest.getOriginalUrl();
+        String originalIp = request.getHeader("X-Forwarded-For");
         try {
-            String originalUrl = shortUrlRequest.getOriginalUrl();
-            String originalIp = request.getHeader("X-Forwarded-For");
+
             if (originalIp == null || originalIp.isEmpty()) {
                 originalIp = request.getRemoteAddr();
             } else {
@@ -44,9 +48,11 @@ public class ShortUrlRestController {
                 statisticService.incrementShortUrlCreated();
                 return ResponseEntity.ok(fullShortUrl);
             } else {
+                logger.error("Failed to create new shortUrl on MySQL. The failed url was: '" + originalUrl + "'.");
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("短網址建立失敗!請稍後再次嘗試!");
             }
         } catch (Exception e) {
+            logger.error("Failed to create new shortUrl due to the web server error. The failed url was: '" + originalUrl + "'.");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("內部伺服器錯誤!請等待站方維修!");
         }
     }

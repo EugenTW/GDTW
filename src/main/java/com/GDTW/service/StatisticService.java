@@ -7,7 +7,6 @@ import java.time.LocalDate;
 
 @Service
 public class StatisticService {
-
     private final RedisTemplate<String, Integer> redisTemplate;
 
     public StatisticService(RedisTemplate<String, Integer> redisTemplate) {
