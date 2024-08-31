@@ -49,11 +49,11 @@ public class ShortUrlRestController {
                 return ResponseEntity.ok(fullShortUrl);
             } else {
                 logger.error("Failed to create new shortUrl on MySQL. The failed url was: '" + originalUrl + "'.");
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("短網址建立失敗!請稍後再次嘗試!");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("短網址建立失敗!請稍後再次嘗試! The short URL creation failed! Please try again later!");
             }
         } catch (Exception e) {
             logger.error("Failed to create new shortUrl due to the web server error. The failed url was: '" + originalUrl + "'.");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("內部伺服器錯誤!請等待站方維修!");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("內部伺服器錯誤!請等待站方維修! Internal server error! Please wait for the site to be fixed!");
         }
     }
 
