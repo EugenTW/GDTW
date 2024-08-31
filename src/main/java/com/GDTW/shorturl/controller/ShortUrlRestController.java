@@ -1,5 +1,6 @@
 package com.GDTW.shorturl.controller;
 
+import com.GDTW.service.StatisticService;
 import com.GDTW.shorturl.model.CreateShortUrlRequestDTO;
 import com.GDTW.shorturl.model.GetOriginalUrlDTO;
 import com.GDTW.shorturl.model.ShortUrlService;
@@ -15,10 +16,11 @@ import org.springframework.web.bind.annotation.*;
 public class ShortUrlRestController {
 
     private final ShortUrlService shortUrlService;
+    private final StatisticService statisticService;
 
-    @Autowired
-    public ShortUrlRestController(ShortUrlService shortUrlService) {
+    public ShortUrlRestController(ShortUrlService shortUrlService, StatisticService statisticService) {
         this.shortUrlService = shortUrlService;
+        this.statisticService = statisticService;
     }
 
     @Value("${app.baseUrl}")
@@ -27,7 +29,6 @@ public class ShortUrlRestController {
     @PostMapping("/create_new_short_url")
     public ResponseEntity<String> createNewShortUrl(@RequestBody CreateShortUrlRequestDTO shortUrlRequest, HttpServletRequest request) {
         try {
-
             String originalUrl = shortUrlRequest.getOriginalUrl();
             String originalIp = request.getHeader("X-Forwarded-For");
             if (originalIp == null || originalIp.isEmpty()) {
@@ -40,6 +41,7 @@ public class ShortUrlRestController {
 
             if (shortUrl != null) {
                 String fullShortUrl = baseUrl + "/s/" + shortUrl;
+                statisticService.incrementShortUrlCreated();
                 return ResponseEntity.ok(fullShortUrl);
             } else {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("短網址建立失敗!請稍後再次嘗試!");
@@ -60,6 +62,7 @@ public class ShortUrlRestController {
             } else if (originalUrl.equals("ban")) {
                 return ResponseEntity.status(HttpStatus.GONE).body("此短網址已失效! The short url is banned.");
             } else {
+                statisticService.incrementShortUrlUsed();
                 return ResponseEntity.ok(originalUrl);
             }
         } catch (Exception e) {
