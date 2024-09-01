@@ -44,7 +44,7 @@ public class ShortUrlService {
     public String getOriginalUrl(String shortUrl) {
         Integer suId = toDecodeSuId(shortUrl);
         // Check Redis cache first
-        String redisKey = "su:" + shortUrl; // add prefix 'su:'
+        String redisKey = "su:suId:" + shortUrl; // add prefix 'su:'
         String cachedOriginalUrl = redisTemplate.opsForValue().get(redisKey);
         if (cachedOriginalUrl != null) {
             countShortUrlUsage(suId);
@@ -61,7 +61,7 @@ public class ShortUrlService {
     // ==================================================================
     // Redis caching methods
     private void cacheShortUrl(String encodedSuId, String originalUrl) {
-        String redisKey = "su:" + encodedSuId; // prefix 'su:'
+        String redisKey = "su:suId:" + encodedSuId; // prefix 'su:suId:'
         redisTemplate.opsForValue().set(redisKey, originalUrl, TTL_DURATION);
     }
 
@@ -133,7 +133,8 @@ public class ShortUrlService {
         redisTemplate.opsForValue().increment(redisKey, 1);
     }
 
-    @Scheduled(cron = "0 0 0/3 * * ?") // Executed daily every 3 hours starting from midnight
+    // Scheduled task to run every two hours at 55 minutes past the hour
+    @Scheduled(cron = "0 55 0/2 * * ?")
     @Transactional
     public void syncUsageToMySQL() {
         Set<String> keys = redisTemplate.keys("su:usage:*");
