@@ -37,7 +37,7 @@ public class ShortUrlController {
 
     @GetMapping("/{code:[a-zA-Z0-9]{4}}")
     public void redirectToPage(@PathVariable String code, HttpServletResponse response) throws IOException {
-        if (shortUrlService.checkCodeValid(code)) {
+        if (!shortUrlService.checkCodeValid(code)) {
             response.sendRedirect("/404_short_url");
             return;
         }
@@ -47,7 +47,7 @@ public class ShortUrlController {
 
     @GetMapping("/s/{code:[a-zA-Z0-9]{4}}")
     public void oldRedirectToPage(@PathVariable String code, HttpServletResponse response) throws IOException {
-        if (shortUrlService.checkCodeValid(code)) {
+        if (!shortUrlService.checkCodeValid(code)) {
             response.sendRedirect("/404_short_url");
             return;
         }
