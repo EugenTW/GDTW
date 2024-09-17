@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class IdEncoderDecoderService {
 
-    private static final String ENCRYPT_CHARS_A = "XgUweOlDKZlVAYNp4jq3FWMTQoEuP9I5nHbfCy2czv1mkdS60JxRGs78aBhLi";
-    private static final String ENCRYPT_CHARS_B = "TyVM7HzaSlXE4mnL8Kowu2hjgqdIliDFG6vpPQOA0cC9Z1sBU35fbkxeNRJYW";
+    public static final String ENCRYPT_CHARS_A = "XgUweOlDKZlVAYNp4jq3FWMTQoEuP9I5nHbfCy2czv1mkdS60JxRGs78aBhLi";
+    public static final String ENCRYPT_CHARS_B = "TyVM7HzaSlXE4mnL8Kowu2hjgqdIliDFG6vpPQOA0cC9Z1sBU35fbkxeNRJYW";
     private static final int BASE_A = ENCRYPT_CHARS_A.length();
     private static final int BASE_B = ENCRYPT_CHARS_B.length();
     private static final int MIN_ID = 10000000;
