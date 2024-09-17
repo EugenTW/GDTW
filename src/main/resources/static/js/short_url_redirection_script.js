@@ -11,7 +11,7 @@ $(document).ready(function() {
     const code = urlParams.get('code');    
     
     if (code) {        
-        const shortUrl = `${window.location.origin}/${code}`;
+        const shortUrl = `${window.location.host}/${code}`;
         $('.shorten-url').text(shortUrl);        
         
         $.ajax({
