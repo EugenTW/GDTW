@@ -41,19 +41,23 @@ public class ShortUrlService {
     }
 
     @Transactional
-    public String getOriginalUrl(String shortUrl) {
-        Integer suId = toDecodeSuId(shortUrl);
+    public String getOriginalUrl(String code) {
+        Integer suId = toDecodeSuId(code);
         // Check Redis cache first
-        String redisKey = "su:suId:" + shortUrl; // add prefix 'su:'
+        String redisKey = "su:suId:" + code; // add prefix 'su:'
         String cachedOriginalUrl = redisTemplate.opsForValue().get(redisKey);
         if (cachedOriginalUrl != null) {
             countShortUrlUsage(suId);
             return cachedOriginalUrl;
         }
-        if (!isShortUrlIdExist(suId)){return "na";}
-        if (!isShortUrlValid(suId)){return "ban";}
+        if (!isShortUrlIdExist(suId)) {
+            return "na";
+        }
+        if (!isShortUrlValid(suId)) {
+            return "ban";
+        }
         String originalUrl = getOriginalUrl(suId);
-        cacheShortUrl(shortUrl, originalUrl);
+        cacheShortUrl(code, originalUrl);
         countShortUrlUsage(suId);
         return getOriginalUrl(suId);
     }
@@ -96,6 +100,18 @@ public class ShortUrlService {
     @Transactional(readOnly = true)
     public String getOriginalUrl(Integer suId) {
         return shortUrlJpa.findOriginalUrlBySuId(suId);
+    }
+
+    @Transactional(readOnly = true)
+    public boolean checkCodeValid(String code) {
+        Integer suId = toDecodeSuId(code);
+        // Check Redis cache first
+        String redisKey = "su:suId:" + code; // add prefix 'su:'
+        String cachedOriginalUrl = redisTemplate.opsForValue().get(redisKey);
+        if (cachedOriginalUrl != null) {
+            return true;
+        }
+        return isShortUrlIdExist(suId) && isShortUrlValid(suId);
     }
 
     // ==================================================================
@@ -148,7 +164,6 @@ public class ShortUrlService {
                     ShortUrlVO shortUrl = optionalShortUrl.get();
                     shortUrl.setSuTotalUsed(shortUrl.getSuTotalUsed() + usageCount);
                     shortUrlJpa.save(shortUrl);
-
                     // delete recorded data in Redis
                     redisTemplate.delete(key);
                 }
@@ -166,4 +181,5 @@ public class ShortUrlService {
     public static Integer toDecodeSuId(String encodeSuId) {
         return IdEncoderDecoderService.decodeId(encodeSuId);
     }
+
 }

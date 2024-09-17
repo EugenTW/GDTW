@@ -33,7 +33,6 @@ public class GdtwApplication {
     }
 
     public static void main(String[] args) {
-
         SpringApplication.run(GdtwApplication.class, args);
         logger.info("Web version: " + WebVersion.getWebVersion() + " and built at " + WebVersion.getBuildDate());
 
