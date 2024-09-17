@@ -33,6 +33,8 @@ public class SitemapService {
         sitemapGen.addUrl("https://gdtw.org/short_url_redirection");
         sitemapGen.addUrl("https://gdtw.org/terms_of_use");
         sitemapGen.addUrl("https://gdtw.org/about_us");
+        sitemapGen.addUrl("https://gdtw.org/404_short_url");
+        sitemapGen.addUrl("https://gdtw.org/error");
 
         // Write the sitemap.xml file to the logs directory
         sitemapGen.write();
