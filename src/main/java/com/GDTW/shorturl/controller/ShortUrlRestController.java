@@ -34,17 +34,14 @@ public class ShortUrlRestController {
         String originalUrl = shortUrlRequest.getOriginalUrl();
         String originalIp = request.getHeader("X-Forwarded-For");
         try {
-
             if (originalIp == null || originalIp.isEmpty()) {
                 originalIp = request.getRemoteAddr();
             } else {
                 originalIp = originalIp.split(",")[0];
             }
-
             String shortUrl = shortUrlService.createNewShortUrl(originalUrl, originalIp);
-
             if (shortUrl != null) {
-                String fullShortUrl = baseUrl + "/s/" + shortUrl;
+                String fullShortUrl = baseUrl + shortUrl;
                 statisticService.incrementShortUrlCreated();
                 return ResponseEntity.ok(fullShortUrl);
             } else {
@@ -62,13 +59,11 @@ public class ShortUrlRestController {
         try {
             String code = codeRequest.getCode();
             String originalUrl = shortUrlService.getOriginalUrl(code);
-
             if (originalUrl == null || originalUrl.equals("na")) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("此短網址尚未建立! Original url not found!");
             } else if (originalUrl.equals("ban")) {
                 return ResponseEntity.status(HttpStatus.GONE).body("此短網址已失效! The short url is banned.");
             } else {
-                statisticService.incrementShortUrlUsed();
                 return ResponseEntity.ok(originalUrl);
             }
         } catch (Exception e) {

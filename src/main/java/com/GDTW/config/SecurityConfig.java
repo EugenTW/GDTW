@@ -19,6 +19,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authz -> authz
+                        .requestMatchers("/error", "/error/**").permitAll()
                         .requestMatchers(restrictedUrls).authenticated()
                         .anyRequest().permitAll()
                 )
@@ -26,5 +27,4 @@ public class SecurityConfig {
 
         return http.build();
     }
-
 }
