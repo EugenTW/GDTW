@@ -1,0 +1,88 @@
+.short-url-direction {
+    width: 80%;
+    display: flex;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    margin-left: auto;
+    margin-right: auto;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.reminder {
+    color: #ffffff;
+    text-align: center;
+    margin-top: 3px; 
+    margin-bottom: 3px; 
+    line-height: 1.2; 
+}
+
+.data-display {
+    width: 400px;
+    height: 50px;
+    background-color: #210d6c;
+    color: #FFFFFF;
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    text-align: center;
+    line-height: 40px;
+    border: 3px solid #a48bff;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+.button-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 20px;
+}
+
+.button {
+    width: 200px;
+    height: 50px;
+    color: black;
+    font-size: 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+}
+
+
+.red {
+    background-color: #9b00a6;
+}
+
+.green {
+    background-color: #004e93;
+}
+
+.button.red:hover {
+    background-color: #b400ab;    
+}
+
+.button.green:hover {
+    background-color: #006eff;   
+}
+
+.data-display.large-box.original-url {
+    min-width: 450px;
+    max-width: 800px;
+    width: 100%;    
+    min-height: 100px;    
+    color: #000;
+    height: auto;       
+    background-color: #ffffce; 
+    border: 3px solid rgb(255, 149, 0); 
+    padding: 10px;      
+    font-size: 16px;    
+    line-height: 1.5;   
+    text-align: justify; 
+    overflow-wrap: break-word; 
+    box-sizing: border-box; 
+}
