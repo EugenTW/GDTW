@@ -29,10 +29,13 @@ public class SitemapService {
 
         // Add URLs to the sitemap
         sitemapGen.addUrl("https://gdtw.org/");
+        sitemapGen.addUrl("https://gdtw.org/index");
         sitemapGen.addUrl("https://gdtw.org/short_url");
         sitemapGen.addUrl("https://gdtw.org/short_url_redirection");
-        sitemapGen.addUrl("https://gdtw.org/terms_of_use");
+        sitemapGen.addUrl("https://gdtw.org/terms_of_service");
         sitemapGen.addUrl("https://gdtw.org/about_us");
+        sitemapGen.addUrl("https://gdtw.org/contact_us");
+        sitemapGen.addUrl("https://gdtw.org/error");
 
         // Write the sitemap.xml file to the logs directory
         sitemapGen.write();

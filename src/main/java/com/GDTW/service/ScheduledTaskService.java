@@ -29,8 +29,8 @@ public class ScheduledTaskService {
         this.dailyStatisticJpa = dailyStatisticJpa;
     }
 
-    // Scheduled task to run daily at 11:55 PM
-    @Scheduled(cron = "0 55 23 * * ?")
+    // Scheduled task to run daily at 11:59 PM
+    @Scheduled(cron = "55 59 23 * * ?")
     @Transactional
     public void collectAndSaveStatistics() {
         saveStatistics();

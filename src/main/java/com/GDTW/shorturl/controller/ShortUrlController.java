@@ -30,29 +30,16 @@ public class ShortUrlController {
         return "forward:/short_url_redirection.html";
     }
 
-    @GetMapping("/404_short_url")
-    public String shortUrl404Redirection() {
-        return "forward:/404_short_url.html";
-    }
-
     @GetMapping("/{code:[a-zA-Z0-9]{4}}")
     public void redirectToPage(@PathVariable String code, HttpServletResponse response) throws IOException {
         if (!shortUrlService.checkCodeValid(code)) {
-            response.sendRedirect("/404_short_url");
+            response.sendRedirect("/error");
             return;
         }
         statisticService.incrementShortUrlUsed();
         response.sendRedirect("/short_url_redirection?code=" + code);
     }
 
-    @GetMapping("/s/{code:[a-zA-Z0-9]{4}}")
-    public void oldRedirectToPage(@PathVariable String code, HttpServletResponse response) throws IOException {
-        if (!shortUrlService.checkCodeValid(code)) {
-            response.sendRedirect("/404_short_url");
-            return;
-        }
-        statisticService.incrementShortUrlUsed();
-        response.sendRedirect("/short_url_redirection?code=" + code);
-    }
+
 }
 

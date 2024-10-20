@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Service
 public class StatisticService {
     private final RedisTemplate<String, Integer> redisTemplate;
-    private static final Duration TTL_DURATION = Duration.ofHours(36);
+    private static final Duration TTL_DURATION = Duration.ofHours(25);
 
     public StatisticService(RedisTemplate<String, Integer> redisTemplate) {
         this.redisTemplate = redisTemplate;

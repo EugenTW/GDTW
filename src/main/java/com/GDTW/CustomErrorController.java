@@ -9,7 +9,7 @@ public class CustomErrorController implements ErrorController {
 
     @GetMapping("/error")
     public String handleError() {
-        return "forward:/404_error.html";
+        return "forward:/error_404.html";
     }
 
 }

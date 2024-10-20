@@ -17,7 +17,12 @@ import java.nio.file.Paths;
 public class IndexController {
 
     @GetMapping("/")
-    public String index() {
+    public String index1() {
+        return "forward:/index.html";
+    }
+
+    @GetMapping("/index")
+    public String index2() {
         return "forward:/index.html";
     }
 
@@ -26,9 +31,14 @@ public class IndexController {
         return "forward:/about_us.html";
     }
 
-    @GetMapping("/terms_of_use")
-    public String turnOfUse() {
-        return "forward:/terms_of_use.html";
+    @GetMapping("/terms_of_service")
+    public String turnOfService() {
+        return "forward:/terms_of_service.html";
+    }
+
+    @GetMapping("/contact_us")
+    public String contactUs() {
+        return "forward:/contact_us.html";
     }
 
     @GetMapping("/sitemap.xml")

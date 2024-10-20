@@ -22,7 +22,7 @@ public class ShortUrlService {
     private final ShortUrlJpa shortUrlJpa;
     private final RedisTemplate<String, String> redisTemplate;
 
-    private static final Duration TTL_DURATION = Duration.ofHours(24);
+    private static final Duration TTL_DURATION = Duration.ofHours(36);
 
     public ShortUrlService(ShortUrlJpa shortUrlJpa, RedisTemplate<String, String> redisTemplate) {
         this.shortUrlJpa = shortUrlJpa;

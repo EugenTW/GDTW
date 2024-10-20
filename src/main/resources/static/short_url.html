@@ -1,61 +1,96 @@
-<!DOCTYPE html>
-<html lang="zh-Hant">
+<!DOCTYPE HTML>
+<!--
+	Hyperspace by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>GDTW - Short URL</title>
+		<meta property="og:title" content="GDTW" />
+		<meta property="og:description" content="Short URL" />
+		<meta property="og:image" content="https://gdtw.org/images/logo_s.jpg"/>      
+		<meta property="og:url" content="https://gdtw.org" />
+		<meta property="og:type" content="website" />
+		<link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    	<meta name="google-site-verification" content="cn0STYeRun5YMPFW9QHg-OSVwNjw5SCQoKUQKRh4P6U" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="/assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="/assets/css/noscript.css" /></noscript>
+		<link rel="stylesheet" href="/assets/css/short_url_customized.css">
+	</head>
+	<body class="is-preload">
 
-<head>
-    <meta charset="UTF-8">
-    <title>GDTW - Short Url</title>
-    <meta property="og:title" content="GDTW - Short URL Service" />
-    <meta property="og:description" content="Free Short URL Service!" />
-    <meta property="og:image" content="https://gdtw.org/images/logo_s.jpg"/>      
-    <meta property="og:url" content="https://gdtw.org/short_url" />
-    <meta property="og:type" content="website" />       
-    <link rel="stylesheet" href="/css/short_url.css">  
-    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">     
-</head>
+		<!-- Header -->
+			<header id="header">
+				<a class="title">GDTW</a>
+				<nav>					
+					<ul>
+						<li><a href="/index.html">Home</a></li>
+						<li><a href="/index.html#one" class="active">Free Services</a></li>
+						<li><a href="/index.html#two">Statements</a></li>
+					</ul>
+				</nav>
+			</header>
 
-<body>
-    <!-- 匯入 Header -->
-    <div id="header"></div>
-    
-    <div class="index-context">
-        <h3>歡迎使用GDTW短網址服務</h3>
-        <h3>Welcome to GDTW Short URL Service</h3>
-        <p  class="reminder">免費無廣告且二段式跳轉降低資安風險<br>Free, ad-free, and with two-step redirection to reduce security risks</p>
-    </div>
-    <div class="image-container">
-        <img src="/images/logo_s.jpg" alt="logo_s">
-    </div>
-    <div class="to-short-url">       
-        <input type="text" id="long_url" placeholder="請輸入網址 / Please enter a URL." maxlength="200">
-        <button type="button" id="generate">生成短網址<br>Generate Short URL</button>        
-        <br>
-        <p class="reminder">點擊下方黃框複製生成的短網址<br>Click the yellow box below to copy the generated short URL</p>
-        <div id="shorten_url" class="reminder" onclick="copyToClipboard()">即將生成的短網址<br>Short URL will be generated here.</div>             
-    </div>
+		<!-- Wrapper -->
+			<div id="wrapper">
 
-    <div class="main-context">
-        
-    <h3>使用說明</h3>
-    <ol>1. 貼上您想要縮短的網址並按下"縮短網址"按鈕，即可生成短網址。本站支援最長200字的原始網址。</ol>
-    <ol>2. 為提升安全性，本站提供的短網址不會直接跳轉目標網址，而是會先跳轉至本站頁面顯示對應的完整網址，再由使用者自行決定使否前往。</ol>
-    <ol>3. 生成的短網址沒有使用效期，若碰上異常狀況包含但不限於硬體故障、資料庫異常、營運終止等不可抗力則不保證永久有效，請自行保管好原始網址。</ol>
-    <ol>4. 使用本服務時就表示已同意本站的所有使用條款。</ol>
+				<!-- Main -->
+					<section id="main" class="wrapper">
+						<div class="inner">
+							<h2 class="major">短網址服務 - Short URL</h2>
+							<hr>
+							<div class="to-short-url">       
+								<input type="text" id="long_url" placeholder="請在此輸入原始網址 / Please enter an URL here." maxlength="200">
+								<br>
+								<button type="button" id="generate">生成短網址 - Click For Short URL</button>        
+								<br>
+								<p class="reminder">點擊下方黃框複製生成的短網址<br>Click the yellow box below to copy the generated short URL</p>
+								<br>
+								<div id="shorten_url" class="reminder" onclick="copyToClipboard()">即將生成的短網址<br>Short URL will be generated here.</div>             
+							</div>						
+							
+							<hr>
+							<p>
+								<h3>使用說明</h3>
+								1. 貼上您想要縮短的網址並按下"縮短網址"按鈕，即可生成短網址。本站支援最長200字的原始網址。<br>
+								2. 為提升安全性，本站提供的短網址不會直接跳轉目標網址，而是會先跳轉至本站頁面顯示對應的完整網址，再由使用者自行決定是否前往。<br>
+								3. 生成的短網址沒有使用效期，若碰上異常狀況包含但不限於硬體故障、資料庫異常、營運終止等不可抗力則不保證永久有效，請自行保管好原始網址。<br>
+								4. 使用本服務時就表示已同意本站的所有使用條款。<br><br>
+							
+								<h3>Instructions</h3>
+								1. Paste the URL you want to shorten and click the "Generate Short URL" button to create a short URL. This site supports URLs up to 200 characters long.<br>
+								2. To enhance security, the short URLs provided by this site will not directly redirect to the target URL. Instead, they will first redirect to a page on this site displaying the full corresponding URL, allowing the user to decide whether to proceed.<br>
+								3. The generated short URLs do not have an expiration date. However, in cases of anomalies, including but not limited to hardware failure, database issues, or cessation of operations, the short URLs may not remain valid indefinitely. Please keep the original URL safe.<br>
+								4. By using this service, you agree to all the terms of use of this site.<br>
+							</p>
+							<hr>
+							<span class="image fit"><img src="/images/short_url_pic01.jpg" alt="" /></span>								
+						</div>
+					</section>
 
-    <h3>Instructions</h3>
-    <ol>1. Paste the URL you want to shorten and click the "Generate Short URL" button to create a short URL. This site supports URLs up to 200 characters long.</ol>
-    <ol>2. To enhance security, the short URLs provided by this site will not directly redirect to the target URL. Instead, they will first redirect to a page on this site displaying the full corresponding URL, allowing the user to decide whether to proceed.</ol>
-    <ol>3. The generated short URLs do not have an expiration date. However, in cases of anomalies, including but not limited to hardware failure, database issues, or cessation of operations, the short URLs may not remain valid indefinitely. Please keep the original URL safe.</ol>
-    <ol>4. By using this service, you agree to all the terms of use of this site.</ol>
+			</div>
 
-    </div>    
+		<!-- Footer -->
+			<footer id="footer" class="wrapper alt">
+				<div class="inner">
+					<ul class="menu">
+						<p id="footer-year">Copyright © GDTW. Since 2024</p> 
+					</ul>
+				</div>
+			</footer>
 
-    <!-- 匯入 Footer -->
-    <div id="footer"></div>
-
-    <!-- JavaScript 用於加載共用元件 -->
-    <script src="/js/jquery-3.7.1-min.js"></script>
-    <script src="/js/header&footer_script.js"></script>  
-    <script src="/js/short_url_script.js"></script>    
-</body>
-
+		<!-- Scripts -->
+			<script src="/assets/js/jquery.min.js"></script>
+			<script src="/assets/js/jquery.scrollex.min.js"></script>
+			<script src="/assets/js/jquery.scrolly.min.js"></script>
+			<script src="/assets/js/browser.min.js"></script>
+			<script src="/assets/js/breakpoints.min.js"></script>
+			<script src="/assets/js/util.js"></script>
+			<script src="/assets/js/main.js"></script>
+			<script src="/assets/js/index_customized.js"></script>			
+			<script src="/assets/js/short_url_script.js"></script>
+	</body>
 </html>
