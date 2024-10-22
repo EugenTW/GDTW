@@ -1,3 +1,8 @@
+hr {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
 .short-url-direction {
     width: 80%;
     display: flex;
@@ -13,15 +18,15 @@
 .reminder {
     color: #ffffff;
     text-align: center;
-    margin-top: 3px; 
-    margin-bottom: 3px; 
+    margin-top: 5px; 
+    margin-bottom: 5px; 
     line-height: 1.2; 
 }
 
 .data-display {
-    width: 400px;
+    width: 350px;
     height: 50px;
-    background-color: #210d6c;
+    background-color: #450751;
     color: #FFFFFF;
     display: flex; 
     justify-content: center; 
@@ -30,19 +35,19 @@
     line-height: 40px;
     border: 3px solid #a48bff;
     border-radius: 10px;
-    font-size: 16px;
+    font-size: 16px;  
+    margin-bottom: 10px;  
 }
 
-.button-container {
-    margin-top: 20px;
+.button-container {    
     display: flex;
     justify-content: center;
-    gap: 30px;
-    margin-bottom: 20px;
+    margin-top: 10px;    
+    margin-bottom: 10px;
 }
 
 .button {
-    width: 200px;
+    width: 350px;
     height: 50px;
     color: black;
     font-size: 14px;
@@ -53,25 +58,17 @@
     align-items: center; 
 }
 
-
-.red {
-    background-color: #9b00a6;
-}
-
 .green {
-    background-color: #004e93;
-}
-
-.button.red:hover {
-    background-color: #b400ab;    
+    background-color: #016929;
+    border: 5px solid #00ff44;
 }
 
 .button.green:hover {
-    background-color: #006eff;   
+    background-color: #009d32;   
 }
 
 .data-display.large-box.original-url {
-    min-width: 450px;
+    min-width: 400px;
     max-width: 800px;
     width: 100%;    
     min-height: 100px;    
@@ -85,4 +82,6 @@
     text-align: justify; 
     overflow-wrap: break-word; 
     box-sizing: border-box; 
+    margin-top: 10px;    
+    margin-bottom: 10px;
 }

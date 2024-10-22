@@ -16,9 +16,17 @@ $(document).ready(function() {
                 success: function(response) {
                     console.log("Response received: ", response); 
                     $("#shorten_url").text(response).css("background-color", "yellow");
-
-                    // Rebind click event to ensure it works after content update
                     $("#shorten_url").off('click').on('click', copyToClipboard);
+
+                    
+                    $("#qrcode").empty(); 
+                    var qrcode = new QRCode(document.getElementById("qrcode"), {
+                        text: response, 
+                        width: 120,
+                        height: 120
+                    });
+
+                    $("#qrcode").css("display", "block");
                 },
                 error: function(xhr, textStatus, errorThrown) {
                     var errorMessage = "Error: " + xhr.responseText;
@@ -31,11 +39,12 @@ $(document).ready(function() {
     });
 });
 
+
 function copyToClipboard() {
     const copyText = document.getElementById("shorten_url").textContent;
     navigator.clipboard.writeText(copyText)
         .then(() => {
-            showAlert("短網址已複製到剪貼簿 / The short URL is copied!", "lightgreen");
+            showAlert("短網址已複製到剪貼簿 / The short URL is copied!", "green");
         })
         .catch(err => {
             console.error('Failed to copy text: ', err);

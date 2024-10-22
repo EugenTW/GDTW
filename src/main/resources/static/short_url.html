@@ -7,7 +7,7 @@
 <html>
 	<head>
 		<title>GDTW - Short URL</title>
-		<meta property="og:title" content="GDTW" />
+		<meta property="og:title" content="GDTW - Short URL" />
 		<meta property="og:description" content="Short URL" />
 		<meta property="og:image" content="https://gdtw.org/images/logo_s.jpg"/>      
 		<meta property="og:url" content="https://gdtw.org" />
@@ -43,13 +43,15 @@
 							<h2 class="major">短網址服務 - Short URL</h2>
 							<hr>
 							<div class="to-short-url">       
-								<input type="text" id="long_url" placeholder="請在此輸入原始網址 / Please enter an URL here." maxlength="200">
-								<br>
-								<button type="button" id="generate">生成短網址 - Click For Short URL</button>        
-								<br>
+								<input type="text" id="long_url" placeholder="請先在此輸入原始網址 / Please enter an URL here first." maxlength="200">
+								
+								<button type="button" id="generate">點此生成 - Click Here</button>        
+								
 								<p class="reminder">點擊下方黃框複製生成的短網址<br>Click the yellow box below to copy the generated short URL</p>
-								<br>
+								
 								<div id="shorten_url" class="reminder" onclick="copyToClipboard()">即將生成的短網址<br>Short URL will be generated here.</div>             
+								
+								<div id="qrcode"></div>
 							</div>						
 							
 							<hr>
@@ -91,6 +93,7 @@
 			<script src="/assets/js/util.js"></script>
 			<script src="/assets/js/main.js"></script>
 			<script src="/assets/js/index_customized.js"></script>			
+			<script src="/assets/js/qrcode.min.js"></script>	
 			<script src="/assets/js/short_url_script.js"></script>
 	</body>
 </html>
