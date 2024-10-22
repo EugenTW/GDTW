@@ -39,12 +39,10 @@ $(document).ready(function() {
     } else {
         $('.shorten-url').text('短網址無效 / Invalid short URL.');
          $('.original-url').text('請使用有效的短網址 / Please use a valid short URL.');
-    }
+    }    
     
-    $('.button.red').on('click', function() {
-        window.location.href = '/';
-    });
 });
+
 
 
 
