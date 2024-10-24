@@ -22,6 +22,7 @@ CREATE TABLE short_url (
     su_created_ip VARCHAR(40),
     su_total_used INT DEFAULT 0,
     su_status TINYINT DEFAULT 0 CHECK (su_status IN (0, 1)),
+    su_safe TINYINT DEFAULT 0 CHECK (su_safe IN (0, 2)),
     u_id INT NULL,
     FOREIGN KEY (u_id) REFERENCES web_user(u_id)
 );

@@ -1,7 +1,7 @@
 package com.GDTW.config;
 
-import com.GDTW.service.RedisService;
-import com.GDTW.service.ScheduledTaskService;
+import com.GDTW.general.service.RedisService;
+import com.GDTW.general.service.ScheduledTaskService;
 import com.GDTW.shorturl.model.ShortUrlService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

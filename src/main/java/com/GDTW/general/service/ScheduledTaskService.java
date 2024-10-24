@@ -1,8 +1,7 @@
-package com.GDTW.service;
+package com.GDTW.general.service;
 
 import com.GDTW.dailystatistic.model.DailyStatisticJpa;
 import com.GDTW.dailystatistic.model.DailyStatisticVO;
-import jakarta.annotation.PreDestroy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;

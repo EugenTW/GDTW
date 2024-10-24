@@ -1,9 +1,11 @@
 package com.GDTW.shorturl.controller;
 
-import com.GDTW.service.StatisticService;
+import com.GDTW.general.service.StatisticService;
+import com.GDTW.safebrowing.service.SafeBrowsingService;
 import com.GDTW.shorturl.model.CreateShortUrlRequestDTO;
 import com.GDTW.shorturl.model.GetOriginalUrlDTO;
 import com.GDTW.shorturl.model.ShortUrlService;
+import com.GDTW.shorturl.model.ReturnCreatedShortUrlDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,37 +22,50 @@ public class ShortUrlRestController {
 
     private final ShortUrlService shortUrlService;
     private final StatisticService statisticService;
+    private final SafeBrowsingService safeBrowsingService;
 
-    public ShortUrlRestController(ShortUrlService shortUrlService, StatisticService statisticService) {
+    public ShortUrlRestController(ShortUrlService shortUrlService, StatisticService statisticService, SafeBrowsingService safeBrowsingService) {
         this.shortUrlService = shortUrlService;
         this.statisticService = statisticService;
+        this.safeBrowsingService = safeBrowsingService;
     }
 
     @Value("${app.baseUrl}")
     private String baseUrl;
 
     @PostMapping("/create_new_short_url")
-    public ResponseEntity<String> createNewShortUrl(@RequestBody CreateShortUrlRequestDTO shortUrlRequest, HttpServletRequest request) {
+    public ResponseEntity<ReturnCreatedShortUrlDTO> createNewShortUrl(@RequestBody CreateShortUrlRequestDTO shortUrlRequest, HttpServletRequest request) {
         String originalUrl = shortUrlRequest.getOriginalUrl();
         String originalIp = request.getHeader("X-Forwarded-For");
+
         try {
             if (originalIp == null || originalIp.isEmpty()) {
                 originalIp = request.getRemoteAddr();
             } else {
                 originalIp = originalIp.split(",")[0];
             }
-            String shortUrl = shortUrlService.createNewShortUrl(originalUrl, originalIp);
+
+            String safeUrlResult = safeBrowsingService.checkUrlSafety(originalUrl);
+            String shortUrl = shortUrlService.createNewShortUrl(originalUrl, originalIp, safeUrlResult);
             if (shortUrl != null) {
                 String fullShortUrl = baseUrl + shortUrl;
                 statisticService.incrementShortUrlCreated();
-                return ResponseEntity.ok(fullShortUrl);
+
+                // Create success response
+                ReturnCreatedShortUrlDTO response = new ReturnCreatedShortUrlDTO(fullShortUrl, safeUrlResult, null);
+                return ResponseEntity.ok(response);
             } else {
+                // Log the error and return error response as JSON
                 logger.error("Failed to create new shortUrl on MySQL. The failed url was: '" + originalUrl + "'.");
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("短網址建立失敗!請稍後再次嘗試! The short URL creation failed! Please try again later!");
+                ReturnCreatedShortUrlDTO errorResponse = new ReturnCreatedShortUrlDTO(null, safeUrlResult, "短網址建立失敗!請稍後再次嘗試! The short URL creation failed! Please try again later!");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
             }
+
         } catch (Exception e) {
+            // Log the error and return error response as JSON
             logger.error("Failed to create new shortUrl due to the web server error. The failed url was: '" + originalUrl + "'.");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("內部伺服器錯誤!請等待站方維修! Internal server error! Please wait for the site to be fixed!");
+            ReturnCreatedShortUrlDTO errorResponse = new ReturnCreatedShortUrlDTO(null, null, "內部伺服器錯誤!請等待站方維修! Internal server error! Please wait for the site to be fixed!");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
 

@@ -14,29 +14,49 @@ $(document).ready(function() {
                 contentType: 'application/json',
                 data: JSON.stringify({ originalUrl: longUrl }),
                 success: function(response) {
-                    console.log("Response received: ", response); 
-                    $("#shorten_url").text(response).css("background-color", "yellow");
-                    $("#shorten_url").off('click').on('click', copyToClipboard);
+                    console.log("Response received: ", response);
+    
+                    // Extract values from JSON response
+                    var shortUrl = response.fullShortUrl;
+                    var message = response.message;
+                    var safeUrlResult = response.safeUrlResult;
+                    console.log("Safe URL Result: ", safeUrlResult);
+                    // Check if shortUrl is available, else display message
+                    if (shortUrl) {
+                        $("#shorten_url").text(shortUrl).css("background-color", "yellow");
+                        $("#shorten_url").off('click').on('click', copyToClipboard);
+    
+                        // Generate QR code only if shortUrl is present
+                        $("#qrcode").empty(); // Clear previous QR code
+                        var qrcode = new QRCode(document.getElementById("qrcode"), {
+                            text: shortUrl,  // Use the short URL for the QR code
+                            width: 100,
+                            height: 100
+                        });
 
-                    
-                    $("#qrcode").empty(); 
-                    var qrcode = new QRCode(document.getElementById("qrcode"), {
-                        text: response, 
-                        width: 120,
-                        height: 120
-                    });
-
-                    $("#qrcode").css("display", "block");
+                        // Show the QR code
+                        $("#qrcode").css("display", "block");
+                    } else {
+                        // If shortUrl is null, display the message instead
+                        $("#shorten_url").text(message).css("background-color", "pink");
+    
+                        // Hide the QR code if there's no short URL
+                        $("#qrcode").css("display", "none");
+                    }
                 },
                 error: function(xhr, textStatus, errorThrown) {
                     var errorMessage = "Error: " + xhr.responseText;
                     $("#shorten_url").text(errorMessage).css("background-color", "pink");
+    
+                    // Hide the QR code on error
+                    $("#qrcode").css("display", "none");
                 }
             });
         } else {
             alert("請輸入一個網址 / Please enter a valid url.");
         }
     });
+    
 });
 
 

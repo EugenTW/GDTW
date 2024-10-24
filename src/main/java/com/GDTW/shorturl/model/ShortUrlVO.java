@@ -32,6 +32,9 @@ public class ShortUrlVO {
     @Column(name = "su_status")
     private Integer suStatus;
 
+    @Column(name = "su_safe")
+    private String suSafe;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "u_Id", referencedColumnName = "u_id")
     private WebUserVO user;
@@ -94,6 +97,14 @@ public class ShortUrlVO {
         this.suStatus = suStatus;
     }
 
+    public String getSuSafe() {
+        return suSafe;
+    }
+
+    public void setSuSafe(String suSafe) {
+        this.suSafe = suSafe;
+    }
+
     public WebUserVO getUser() {
         return user;
     }
@@ -101,4 +112,5 @@ public class ShortUrlVO {
     public void setUser(WebUserVO user) {
         this.user = user;
     }
+
 }

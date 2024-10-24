@@ -1,6 +1,6 @@
 package com.GDTW.shorturl.model;
 
-import com.GDTW.service.IdEncoderDecoderService;
+import com.GDTW.general.service.IdEncoderDecoderService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,11 +32,12 @@ public class ShortUrlService {
     // Service methods
 
     @Transactional
-    public String createNewShortUrl(String originalUrl, String originalIp) {
-        Integer suId = recordOriginalUrl(originalUrl, originalIp);
+    public String createNewShortUrl(String originalUrl, String originalIp, String safeUrlResult) {
+        Integer suId = recordOriginalUrl(originalUrl, originalIp, safeUrlResult);
         // Cache the mapping in Redis
         String encodedUrl = encodeShortUrl(suId);
         cacheShortUrl(encodedUrl, originalUrl);
+        cacheShortUrlSafety(encodedUrl, safeUrlResult);
         return encodedUrl;
     }
 
@@ -67,6 +68,11 @@ public class ShortUrlService {
     private void cacheShortUrl(String encodedSuId, String originalUrl) {
         String redisKey = "su:suId:" + encodedSuId; // prefix 'su:suId:'
         redisTemplate.opsForValue().set(redisKey, originalUrl, TTL_DURATION);
+    }
+
+    private void cacheShortUrlSafety (String encodedSuId, String safeUrlResult) {
+        String redisKey = "su:suSafe:" + encodedSuId;// prefix 'su:suSafe:'
+        redisTemplate.opsForValue().set(redisKey, safeUrlResult, TTL_DURATION);
     }
 
     // ==================================================================
@@ -118,13 +124,14 @@ public class ShortUrlService {
     // Writing methods
 
     @Transactional
-    public Integer recordOriginalUrl(String originalUrl, String originalIp) {
+    public Integer recordOriginalUrl(String originalUrl, String originalIp, String safeUrlResult) {
         ShortUrlVO shortUrl = new ShortUrlVO();
         shortUrl.setSuOriginalUrl(originalUrl);
         shortUrl.setSuCreatedIp(originalIp);
         shortUrl.setSuCreatedDate(new Date());
         shortUrl.setSuStatus(0);
         shortUrl.setSuTotalUsed(0);
+        shortUrl.setSuSafe(safeUrlResult);
         ShortUrlVO savedShortUrl = shortUrlJpa.save(shortUrl);
         return savedShortUrl.getSuId();
     }

@@ -1,6 +1,6 @@
 package com.GDTW.shorturl.controller;
 
-import com.GDTW.service.StatisticService;
+import com.GDTW.general.service.StatisticService;
 import com.GDTW.shorturl.model.ShortUrlService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;

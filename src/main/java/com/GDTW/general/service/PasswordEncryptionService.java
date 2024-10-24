@@ -1,4 +1,4 @@
-package com.GDTW.service;
+package com.GDTW.general.service;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 

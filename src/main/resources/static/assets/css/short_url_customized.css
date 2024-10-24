@@ -74,8 +74,8 @@ hr {
 #qrcode{
     display: none;
     margin-top: 10px;
-    margin-bottom: 10px;
-    border: 3px solid #1aff00;
+    margin-bottom: 5px;
+    border: 2px solid #cdcdcd;
 }
 
 .reminder {

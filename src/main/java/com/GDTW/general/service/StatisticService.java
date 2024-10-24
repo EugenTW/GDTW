@@ -1,4 +1,4 @@
-package com.GDTW.service;
+package com.GDTW.general.service;
 
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
