@@ -10,9 +10,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
-import java.util.Date;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class ShortUrlService {
@@ -42,25 +40,30 @@ public class ShortUrlService {
     }
 
     @Transactional
-    public String getOriginalUrl(String code) {
+    public Map.Entry<String, String> getOriginalUrl(String code) {
         Integer suId = toDecodeSuId(code);
         // Check Redis cache first
-        String redisKey = "su:suId:" + code; // add prefix 'su:'
-        String cachedOriginalUrl = redisTemplate.opsForValue().get(redisKey);
-        if (cachedOriginalUrl != null) {
+        String redisKeyForID = "su:suId:" + code;
+        String redisKeyForSafe = "su:suSafe:" + code;
+        String cachedOriginalUrl = redisTemplate.opsForValue().get(redisKeyForID);
+        String cachedOriginalUrlSafe = redisTemplate.opsForValue().get(redisKeyForSafe);
+        if (cachedOriginalUrl != null && cachedOriginalUrlSafe != null) {
             countShortUrlUsage(suId);
-            return cachedOriginalUrl;
+            return new AbstractMap.SimpleEntry<>(cachedOriginalUrl, cachedOriginalUrlSafe);
         }
         if (!isShortUrlIdExist(suId)) {
-            return "na";
+            return new AbstractMap.SimpleEntry<>("na", "null");
         }
         if (!isShortUrlValid(suId)) {
-            return "ban";
+            return new AbstractMap.SimpleEntry<>("ban", "null");
         }
-        String originalUrl = getOriginalUrl(suId);
+        Map<String, Object> result = getSuIdAndSuSafe(suId);
+        String originalUrl = (String) result.get("suOriginalUrl");
+        String originalUrlSafe = (String) result.get("suSafe");
         cacheShortUrl(code, originalUrl);
+        cacheShortUrlSafety(code, originalUrlSafe);
         countShortUrlUsage(suId);
-        return getOriginalUrl(suId);
+        return new AbstractMap.SimpleEntry<>(originalUrl, originalUrlSafe);
     }
 
     // ==================================================================
@@ -70,7 +73,7 @@ public class ShortUrlService {
         redisTemplate.opsForValue().set(redisKey, originalUrl, TTL_DURATION);
     }
 
-    private void cacheShortUrlSafety (String encodedSuId, String safeUrlResult) {
+    private void cacheShortUrlSafety(String encodedSuId, String safeUrlResult) {
         String redisKey = "su:suSafe:" + encodedSuId;// prefix 'su:suSafe:'
         redisTemplate.opsForValue().set(redisKey, safeUrlResult, TTL_DURATION);
     }
@@ -104,8 +107,8 @@ public class ShortUrlService {
     }
 
     @Transactional(readOnly = true)
-    public String getOriginalUrl(Integer suId) {
-        return shortUrlJpa.findOriginalUrlBySuId(suId);
+    public Map<String, Object> getSuIdAndSuSafe(Integer suId) {
+        return shortUrlJpa.findSuIdAndSuSafeBySuId(suId);
     }
 
     @Transactional(readOnly = true)

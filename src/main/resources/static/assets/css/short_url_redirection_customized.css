@@ -25,7 +25,7 @@ hr {
 
 .data-display {
     width: 350px;
-    height: 50px;
+    height: 45px;
     background-color: #450751;
     color: #FFFFFF;
     display: flex; 
@@ -71,17 +71,70 @@ hr {
     min-width: 400px;
     max-width: 800px;
     width: 100%;    
-    min-height: 100px;    
+    min-height: 75px;    
     color: #000;
-    height: auto;       
+    height: auto;  
     background-color: #ffffce; 
     border: 3px solid rgb(255, 149, 0); 
-    padding: 10px;      
+    padding: 5px;      
     font-size: 16px;    
     line-height: 1.5;   
     text-align: justify; 
-    overflow-wrap: break-word; 
+    overflow-wrap: break-word;  
+    word-wrap: break-word;     
+    word-break: break-all;    
     box-sizing: border-box; 
     margin-top: 10px;    
     margin-bottom: 10px;
+    overflow-y: auto;    
 }
+
+.google-safe-check {
+    width: 400px;
+    height: 45px;
+    background-color: #ea9400;  /* 背景顏色 */
+    padding: 5px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;  /* 垂直置中 */
+    justify-content: flex-start; /* 內容靠左對齊 */
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 2px solid #ddd; 
+}
+
+.safe-check-item {
+    display: flex;
+    align-items: center;  /* 垂直置中 */
+    gap: 10px;  /* 中間間隔 10px */
+}
+
+.safe-check-image {
+    width: 30px;   /* 固定寬度 */
+    height: 30px;  /* 固定高度，和容器的高度匹配 */
+}
+
+.safe-check-text {
+    font-size: 16px;
+    color: #000;  /* 文字顏色改為黑色 */
+    line-height: 30px;  /* 使文字與圖片的高度一致 */
+}
+
+#not-check{
+    display: none;
+}
+
+#safe{
+    display: none;
+}
+
+#not-safe{
+    display: none;
+}
+
+
+
+
+
+
+

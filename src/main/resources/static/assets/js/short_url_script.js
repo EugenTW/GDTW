@@ -14,40 +14,52 @@ $(document).ready(function() {
                 contentType: 'application/json',
                 data: JSON.stringify({ originalUrl: longUrl }),
                 success: function(response) {
-                    console.log("Response received: ", response);
+                    try {
+                        
+                        if (response && typeof response === "object") {
+                            // Extract values from JSON response
+                            var shortUrl = response.fullShortUrl;
+                            var message = response.message;
+                            var safeUrlResult = response.safeUrlResult;
     
-                    // Extract values from JSON response
-                    var shortUrl = response.fullShortUrl;
-                    var message = response.message;
-                    var safeUrlResult = response.safeUrlResult;
-                    console.log("Safe URL Result: ", safeUrlResult);
-                    // Check if shortUrl is available, else display message
-                    if (shortUrl) {
-                        $("#shorten_url").text(shortUrl).css("background-color", "yellow");
-                        $("#shorten_url").off('click').on('click', copyToClipboard);
+                            // Console log for debugging purposes
+                            console.log("Safe URL Result: ", safeUrlResult);
     
-                        // Generate QR code only if shortUrl is present
-                        $("#qrcode").empty(); // Clear previous QR code
-                        var qrcode = new QRCode(document.getElementById("qrcode"), {
-                            text: shortUrl,  // Use the short URL for the QR code
-                            width: 100,
-                            height: 100
-                        });
-
-                        // Show the QR code
-                        $("#qrcode").css("display", "block");
-                    } else {
-                        // If shortUrl is null, display the message instead
-                        $("#shorten_url").text(message).css("background-color", "pink");
+                            // Check if shortUrl is available, else display the message
+                            if (shortUrl) {
+                                $("#shorten_url").text(shortUrl).css("background-color", "yellow");
+                                $("#shorten_url").off('click').on('click', copyToClipboard);
     
-                        // Hide the QR code if there's no short URL
+                                // Generate QR code only if shortUrl is present
+                                $("#qrcode").empty(); // Clear previous QR code
+                                var qrcode = new QRCode(document.getElementById("qrcode"), {
+                                    text: shortUrl,  // Use the short URL for the QR code
+                                    width: 100,
+                                    height: 100
+                                });
+    
+                                // Show the QR code
+                                $("#qrcode").css("display", "block");
+                            } else {
+                                // Display the message from the response
+                                $("#shorten_url").text(message).css("background-color", "pink");
+    
+                                // Hide the QR code if there's no short URL
+                                $("#qrcode").css("display", "none");
+                            }
+                        } else {                            
+                            $("#shorten_url").text("無效的回應! 請稍後重試! Invalid response! Please try again later.").css("background-color", "pink");
+                            $("#qrcode").css("display", "none");
+                        }
+                    } catch (e) {                        
+                        console.error("Error processing the response: ", e);
+                        $("#shorten_url").text("回應處理錯誤! 請稍後重試! Error processing response! Please try again later.").css("background-color", "pink");
                         $("#qrcode").css("display", "none");
                     }
                 },
-                error: function(xhr, textStatus, errorThrown) {
-                    var errorMessage = "Error: " + xhr.responseText;
-                    $("#shorten_url").text(errorMessage).css("background-color", "pink");
-    
+                error: function(xhr, textStatus, errorThrown) {                    
+                    var errorMessage = "錯誤: " + xhr.responseText + " / Error: " + xhr.responseText;
+                    $("#shorten_url").text(errorMessage).css("background-color", "pink");    
                     // Hide the QR code on error
                     $("#qrcode").css("display", "none");
                 }
@@ -56,6 +68,7 @@ $(document).ready(function() {
             alert("請輸入一個網址 / Please enter a valid url.");
         }
     });
+    
     
 });
 

@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Map;
+
 @Repository
 public interface ShortUrlJpa extends JpaRepository<ShortUrlVO, Integer> {
 
@@ -16,8 +18,9 @@ public interface ShortUrlJpa extends JpaRepository<ShortUrlVO, Integer> {
     @Query("SELECT s.suShortenedUrl FROM ShortUrlVO s WHERE s.suId = :suId")
     String findSuShortenedUrlBySuId(@Param("suId") Integer suId);
 
-    @Query("SELECT s.suOriginalUrl FROM ShortUrlVO s WHERE s.suId = :suId")
-    String findOriginalUrlBySuId(@Param("suId") Integer suId);
+    @Query("SELECT new map(s.suId as suId, s.suSafe as suSafe, s.suOriginalUrl as suOriginalUrl) FROM ShortUrlVO s WHERE s.suId = :suId")
+    Map<String, Object> findSuIdAndSuSafeBySuId(@Param("suId") Integer suId);
+
 
     @Query("SELECT CASE WHEN s.user IS NOT NULL THEN TRUE ELSE FALSE END FROM ShortUrlVO s WHERE s.suId = :suId")
     boolean checkShortUrlCreator(@Param("suId") Integer suId);
