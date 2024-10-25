@@ -21,8 +21,8 @@ CREATE TABLE short_url (
     su_created_date DATE,
     su_created_ip VARCHAR(40),
     su_total_used INT DEFAULT 0,
-    su_status TINYINT DEFAULT 0 CHECK (su_status IN (0, 1)),
-    su_safe TINYINT DEFAULT 0 CHECK (su_safe IN (0, 2)),
+    su_status TINYINT DEFAULT 0,
+    su_safe VARCHAR(1) DEFAULT 0,
     u_id INT NULL,
     FOREIGN KEY (u_id) REFERENCES web_user(u_id)
 );
@@ -36,7 +36,7 @@ CREATE TABLE share_img (
     si_created_ip VARCHAR(40),
     si_end_date DATE,
     si_total_visited INT DEFAULT 0,
-    si_status TINYINT DEFAULT 0 CHECK (si_status IN (0, 2)),
+    si_status TINYINT DEFAULT 0,
     u_id INT NULL,
     FOREIGN KEY (u_id) REFERENCES web_user(u_id)
 );
@@ -50,7 +50,7 @@ CREATE TABLE share_vid (
     sv_created_ip VARCHAR(40),
     sv_end_date DATE,
     sv_total_visited INT DEFAULT 0,
-    sv_status TINYINT DEFAULT 0 CHECK (sv_status IN (0, 2)),
+    sv_status TINYINT DEFAULT 0,
     u_id INT NULL,
     FOREIGN KEY (u_id) REFERENCES web_user(u_id)
 );
@@ -74,6 +74,6 @@ CREATE TABLE web_admin (
     am_email VARCHAR(100),
     am_last_logined_date DATETIME,
     am_last_logined_ip VARCHAR(40),
-    am_status TINYINT DEFAULT 0 CHECK (am_status IN (0, 1)) 
+    am_status TINYINT DEFAULT 0
 );
 ALTER TABLE web_admin AUTO_INCREMENT = 100;
