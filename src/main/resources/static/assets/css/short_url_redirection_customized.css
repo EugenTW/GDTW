@@ -98,12 +98,13 @@ hr {
 .google-safe-check {
     width: 275px;
     height: 40px;
+    font-size: 16px; 
     background-color: #fffbbf; 
     padding: 5px;
     border-radius: 5px;
     display: flex;
+    justify-content: center; 
     align-items: center; 
-    justify-content: flex-start; 
     margin-top: 10px;
     margin-bottom: 10px;
     border: 2px solid #ffb300; 
