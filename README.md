@@ -7,7 +7,7 @@ This will be a simple open-source web project.
 It is expected to provide features such as URL shortening, image upload and sharing, and short video upload and sharing!
 
 目前已上線(v1.4)  
-The current version v1.4 is live. 
+The current version v1.4 is live.     
 https://gdtw.org/  
 
 ================================
