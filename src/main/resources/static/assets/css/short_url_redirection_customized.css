@@ -49,7 +49,6 @@ hr {
 .button {
     width: 350px;
     height: 50px;
-    color: black;
     font-size: 14px;
     border-radius: 10px;
     cursor: pointer;
@@ -71,12 +70,12 @@ hr {
     min-width: 400px;
     max-width: 800px;
     width: 100%;    
-    min-height: 75px;    
+    min-height: 50px;    
     color: #000;
     height: auto;  
-    background-color: #ffffce; 
-    border: 3px solid rgb(255, 149, 0); 
-    padding: 5px;      
+    background-color: #b5fff6; 
+    border: 3px solid rgb(0, 114, 195); 
+    padding: 10px;      
     font-size: 16px;    
     line-height: 1.5;   
     text-align: justify; 
@@ -89,48 +88,57 @@ hr {
     overflow-y: auto;    
 }
 
+.safe-check{
+    display: flex;
+    align-items: center; 
+    justify-content: flex-start; 
+    gap: 10px;
+}
+
 .google-safe-check {
-    width: 400px;
-    height: 45px;
-    background-color: #ea9400;  /* 背景顏色 */
+    width: 275px;
+    height: 40px;
+    background-color: #fffbbf; 
     padding: 5px;
     border-radius: 5px;
     display: flex;
-    align-items: center;  /* 垂直置中 */
-    justify-content: flex-start; /* 內容靠左對齊 */
+    align-items: center; 
+    justify-content: flex-start; 
     margin-top: 10px;
     margin-bottom: 10px;
-    border: 2px solid #ddd; 
+    border: 2px solid #ffb300; 
 }
 
-.safe-check-item {
-    display: flex;
-    align-items: center;  /* 垂直置中 */
-    gap: 10px;  /* 中間間隔 10px */
+#google-safe-icon{
+    width: 25px; 
+    height: 25px; 
+    margin-left: 5px;
 }
 
-.safe-check-image {
-    width: 30px;   /* 固定寬度 */
-    height: 30px;  /* 固定高度，和容器的高度匹配 */
+#google-explanation{
+    width: 20px; 
+    height: 20px; 
+    margin-left: 2px;
+    margin-right: 2px;
 }
 
-.safe-check-text {
-    font-size: 16px;
-    color: #000;  /* 文字顏色改為黑色 */
-    line-height: 30px;  /* 使文字與圖片的高度一致 */
+#google-safe-text{
+    color: #000;
 }
 
-#not-check{
-    display: none;
+#google-explanation-link {
+    text-decoration: none; 
 }
 
-#safe{
-    display: none;
+.icon-explanation{
+    width: 15px; 
+    height: 15px; 
+    margin-right: 5px;
 }
 
-#not-safe{
-    display: none;
-}
+
+
+
 
 
 

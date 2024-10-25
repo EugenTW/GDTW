@@ -21,19 +21,12 @@ $(document).ready(function() {
                     const originalUrlSafe = response.originalUrlSafe;
                     console.log(originalUrlSafe);
                     
-                    $('.original-url').text(originalUrl);                  
-                                     
-                    if (originalUrlSafe === 0) {
-                        $("#not-checked").css("display", "block");
-                    } else if (originalUrlSafe === 1) {
-                        $("#safe").css("display", "block");
-                    } else if (originalUrlSafe === 2) {
-                        $("#not-safe").css("display", "block");
-                    }
-
+                    $('.original-url').text(originalUrl);                
                     $('.button.green').on('click', function() {
                         window.location.href = originalUrl;
                     });
+
+                    updateGoogleSafeCheck(originalUrlSafe);
                 }
             },
             error: function(xhr) {
@@ -52,3 +45,20 @@ $(document).ready(function() {
         $('.original-url').text('請使用有效的短網址 / Please use a valid short URL.');
     }    
 });
+
+
+function updateGoogleSafeCheck(originalUrlSafe) {
+    const safeValue = parseInt(originalUrlSafe, 10);
+    const iconElement = $('#google-safe-icon');
+    
+    if (safeValue === 0) {     
+        iconElement.attr('src', '/images/circle.png');
+        iconElement.attr('title', 'Unchecked!');
+    } else if (safeValue === 1) {
+        iconElement.attr('src', '/images/check.png'); 
+        iconElement.attr('title', 'Safe!');
+    } else if (safeValue === 2) {
+        iconElement.attr('src', '/images/warn.png');
+        iconElement.attr('title', 'Unsafe!');
+    }
+}
