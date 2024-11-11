@@ -53,12 +53,12 @@ function updateGoogleSafeCheck(originalUrlSafe) {
     
     if (safeValue === 0) {     
         iconElement.attr('src', '/images/circle.png');
-        iconElement.attr('title', 'Unchecked!');
+        iconElement.attr('title', 'Unchecked URL!');
     } else if (safeValue === 1) {
         iconElement.attr('src', '/images/check.png'); 
-        iconElement.attr('title', 'Safe!');
+        iconElement.attr('title', 'Safe URL!');
     } else if (safeValue === 2) {
         iconElement.attr('src', '/images/warn.png');
-        iconElement.attr('title', 'Unsafe!');
+        iconElement.attr('title', 'Unsafe URL!');
     }
 }

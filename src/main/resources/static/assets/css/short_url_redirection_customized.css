@@ -96,10 +96,10 @@ hr {
 }
 
 .google-safe-check {
-    width: 275px;
+    width: 300px;
     height: 40px;
     font-size: 16px; 
-    background-color: #fffbbf; 
+    background-color: #fff9df; 
     padding: 5px;
     border-radius: 5px;
     display: flex;
@@ -107,13 +107,19 @@ hr {
     align-items: center; 
     margin-top: 10px;
     margin-bottom: 10px;
-    border: 2px solid #ffb300; 
+    border: 3px solid #ff8c00; 
+}
+
+#google-safebrowsing-icon{
+    width: 25px; 
+    height: 25px; 
+    margin-right: 5px;    
 }
 
 #google-safe-icon{
     width: 25px; 
     height: 25px; 
-    margin-left: 5px;
+    margin-left: 5px;    
 }
 
 #google-explanation{
@@ -134,7 +140,7 @@ hr {
 .icon-explanation{
     width: 15px; 
     height: 15px; 
-    margin-right: 5px;
+    margin-right: 5px;    
 }
 
 
