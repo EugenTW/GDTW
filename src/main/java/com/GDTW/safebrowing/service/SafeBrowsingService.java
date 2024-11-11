@@ -29,6 +29,16 @@ public class SafeBrowsingService {
     }
 
     public String checkUrlSafety(String originalUrl) {
+
+        // No available google api key, early return
+        if (API_KEY == null || API_KEY.trim().isEmpty()) {
+            return "0";
+        }
+        // No available google api url, early return
+        if (SAFE_BROWSING_API_URL == null || SAFE_BROWSING_API_URL.trim().isEmpty()) {
+            return "0";
+        }
+
         try {
             String normalizedUrl = normalizeUrl(originalUrl);
             String requestUrl = UriComponentsBuilder

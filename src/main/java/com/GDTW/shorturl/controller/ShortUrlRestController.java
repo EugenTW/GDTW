@@ -1,6 +1,6 @@
 package com.GDTW.shorturl.controller;
 
-import com.GDTW.general.service.StatisticService;
+import com.GDTW.dailystatistic.model.DailyStatisticService;
 import com.GDTW.safebrowing.service.SafeBrowsingService;
 import com.GDTW.shorturl.model.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.AbstractMap;
 import java.util.Map;
 
 @RestController
@@ -21,10 +20,10 @@ public class ShortUrlRestController {
     private static final Logger logger = LoggerFactory.getLogger(ShortUrlRestController.class);
 
     private final ShortUrlService shortUrlService;
-    private final StatisticService statisticService;
+    private final DailyStatisticService statisticService;
     private final SafeBrowsingService safeBrowsingService;
 
-    public ShortUrlRestController(ShortUrlService shortUrlService, StatisticService statisticService, SafeBrowsingService safeBrowsingService) {
+    public ShortUrlRestController(ShortUrlService shortUrlService, DailyStatisticService statisticService, SafeBrowsingService safeBrowsingService) {
         this.shortUrlService = shortUrlService;
         this.statisticService = statisticService;
         this.safeBrowsingService = safeBrowsingService;

@@ -184,8 +184,8 @@ public class ShortUrlService {
     // ==================================================================
     // Supporting methods
 
-    public static String toEncodeSuId(Integer id) {
-        return IdEncoderDecoderService.encodeId(id);
+    public static String toEncodeSuId(Integer suId) {
+        return IdEncoderDecoderService.encodeId(suId);
     }
 
     public static Integer toDecodeSuId(String encodeSuId) {

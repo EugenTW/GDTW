@@ -28,15 +28,20 @@ public class DailyStatisticVO {
     @Column(name = "ds_img_used")
     private Integer dsImgUsed;
 
+    @Column(name = "ds_img_album_created")
+    private Integer dsImgAlbumCreated;
+
+    @Column(name = "ds_img_album_used")
+    private Integer dsImgAlbumUsed;
+
     @Column(name = "ds_vid_created")
     private Integer dsVidCreated;
 
     @Column(name = "ds_vid_used")
     private Integer dsVidUsed;
 
-    public DailyStatisticVO() {}
-
-    // Getters and Setters
+    public DailyStatisticVO() {
+    }
 
     public Integer getDsId() {
         return dsId;
@@ -84,6 +89,22 @@ public class DailyStatisticVO {
 
     public void setDsImgUsed(Integer dsImgUsed) {
         this.dsImgUsed = dsImgUsed;
+    }
+
+    public Integer getDsImgAlbumCreated() {
+        return dsImgAlbumCreated;
+    }
+
+    public void setDsImgAlbumCreated(Integer dsImgAlbumCreated) {
+        this.dsImgAlbumCreated = dsImgAlbumCreated;
+    }
+
+    public Integer getDsImgAlbumUsed() {
+        return dsImgAlbumUsed;
+    }
+
+    public void setDsImgAlbumUsed(Integer dsImgAlbumUsed) {
+        this.dsImgAlbumUsed = dsImgAlbumUsed;
     }
 
     public Integer getDsVidCreated() {
