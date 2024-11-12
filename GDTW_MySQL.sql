@@ -33,20 +33,21 @@ CREATE TABLE short_url
 );
 ALTER TABLE short_url AUTO_INCREMENT = 10000000;
 
-CREATE TABLE img_album
+CREATE TABLE share_img_album
 (
-    ab_id            INT AUTO_INCREMENT PRIMARY KEY,
-    ab_code          VARCHAR(100),
-    ab_password      VARCHAR(10) DEFAULT NULL,
-    ab_created_date  DATE,
-    ab_created_ip    VARCHAR(40),
-    ab_end_date      DATE,
-    ab_total_visited INT         DEFAULT 0,
-    ab_status        TINYINT     DEFAULT 0,
+    sia_id            INT AUTO_INCREMENT PRIMARY KEY,
+    sia_code          VARCHAR(100),
+    sia_password      VARCHAR(10) DEFAULT NULL,
+    sia_created_date  DATE,
+    sia_created_ip    VARCHAR(40),
+    sia_end_date      DATE,
+    sia_total_visited INT         DEFAULT 0,
+    sia_status        TINYINT     DEFAULT 0,
+    sia_nsfw          TINYINT     DEFAULT 0,
     u_id             INT NULL,
     FOREIGN KEY (u_id) REFERENCES web_user (u_id)
 );
-ALTER TABLE img_album AUTO_INCREMENT = 10000000;
+ALTER TABLE share_img_album AUTO_INCREMENT = 10000000;
 
 CREATE TABLE share_img
 (
@@ -58,10 +59,11 @@ CREATE TABLE share_img
     si_end_date      DATE,
     si_total_visited INT         DEFAULT 0,
     si_status        TINYINT     DEFAULT 0,
+    si_nsfw          TINYINT     DEFAULT 0,
     u_id             INT NULL,
-    ab_id            INT NULL,
+    sia_id            INT NULL,
     FOREIGN KEY (u_id) REFERENCES web_user (u_id),
-    FOREIGN KEY (ab_id) REFERENCES img_album (ab_id)
+    FOREIGN KEY (sia_id) REFERENCES share_img_album (sia_id)
 );
 ALTER TABLE share_img AUTO_INCREMENT = 10000000;
 
