@@ -31,16 +31,16 @@ public class IdEncoderDecoderService {
         return new String(encodedChars);
     }
 
-    public static Integer decodeId(String encoded) {
-        if (encoded.length() != 4) {
-            throw new IllegalArgumentException("The encoded string should have exactly 4 characters.");
+    public static Integer decodeId(String encodedId) {
+        if (encodedId.length() != 4) {
+            throw new IllegalArgumentException("The encodedId string should have exactly 4 characters.");
         }
         int id = 0;
         for (int i = 0; i < 4; i++) {
             if (i % 2 == 0) {
-                id = id * BASE_A + ENCRYPT_CHARS_A.indexOf(encoded.charAt(i));
+                id = id * BASE_A + ENCRYPT_CHARS_A.indexOf(encodedId.charAt(i));
             } else {
-                id = id * BASE_B + ENCRYPT_CHARS_B.indexOf(encoded.charAt(i));
+                id = id * BASE_B + ENCRYPT_CHARS_B.indexOf(encodedId.charAt(i));
             }
         }
         id += MIN_ID;

@@ -2,8 +2,6 @@ package com.GDTW.imgshare.model;
 
 import com.GDTW.user.model.WebUserVO;
 import jakarta.persistence.*;
-import org.springframework.data.annotation.Id;
-
 import java.time.LocalDate;
 
 @Entity

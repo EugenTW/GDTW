@@ -35,7 +35,7 @@ public class ImgShareController {
         return "forward:/image_single.html";
     }
 
-    @GetMapping("/a/{code:[a-zA-Z0-9]{4}}")
+    @GetMapping("/a/{code:[a-zA-Z0-9]{12}}")
     public String imageAlbumView(@PathVariable String code, HttpServletResponse response) throws IOException {
         if (!imgShareService.isShareImageAlbumCodeValid(code)) {
             response.sendRedirect("/error");
@@ -45,8 +45,8 @@ public class ImgShareController {
         return "forward:/image_album.html";
     }
 
-    @GetMapping("/i/{code:[a-zA-Z0-9]{4}}")
-    public String imageSigleView(@PathVariable String code, HttpServletResponse response) throws IOException {
+    @GetMapping("/i/{code:[a-zA-Z0-9]{12}}")
+    public String imageSingleView(@PathVariable String code, HttpServletResponse response) throws IOException {
         if (!imgShareService.isShareImageCodeValid(code)) {
             response.sendRedirect("/error");
             return null;
@@ -54,6 +54,5 @@ public class ImgShareController {
         dailyStatisticService.incrementImgUsed();
         return "forward:/image_single.html";
     }
-
 
 }

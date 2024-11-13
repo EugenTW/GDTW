@@ -1,5 +1,6 @@
 package com.GDTW.imgshare.model;
 
+import com.GDTW.general.service.ExtendedIdEncoderDecoderService;
 import com.GDTW.general.service.IdEncoderDecoderService;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,6 @@ public class ImgShareService {
         return shareImgJpa.existsBySiIdAndSiStatusNot(siImageId, (byte) 1);
     }
 
-
     // ==================================================================
     // Reading methods
 
@@ -49,11 +49,11 @@ public class ImgShareService {
     // Supporting methods
 
     public static String toEncodeSuId(Integer id) {
-        return IdEncoderDecoderService.encodeId(id);
+        return ExtendedIdEncoderDecoderService.encodeExtendedId(id);
     }
 
     public static Integer toDecodeSuId(String encodeId) {
-        return IdEncoderDecoderService.decodeId(encodeId);
+        return ExtendedIdEncoderDecoderService.decodeExtendedId(encodeId);
     }
 
 }
