@@ -53,6 +53,7 @@ CREATE TABLE share_img
 (
     si_id            INT AUTO_INCREMENT PRIMARY KEY,
     si_code          VARCHAR(100),
+    si_name          VARCHAR(100),
     si_password      VARCHAR(10) DEFAULT NULL,
     si_created_date  DATE,
     si_created_ip    VARCHAR(40),

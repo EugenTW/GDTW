@@ -17,6 +17,9 @@ public class ShareImgVO {
     @Column(name = "si_code", length = 100)
     private String siCode;
 
+    @Column(name = "si_name", length = 100)
+    private String siName;
+
     @Column(name = "si_password", length = 10)
     private String siPassword;
 
@@ -63,6 +66,14 @@ public class ShareImgVO {
 
     public void setSiCode(String siCode) {
         this.siCode = siCode;
+    }
+
+    public String getSiName() {
+        return siName;
+    }
+
+    public void setSiName(String siName) {
+        this.siName = siName;
     }
 
     public String getSiPassword() {
@@ -136,4 +147,5 @@ public class ShareImgVO {
     public void setAlbum(ShareImgAlbumVO album) {
         this.album = album;
     }
+
 }

@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>GDTW - Image Gallery</title>
+    <meta property="og:title" content="GDTW - Image Gallery" />
+    <meta property="og:description" content="Image Gallery" />
+    <meta property="og:image" content="https://gdtw.org/images/logo_s.webp" />
+    <meta property="og:url" content="https://gdtw.org/image_share" />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <noscript>
+        <link rel="stylesheet" href="/assets/css/noscript.css" />
+    </noscript>
+    <link rel="stylesheet" href="/assets/css/image_view_customized.css" />
+</head>
+
+<body class="is-preload">
+
+    <!-- Header -->
+    <header id="header">
+        <a class="title">GDTW</a>
+        <nav>
+            <ul>
+                <li><a href="/index.html">Home</a></li>
+                <li><a href="/index.html#one" class="active">Free Services</a></li>
+                <li><a href="/index.html#two">Statements</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Wrapper -->
+    <div id="wrapper">
+        <section id="main" class="wrapper">
+            <div class="inner">
+                <h2 class="major">閱覽圖片 - Image Gallery</h2>
+
+                <hr>
+
+                <div id="password-modal" class="hidden">
+                    <h3>請先輸入瀏覽密碼 - Please Enter Password</h3><br>
+                    <input type="password" id="password-input" placeholder="Enter password"><br>
+                    <button type="button"  id="password-submit">驗證 - Submit</button>                    
+
+                </div>
+
+                <div id="gallery" class="gallery hidden"></div>
+
+                <div id="single-photo" class="photo hidden">
+                    <div id="nsfw-mask" class="nsfw-mask hidden">NSFW - Click to reveal</div>
+                    <img id="photo-img" src="" alt="Photo">
+                </div>
+
+                <hr>
+
+            </div>
+
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer id="footer" class="wrapper alt">
+        <div class="inner">
+            <ul class="menu">
+                <p id="footer-year">Copyright © GDTW. Since 2024</p>
+            </ul>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/jquery.scrollex.min.js"></script>
+    <script src="/assets/js/jquery.scrolly.min.js"></script>
+    <script src="/assets/js/browser.min.js"></script>
+    <script src="/assets/js/breakpoints.min.js"></script>
+    <script src="/assets/js/util.js"></script>
+    <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/image_view.js"></script>
+</body>
+
+</html>

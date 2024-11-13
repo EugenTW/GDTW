@@ -29,13 +29,13 @@ public class ShareImgAlbumVO {
     private LocalDate siaEndDate;
 
     @Column(name = "sia_total_visited")
-    private Integer siaTotalVisited;
+    private Integer siaTotalVisited = 0;
 
     @Column(name = "sia_status")
-    private Byte siaStatus;
+    private Byte siaStatus = 0;
 
     @Column(name = "sia_nsfw")
-    private Byte siaNsfw;
+    private Byte siaNsfw = 0;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "u_id", referencedColumnName = "u_id")

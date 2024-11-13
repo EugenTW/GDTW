@@ -25,14 +25,9 @@ public class ImgShareController {
         return "forward:/image_share.html";
     }
 
-    @GetMapping("/img_album")
+    @GetMapping("/image_view")
     public String imageAlbum() {
-        return "forward:/image_album.html";
-    }
-
-    @GetMapping("/img_single")
-    public String imageSingle() {
-        return "forward:/image_single.html";
+        return "forward:/image_view.html";
     }
 
     @GetMapping("/a/{code:[a-zA-Z0-9]{12}}")
@@ -42,7 +37,7 @@ public class ImgShareController {
             return null;
         }
         dailyStatisticService.incrementImgAlbumUsed();
-        return "forward:/image_album.html";
+        return "forward:/image_view.html";
     }
 
     @GetMapping("/i/{code:[a-zA-Z0-9]{12}}")
@@ -52,7 +47,7 @@ public class ImgShareController {
             return null;
         }
         dailyStatisticService.incrementImgUsed();
-        return "forward:/image_single.html";
+        return "forward:/image_view.html";
     }
 
 }

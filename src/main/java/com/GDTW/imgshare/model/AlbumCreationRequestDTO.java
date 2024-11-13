@@ -24,7 +24,6 @@ public class AlbumCreationRequestDTO {
         this.clientIp = clientIp;
     }
 
-    // Getters and Setters
     public List<MultipartFile> getFiles() {
         return files;
     }
@@ -64,5 +63,4 @@ public class AlbumCreationRequestDTO {
     public void setClientIp(String clientIp) {
         this.clientIp = clientIp;
     }
-
 }

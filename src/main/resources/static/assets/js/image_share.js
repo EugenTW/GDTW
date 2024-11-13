@@ -33,8 +33,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             // Check if file size exceeds 20MB
-            if (file.size > 20 * 1024 * 1024) {
-                alert(`單檔不得超過20MB - File too large (max 20MB): ${file.name}`);
+            if (file.size > 15 * 1024 * 1024) {
+                alert(`單檔不得超過15MB - File too large (max 15MB): ${file.name}`);
                 continue;
             }
 
@@ -118,48 +118,56 @@ document.addEventListener('DOMContentLoaded', function () {
 
     async function uploadImages() {
         if (isUploading) return;
-
+    
         isUploading = true;
         uploadButton.disabled = true;
-
+        $("#upload-overlay").show();  
+                
+    
         if (selectedFiles.length === 0) {
             alert("請至少選擇一個檔案 - Please select at least one file.");
             isUploading = false;
             uploadButton.disabled = false;
             return;
         }
-
+    
         const expiryDays = document.getElementById('expiry-select').value;
         const nsfw = document.querySelector('input[name="nsfw"]:checked').value === 'true';
         const password = passwordInput.value;
-
-        // Prepare FormData for file upload
+    
         const formData = new FormData();
         selectedFiles.forEach(file => formData.append("files", file));
         formData.append("expiryDays", expiryDays);
         formData.append("nsfw", nsfw);
         formData.append("password", password);
-
+    
         try {
             const response = await fetch('/is_api/create_new_album', {
                 method: 'POST',
                 body: formData
             });
-
+    
             if (response.ok) {
-                const result = await response.text();
-                alert("上傳成功 - Upload successful: " + result);
+                const result = await response.json();
+                const siaCode = result.sia_code;
+                
+                window.location.href = `/a/${siaCode}`;
             } else {
                 alert("上傳失敗 - Upload failed: " + response.statusText);
+                $("#upload-overlay").hide();
             }
         } catch (error) {
             console.error("上傳錯誤 - Error during upload:", error);
             alert("上傳過程中發生錯誤 - An error occurred during the upload.");
+            $("#upload-overlay").hide();
         } finally {
             setTimeout(() => {
                 isUploading = false;
                 uploadButton.disabled = false;
             }, 1000);
+            $("#upload-overlay").hide();
         }
     }
+
+
 });

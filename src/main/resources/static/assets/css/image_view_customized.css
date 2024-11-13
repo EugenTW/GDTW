@@ -1,0 +1,72 @@
+.hidden {
+    display: none;
+}
+
+#password-modal {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    justify-content: center;
+    gap: 5px; 
+}
+
+#password-input {
+    width: 300px;
+    height: 50px;
+    padding: 8px;
+    font-size: 1em;
+    box-sizing: border-box;
+    text-align: center;
+    background-color: #5e0657;
+    box-shadow: inset 0 0 0 3px #ff06ee;
+}
+
+#password-submit {
+    width: 250px;
+    height: 50px;
+    font-size: 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    background-color: #06267d;
+    box-shadow: inset 0 0 0 3px #1eeae0;
+}
+
+
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+
+.photo {
+    position: relative;
+    cursor: pointer;
+}
+
+.photo img {
+    max-width: 200px;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.nsfw-mask {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2em;
+    border-radius: 8px;
+}
