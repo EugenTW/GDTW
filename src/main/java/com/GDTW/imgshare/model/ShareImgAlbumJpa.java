@@ -10,4 +10,6 @@ public interface ShareImgAlbumJpa extends JpaRepository<ShareImgAlbumVO, Integer
 
     boolean existsBySiaIdAndSiaStatusNot(Integer siaId, Byte siaStatus);
 
+    Optional<ShareImgAlbumVO> findBySiaId(Integer siaId);
+
 }

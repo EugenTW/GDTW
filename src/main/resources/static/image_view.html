@@ -41,17 +41,20 @@
                 <hr>
 
                 <div id="password-modal" class="hidden">
-                    <h3>請先輸入瀏覽密碼 - Please Enter Password</h3><br>
-                    <input type="password" id="password-input" placeholder="Enter password"><br>
-                    <button type="button"  id="password-submit">驗證 - Submit</button>                    
-
+                    <form id="password-form">
+                        <h3>請先輸入瀏覽密碼 - Please Enter Password</h3>
+                        <input type="password" id="password-input" placeholder="4~10位數字 - 4-10 digits...">
+                        <button type="submit" id="password-submit">驗證 - Submit</button>
+                    </form>
                 </div>
 
                 <div id="gallery" class="gallery hidden"></div>
 
                 <div id="single-photo" class="photo hidden">
-                    <div id="nsfw-mask" class="nsfw-mask hidden">NSFW - Click to reveal</div>
-                    <img id="photo-img" src="" alt="Photo">
+                    <div class="photo-wrapper">
+                        <img id="photo-img" src="" alt="Photo">
+                        <div id="nsfw-mask" class="nsfw-mask hidden">NSFW - Click to reveal</div>
+                    </div>
                 </div>
 
                 <hr>
