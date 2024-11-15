@@ -81,23 +81,20 @@ function displayImages(data) {
 
     const isNsfw = data.siaNsfw === 1;
 
-    // Append images to the gallery
     data.images.forEach(image => {
         const photoDiv = document.createElement('div');
         photoDiv.classList.add('photo');
 
         const imgElement = document.createElement('img');
-        imgElement.src = image.imageUrl;
-        imgElement.alt = image.siName;
-        imgElement.classList.add('gallery-image');
+        imgElement.src = new URL(image.imageUrl, window.location.origin).href;
 
-        // Add onerror event handler to set default image if loading fails
+        imgElement.alt = image.siName;
+        imgElement.classList.add('gallery-image');        
+
         imgElement.onerror = function () {
             this.src = '/images/pic_not_found.webp';
         };
 
-
-        // Add NSFW mask if needed
         if (isNsfw) {
             const nsfwMask = document.createElement('div');
             nsfwMask.classList.add('nsfw-mask');
@@ -105,7 +102,6 @@ function displayImages(data) {
             nsfwMask.addEventListener('click', () => {
                 nsfwMask.style.display = 'none';
             });
-
             photoDiv.appendChild(imgElement);
             photoDiv.appendChild(nsfwMask);
         } else {
@@ -115,7 +111,6 @@ function displayImages(data) {
         gallery.appendChild(photoDiv);
     });
 
-    // Show the gallery
     gallery.classList.remove('hidden');
 }
 
@@ -129,7 +124,10 @@ function displaySingleImage(data) {
     photoWrapper.classList.add('photo-wrapper');
 
     const imgElement = document.createElement('img');
-    imgElement.src = data.imageUrl;
+    const imageUrl = data.imageUrl.startsWith('http') ? data.imageUrl : new URL(data.imageUrl, window.location.origin).href;
+    imgElement.src = imageUrl;
+
+
     imgElement.alt = data.siName;
     imgElement.id = 'photo-img';
 
