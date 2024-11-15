@@ -11,3 +11,7 @@
     border: 2px solid #fffdca;
 }
 
+.button{
+    box-shadow: inset 0 0 0 2px #ffffff;
+}
+

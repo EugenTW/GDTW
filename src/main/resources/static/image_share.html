@@ -1,0 +1,152 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>GDTW - Image Share</title>
+    <meta property="og:title" content="GDTW - Image Share" />
+    <meta property="og:description" content="Image Share" />
+    <meta property="og:image" content="https://gdtw.org/images/logo_s.webp" />
+    <meta property="og:url" content="https://gdtw.org/image_share" />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <noscript>
+        <link rel="stylesheet" href="/assets/css/noscript.css" />
+    </noscript>
+    <link rel="stylesheet" href="/assets/css/image_share_customized.css">
+</head>
+
+<body class="is-preload">
+
+    <!-- Header -->
+    <header id="header">
+        <a class="title">GDTW</a>
+        <nav>
+            <ul>
+                <li><a href="/index.html">Home</a></li>
+                <li><a href="/index.html#one" class="active">Free Services</a></li>
+                <li><a href="/index.html#two">Statements</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Wrapper -->
+    <div id="wrapper">
+        <section id="main" class="wrapper">
+            <div class="inner">
+                <h2 class="major">圖片分享服務 - Image Share</h2>
+
+                <hr>
+
+                <div class="images-update">
+                    <!-- File Upload Area -->
+                    <div class="upload-area" id="upload-area">
+                        點擊此區域選擇要上傳的圖檔 - Click this area to select the images to upload.
+                    </div>
+
+                    <!-- File Input (Hidden) -->
+                    <input id="file-input" type="file" multiple accept=".jpg,.jpeg,.png,.gif,.webp" style="display:none">
+                    <div id="file-list" class="file-list"></div>
+
+                    <!-- Settings Area -->
+                    <div class="settings-area">
+                        <!-- Expiry Days Selection -->
+                        <label for="expiry-select">分享期限 (天) - Expiry Date (days):</label>
+                        <select id="expiry-select">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="5">5</option>
+                            <option value="7">7</option>
+                            <option value="14" selected>14</option>
+                            <option value="30">30</option>
+                            <option value="45">45</option>
+                            <option value="60">60</option>
+                        </select>
+
+                        <hr>
+                        <!-- NSFW Checkbox -->
+                        <label for="nsfw-select">NSFW:</label>
+                        <input type="radio" id="nsfw-checkbox-no" name="nsfw" value="false" checked>
+                        <label for="nsfw-checkbox-no">No</label>
+                        <input type="radio" id="nsfw-checkbox-yes" name="nsfw" value="true">
+                        <label for="nsfw-checkbox-yes">Yes</label>
+
+                        <hr>
+                        <!-- Password Input Field -->
+                        <label for="password-input">閱覽密碼 - Access Password (4-10 digits):</label>
+                        <input type="text" id="password-input" maxlength="10" placeholder="Leave blank for no password">
+
+                        <!-- Upload Button -->
+                        <div class="button-container">
+                            <button type="button" class="img-upload" id="upload-button" disabled>Upload Images</button>
+                        </div>
+                    </div>
+                </div>
+
+				<h3>使用說明 - Instructions</h3>
+					<details>
+						<summary>點看詳細教學 - Click & Read Instructions</summary>
+						<br>
+						1. 選擇或拖曳放入想要上傳的單張或複數圖片。本站支援單檔不超過10MB且格式為JPG/PNG/GIF/WEBP的檔案，且不會對圖檔進行任何壓縮處理。<br>
+						2. 手動設定圖片存活時間/NSFW警告/閱覽密碼(可選)等選項，再按下上傳按鈕。預設方案是圖片存活14天且無閱覽密碼和無NSFW警告。<br>
+						3. 天數的計算是以日期跨日為基準，比如說你在1/1的是早上或深夜上傳檔案並設定成分享期限為1天，檔案都會在隔日1/2失效。<br> 
+                        4.本服務是免費線上服務並盡圖檔善意保管和維護，但仍無法保證因軟硬體故障導致圖檔丟失，請務必自行保存原始圖片檔。站方有權隨時調整圖片存活時間且不另行通知。<br>
+						4. 使用本服務時就表示已同意本站的所有使用條款。<br><br>
+
+						1. Select or drag and drop the image(s) you want to upload. We support files up to 10MB in size
+						and
+						in JPG, PNG, GIF, or WEBP formats, without applying any compression to your images.<br>
+						2. Optionally, set preferences such as image expiration time, NSFW warning, and viewing
+						password,
+						then click the upload button. By default, images will be available for 14 days with no password
+						protection and no NSFW warning.<br>
+                        3. The calculation of days is based on crossing calendar dates. For example, if you upload a file on 1/1, whether in the early morning or late at night, and set the sharing period to 1 day, the file will expire on the following day, 1/2.<br>
+						4. This is a free online service that makes every effort to store and maintain your images
+						securely,
+						but we cannot guarantee against data loss due to hardware or software failures. Please keep a
+						copy
+						of your original images. We reserve the right to adjust the image expiration period without
+						prior
+						notice.<br>
+						4. By using this service, you agree to all the terms of use on this site.
+					</details>
+					<br>
+					<hr>
+					<span class="image fit"><img src="/images/image_share_pic01.webp" alt="" /></span>
+
+            </div>	
+
+			<div id="upload-overlay" class="hidden" style="display: none;">
+				<div id="overlay-content">
+					<img src="/images/uploading.webp" alt="Uploading...">
+				</div>
+			</div>	
+
+        </section>		
+
+    </div>
+
+    <!-- Footer -->
+    <footer id="footer" class="wrapper alt">
+        <div class="inner">
+            <ul class="menu">
+                <p id="footer-year">Copyright © GDTW. Since 2024</p>
+            </ul>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/jquery.scrollex.min.js"></script>
+    <script src="/assets/js/jquery.scrolly.min.js"></script>
+    <script src="/assets/js/browser.min.js"></script>
+    <script src="/assets/js/breakpoints.min.js"></script>
+    <script src="/assets/js/util.js"></script>
+    <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/image_share.js"></script>
+</body>
+
+</html>

@@ -1,6 +1,7 @@
 package com.GDTW.general.service;
 
 import com.GDTW.dailystatistic.model.DailyStatisticJpa;
+import com.GDTW.dailystatistic.model.DailyStatisticService;
 import com.GDTW.dailystatistic.model.DailyStatisticVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,16 +21,16 @@ public class ScheduledTaskService {
 
     private static final Logger logger = LoggerFactory.getLogger(ScheduledTaskService.class);
 
-    private final StatisticService statisticService;
+    private final DailyStatisticService statisticService;
     private final DailyStatisticJpa dailyStatisticJpa;
 
-    public ScheduledTaskService(StatisticService statisticService, DailyStatisticJpa dailyStatisticJpa) {
-        this.statisticService = statisticService;
+    public ScheduledTaskService(DailyStatisticService dailyStatisticService, DailyStatisticJpa dailyStatisticJpa) {
+        this.statisticService = dailyStatisticService;
         this.dailyStatisticJpa = dailyStatisticJpa;
     }
 
     // Scheduled task to run daily at 11:59 PM
-    @Scheduled(cron = "55 59 23 * * ?")
+    @Scheduled(cron = "50 59 23 * * ?")
     @Transactional
     public void collectAndSaveStatistics() {
         saveStatistics();
@@ -54,6 +55,8 @@ public class ScheduledTaskService {
         Integer shortUrlUsed = statisticService.getStatisticOrDefault("shortUrlUsed");
         Integer imgCreated = statisticService.getStatisticOrDefault("imgCreated");
         Integer imgUsed = statisticService.getStatisticOrDefault("imgUsed");
+        Integer imgAlbumCreated = statisticService.getStatisticOrDefault("imgAlbumCreated");
+        Integer imgAlbumUsed = statisticService.getStatisticOrDefault("imgAlbumUsed");
         Integer vidCreated = statisticService.getStatisticOrDefault("vidCreated");
         Integer vidUsed = statisticService.getStatisticOrDefault("vidUsed");
 
@@ -66,6 +69,8 @@ public class ScheduledTaskService {
             statistic.setDsShortUrlUsed(statistic.getDsShortUrlUsed() + shortUrlUsed);
             statistic.setDsImgCreated(statistic.getDsImgCreated() + imgCreated);
             statistic.setDsImgUsed(statistic.getDsImgUsed() + imgUsed);
+            statistic.setDsImgAlbumCreated(statistic.getDsImgAlbumCreated() + imgAlbumCreated);
+            statistic.setDsImgAlbumUsed(statistic.getDsImgAlbumUsed() + imgAlbumUsed);
             statistic.setDsVidCreated(statistic.getDsVidCreated() + vidCreated);
             statistic.setDsVidUsed(statistic.getDsVidUsed() + vidUsed);
         } else {
@@ -76,6 +81,8 @@ public class ScheduledTaskService {
             statistic.setDsShortUrlUsed(shortUrlUsed);
             statistic.setDsImgCreated(imgCreated);
             statistic.setDsImgUsed(imgUsed);
+            statistic.setDsImgAlbumCreated(imgAlbumCreated);
+            statistic.setDsImgAlbumUsed(imgAlbumUsed);
             statistic.setDsVidCreated(vidCreated);
             statistic.setDsVidUsed(vidUsed);
         }

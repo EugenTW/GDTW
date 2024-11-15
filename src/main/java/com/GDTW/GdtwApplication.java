@@ -21,20 +21,15 @@ public class GdtwApplication {
 
     private final SitemapService sitemapService;
     private final RedisService redisService;
-    private final ScheduledTaskService scheduledTaskService;
-    private final ShortUrlService shortUrlService;
 
-    public GdtwApplication(SitemapService sitemapService, RedisService redisService, ScheduledTaskService scheduledTaskService, ShortUrlService shortUrlService) {
+    public GdtwApplication(SitemapService sitemapService, RedisService redisService) {
         this.sitemapService = sitemapService;
         this.redisService = redisService;
-        this.scheduledTaskService = scheduledTaskService;
-        this.shortUrlService = shortUrlService;
     }
 
     public static void main(String[] args) {
         SpringApplication.run(GdtwApplication.class, args);
         logger.info("Web version: " + WebVersion.getWebVersion() + " and built at " + WebVersion.getBuildDate());
-
     }
 
     // Generate sitemap on application startup

@@ -55,15 +55,15 @@ hr {
     display: flex; 
     justify-content: center; 
     align-items: center; 
+    box-shadow: inset 0 0 0 2px #0dff00;
 }
 
 .green {
-    background-color: #016929;
-    border: 5px solid #00ff44;
+    background-color: #065223;
 }
 
 .button.green:hover {
-    background-color: #009d32;   
+    background-color: #0f742f;   
 }
 
 .data-display.large-box.original-url {

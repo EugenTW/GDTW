@@ -1,6 +1,6 @@
 package com.GDTW.shorturl.controller;
 
-import com.GDTW.general.service.StatisticService;
+import com.GDTW.dailystatistic.model.DailyStatisticService;
 import com.GDTW.shorturl.model.ShortUrlService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
@@ -13,9 +13,9 @@ import java.io.IOException;
 public class ShortUrlController {
 
     private final ShortUrlService shortUrlService;
-    private final StatisticService statisticService;
+    private final DailyStatisticService statisticService;
 
-    public ShortUrlController(ShortUrlService shortUrlService, StatisticService statisticService) {
+    public ShortUrlController(ShortUrlService shortUrlService, DailyStatisticService statisticService) {
         this.shortUrlService = shortUrlService;
         this.statisticService = statisticService;
     }

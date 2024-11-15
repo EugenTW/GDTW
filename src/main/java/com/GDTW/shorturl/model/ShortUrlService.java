@@ -153,14 +153,13 @@ public class ShortUrlService {
         }
     }
 
-    @Transactional
     public void countShortUrlUsage(Integer suId) {
         String redisKey = "su:usage:" + suId; // prefix 'su:usage:'
         redisTemplate.opsForValue().increment(redisKey, 1);
     }
 
-    // Scheduled task to run every two hours at 55 minutes past the hour
-    @Scheduled(cron = "0 55 0/2 * * ?")
+    // Scheduled task to run every four hours at 58 minutes past the hour
+    @Scheduled(cron = "0 58 0/4 * * ?")
     @Transactional
     public void syncUsageToMySQL() {
         Set<String> keys = redisTemplate.keys("su:usage:*");
@@ -176,6 +175,7 @@ public class ShortUrlService {
                     shortUrlJpa.save(shortUrl);
                     // delete recorded data in Redis
                     redisTemplate.delete(key);
+                    logger.info("Sync 'Short URL' usage to MySQL!");
                 }
             }
         }
@@ -184,8 +184,8 @@ public class ShortUrlService {
     // ==================================================================
     // Supporting methods
 
-    public static String toEncodeSuId(Integer id) {
-        return IdEncoderDecoderService.encodeId(id);
+    public static String toEncodeSuId(Integer suId) {
+        return IdEncoderDecoderService.encodeId(suId);
     }
 
     public static Integer toDecodeSuId(String encodeSuId) {
