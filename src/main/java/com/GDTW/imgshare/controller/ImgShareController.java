@@ -36,7 +36,6 @@ public class ImgShareController {
             response.sendRedirect("/error");
             return null;
         }
-        dailyStatisticService.incrementImgAlbumUsed();
         return "forward:/image_view.html";
     }
 
@@ -46,7 +45,6 @@ public class ImgShareController {
             response.sendRedirect("/error");
             return null;
         }
-        dailyStatisticService.incrementImgUsed();
         return "forward:/image_view.html";
     }
 

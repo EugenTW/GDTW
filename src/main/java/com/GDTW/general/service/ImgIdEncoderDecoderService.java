@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import java.security.SecureRandom;
 
 @Service
-public class ExtendedIdEncoderDecoderService {
+public class ImgIdEncoderDecoderService {
 
     public static final String ENCRYPT_CHARS_A = "XgUweOlDKZlVAYNp4jq3FWMTQoEuP9I5nHbfCy2czv1mkdS60JxRGs78aBhLi";
     public static final String ENCRYPT_CHARS_B = "TyVM7HzaSlXE4mnL8Kowu2hjgqdIliDFG6vpPQOA0cC9Z1sBU35fbkxeNRJYW";
@@ -17,10 +17,10 @@ public class ExtendedIdEncoderDecoderService {
     private static final int RANDOM_BASE = RANDOM_CHARS.length();
     private static final SecureRandom RANDOM = new SecureRandom();
 
-    private ExtendedIdEncoderDecoderService() {
+    private ImgIdEncoderDecoderService() {
     }
 
-    public static String encodeExtendedId(Integer id) {
+    public static String encodeImgId(Integer id) {
         if (id < MIN_ID || id > MAX_ID) {
             throw new IllegalArgumentException("ID should be between " + MIN_ID + " and " + MAX_ID + ".");
         }
@@ -28,11 +28,11 @@ public class ExtendedIdEncoderDecoderService {
         return insertRandomCharacters(encodedId);
     }
 
-    public static Integer decodeExtendedId(String encodedExtendedId) {
-        if (encodedExtendedId.length() != 12) {
+    public static Integer decodeImgId(String encodedImgId) {
+        if (encodedImgId.length() != 12) {
             throw new IllegalArgumentException("The encoded string should have exactly 12 characters.");
         }
-        String extractedId = extractEncodedId(encodedExtendedId);
+        String extractedId = extractEncodedId(encodedImgId);
         return decodeBase(extractedId);
     }
 

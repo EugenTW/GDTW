@@ -30,7 +30,7 @@ public class ScheduledTaskService {
     }
 
     // Scheduled task to run daily at 11:59 PM
-    @Scheduled(cron = "55 59 23 * * ?")
+    @Scheduled(cron = "50 59 23 * * ?")
     @Transactional
     public void collectAndSaveStatistics() {
         saveStatistics();

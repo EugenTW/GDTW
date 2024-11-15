@@ -110,12 +110,10 @@ public class ImgShareRestController {
     public ResponseEntity<Map<String, Object>> downloadAlbumImages(@RequestBody Map<String, String> request) {
         String token = request.get("token");
         Map<String, Object> result = imgShareService.getAlbumImages(token);
-        dailyStatisticService.incrementImgAlbumUsed();
-
         if (result.containsKey("error")) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
         }
-
+        dailyStatisticService.incrementImgAlbumUsed();
         return ResponseEntity.ok(result);
     }
 
@@ -123,12 +121,10 @@ public class ImgShareRestController {
     public ResponseEntity<Map<String, Object>> downloadSingleImage(@RequestBody Map<String, String> request) {
         String token = request.get("token");
         Map<String, Object> result = imgShareService.getSingleImage(token);
-        dailyStatisticService.incrementImgUsed();
-
         if (result.containsKey("error")) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
         }
-
+        dailyStatisticService.incrementImgUsed();
         return ResponseEntity.ok(result);
     }
 

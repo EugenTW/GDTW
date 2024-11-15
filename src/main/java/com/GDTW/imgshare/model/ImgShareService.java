@@ -1,16 +1,22 @@
 package com.GDTW.imgshare.model;
 
 import com.GDTW.dailystatistic.model.DailyStatisticService;
-import com.GDTW.general.service.ExtendedIdEncoderDecoderService;
+import com.GDTW.general.service.ImgFilenameEncoderDecoderService;
+import com.GDTW.general.service.ImgIdEncoderDecoderService;
 import com.GDTW.general.service.JwtUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Map;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -23,24 +29,29 @@ import java.util.*;
 @Service
 public class ImgShareService {
 
-    private final ShareImgAlbumJpa shareImgAlbumJpa;
-    private final ShareImgJpa shareImgJpa;
-    private final DailyStatisticService dailyStatisticService;
-    private final RedisTemplate<String, String> redisTemplate;
-    private static final Logger logger = LoggerFactory.getLogger(ImgShareService.class);
-    private static final Duration TTL_DURATION = Duration.ofHours(36);
-
     @Value("${app.baseUrl}")
     private String baseUrl;
 
     @Value("${app.imageStoragePath}")
     private String imageStoragePath;
 
-    public ImgShareService(ShareImgAlbumJpa shareImgAlbumJpa, ShareImgJpa shareImgJpa, DailyStatisticService dailyStatisticService, RedisTemplate<String, String> redisTemplate) {
+    @Value("${app.imageNginxStaticPath}")
+    private String imageNginxStaticPath;
+
+    private final ShareImgAlbumJpa shareImgAlbumJpa;
+    private final ShareImgJpa shareImgJpa;
+    private final DailyStatisticService dailyStatisticService;
+    private final RedisTemplate<String, String> redisTemplate;
+    private ObjectMapper objectMapper;
+    private static final Logger logger = LoggerFactory.getLogger(ImgShareService.class);
+    private static final Duration TTL_DURATION = Duration.ofHours(36);
+
+    public ImgShareService(ShareImgAlbumJpa shareImgAlbumJpa, ShareImgJpa shareImgJpa, DailyStatisticService dailyStatisticService, RedisTemplate<String, String> redisTemplate, ObjectMapper objectMapper) {
         this.shareImgAlbumJpa = shareImgAlbumJpa;
         this.shareImgJpa = shareImgJpa;
         this.dailyStatisticService = dailyStatisticService;
         this.redisTemplate = redisTemplate;
+        this.objectMapper = objectMapper;
     }
 
     // ==================================================================
@@ -82,7 +93,7 @@ public class ImgShareService {
 
         try {
             for (MultipartFile file : files) {
-                ShareImgVO shareImgVO = new ShareImgVO();
+                com.GDTW.imgshare.model.ShareImgVO shareImgVO = new com.GDTW.imgshare.model.ShareImgVO();
                 shareImgVO.setSiPassword(createdAlbumVO.getSiaPassword());
                 shareImgVO.setSiCreatedDate(createdAlbumVO.getSiaCreatedDate());
                 shareImgVO.setSiCreatedIp(createdAlbumVO.getSiaCreatedIp());
@@ -93,15 +104,16 @@ public class ImgShareService {
                 String originalFilename = file.getOriginalFilename();
                 String fileExtension = originalFilename.substring(originalFilename.lastIndexOf(".")).toLowerCase();
 
-                ShareImgVO savedImage = shareImgJpa.saveAndFlush(shareImgVO);
+                com.GDTW.imgshare.model.ShareImgVO savedImage = shareImgJpa.saveAndFlush(shareImgVO);
                 String encodedSiId = toEncodeId(savedImage.getSiId());
+                String encodedFilename = toEncodeFilename((savedImage.getSiId()));
+                String newFilename = encodedFilename + fileExtension;
 
-                String newFileName = encodedSiId + fileExtension;
                 savedImage.setSiCode(encodedSiId);
-                savedImage.setSiName(newFileName);
+                savedImage.setSiName(newFilename);
 
                 Path storageDirectory = Paths.get(imageStoragePath);
-                Path filePath = storageDirectory.resolve(newFileName);
+                Path filePath = storageDirectory.resolve(newFilename);
 
                 Files.createDirectories(storageDirectory);
                 file.transferTo(filePath.toFile());
@@ -163,6 +175,7 @@ public class ImgShareService {
         } else {
             response.put("requiresPassword", false);
         }
+
         return response;
     }
 
@@ -178,10 +191,10 @@ public class ImgShareService {
         }
 
         Integer siImageId = toDecodeId(code);
-        Optional<ShareImgVO> imageOptional = shareImgJpa.findById(siImageId);
+        Optional<com.GDTW.imgshare.model.ShareImgVO> imageOptional = shareImgJpa.findById(siImageId);
 
         if (imageOptional.isPresent()) {
-            ShareImgVO image = imageOptional.get();
+            com.GDTW.imgshare.model.ShareImgVO image = imageOptional.get();
             boolean requiresPassword = image.getSiPassword() != null && !image.getSiPassword().isEmpty();
             response.put("requiresPassword", requiresPassword);
 
@@ -192,12 +205,13 @@ public class ImgShareService {
         } else {
             response.put("requiresPassword", false);
         }
+
         return response;
     }
 
 
     @Transactional(readOnly = true)
-    public Map<String, Object> checkAlbumPassword(String code, String password){
+    public Map<String, Object> checkAlbumPassword(String code, String password) {
         Map<String, Object> response = new HashMap<>();
 
         Integer siaImageAlbumId = toDecodeId(code);
@@ -210,7 +224,7 @@ public class ImgShareService {
                 response.put("checkPassword", true);
                 String token = JwtUtil.generateToken(code, "passwordPassed");
                 response.put("token", token);
-            }else {
+            } else {
                 response.put("checkPassword", false);
             }
         } else {
@@ -220,20 +234,20 @@ public class ImgShareService {
     }
 
     @Transactional(readOnly = true)
-    public Map<String, Object> checkImagePassword(String code, String password){
+    public Map<String, Object> checkImagePassword(String code, String password) {
         Map<String, Object> response = new HashMap<>();
 
         Integer siImageId = toDecodeId(code);
-        Optional<ShareImgVO> imageOptional = shareImgJpa.findById(siImageId);
+        Optional<com.GDTW.imgshare.model.ShareImgVO> imageOptional = shareImgJpa.findById(siImageId);
 
         if (imageOptional.isPresent()) {
-            ShareImgVO image = imageOptional.get();
+            com.GDTW.imgshare.model.ShareImgVO image = imageOptional.get();
             String storedPassword = image.getSiPassword();
             if (storedPassword.equals(password)) {
                 response.put("checkPassword", true);
                 String token = JwtUtil.generateToken(code, "passwordPassed");
                 response.put("token", token);
-            }else {
+            } else {
                 response.put("checkPassword", false);
             }
         } else {
@@ -254,6 +268,27 @@ public class ImgShareService {
 
         String code = claims.getSubject();
         Integer siaImageId = toDecodeId(code);
+        String redisKey = "albumImages:" + siaImageId;
+
+        try {
+            Map<String, Object> cachedResponse = getResponseFromRedis(redisKey);
+            if (cachedResponse != null) {
+                countAlbumUsage(siaImageId);
+                List<Map<String, Object>> imageList = (List<Map<String, Object>>) cachedResponse.get("images");
+                if (imageList != null) {
+                    for (Map<String, Object> imageMap : imageList) {
+                        Integer siId = (Integer) imageMap.get("siId");
+                        if (siId != null) {
+                            dailyStatisticService.incrementImgUsed();
+                            countImageUsage(siId);
+                        }
+                    }
+                }
+                return cachedResponse;
+            }
+        } catch (JsonProcessingException e) {
+            logger.error("Failed to parse cached response for key: " + redisKey, e);
+        }
 
         Optional<ShareImgAlbumVO> albumOptional = shareImgAlbumJpa.findBySiaId(siaImageId);
         if (!albumOptional.isPresent()) {
@@ -272,14 +307,23 @@ public class ImgShareService {
             imageMap.put("siId", image.getSiId());
             imageMap.put("siCode", image.getSiCode());
             imageMap.put("siName", image.getSiName());
-
-            String imageUrl = baseUrl + "/images/" + image.getSiName();
+            String imageUrl = baseUrl + imageNginxStaticPath + image.getSiName();
             imageMap.put("imageUrl", imageUrl);
 
             imageList.add(imageMap);
+
+            countImageUsage(image.getSiId());
+            dailyStatisticService.incrementImgUsed();
         }
 
         response.put("images", imageList);
+
+        try {
+            saveResponseToRedis(redisKey, response);
+        } catch (JsonProcessingException e) {
+            logger.error("Failed to cache response for key: " + redisKey, e);
+        }
+        countAlbumUsage(siaImageId);
         return response;
     }
 
@@ -296,6 +340,18 @@ public class ImgShareService {
         String code = claims.getSubject();
         Integer siImageId = toDecodeId(code);
 
+        String redisKey = "singleImage:" + siImageId;
+
+        try {
+            Map<String, Object> cachedResponse = getResponseFromRedis(redisKey);
+            if (cachedResponse != null) {
+                countImageUsage(siImageId);
+                return cachedResponse;
+            }
+        } catch (JsonProcessingException e) {
+            logger.error("Failed to parse cached response for key: " + redisKey, e);
+        }
+
         Optional<ShareImgVO> imageOptional = shareImgJpa.findById(siImageId);
         if (!imageOptional.isPresent()) {
             response.put("error", "Image not found.");
@@ -307,28 +363,110 @@ public class ImgShareService {
         response.put("siCode", image.getSiCode());
         response.put("siName", image.getSiName());
         response.put("siNsfw", image.getSiNsfw());
-
         String imageUrl = baseUrl + "/images/" + image.getSiName();
+
         response.put("imageUrl", imageUrl);
 
+        try {
+            saveResponseToRedis(redisKey, response);
+        } catch (JsonProcessingException e) {
+            logger.error("Failed to cache response for key: " + redisKey, e);
+        }
+        countImageUsage(siImageId);
         return response;
     }
-
-
 
 
     // ==================================================================
     // Redis caching methods
 
+    public void countAlbumUsage(Integer siaId) {
+        String redisKey = "sia:usage:" + siaId; // prefix 'sia:usage:'
+        redisTemplate.opsForValue().increment(redisKey, 1);
+    }
+
+    // Scheduled task to run every four hours at 56 minutes past the hour
+    @Scheduled(cron = "0 56 0/4 * * ?")
+    @Transactional
+    public void syncSiaUsageToMySQL() {
+        Set<String> keys = redisTemplate.keys("sia:usage:*");
+        if (keys != null) {
+            for (String key : keys) {
+                Integer siaId = Integer.parseInt(key.split(":")[2]);
+                Integer usageCount = Integer.parseInt(redisTemplate.opsForValue().get(key));
+
+                Optional<ShareImgAlbumVO> optionalSiaObject = shareImgAlbumJpa.findById(siaId);
+                if (optionalSiaObject.isPresent()) {
+                    ShareImgAlbumVO shareImgAlbumVO = optionalSiaObject.get();
+                    shareImgAlbumVO.setSiaTotalVisited(shareImgAlbumVO.getSiaTotalVisited()+ usageCount);
+                    shareImgAlbumJpa.save(shareImgAlbumVO);
+                    // delete recorded data in Redis
+                    redisTemplate.delete(key);
+                    logger.info("Sync 'Image Album' usage to MySQL!");
+                }
+            }
+        }
+    }
+
+    public void countImageUsage(Integer siId) {
+        String redisKey = "si:usage:" + siId; // prefix 'si:usage:'
+        redisTemplate.opsForValue().increment(redisKey, 1);
+    }
+
+    // Scheduled task to run every four hours at 57 minutes past the hour
+    @Scheduled(cron = "0 57 0/4 * * ?")
+    @Transactional
+    public void syncSiUsageToMySQL() {
+        Set<String> keys = redisTemplate.keys("si:usage:*");
+        if (keys != null) {
+            for (String key : keys) {
+                Integer siId = Integer.parseInt(key.split(":")[2]);
+                Integer usageCount = Integer.parseInt(redisTemplate.opsForValue().get(key));
+
+                Optional<ShareImgVO> optionalSiObject = shareImgJpa.findById(siId);
+                if (optionalSiObject.isPresent()) {
+                    ShareImgVO shareImgVO = optionalSiObject.get();
+                    shareImgVO.setSiTotalVisited(shareImgVO.getSiTotalVisited()+ usageCount);
+                    shareImgJpa.save(shareImgVO);
+                    // delete recorded data in Redis
+                    redisTemplate.delete(key);
+                    logger.info("Sync 'Single Image' usage to MySQL!");
+                }
+            }
+        }
+    }
+
     // ==================================================================
     // Supporting methods
 
     public static String toEncodeId(Integer id) {
-        return ExtendedIdEncoderDecoderService.encodeExtendedId(id);
+        return ImgIdEncoderDecoderService.encodeImgId(id);
     }
 
     public static Integer toDecodeId(String encodeId) {
-        return ExtendedIdEncoderDecoderService.decodeExtendedId(encodeId);
+        return ImgIdEncoderDecoderService.decodeImgId(encodeId);
     }
+
+    public static String toEncodeFilename(Integer id) {
+        return ImgFilenameEncoderDecoderService.encodeImgFilename(id);
+    }
+
+    public static Integer toDecodeFilename(String encodeFilename) {
+        return ImgFilenameEncoderDecoderService.decodeImgfilename(encodeFilename);
+    }
+
+    // Save Json to Redis
+    public void saveResponseToRedis(String key, Map<String, Object> response) throws JsonProcessingException {
+        String jsonResponse = objectMapper.writeValueAsString(response);
+        redisTemplate.opsForValue().set(key, jsonResponse, TTL_DURATION);
+    }
+
+    // Reverse Redis to Json
+    public Map<String, Object> getResponseFromRedis(String key) throws JsonProcessingException {
+        String jsonResponse = redisTemplate.opsForValue().get(key);
+        if (jsonResponse == null) return null;
+        return objectMapper.readValue(jsonResponse, Map.class);
+    }
+
 
 }

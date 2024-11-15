@@ -91,6 +91,12 @@ function displayImages(data) {
         imgElement.alt = image.siName;
         imgElement.classList.add('gallery-image');
 
+        // Add onerror event handler to set default image if loading fails
+        imgElement.onerror = function () {
+            this.src = '/images/pic_not_found.webp';
+        };
+
+
         // Add NSFW mask if needed
         if (isNsfw) {
             const nsfwMask = document.createElement('div');

@@ -19,7 +19,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/error", "/error/**").permitAll()
+                        .requestMatchers("/sitemap.xml", "/error", "/error/**").permitAll()
                         .requestMatchers(restrictedUrls).authenticated()
                         .anyRequest().permitAll()
                 )

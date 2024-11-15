@@ -2,6 +2,7 @@ package com.GDTW.config;
 
 import com.GDTW.general.service.RedisService;
 import com.GDTW.general.service.ScheduledTaskService;
+import com.GDTW.imgshare.model.ImgShareService;
 import com.GDTW.shorturl.model.ShortUrlService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,13 +16,15 @@ public class ShutdownListener implements ApplicationListener<ContextClosedEvent>
     private static final Logger logger = LoggerFactory.getLogger(ShutdownListener.class);
 
     private final ScheduledTaskService scheduledTaskService;
-    private final ShortUrlService shortUrlService;
     private final RedisService redisService;
+    private final ShortUrlService shortUrlService;
+    private final ImgShareService imgShareService;
 
-    public ShutdownListener(ScheduledTaskService scheduledTaskService, ShortUrlService shortUrlService, RedisService redisService) {
+    public ShutdownListener(ScheduledTaskService scheduledTaskService, ShortUrlService shortUrlService, RedisService redisService, ImgShareService imgShareService) {
         this.scheduledTaskService = scheduledTaskService;
         this.shortUrlService = shortUrlService;
         this.redisService = redisService;
+        this.imgShareService = imgShareService;
     }
 
     @Override
@@ -32,8 +35,12 @@ public class ShutdownListener implements ApplicationListener<ContextClosedEvent>
             // Save daily statistics
             scheduledTaskService.saveStatistics();
 
-            // Sync Redis short URL usage data to MySQL
+            // Sync Redis 'Short URL' usage data to MySQL
             shortUrlService.syncUsageToMySQL();
+
+            // Sync Redis 'Share Image' usage data to MySQL
+            imgShareService.syncSiaUsageToMySQL();
+            imgShareService.syncSiUsageToMySQL();
 
             // Clear Redis data
             redisService.clearRedis();
