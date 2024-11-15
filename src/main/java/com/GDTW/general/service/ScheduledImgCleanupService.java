@@ -26,7 +26,7 @@ public class ScheduledImgCleanupService {
     @Value("${app.imageStoragePath}")
     private String imageStoragePath;
 
-    @Value("${app.app.imageTrashCanPath}")
+    @Value("${app.imageTrashCanPath}")
     private String imageTrashCanPath;
 
     private final ShareImgAlbumJpa shareImgAlbumJpa;

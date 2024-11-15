@@ -29,8 +29,8 @@ import java.util.*;
 @Service
 public class ImgShareService {
 
-    @Value("${app.baseUrl}")
-    private String baseUrl;
+    @Value("${app.baseUrlForImageDownload}")
+    private String baseUrlForImageDownload;
 
     @Value("${app.imageStoragePath}")
     private String imageStoragePath;
@@ -93,7 +93,7 @@ public class ImgShareService {
 
         try {
             for (MultipartFile file : files) {
-                com.GDTW.imgshare.model.ShareImgVO shareImgVO = new com.GDTW.imgshare.model.ShareImgVO();
+                ShareImgVO shareImgVO = new ShareImgVO();
                 shareImgVO.setSiPassword(createdAlbumVO.getSiaPassword());
                 shareImgVO.setSiCreatedDate(createdAlbumVO.getSiaCreatedDate());
                 shareImgVO.setSiCreatedIp(createdAlbumVO.getSiaCreatedIp());
@@ -104,7 +104,7 @@ public class ImgShareService {
                 String originalFilename = file.getOriginalFilename();
                 String fileExtension = originalFilename.substring(originalFilename.lastIndexOf(".")).toLowerCase();
 
-                com.GDTW.imgshare.model.ShareImgVO savedImage = shareImgJpa.saveAndFlush(shareImgVO);
+                ShareImgVO savedImage = shareImgJpa.saveAndFlush(shareImgVO);
                 String encodedSiId = toEncodeId(savedImage.getSiId());
                 String encodedFilename = toEncodeFilename((savedImage.getSiId()));
                 String newFilename = encodedFilename + fileExtension;
@@ -191,10 +191,10 @@ public class ImgShareService {
         }
 
         Integer siImageId = toDecodeId(code);
-        Optional<com.GDTW.imgshare.model.ShareImgVO> imageOptional = shareImgJpa.findById(siImageId);
+        Optional<ShareImgVO> imageOptional = shareImgJpa.findById(siImageId);
 
         if (imageOptional.isPresent()) {
-            com.GDTW.imgshare.model.ShareImgVO image = imageOptional.get();
+            ShareImgVO image = imageOptional.get();
             boolean requiresPassword = image.getSiPassword() != null && !image.getSiPassword().isEmpty();
             response.put("requiresPassword", requiresPassword);
 
@@ -238,10 +238,10 @@ public class ImgShareService {
         Map<String, Object> response = new HashMap<>();
 
         Integer siImageId = toDecodeId(code);
-        Optional<com.GDTW.imgshare.model.ShareImgVO> imageOptional = shareImgJpa.findById(siImageId);
+        Optional<ShareImgVO> imageOptional = shareImgJpa.findById(siImageId);
 
         if (imageOptional.isPresent()) {
-            com.GDTW.imgshare.model.ShareImgVO image = imageOptional.get();
+            ShareImgVO image = imageOptional.get();
             String storedPassword = image.getSiPassword();
             if (storedPassword.equals(password)) {
                 response.put("checkPassword", true);
@@ -307,7 +307,7 @@ public class ImgShareService {
             imageMap.put("siId", image.getSiId());
             imageMap.put("siCode", image.getSiCode());
             imageMap.put("siName", image.getSiName());
-            String imageUrl = baseUrl + imageNginxStaticPath + image.getSiName();
+            String imageUrl = baseUrlForImageDownload + imageNginxStaticPath + image.getSiName();
             imageMap.put("imageUrl", imageUrl);
 
             imageList.add(imageMap);
@@ -363,7 +363,7 @@ public class ImgShareService {
         response.put("siCode", image.getSiCode());
         response.put("siName", image.getSiName());
         response.put("siNsfw", image.getSiNsfw());
-        String imageUrl = baseUrl + "/images/" + image.getSiName();
+        String imageUrl = baseUrlForImageDownload + imageNginxStaticPath + image.getSiName();
 
         response.put("imageUrl", imageUrl);
 
