@@ -143,6 +143,52 @@ hr {
     margin-right: 5px;    
 }
 
+.final-cover {
+    width: 100%; 
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    margin: 0 auto; 
+}
+
+.final-cover .image {
+    width: 550px;
+    display: flex;
+    justify-content: center; 
+}
+
+.final-cover .image img {
+    margin-top: 10px;
+    width: 100%;
+    height: auto; 
+    object-fit: contain; 
+    border-radius: 5px; 
+}
+
+.button-container-back {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.button-back {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: #2c87c3;
+    color: #ffffff;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.button-back:hover {
+    background-color: #54aeeb;
+}
+
 
 
 

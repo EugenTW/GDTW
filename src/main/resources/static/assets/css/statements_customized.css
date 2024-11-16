@@ -10,3 +10,25 @@
     border-radius: 5px;
     border: 2px solid #fffdca;
 }
+
+.final-cover {
+    width: 100%; 
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    margin: 0 auto; 
+}
+
+.final-cover .image {
+    width: 550px;
+    display: flex;
+    justify-content: center; 
+}
+
+.final-cover .image img {
+    margin-top: 10px;
+    width: 100%;
+    height: auto; 
+    object-fit: contain; 
+    border-radius: 5px; 
+}
