@@ -309,7 +309,8 @@ public class ImgShareService {
             imageMap.put("siName", image.getSiName());
             String imageUrl = baseUrlForImageDownload + imageNginxStaticPath + image.getSiName();
             imageMap.put("imageUrl", imageUrl);
-
+            String imageSingleModeUrl = baseUrlForImageDownload + "/i/" + image.getSiCode();
+            imageMap.put("imageSingleModeUrl", imageSingleModeUrl);
             imageList.add(imageMap);
 
             countImageUsage(image.getSiId());
@@ -452,7 +453,7 @@ public class ImgShareService {
     }
 
     public static Integer toDecodeFilename(String encodeFilename) {
-        return ImgFilenameEncoderDecoderService.decodeImgfilename(encodeFilename);
+        return ImgFilenameEncoderDecoderService.decodeImgFilename(encodeFilename);
     }
 
     // Save Json to Redis

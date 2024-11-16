@@ -11,6 +11,12 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     const requestData = { code: code };
 
+    // if (isLocalhost) {
+    //     console.log('Running on localhost - skipping API requests.');
+    //     initPage(downloadApiUrl, isAlbumMode);
+    //     return;
+    // }
+
     // Step 1: Check if password is needed
     try {
         const response = await fetchWithRetry(statusApiUrl, requestData);
@@ -81,6 +87,17 @@ function displayImages(data) {
 
     const isNsfw = data.siaNsfw === 1;
 
+    const pageUrlDiv = document.createElement('div');
+    pageUrlDiv.classList.add('page-url-text');
+    const currentPageUrl = window.location.href;
+    pageUrlDiv.innerHTML = `Gallery URL: ${currentPageUrl}`;
+    pageUrlDiv.addEventListener('click', function () {
+        copyToClipboard(currentPageUrl);
+        showCopiedMessage(pageUrlDiv);
+    });
+
+    gallery.appendChild(pageUrlDiv);
+
     data.images.forEach(image => {
         const photoDiv = document.createElement('div');
         photoDiv.classList.add('photo');
@@ -108,17 +125,38 @@ function displayImages(data) {
             photoDiv.appendChild(imgElement);
         }
 
+        const urlDiv = document.createElement('div');
+        urlDiv.classList.add('single-mode-text');
+        urlDiv.innerHTML = `URL: ${image.imageSingleModeUrl}`;
+
+        urlDiv.addEventListener('click', function () {
+            copyToClipboard(image.imageSingleModeUrl);
+            showCopiedMessage(urlDiv);
+        });
+
+        photoDiv.appendChild(urlDiv);
         gallery.appendChild(photoDiv);
     });
 
     gallery.classList.remove('hidden');
 }
 
-
 // Function to display a single image
 function displaySingleImage(data) {
     const singlePhotoDiv = document.getElementById('single-photo');
     singlePhotoDiv.innerHTML = '';
+
+    const pageUrlDiv = document.createElement('div');
+    pageUrlDiv.classList.add('page-url-text');
+    const currentPageUrl = window.location.href;
+    pageUrlDiv.innerHTML = `Gallery URL: ${currentPageUrl}`;
+
+    pageUrlDiv.addEventListener('click', function () {
+        copyToClipboard(currentPageUrl);
+        showCopiedMessage(pageUrlDiv);
+    });
+
+    singlePhotoDiv.appendChild(pageUrlDiv);
 
     const photoWrapper = document.createElement('div');
     photoWrapper.classList.add('photo-wrapper');
@@ -138,10 +176,10 @@ function displaySingleImage(data) {
         nsfwMask.classList.add('nsfw-mask');
         nsfwMask.textContent = 'NSFW - Click to reveal';
         nsfwMask.addEventListener('click', () => {
-            nsfwMask.style.display = 'none';
+            nsfwMask.classList.add('hidden');
         });
         photoWrapper.appendChild(nsfwMask);
-    }
+        }    
 
     singlePhotoDiv.appendChild(photoWrapper);
     singlePhotoDiv.classList.remove('hidden');
@@ -252,3 +290,23 @@ async function fetchWithRetry(url, data, maxRetries = 3) {
     }
     throw new Error('Too many attempts, please try again later.');
 }
+
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        console.log('Text copied to clipboard:', text);
+    }).catch(err => {
+        console.error('Failed to copy text: ', err);
+    });
+}
+
+function showCopiedMessage(element) {
+    const messageDiv = document.createElement('div');
+    messageDiv.textContent = '已複製網址 - URL Copied!';
+    messageDiv.classList.add('copied-message');
+    element.appendChild(messageDiv);
+
+    setTimeout(() => {
+        element.removeChild(messageDiv);
+    }, 1500);
+}
+

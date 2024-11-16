@@ -28,7 +28,10 @@ public class ImgFilenameEncoderDecoderService {
         return insertRandomCharacters(encodedId);
     }
 
-    public static Integer decodeImgfilename(String encodedImgFilename) {
+    public static Integer decodeImgFilename(String encodedImgFilename) {
+        if (encodedImgFilename == null) {
+            throw new IllegalArgumentException("The encoded string cannot be null.");
+        }
         if (encodedImgFilename.length() != 12) {
             throw new IllegalArgumentException("The encoded string should have exactly 12 characters.");
         }

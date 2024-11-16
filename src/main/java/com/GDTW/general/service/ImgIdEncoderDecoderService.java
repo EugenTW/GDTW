@@ -29,12 +29,16 @@ public class ImgIdEncoderDecoderService {
     }
 
     public static Integer decodeImgId(String encodedImgId) {
+        if (encodedImgId == null) {
+            throw new IllegalArgumentException("The encoded string cannot be null.");
+        }
         if (encodedImgId.length() != 12) {
             throw new IllegalArgumentException("The encoded string should have exactly 12 characters.");
         }
         String extractedId = extractEncodedId(encodedImgId);
         return decodeBase(extractedId);
     }
+
 
     private static String encodeBase(int id) {
         int normalizedId = id - MIN_ID;
