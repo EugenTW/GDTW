@@ -386,8 +386,7 @@ public class ImgShareService {
         redisTemplate.opsForValue().increment(redisKey, 1);
     }
 
-    // Scheduled task to run every four hours at 56 minutes past the hour
-    @Scheduled(cron = "0 56 0/4 * * ?")
+    @Scheduled(cron = "15 0 4 * * ?")
     @Transactional
     public void syncSiaUsageToMySQL() {
         Set<String> keys = redisTemplate.keys("sia:usage:*");
@@ -403,10 +402,12 @@ public class ImgShareService {
                     shareImgAlbumJpa.save(shareImgAlbumVO);
                     // delete recorded data in Redis
                     redisTemplate.delete(key);
-                    logger.info("Sync 'Image Album' usage to MySQL!");
+
                 }
             }
+
         }
+        logger.info("Sync 'Image Album' usage to MySQL!");
     }
 
     public void countImageUsage(Integer siId) {
@@ -414,8 +415,7 @@ public class ImgShareService {
         redisTemplate.opsForValue().increment(redisKey, 1);
     }
 
-    // Scheduled task to run every four hours at 57 minutes past the hour
-    @Scheduled(cron = "0 57 0/4 * * ?")
+    @Scheduled(cron = "0 0 4 * * ?")
     @Transactional
     public void syncSiUsageToMySQL() {
         Set<String> keys = redisTemplate.keys("si:usage:*");
@@ -431,10 +431,10 @@ public class ImgShareService {
                     shareImgJpa.save(shareImgVO);
                     // delete recorded data in Redis
                     redisTemplate.delete(key);
-                    logger.info("Sync 'Single Image' usage to MySQL!");
                 }
             }
         }
+        logger.info("Sync 'Single Image' usage to MySQL!");
     }
 
     // ==================================================================

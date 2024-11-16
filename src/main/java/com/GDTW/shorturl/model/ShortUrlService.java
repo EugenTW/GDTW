@@ -158,8 +158,7 @@ public class ShortUrlService {
         redisTemplate.opsForValue().increment(redisKey, 1);
     }
 
-    // Scheduled task to run every four hours at 58 minutes past the hour
-    @Scheduled(cron = "0 58 0/4 * * ?")
+    @Scheduled(cron = "30 0 4 * * ?")
     @Transactional
     public void syncUsageToMySQL() {
         Set<String> keys = redisTemplate.keys("su:usage:*");
@@ -175,10 +174,10 @@ public class ShortUrlService {
                     shortUrlJpa.save(shortUrl);
                     // delete recorded data in Redis
                     redisTemplate.delete(key);
-                    logger.info("Sync 'Short URL' usage to MySQL!");
                 }
             }
         }
+        logger.info("Sync 'Short URL' usage to MySQL!");
     }
 
     // ==================================================================
