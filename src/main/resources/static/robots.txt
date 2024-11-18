@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /su_api/
+Disallow: /is_api/
+Disallow:
+
+Sitemap: https://gdtw.org/sitemap.xml
