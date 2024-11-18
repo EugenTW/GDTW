@@ -30,10 +30,10 @@ public class ShortUrlVO {
     private Integer suTotalUsed;
 
     @Column(name = "su_status")
-    private Integer suStatus;
+    private Integer suStatus = 0;
 
     @Column(name = "su_safe")
-    private String suSafe;
+    private String suSafe = "0";
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "u_Id", referencedColumnName = "u_id")

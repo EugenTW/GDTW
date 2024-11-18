@@ -1,7 +1,7 @@
 package com.GDTW.config;
 
 import com.GDTW.general.service.RedisService;
-import com.GDTW.general.service.ScheduledTaskService;
+import com.GDTW.general.service.ScheduledDailyStatisticService;
 import com.GDTW.imgshare.model.ImgShareService;
 import com.GDTW.shorturl.model.ShortUrlService;
 import org.slf4j.Logger;
@@ -15,12 +15,12 @@ public class ShutdownListener implements ApplicationListener<ContextClosedEvent>
 
     private static final Logger logger = LoggerFactory.getLogger(ShutdownListener.class);
 
-    private final ScheduledTaskService scheduledTaskService;
+    private final ScheduledDailyStatisticService scheduledTaskService;
     private final RedisService redisService;
     private final ShortUrlService shortUrlService;
     private final ImgShareService imgShareService;
 
-    public ShutdownListener(ScheduledTaskService scheduledTaskService, ShortUrlService shortUrlService, RedisService redisService, ImgShareService imgShareService) {
+    public ShutdownListener(ScheduledDailyStatisticService scheduledTaskService, ShortUrlService shortUrlService, RedisService redisService, ImgShareService imgShareService) {
         this.scheduledTaskService = scheduledTaskService;
         this.shortUrlService = shortUrlService;
         this.redisService = redisService;
