@@ -1,9 +1,7 @@
 package com.GDTW;
 
 import com.GDTW.general.service.RedisService;
-import com.GDTW.general.service.ScheduledTaskService;
 import com.GDTW.general.service.SitemapService;
-import com.GDTW.shorturl.model.ShortUrlService;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

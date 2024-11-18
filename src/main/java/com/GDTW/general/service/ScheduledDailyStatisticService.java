@@ -17,14 +17,14 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 @Service
-public class ScheduledTaskService {
+public class ScheduledDailyStatisticService {
 
-    private static final Logger logger = LoggerFactory.getLogger(ScheduledTaskService.class);
+    private static final Logger logger = LoggerFactory.getLogger(ScheduledDailyStatisticService.class);
 
     private final DailyStatisticService statisticService;
     private final DailyStatisticJpa dailyStatisticJpa;
 
-    public ScheduledTaskService(DailyStatisticService dailyStatisticService, DailyStatisticJpa dailyStatisticJpa) {
+    public ScheduledDailyStatisticService(DailyStatisticService dailyStatisticService, DailyStatisticJpa dailyStatisticJpa) {
         this.statisticService = dailyStatisticService;
         this.dailyStatisticJpa = dailyStatisticJpa;
     }

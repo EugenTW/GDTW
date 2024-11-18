@@ -24,7 +24,7 @@ public class WebUserVO{
     private String uRegisterDate;
 
     @Column(name = "u_status")
-    private Integer uStatus;
+    private Integer uStatus = 0;
 
     public WebUserVO() {}
 

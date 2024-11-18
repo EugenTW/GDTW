@@ -90,12 +90,11 @@ function displayImages(data) {
     const pageUrlDiv = document.createElement('div');
     pageUrlDiv.classList.add('page-url-text');
     const currentPageUrl = window.location.href;
-    pageUrlDiv.innerHTML = `Gallery URL: ${currentPageUrl}`;
+    pageUrlDiv.innerHTML = `Share Gallery URL: ${currentPageUrl}`;
     pageUrlDiv.addEventListener('click', function () {
         copyToClipboard(currentPageUrl);
         showCopiedMessage(pageUrlDiv);
     });
-
     gallery.appendChild(pageUrlDiv);
 
     data.images.forEach(image => {
@@ -104,10 +103,8 @@ function displayImages(data) {
 
         const imgElement = document.createElement('img');
         imgElement.src = new URL(image.imageUrl, window.location.origin).href;
-
         imgElement.alt = image.siName;
-        imgElement.classList.add('gallery-image');        
-
+        imgElement.classList.add('gallery-image');
         imgElement.onerror = function () {
             this.src = '/images/pic_not_found.webp';
         };
@@ -127,19 +124,34 @@ function displayImages(data) {
 
         const urlDiv = document.createElement('div');
         urlDiv.classList.add('single-mode-text');
-        urlDiv.innerHTML = `URL: ${image.imageSingleModeUrl}`;
+        urlDiv.innerHTML = `Share URL: ${image.imageSingleModeUrl}`;
 
         urlDiv.addEventListener('click', function () {
             copyToClipboard(image.imageSingleModeUrl);
             showCopiedMessage(urlDiv);
         });
 
-        photoDiv.appendChild(urlDiv);
+        const openLink = document.createElement('a');
+        openLink.classList.add('open-link-button');
+        openLink.textContent = '🔎';
+        openLink.title='全尺寸 - Full Size'
+        openLink.href = image.imageUrl;
+        openLink.target = '_blank';
+        openLink.rel = 'noopener noreferrer';
+
+        const urlContainer = document.createElement('div');
+        urlContainer.classList.add('url-container');
+        urlContainer.appendChild(urlDiv);
+        urlContainer.appendChild(openLink);
+
+        photoDiv.appendChild(urlContainer);
         gallery.appendChild(photoDiv);
     });
 
     gallery.classList.remove('hidden');
 }
+
+
 
 // Function to display a single image
 function displaySingleImage(data) {
@@ -179,9 +191,24 @@ function displaySingleImage(data) {
             nsfwMask.classList.add('hidden');
         });
         photoWrapper.appendChild(nsfwMask);
-        }    
+    }        
 
-    singlePhotoDiv.appendChild(photoWrapper);
+    singlePhotoDiv.appendChild(photoWrapper);   
+   
+    const openLink = document.createElement('a');
+    openLink.classList.add('open-link-button');
+    openLink.textContent = '🔎';
+    openLink.title = '全尺寸 - Full Size';
+    openLink.href = imageUrl;
+    openLink.target = '_blank';
+    openLink.rel = 'noopener noreferrer';
+
+    const urlContainer = document.createElement('div');
+    urlContainer.classList.add('url-container');
+    urlContainer.appendChild(openLink);
+
+    singlePhotoDiv.appendChild(urlContainer);
+
     singlePhotoDiv.classList.remove('hidden');
 }
 
@@ -299,14 +326,15 @@ function copyToClipboard(text) {
     });
 }
 
-function showCopiedMessage(element) {
-    const messageDiv = document.createElement('div');
-    messageDiv.textContent = '已複製網址 - URL Copied!';
-    messageDiv.classList.add('copied-message');
-    element.appendChild(messageDiv);
+function showCopiedMessage() {
+    const toast = document.createElement('div');
+    toast.textContent = '已複製網址 - URL Copied!';
+    toast.classList.add('toast-message');
+    document.body.appendChild(toast);
 
     setTimeout(() => {
-        element.removeChild(messageDiv);
+        document.body.removeChild(toast);
     }, 1500);
 }
+
 
