@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 continue;
             }
 
-            // Check if file size exceeds 20MB
+            // Check if file size exceeds 10MB
             if (file.size > 10 * 1024 * 1024) {
                 alert(`單檔不得超過10MB - File too large (max 10MB): ${file.name}`);
                 continue;
@@ -118,56 +118,68 @@ document.addEventListener('DOMContentLoaded', function () {
 
     async function uploadImages() {
         if (isUploading) return;
-    
+
         isUploading = true;
         uploadButton.disabled = true;
-        $("#upload-overlay").show();  
-                
-    
+        $("#upload-overlay").show();
+
         if (selectedFiles.length === 0) {
             alert("請至少選擇一個檔案 - Please select at least one file.");
             isUploading = false;
             uploadButton.disabled = false;
             return;
         }
-    
+
         const expiryDays = document.getElementById('expiry-select').value;
         const nsfw = document.querySelector('input[name="nsfw"]:checked').value === 'true';
         const password = passwordInput.value;
-    
+
         const formData = new FormData();
         selectedFiles.forEach(file => formData.append("files", file));
         formData.append("expiryDays", expiryDays);
         formData.append("nsfw", nsfw);
         formData.append("password", password);
-    
-        try {
-            const response = await fetch('/is_api/create_new_album', {
-                method: 'POST',
-                body: formData
-            });
-    
-            if (response.ok) {
-                const result = await response.json();
-                const siaCode = result.sia_code;
-                
-                window.location.href = `/a/${siaCode}`;
-            } else {
-                alert("上傳失敗 - Upload failed: " + response.statusText);
+
+        const maxRetries = 3; // Maximum retries for 429 Too Many Requests
+        let attempt = 0;
+
+        async function tryUpload() {
+            try {
+                const response = await fetch('/is_api/create_new_album', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    const siaCode = result.sia_code;
+
+                    window.location.href = `/a/${siaCode}`;
+                } else if (response.status === 429) {
+                    console.warn(`Rate limit hit. Retry attempt ${attempt + 1}`);
+                    if (attempt < maxRetries) {
+                        attempt++;
+                        setTimeout(tryUpload, 1000); // Retry after 1 second
+                    } else {
+                        alert("伺服器忙碌，稍後再試。 - Server busy. Try later.");
+                        $("#upload-overlay").hide();
+                    }
+                } else {
+                    alert("上傳失敗 - Upload failed: " + response.statusText);
+                    $("#upload-overlay").hide();
+                }
+            } catch (error) {
+                console.error("上傳錯誤 - Error during upload:", error);
+                alert("上傳過程中發生錯誤 - An error occurred during the upload.");
                 $("#upload-overlay").hide();
+            } finally {
+                setTimeout(() => {
+                    isUploading = false;
+                    uploadButton.disabled = false;
+                }, 1000);
             }
-        } catch (error) {
-            console.error("上傳錯誤 - Error during upload:", error);
-            alert("上傳過程中發生錯誤 - An error occurred during the upload.");
-            $("#upload-overlay").hide();
-        } finally {
-            setTimeout(() => {
-                isUploading = false;
-                uploadButton.disabled = false;
-            }, 1000);
-            $("#upload-overlay").hide();
         }
+
+        tryUpload(); // Start the upload process
     }
-
-
 });
