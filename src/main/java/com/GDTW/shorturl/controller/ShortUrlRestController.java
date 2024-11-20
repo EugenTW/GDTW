@@ -3,6 +3,7 @@ package com.GDTW.shorturl.controller;
 import com.GDTW.dailystatistic.model.DailyStatisticService;
 import com.GDTW.safebrowing.service.SafeBrowsingService;
 import com.GDTW.shorturl.model.*;
+import com.google.common.util.concurrent.RateLimiter;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,14 +12,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/su_api")
 public class ShortUrlRestController {
-
     private static final Logger logger = LoggerFactory.getLogger(ShortUrlRestController.class);
-
+    private final RateLimiter shortUrlCreationRateLimiter = RateLimiter.create(50.0); // 50 requests per second
     private final ShortUrlService shortUrlService;
     private final DailyStatisticService statisticService;
     private final SafeBrowsingService safeBrowsingService;
@@ -34,6 +35,13 @@ public class ShortUrlRestController {
 
     @PostMapping("/create_new_short_url")
     public ResponseEntity<ReturnCreatedShortUrlDTO> createNewShortUrl(@RequestBody CreateShortUrlRequestDTO shortUrlRequest, HttpServletRequest request) {
+
+        if (!shortUrlCreationRateLimiter.tryAcquire()) {
+            ReturnCreatedShortUrlDTO errorResponse = new ReturnCreatedShortUrlDTO(null, null, "請求過於頻繁! 請稍後再試! Too many requests! Please try again later.");
+            logger.warn("Short Url creation limit exceeded.");
+            return ResponseEntity.status(429).body(errorResponse);
+        }
+
         String originalUrl = shortUrlRequest.getOriginalUrl();
         String originalIp = request.getHeader("X-Forwarded-For");
 

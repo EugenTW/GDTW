@@ -158,7 +158,7 @@ public class ShortUrlService {
         redisTemplate.opsForValue().increment(redisKey, 1);
     }
 
-    @Scheduled(cron = "30 0 4 * * ?")
+    @Scheduled(cron = "${task.schedule.cron.shortUtlUsageStatisticService}")
     @Transactional
     public void syncUsageToMySQL() {
         Set<String> keys = redisTemplate.keys("su:usage:*");

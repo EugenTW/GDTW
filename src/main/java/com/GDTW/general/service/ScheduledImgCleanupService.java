@@ -37,8 +37,8 @@ public class ScheduledImgCleanupService {
         this.shareImgJpa = shareImgJpa;
     }
 
-    // cleanup task for moving old image files to the trash can and updating database records runs daily at 1 AM
-    @Scheduled(cron = "0 0 1 * * ?")
+    // daily task to move old image files to trash and update database records
+    @Scheduled(cron = "${task.schedule.cron.dailyImgCleanupService}")
     @Transactional
     public void cleanupExpiredImages() {
         logger.info("Starting cleanup of expired images...");
@@ -80,8 +80,8 @@ public class ScheduledImgCleanupService {
         }
     }
 
-    // Automatically clear all files in the trash can at 3 AM on the 10th of every month.
-    @Scheduled(cron = "0 0 3 10 * ?")
+    // automatically empty trash monthly
+    @Scheduled(cron = "${task.schedule.cron.monthlyImgTrashCleanupService}")
     public void clearTrashCan() {
         Path trashCanPath = Paths.get(imageTrashCanPath);
         try {
