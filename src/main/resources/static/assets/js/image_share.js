@@ -54,31 +54,44 @@ document.addEventListener('DOMContentLoaded', function () {
             selectedFiles.push(file);
         }
 
+        // Sort files by name
+        selectedFiles.sort((a, b) => a.name.localeCompare(b.name));
+
         displaySelectedFiles();
         toggleUploadButton();
     }
-
+  
     // Display selected files
     function displaySelectedFiles() {
         fileList.innerHTML = '';
 
-        selectedFiles.forEach((file, index) => {
-            const fileItem = document.createElement('div');
-            fileItem.className = 'file-item';
+        const readerPromises = selectedFiles.map((file, index) => {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    resolve({ index, result: e.target.result, name: file.name });
+                };
+                reader.readAsDataURL(file);
+            });
+        });
 
-            const reader = new FileReader();
-            reader.onload = function (e) {
+        Promise.all(readerPromises).then(previews => {
+            previews.sort((a, b) => a.name.localeCompare(b.name)); 
+
+            previews.forEach(({ index, result, name }) => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
                 fileItem.innerHTML = `
-                    <img src="${e.target.result}" class="thumbnail" alt="Image Preview" title="${file.name}">
+                    <img src="${result}" class="thumbnail" alt="Image Preview" title="${name}">
                     <img src="/images/delete.png" class="remove-button" data-index="${index}" alt="Remove" title="Remove">
                 `;
                 fileList.appendChild(fileItem);
-            };
-            reader.readAsDataURL(file);
-        });
+            });
 
-        toggleUploadButton();
+            toggleUploadButton();
+        });
     }
+
 
     // Handle file removal
     fileList.addEventListener('click', function (event) {
@@ -92,11 +105,10 @@ document.addEventListener('DOMContentLoaded', function () {
     function removeFile(index) {
         selectedFiles.splice(index, 1);
 
-        // Remove the corresponding DOM element
-        const fileElement = fileList.querySelector(`.remove-button[data-index="${index}"]`).parentElement;
-        if (fileElement) fileElement.remove();
+        // Sort files by name after removal
+        selectedFiles.sort((a, b) => a.name.localeCompare(b.name));
 
-        // Update upload button state
+        displaySelectedFiles();
         toggleUploadButton();
     }
 
