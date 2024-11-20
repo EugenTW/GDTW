@@ -167,7 +167,6 @@ public class ImgShareService {
             ShareImgAlbumVO album = albumOptional.get();
             boolean requiresPassword = album.getSiaPassword() != null && !album.getSiaPassword().isEmpty();
             response.put("requiresPassword", requiresPassword);
-
             if (!requiresPassword) {
                 String token = JwtUtil.generateToken(code, "noPassword");
                 response.put("token", token);
@@ -197,7 +196,6 @@ public class ImgShareService {
             ShareImgVO image = imageOptional.get();
             boolean requiresPassword = image.getSiPassword() != null && !image.getSiPassword().isEmpty();
             response.put("requiresPassword", requiresPassword);
-
             if (!requiresPassword) {
                 String token = JwtUtil.generateToken(code, "noPassword");
                 response.put("token", token);
@@ -263,6 +261,12 @@ public class ImgShareService {
         Claims claims = JwtUtil.validateToken(token);
         if (claims == null) {
             response.put("error", "Invalid or expired token.");
+            return response;
+        }
+
+        String stage = claims.get("stage", String.class);
+        if (!"passwordPassed".equals(stage)) {
+            response.put("error", "Invalid stage.");
             return response;
         }
 
@@ -338,6 +342,12 @@ public class ImgShareService {
             return response;
         }
 
+        String stage = claims.get("stage", String.class);
+        if (!"passwordPassed".equals(stage)) {
+            response.put("error", "Invalid stage.");
+            return response;
+        }
+
         String code = claims.getSubject();
         Integer siImageId = toDecodeId(code);
 
@@ -386,7 +396,7 @@ public class ImgShareService {
         redisTemplate.opsForValue().increment(redisKey, 1);
     }
 
-    @Scheduled(cron = "15 0 4 * * ?")
+    @Scheduled(cron = "${task.schedule.cron.albumUsageStatisticService}")
     @Transactional
     public void syncSiaUsageToMySQL() {
         Set<String> keys = redisTemplate.keys("sia:usage:*");
@@ -415,7 +425,7 @@ public class ImgShareService {
         redisTemplate.opsForValue().increment(redisKey, 1);
     }
 
-    @Scheduled(cron = "0 0 4 * * ?")
+    @Scheduled(cron = "${task.schedule.cron.imageUsageStatisticService}")
     @Transactional
     public void syncSiUsageToMySQL() {
         Set<String> keys = redisTemplate.keys("si:usage:*");

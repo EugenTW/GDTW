@@ -13,11 +13,9 @@ import java.io.IOException;
 public class ImgShareController {
 
     private final ImgShareService imgShareService;
-    private final DailyStatisticService dailyStatisticService;
 
-    public ImgShareController(ImgShareService imgShareService, DailyStatisticService dailyStatisticService) {
+    public ImgShareController(ImgShareService imgShareService) {
         this.imgShareService = imgShareService;
-        this.dailyStatisticService = dailyStatisticService;
     }
 
     @GetMapping("/img_upload")
