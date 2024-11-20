@@ -6,12 +6,18 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
-import java.security.Key;
+import java.security.KeyPair;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.util.Date;
 
-public class JwtUtil {
-    private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-    private static final long EXPIRATION_TIME = 15 * 60 * 1000; // 15 mins
+public class JwtService {
+
+    // 生成密鑰對（私鑰和公鑰）
+    private static final KeyPair keyPair = Keys.keyPairFor(SignatureAlgorithm.RS256);
+    private static final PrivateKey privateKey = keyPair.getPrivate();
+    private static final PublicKey publicKey = keyPair.getPublic();
+    private static final long EXPIRATION_TIME = 15 * 60 * 1000;       // 15 mins
 
     // Generate JWT Token with an additional 'stage' claim
     public static String generateToken(String code, String stage) {
@@ -20,7 +26,7 @@ public class JwtUtil {
                 .claim("stage", stage)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(key)
+                .signWith(privateKey, SignatureAlgorithm.RS256)
                 .compact();
     }
 
@@ -31,7 +37,7 @@ public class JwtUtil {
         }
         try {
             return Jwts.parserBuilder()
-                    .setSigningKey(key)
+                    .setSigningKey(publicKey)
                     .build()
                     .parseClaimsJws(token)
                     .getBody();

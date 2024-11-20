@@ -3,7 +3,7 @@ package com.GDTW.imgshare.model;
 import com.GDTW.dailystatistic.model.DailyStatisticService;
 import com.GDTW.general.service.ImgFilenameEncoderDecoderService;
 import com.GDTW.general.service.ImgIdEncoderDecoderService;
-import com.GDTW.general.service.JwtUtil;
+import com.GDTW.general.service.JwtService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
@@ -168,7 +168,7 @@ public class ImgShareService {
             boolean requiresPassword = album.getSiaPassword() != null && !album.getSiaPassword().isEmpty();
             response.put("requiresPassword", requiresPassword);
             if (!requiresPassword) {
-                String token = JwtUtil.generateToken(code, "noPassword");
+                String token = JwtService.generateToken(code, "noPassword");
                 response.put("token", token);
             }
         } else {
@@ -197,7 +197,7 @@ public class ImgShareService {
             boolean requiresPassword = image.getSiPassword() != null && !image.getSiPassword().isEmpty();
             response.put("requiresPassword", requiresPassword);
             if (!requiresPassword) {
-                String token = JwtUtil.generateToken(code, "noPassword");
+                String token = JwtService.generateToken(code, "noPassword");
                 response.put("token", token);
             }
         } else {
@@ -220,7 +220,7 @@ public class ImgShareService {
             String storedPassword = album.getSiaPassword();
             if (storedPassword.equals(password)) {
                 response.put("checkPassword", true);
-                String token = JwtUtil.generateToken(code, "passwordPassed");
+                String token = JwtService.generateToken(code, "passwordPassed");
                 response.put("token", token);
             } else {
                 response.put("checkPassword", false);
@@ -243,7 +243,7 @@ public class ImgShareService {
             String storedPassword = image.getSiPassword();
             if (storedPassword.equals(password)) {
                 response.put("checkPassword", true);
-                String token = JwtUtil.generateToken(code, "passwordPassed");
+                String token = JwtService.generateToken(code, "passwordPassed");
                 response.put("token", token);
             } else {
                 response.put("checkPassword", false);
@@ -258,15 +258,15 @@ public class ImgShareService {
     public Map<String, Object> getAlbumImages(String token) {
         Map<String, Object> response = new HashMap<>();
 
-        Claims claims = JwtUtil.validateToken(token);
+        Claims claims = JwtService.validateToken(token);
         if (claims == null) {
-            response.put("error", "Invalid or expired token.");
+            response.put("error", "非法或失效的令牌。 - Invalid or expired token.");
             return response;
         }
 
         String stage = claims.get("stage", String.class);
-        if (!"passwordPassed".equals(stage)) {
-            response.put("error", "Invalid stage.");
+        if (!"passwordPassed".equals(stage)&&!"noPassword".equals(stage)) {
+            response.put("error", "未授權的訪問，請重新載入頁面。 - Unauthorized access, please refresh your browser.");
             return response;
         }
 
@@ -336,15 +336,15 @@ public class ImgShareService {
     public Map<String, Object> getSingleImage(String token) {
         Map<String, Object> response = new HashMap<>();
 
-        Claims claims = JwtUtil.validateToken(token);
+        Claims claims = JwtService.validateToken(token);
         if (claims == null) {
-            response.put("error", "Invalid or expired token.");
+            response.put("error", "非法或失效的令牌。 - Invalid or expired token.");
             return response;
         }
 
         String stage = claims.get("stage", String.class);
-        if (!"passwordPassed".equals(stage)) {
-            response.put("error", "Invalid stage.");
+        if (!"passwordPassed".equals(stage)&&!"noPassword".equals(stage)) {
+            response.put("error", "未授權的訪問，請重新載入頁面。 - Unauthorized access, please refresh your browser.");
             return response;
         }
 

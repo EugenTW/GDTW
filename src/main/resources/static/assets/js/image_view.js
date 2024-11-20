@@ -1,3 +1,5 @@
+let authToken;
+
 document.addEventListener('DOMContentLoaded', async function () {
     const path = window.location.pathname;
     const isAlbumMode = path.startsWith('/a/');
@@ -34,7 +36,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         } else {
             // No password needed, store the token and initialize the page
             if (result.token) {
-                localStorage.setItem('authToken', result.token);
+                authToken = result.token;
             }
             initPage(downloadApiUrl, isAlbumMode);
         }
@@ -46,20 +48,15 @@ document.addEventListener('DOMContentLoaded', async function () {
 // Initialize page and fetch images
 async function initPage(downloadApiUrl, isAlbumMode) {
     hidePasswordModal();
-    const token = localStorage.getItem('authToken');
-
-    if (!token) {
-        return;
-    }
 
     try {
         const response = await fetch(downloadApiUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${authToken}`
             },
-            body: JSON.stringify({ token: token })
+            body: JSON.stringify({ token: authToken })
         });
 
         const result = await response.json();
@@ -134,7 +131,7 @@ function displayImages(data) {
         const openLink = document.createElement('a');
         openLink.classList.add('open-link-button');
         openLink.textContent = '🔎';
-        openLink.title='全尺寸 - Full Size'
+        openLink.title='原始尺寸 - Full Size'
         openLink.href = image.imageUrl;
         openLink.target = '_blank';
         openLink.rel = 'noopener noreferrer';
@@ -176,8 +173,6 @@ function displaySingleImage(data) {
     const imgElement = document.createElement('img');
     const imageUrl = data.imageUrl.startsWith('http') ? data.imageUrl : new URL(data.imageUrl, window.location.origin).href;
     imgElement.src = imageUrl;
-
-
     imgElement.alt = data.siName;
     imgElement.id = 'photo-img';
 
@@ -198,7 +193,7 @@ function displaySingleImage(data) {
     const openLink = document.createElement('a');
     openLink.classList.add('open-link-button');
     openLink.textContent = '🔎';
-    openLink.title = '全尺寸 - Full Size';
+    openLink.title = '原始尺寸 - Full Size';
     openLink.href = imageUrl;
     openLink.target = '_blank';
     openLink.rel = 'noopener noreferrer';
@@ -275,7 +270,7 @@ function setupPasswordValidation(passwordApiUrl, code, isAlbumMode) {
 
             if (result.checkPassword) {
                 if (result.token) {
-                    localStorage.setItem('authToken', result.token);
+                    authToken = result.token;
                 }
                 hidePasswordModal();
                 initPage(isAlbumMode ? '/is_api/downloadAlbumImages' : '/is_api/downloadSingleImage', isAlbumMode);
@@ -336,5 +331,3 @@ function showCopiedMessage() {
         document.body.removeChild(toast);
     }, 1500);
 }
-
-
