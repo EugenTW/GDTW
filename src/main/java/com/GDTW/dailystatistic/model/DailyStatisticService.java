@@ -169,20 +169,15 @@ public class DailyStatisticService {
 
 
 //==========================
-
+@Scheduled(cron = "${task.schedule.cron.dailyGetEachServiceStatistics}")
     @Transactional(readOnly = true)
     public ChartDataDTO calculateRecentStatistics() {
-        // 获取当前日期
+
         Date today = new Date();
         Pageable pageable = PageRequest.of(0, 365);
-
-        // 从数据库中查询最近 365 天的数据
         List<DailyStatisticVO> statistics = dailyStatisticJpa.findRecentStatistics(today, pageable);
-
-        // 初始化 DTO
         ChartDataDTO chartData = new ChartDataDTO();
 
-        // 遍历查询结果并填充到 DTO
         for (DailyStatisticVO stat : statistics) {
             chartData.addCreatedData("url", stat.getDsShortUrlCreated());
             chartData.addCreatedData("album", stat.getDsImgAlbumCreated());
@@ -195,23 +190,18 @@ public class DailyStatisticService {
         return chartData;
     }
 
-    /**
-     * 获取最近 365 天的统计数据并打印到控制台。
-     */
     public ChartDataDTO getRecentStatisticsForCharts() {
-        // 调用计算方法
-        ChartDataDTO chartData = calculateRecentStatistics();
 
-        // 打印输出
-        for (String type : chartData.getData().keySet()) {
-            for (String category : chartData.getData().get(type).keySet()) {
-                List<Integer> values = chartData.getData().get(type).get(category);
-                System.out.printf("Type: %s, Category: %s, Values: %s%n", type, category, values);
-            }
-        }
+        ChartDataDTO chartData = calculateRecentStatistics();
 
         return chartData;
     }
+
+
+
+
+
+
 
 
 
