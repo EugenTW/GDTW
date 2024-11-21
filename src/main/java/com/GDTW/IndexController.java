@@ -41,6 +41,11 @@ public class IndexController {
         return "forward:/contact_us.html";
     }
 
+    @GetMapping("/show_statistics")
+    public String showStatistics() {
+        return "forward:/show_statistics.html";
+    }
+
     @GetMapping("/sitemap.xml")
     public ResponseEntity<Resource> getSitemap() {
         // Determine the base directory (current working directory)
