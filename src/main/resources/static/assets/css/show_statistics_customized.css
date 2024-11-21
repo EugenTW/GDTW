@@ -2,3 +2,31 @@ hr{
     margin-top: 5px;
     margin-bottom: 5px;
 }
+
+.final-cover {
+    width: 100%; 
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    margin: 0 auto; 
+}
+
+.final-cover .image {
+    width: 550px;
+    display: flex;
+    justify-content: center; 
+}
+
+.final-cover .image img {
+    margin-top: 10px;
+    width: 100%;
+    height: auto; 
+    object-fit: contain; 
+    border-radius: 5px; 
+}
+
+canvas {
+    background-color: rgb(29, 2, 29) !important;
+    border-radius: 5px;
+    border: 3px solid #7a0a64;
+}

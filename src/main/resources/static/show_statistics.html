@@ -56,27 +56,27 @@
                                             <tbody>
                                                 <tr>
                                                     <td>短網址建立次數 - Total Short URLs Created</td>
-                                                    <td id="total-short-urls-created">XX</td>
+                                                    <td id="total-short-urls-created"></td>
                                                 </tr>
                                                 <tr>
                                                     <td>短網址使用次數 - Total Short URLs Used</td>
-                                                    <td id="total-short-urls-used">XX</td>
+                                                    <td id="total-short-urls-used"></td>
                                                 </tr>
                                                 <tr>
                                                     <td>相簿建立次數 - Total Image Albums Created</td>
-                                                    <td id="total-image-albums-created">XX</td>
+                                                    <td id="total-image-albums-created"></td>
                                                 </tr>
                                                 <tr>
                                                     <td>相簿訪問次數 - Total Image Albums Visited</td>
-                                                    <td id="total-image-albums-visited">XX</td>
+                                                    <td id="total-image-albums-visited"></td>
                                                 </tr>
                                                 <tr>
                                                     <td>圖片建立次數 - Total Images Created</td>
-                                                    <td id="total-images-created">XX</td>
+                                                    <td id="total-images-created"></td>
                                                 </tr>
                                                 <tr>
                                                     <td>圖片訪問次數 - Total Images Visited</td>
-                                                    <td id="total-images-visited">XX</td>
+                                                    <td id="total-images-visited"></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -87,8 +87,14 @@
 
                             <h3>每日服務次數統計圖 - Daily Service Count Statistics Chart</h3>
 
+                            <div id="chart-container">
+                                <h4>服務建立統計 - Service Creation Statistics</h4>
+                                <canvas id="created-chart" style="margin-bottom: 30px;"></canvas>
+                                <canvas id="used-chart" style="margin-bottom: 30px;"></canvas>
+                            </div>
 							
                             <hr>
+                            <h4>服務使用統計 - Service Usage Statistics</h4>
 							<div class="final-cover">
 								<span class="image fit"><img src="/images/show_statistics_pic01.webp" alt="" /></span>	
 							</div>							
@@ -114,6 +120,7 @@
 			<script src="/assets/js/breakpoints.min.js"></script>
 			<script src="/assets/js/util.js"></script>
 			<script src="/assets/js/main.js"></script>
+            <script src="/assets/js/chart.umd.min.js"></script>
 			<script src="/assets/js/index_customized.js"></script>
             <script src="/assets/js/show_statistics.js"></script>
 

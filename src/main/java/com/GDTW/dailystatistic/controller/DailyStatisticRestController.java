@@ -1,5 +1,6 @@
 package com.GDTW.dailystatistic.controller;
 
+import com.GDTW.dailystatistic.model.ChartDataDTO;
 import com.GDTW.dailystatistic.model.DailyStatisticService;
 import com.GDTW.dailystatistic.model.TotalServiceStatisticsDTO;
 import org.springframework.http.ResponseEntity;
@@ -26,9 +27,10 @@ public class DailyStatisticRestController {
         return ResponseEntity.ok(statistics);
     }
 
-
-
-
-
+    @PostMapping("/recent_statistics")
+    public ResponseEntity<ChartDataDTO> getRecentStatistics() {
+        ChartDataDTO chartData = dailyStatisticService.getRecentStatisticsForCharts();
+        return ResponseEntity.ok(chartData);
+    }
 
 }
