@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -46,16 +47,16 @@ public class ImgShareService {
     private final ShareImgAlbumJpa shareImgAlbumJpa;
     private final ShareImgJpa shareImgJpa;
     private final DailyStatisticService dailyStatisticService;
-    private final RedisTemplate<String, String> redisTemplate;
+    private final RedisTemplate<String, String> redisStringStringTemplate;
     private ObjectMapper objectMapper;
     private static final Logger logger = LoggerFactory.getLogger(ImgShareService.class);
     private static final Duration TTL_DURATION = Duration.ofHours(36);
 
-    public ImgShareService(ShareImgAlbumJpa shareImgAlbumJpa, ShareImgJpa shareImgJpa, DailyStatisticService dailyStatisticService, RedisTemplate<String, String> redisTemplate, ObjectMapper objectMapper) {
+    public ImgShareService(ShareImgAlbumJpa shareImgAlbumJpa, ShareImgJpa shareImgJpa, DailyStatisticService dailyStatisticService, @Qualifier("redisStringStringTemplate") RedisTemplate<String, String> redisTemplate, ObjectMapper objectMapper) {
         this.shareImgAlbumJpa = shareImgAlbumJpa;
         this.shareImgJpa = shareImgJpa;
         this.dailyStatisticService = dailyStatisticService;
-        this.redisTemplate = redisTemplate;
+        this.redisStringStringTemplate = redisTemplate;
         this.objectMapper = objectMapper;
     }
 
@@ -402,17 +403,17 @@ public class ImgShareService {
 
     public void countAlbumUsage(Integer siaId) {
         String redisKey = "sia:usage:" + siaId; // prefix 'sia:usage:'
-        redisTemplate.opsForValue().increment(redisKey, 1);
+        redisStringStringTemplate.opsForValue().increment(redisKey, 1);
     }
 
     @Scheduled(cron = "${task.schedule.cron.albumUsageStatisticService}")
     @Transactional
     public void syncSiaUsageToMySQL() {
-        Set<String> keys = redisTemplate.keys("sia:usage:*");
+        Set<String> keys = redisStringStringTemplate.keys("sia:usage:*");
         if (keys != null) {
             for (String key : keys) {
                 Integer siaId = Integer.parseInt(key.split(":")[2]);
-                Integer usageCount = Integer.parseInt(redisTemplate.opsForValue().get(key));
+                Integer usageCount = Integer.parseInt(redisStringStringTemplate.opsForValue().get(key));
 
                 Optional<ShareImgAlbumVO> optionalSiaObject = shareImgAlbumJpa.findById(siaId);
                 if (optionalSiaObject.isPresent()) {
@@ -420,7 +421,7 @@ public class ImgShareService {
                     shareImgAlbumVO.setSiaTotalVisited(shareImgAlbumVO.getSiaTotalVisited()+ usageCount);
                     shareImgAlbumJpa.save(shareImgAlbumVO);
                     // delete recorded data in Redis
-                    redisTemplate.delete(key);
+                    redisStringStringTemplate.delete(key);
 
                 }
             }
@@ -431,17 +432,17 @@ public class ImgShareService {
 
     public void countImageUsage(Integer siId) {
         String redisKey = "si:usage:" + siId; // prefix 'si:usage:'
-        redisTemplate.opsForValue().increment(redisKey, 1);
+        redisStringStringTemplate.opsForValue().increment(redisKey, 1);
     }
 
     @Scheduled(cron = "${task.schedule.cron.imageUsageStatisticService}")
     @Transactional
     public void syncSiUsageToMySQL() {
-        Set<String> keys = redisTemplate.keys("si:usage:*");
+        Set<String> keys = redisStringStringTemplate.keys("si:usage:*");
         if (keys != null) {
             for (String key : keys) {
                 Integer siId = Integer.parseInt(key.split(":")[2]);
-                Integer usageCount = Integer.parseInt(redisTemplate.opsForValue().get(key));
+                Integer usageCount = Integer.parseInt(redisStringStringTemplate.opsForValue().get(key));
 
                 Optional<ShareImgVO> optionalSiObject = shareImgJpa.findById(siId);
                 if (optionalSiObject.isPresent()) {
@@ -449,7 +450,7 @@ public class ImgShareService {
                     shareImgVO.setSiTotalVisited(shareImgVO.getSiTotalVisited()+ usageCount);
                     shareImgJpa.save(shareImgVO);
                     // delete recorded data in Redis
-                    redisTemplate.delete(key);
+                    redisStringStringTemplate.delete(key);
                 }
             }
         }
@@ -504,12 +505,12 @@ public class ImgShareService {
     // Save Json to Redis
     public void saveResponseToRedis(String key, Map<String, Object> response) throws JsonProcessingException {
         String jsonResponse = objectMapper.writeValueAsString(response);
-        redisTemplate.opsForValue().set(key, jsonResponse, TTL_DURATION);
+        redisStringStringTemplate.opsForValue().set(key, jsonResponse, TTL_DURATION);
     }
 
     // Reverse Redis to Json
     public Map<String, Object> getResponseFromRedis(String key) throws JsonProcessingException {
-        String jsonResponse = redisTemplate.opsForValue().get(key);
+        String jsonResponse = redisStringStringTemplate.opsForValue().get(key);
         if (jsonResponse == null) return null;
         return objectMapper.readValue(jsonResponse, Map.class);
     }

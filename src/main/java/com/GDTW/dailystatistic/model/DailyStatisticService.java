@@ -3,6 +3,7 @@ package com.GDTW.dailystatistic.model;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -24,9 +25,13 @@ public class DailyStatisticService {
     private static final Duration TTL_DURATION = Duration.ofHours(25);
     private final DailyStatisticJpa dailyStatisticJpa;
 
-    public DailyStatisticService(RedisTemplate<String, String> redisTemplateA, RedisTemplate<String, Integer> redisTemplateB, ObjectMapper objectMapper, DailyStatisticJpa dailyStatisticJpa) {
-        this.redisStringStringTemplate = redisTemplateA;
-        this.redisStringIntegerTemplate = redisTemplateB;
+    public DailyStatisticService(
+            @Qualifier("redisStringStringTemplate") RedisTemplate<String, String> redisStringStringTemplate,
+            @Qualifier("redisStringIntegerTemplate") RedisTemplate<String, Integer> redisStringIntegerTemplate,
+            ObjectMapper objectMapper,
+            DailyStatisticJpa dailyStatisticJpa) {
+        this.redisStringStringTemplate = redisStringStringTemplate;
+        this.redisStringIntegerTemplate = redisStringIntegerTemplate;
         this.objectMapper = objectMapper;
         this.dailyStatisticJpa = dailyStatisticJpa;
     }

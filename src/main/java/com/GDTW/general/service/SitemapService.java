@@ -38,6 +38,7 @@ public class SitemapService {
         sitemapGen.addUrl("https://gdtw.org/error");
         sitemapGen.addUrl("https://gdtw.org/image_view.html");
         sitemapGen.addUrl("https://gdtw.org/image_share.html");
+        sitemapGen.addUrl("https://gdtw.org/show_statistics.html");
 
         // Write the sitemap.xml file to the logs directory
         sitemapGen.write();

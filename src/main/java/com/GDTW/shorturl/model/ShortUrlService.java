@@ -4,6 +4,7 @@ import com.GDTW.general.service.IdEncoderDecoderService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -18,13 +19,13 @@ public class ShortUrlService {
     private static final Logger logger = LoggerFactory.getLogger(ShortUrlService.class);
 
     private final ShortUrlJpa shortUrlJpa;
-    private final RedisTemplate<String, String> redisTemplate;
+    private final RedisTemplate<String, String> redisStringStringTemplate;
 
     private static final Duration TTL_DURATION = Duration.ofHours(36);
 
-    public ShortUrlService(ShortUrlJpa shortUrlJpa, RedisTemplate<String, String> redisTemplate) {
+    public ShortUrlService(ShortUrlJpa shortUrlJpa, @Qualifier("redisStringStringTemplate") RedisTemplate<String, String> redisTemplate) {
         this.shortUrlJpa = shortUrlJpa;
-        this.redisTemplate = redisTemplate;
+        this.redisStringStringTemplate = redisTemplate;
     }
     // ==================================================================
     // Service methods
@@ -45,8 +46,8 @@ public class ShortUrlService {
         // Check Redis cache first
         String redisKeyForID = "su:suId:" + code;
         String redisKeyForSafe = "su:suSafe:" + code;
-        String cachedOriginalUrl = redisTemplate.opsForValue().get(redisKeyForID);
-        String cachedOriginalUrlSafe = redisTemplate.opsForValue().get(redisKeyForSafe);
+        String cachedOriginalUrl = redisStringStringTemplate.opsForValue().get(redisKeyForID);
+        String cachedOriginalUrlSafe = redisStringStringTemplate.opsForValue().get(redisKeyForSafe);
         if (cachedOriginalUrl != null && cachedOriginalUrlSafe != null) {
             countShortUrlUsage(suId);
             return new AbstractMap.SimpleEntry<>(cachedOriginalUrl, cachedOriginalUrlSafe);
@@ -70,12 +71,12 @@ public class ShortUrlService {
     // Redis caching methods
     private void cacheShortUrl(String encodedSuId, String originalUrl) {
         String redisKey = "su:suId:" + encodedSuId; // prefix 'su:suId:'
-        redisTemplate.opsForValue().set(redisKey, originalUrl, TTL_DURATION);
+        redisStringStringTemplate.opsForValue().set(redisKey, originalUrl, TTL_DURATION);
     }
 
     private void cacheShortUrlSafety(String encodedSuId, String safeUrlResult) {
         String redisKey = "su:suSafe:" + encodedSuId;// prefix 'su:suSafe:'
-        redisTemplate.opsForValue().set(redisKey, safeUrlResult, TTL_DURATION);
+        redisStringStringTemplate.opsForValue().set(redisKey, safeUrlResult, TTL_DURATION);
     }
 
     // ==================================================================
@@ -116,7 +117,7 @@ public class ShortUrlService {
         Integer suId = toDecodeSuId(code);
         // Check Redis cache first
         String redisKey = "su:suId:" + code; // add prefix 'su:'
-        String cachedOriginalUrl = redisTemplate.opsForValue().get(redisKey);
+        String cachedOriginalUrl = redisStringStringTemplate.opsForValue().get(redisKey);
         if (cachedOriginalUrl != null) {
             return true;
         }
@@ -155,17 +156,17 @@ public class ShortUrlService {
 
     public void countShortUrlUsage(Integer suId) {
         String redisKey = "su:usage:" + suId; // prefix 'su:usage:'
-        redisTemplate.opsForValue().increment(redisKey, 1);
+        redisStringStringTemplate.opsForValue().increment(redisKey, 1);
     }
 
     @Scheduled(cron = "${task.schedule.cron.shortUtlUsageStatisticService}")
     @Transactional
     public void syncUsageToMySQL() {
-        Set<String> keys = redisTemplate.keys("su:usage:*");
+        Set<String> keys = redisStringStringTemplate.keys("su:usage:*");
         if (keys != null) {
             for (String key : keys) {
                 Integer suId = Integer.parseInt(key.split(":")[2]);
-                Integer usageCount = Integer.parseInt(redisTemplate.opsForValue().get(key));
+                Integer usageCount = Integer.parseInt(redisStringStringTemplate.opsForValue().get(key));
 
                 Optional<ShortUrlVO> optionalShortUrl = shortUrlJpa.findById(suId);
                 if (optionalShortUrl.isPresent()) {
@@ -173,7 +174,7 @@ public class ShortUrlService {
                     shortUrl.setSuTotalUsed(shortUrl.getSuTotalUsed() + usageCount);
                     shortUrlJpa.save(shortUrl);
                     // delete recorded data in Redis
-                    redisTemplate.delete(key);
+                    redisStringStringTemplate.delete(key);
                 }
             }
         }
