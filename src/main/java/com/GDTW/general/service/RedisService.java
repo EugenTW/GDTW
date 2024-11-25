@@ -2,6 +2,7 @@ package com.GDTW.general.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -14,11 +15,15 @@ public class RedisService {
 
     private final RedisTemplate<String, ?> redisTemplate;
 
-    public RedisService(RedisTemplate<String, ?> redisTemplate) {
+    public RedisService(@Qualifier("universalRedisTemplate") RedisTemplate<String, ?> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
-    public void clearRedis() {
+    public void clearRedis(boolean confirm) {
+        if (!confirm) {
+            logger.warn("Redis flush skipped. Confirmation flag not set.");
+            return;
+        }
         RedisConnectionFactory connectionFactory = redisTemplate.getConnectionFactory();
         if (connectionFactory == null) {
             logger.warn("Redis connection factory is null. Skipping Redis flush.");

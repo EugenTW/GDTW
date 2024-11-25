@@ -43,7 +43,8 @@ public class ShutdownListener implements ApplicationListener<ContextClosedEvent>
             imgShareService.syncSiUsageToMySQL();
 
             // Clear Redis data
-            redisService.clearRedis();
+            boolean confirm = true;
+            redisService.clearRedis(confirm);
 
             logger.info("All Redis statistic data are saved into MySQL. Shutdown process completed successfully.");
         } catch (Exception e) {

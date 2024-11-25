@@ -35,7 +35,8 @@ public class GdtwApplication {
     public void onStartup() {
         try {
             sitemapService.generateSitemap();
-            redisService.clearRedis();
+            boolean confirm = true;
+            redisService.clearRedis(confirm);
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
