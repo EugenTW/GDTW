@@ -1,6 +1,6 @@
-$(document).ready(function() {
+$(document).ready(function () {
     // Validate the URL input on blur event
-    $("#long_url").on('blur', function() {
+    $("#long_url").on('blur', function () {
         var url = $(this).val();
         var httpsRegex = /^https:\/\/[a-zA-Z0-9\-\.]+\.[a-z]{2,}(:\d+)?(\/.*)?$/;
 
@@ -17,7 +17,7 @@ $(document).ready(function() {
     });
 
     // Handle "Generate Short URL" button click
-    $("#generate").click(function() {
+    $("#generate").on('click', function () {
         const longUrl = $("#long_url").val();
         if (!longUrl) {
             alert("請輸入一個網址 / Please enter a valid URL.");
@@ -34,7 +34,7 @@ $(document).ready(function() {
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({ originalUrl: longUrl }),
-                success: function(response) {
+                success: function (response) {
                     // Process the successful response
                     if (response && typeof response === "object") {
                         const shortUrl = response.fullShortUrl;
@@ -68,7 +68,7 @@ $(document).ready(function() {
                         $("#qrcode").css("display", "none"); // Hide QR Code
                     }
                 },
-                error: function(xhr) {
+                error: function (xhr) {
                     // Handle 429 Too Many Requests response
                     if (xhr.status === 429) {
                         attempt++;
@@ -112,22 +112,23 @@ function copyToClipboard() {
 
 // Display alert message in the center of the screen
 function showAlert(message, color) {
+    const alertDiv = document.createElement("div");
     alertDiv.textContent = message;
-    alertDiv.style.position = "fixed"; 
+    alertDiv.style.position = "fixed";
     alertDiv.style.top = "50%";
     alertDiv.style.left = "50%";
     alertDiv.style.transform = "translate(-50%, -50%)";
-    alertDiv.style.backgroundColor = "#C10066"; 
-    alertDiv.style.color = "#FFFFFF"; 
+    alertDiv.style.backgroundColor = color || "#C10066";
+    alertDiv.style.color = "#FFFFFF";
     alertDiv.style.padding = "15px";
     alertDiv.style.borderColor = "#FFB7DD";
-    alertDiv.style.borderWidth ="3px"
+    alertDiv.style.borderWidth = "3px";
     alertDiv.style.borderRadius = "5px";
-    alertDiv.style.zIndex = "9999"; 
+    alertDiv.style.zIndex = "9999";
     document.body.appendChild(alertDiv);
 
     // Remove alert after 1 second
-    setTimeout(function() {
+    setTimeout(function () {
         document.body.removeChild(alertDiv);
     }, 1000);
 }

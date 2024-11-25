@@ -3,6 +3,7 @@ package com.GDTW.imgshare.model;
 import com.GDTW.dailystatistic.model.DailyStatisticService;
 import com.GDTW.general.service.ImgFilenameEncoderDecoderService;
 import com.GDTW.general.service.ImgIdEncoderDecoderService;
+import com.GDTW.general.service.InsufficientDiskSpaceException;
 import com.GDTW.general.service.JwtService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.FileStore;
 import java.util.Map;
 
 import java.io.IOException;
@@ -38,6 +40,9 @@ public class ImgShareService {
     @Value("${app.imageNginxStaticPath}")
     private String imageNginxStaticPath;
 
+    @Value("${app.min-disk-space}")
+    private String minDiskSpace;
+
     private final ShareImgAlbumJpa shareImgAlbumJpa;
     private final ShareImgJpa shareImgJpa;
     private final DailyStatisticService dailyStatisticService;
@@ -58,6 +63,12 @@ public class ImgShareService {
     // Writing methods
     @Transactional
     public Map<String, String> createNewAlbumAndImage(AlbumCreationRequestDTO requestDTO) {
+        long requiredSpace = parseDiskSpace(minDiskSpace);
+        if (!hasSufficientDiskSpace(imageStoragePath, requiredSpace)) {
+            logger.error("Insufficient disk space at path {}. At least {} is required.", imageStoragePath, minDiskSpace);
+            throw new InsufficientDiskSpaceException("Insufficient disk space. The server has reached its capacity limit.");
+        }
+
         ShareImgAlbumVO createdAlbumVO = createNewAlbumInMySQL(requestDTO);
         createNewImagesInMySQL(requestDTO, createdAlbumVO);
         Map<String, String> response = new HashMap<>();
@@ -350,7 +361,6 @@ public class ImgShareService {
 
         String code = claims.getSubject();
         Integer siImageId = toDecodeId(code);
-
         String redisKey = "singleImage:" + siImageId;
 
         try {
@@ -375,7 +385,6 @@ public class ImgShareService {
         response.put("siName", image.getSiName());
         response.put("siNsfw", image.getSiNsfw());
         String imageUrl = baseUrlForImageDownload + imageNginxStaticPath + image.getSiName();
-
         response.put("imageUrl", imageUrl);
 
         try {
@@ -464,6 +473,32 @@ public class ImgShareService {
 
     public static Integer toDecodeFilename(String encodeFilename) {
         return ImgFilenameEncoderDecoderService.decodeImgFilename(encodeFilename);
+    }
+
+    private boolean hasSufficientDiskSpace(String path, long requiredSpace) {
+        try {
+            FileStore fileStore = Files.getFileStore(Paths.get(path));
+            long usableSpace = fileStore.getUsableSpace();
+            return usableSpace >= requiredSpace;
+        } catch (IOException e) {
+            logger.error("Failed to check disk space for path: {}", path);
+            return false;
+        }
+    }
+
+    private long parseDiskSpace(String space) {
+        try {
+            if (space.endsWith("GB")) {
+                return Long.parseLong(space.replace("GB", "").trim()) * 1024 * 1024 * 1024;
+            } else if (space.endsWith("MB")) {
+                return Long.parseLong(space.replace("MB", "").trim()) * 1024 * 1024;
+            } else {
+                throw new IllegalArgumentException("Invalid disk space format: " + space);
+            }
+        } catch (NumberFormatException e) {
+            logger.error("Invalid disk space value: {}", space);
+            throw new IllegalArgumentException("Invalid disk space format: " + space);
+        }
     }
 
     // Save Json to Redis

@@ -47,7 +47,7 @@ public class ShutdownListener implements ApplicationListener<ContextClosedEvent>
 
             logger.info("All Redis statistic data are saved into MySQL. Shutdown process completed successfully.");
         } catch (Exception e) {
-            logger.error("Error during shutdown process: " + e.getMessage(), e);
+            logger.error("Error during saving Redis Statistic Data before shutdown process: " + e.getMessage(), e);
         }
     }
 }

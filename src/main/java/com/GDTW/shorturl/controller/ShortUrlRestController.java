@@ -12,14 +12,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/su_api")
 public class ShortUrlRestController {
     private static final Logger logger = LoggerFactory.getLogger(ShortUrlRestController.class);
-    private final RateLimiter shortUrlCreationRateLimiter = RateLimiter.create(50.0); // 50 requests per second
+    private final RateLimiter CreatShortUrlRateLimiter = RateLimiter.create(60.0); // 60 requests per second
+    private final RateLimiter GetOriginalUrlRateLimiter = RateLimiter.create(600.0); // 600 requests per second
     private final ShortUrlService shortUrlService;
     private final DailyStatisticService statisticService;
     private final SafeBrowsingService safeBrowsingService;
@@ -36,7 +36,7 @@ public class ShortUrlRestController {
     @PostMapping("/create_new_short_url")
     public ResponseEntity<ReturnCreatedShortUrlDTO> createNewShortUrl(@RequestBody CreateShortUrlRequestDTO shortUrlRequest, HttpServletRequest request) {
 
-        if (!shortUrlCreationRateLimiter.tryAcquire()) {
+        if (!CreatShortUrlRateLimiter.tryAcquire()) {
             ReturnCreatedShortUrlDTO errorResponse = new ReturnCreatedShortUrlDTO(null, null, "請求過於頻繁! 請稍後再試! Too many requests! Please try again later.");
             logger.warn("Short Url creation limit exceeded.");
             return ResponseEntity.status(429).body(errorResponse);
@@ -78,6 +78,13 @@ public class ShortUrlRestController {
 
     @PostMapping("/get_original_url")
     public ResponseEntity<ReturnOriginalUrlDTO> getOriginalUrl(@RequestBody GetOriginalUrlDTO codeRequest) {
+
+        if (!GetOriginalUrlRateLimiter.tryAcquire()) {
+            ReturnOriginalUrlDTO errorResponse = new ReturnOriginalUrlDTO(null, null, "請求過於頻繁! 請稍後再試! Too many requests! Please try again later.");
+            logger.warn("Original Url request limit exceeded.");
+            return ResponseEntity.status(429).body(errorResponse);
+        }
+
         try {
             String code = codeRequest.getCode();
             Map.Entry<String, String> result = shortUrlService.getOriginalUrl(code);

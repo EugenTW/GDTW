@@ -165,19 +165,23 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (response.ok) {
                     const result = await response.json();
                     const siaCode = result.sia_code;
-
                     window.location.href = `/a/${siaCode}`;
                 } else if (response.status === 429) {
                     console.warn(`Rate limit hit. Retry attempt ${attempt + 1}`);
                     if (attempt < maxRetries) {
                         attempt++;
-                        setTimeout(tryUpload, 1000); // Retry after 1 second
+                        setTimeout(tryUpload, 1000); 
                     } else {
                         alert("伺服器忙碌，稍後再試。 - Server busy. Try later.");
                         $("#upload-overlay").hide();
                     }
+                } else if (response.status === 507) {
+                    const errorMessage = "伺服器容量不足，暫停此項服務。 - Insufficient server storage. This service is suspended.";
+                    alert(`上傳失敗 - Upload failed: ${errorMessage}`);
+                    $("#upload-overlay").hide();
                 } else {
-                    alert("上傳失敗 - Upload failed: " + response.statusText);
+                    const errorMessage = "未知錯誤 - Unknown error.";
+                    alert(`上傳失敗 - Upload failed: ${errorMessage}`);
                     $("#upload-overlay").hide();
                 }
             } catch (error) {
