@@ -1,6 +1,7 @@
 package com.GDTW.imgshare.controller;
 
 import com.GDTW.dailystatistic.model.DailyStatisticService;
+import com.GDTW.general.service.InsufficientDiskSpaceException;
 import com.GDTW.imgshare.model.AlbumCreationRequestDTO;
 import com.GDTW.imgshare.model.ImgShareService;
 import com.google.common.util.concurrent.RateLimiter;
@@ -53,9 +54,21 @@ public class ImgShareRestController {
         // Get client IP address
         String originalIp = getClientIp(request);
         AlbumCreationRequestDTO requestDTO = new AlbumCreationRequestDTO(files, expiryDays, nsfw, password, originalIp);
-        Map<String, String> response = imgShareService.createNewAlbumAndImage(requestDTO);
 
-        return ResponseEntity.ok(response);
+        try {
+            Map<String, String> response = imgShareService.createNewAlbumAndImage(requestDTO);
+            return ResponseEntity.ok(response);
+        } catch (InsufficientDiskSpaceException e) {
+            logger.error("Failed to create album: {}", e.getMessage());
+            Map<String, String> response = new HashMap<>();
+            response.put("error", "The server has reached its maximum capacity limit. Image Share service is temporarily suspended.");
+            return ResponseEntity.status(507).body(response);
+        } catch (Exception e) {
+            logger.error("Unexpected error occurred: {}", e.getMessage());
+            Map<String, String> response = new HashMap<>();
+            response.put("error", "An unexpected error occurred. Please try again later.");
+            return ResponseEntity.status(500).body(response);
+        }
     }
 
     @PostMapping("/isAlbumPasswordNeeded")
