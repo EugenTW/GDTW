@@ -21,9 +21,9 @@ import java.util.Map;
 @RestController
 @RequestMapping("/is_api")
 public class ImgShareRestController {
-    private final RateLimiter albumCreationRateLimiter = RateLimiter.create(20.0); // 20 requests per second
-    private final RateLimiter albumPasswordRateLimiter = RateLimiter.create(50.0); // 50 requests per second
-    private final RateLimiter imagePasswordRateLimiter = RateLimiter.create(50.0); // 50 requests per second
+    private final RateLimiter CreateImageAlbumRateLimiter = RateLimiter.create(25.0); // 25 requests per second
+    private final RateLimiter CheckAlbumPasswordRateLimiter = RateLimiter.create(100.0); // 100 requests per second
+    private final RateLimiter CheckImagePasswordRateLimiter = RateLimiter.create(100.0); // 100 requests per second
     private static final Logger logger = LoggerFactory.getLogger(ImgShareRestController.class);
     private final ImgShareService imgShareService;
     private final DailyStatisticService dailyStatisticService;
@@ -44,7 +44,7 @@ public class ImgShareRestController {
             @RequestParam(value = "password", required = false) String password,
             HttpServletRequest request) {
 
-        if (!albumCreationRateLimiter.tryAcquire()) {
+        if (!CreateImageAlbumRateLimiter.tryAcquire()) {
             Map<String, String> response = new HashMap<>();
             logger.warn("Album creation limit exceeded.");
             response.put("error", "Too many requests. Please try again later.");
@@ -88,7 +88,7 @@ public class ImgShareRestController {
     @PostMapping("/checkAlbumPassword")
     public ResponseEntity<Map<String, Object>> checkAlbumPassword(@RequestBody Map<String, String> request) {
         // Rate limiting: If too many requests, return 429 error
-        if (!albumPasswordRateLimiter.tryAcquire()) {
+        if (!CheckAlbumPasswordRateLimiter.tryAcquire()) {
             logger.warn("Album password checking limit exceeded.");
             return createTooManyRequestsResponse();
         }
@@ -105,7 +105,7 @@ public class ImgShareRestController {
     @PostMapping("/checkImagePassword")
     public ResponseEntity<Map<String, Object>> checkImagePassword(@RequestBody Map<String, String> request) {
         // Rate limiting: If too many requests, return 429 error
-        if (!imagePasswordRateLimiter.tryAcquire()) {
+        if (!CheckImagePasswordRateLimiter.tryAcquire()) {
             logger.warn("Image password checking limit exceeded.");
             return createTooManyRequestsResponse();
         }
