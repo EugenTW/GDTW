@@ -361,7 +361,6 @@ public class ImgShareService {
 
         String code = claims.getSubject();
         Integer siImageId = toDecodeId(code);
-
         String redisKey = "singleImage:" + siImageId;
 
         try {
@@ -386,7 +385,6 @@ public class ImgShareService {
         response.put("siName", image.getSiName());
         response.put("siNsfw", image.getSiNsfw());
         String imageUrl = baseUrlForImageDownload + imageNginxStaticPath + image.getSiName();
-
         response.put("imageUrl", imageUrl);
 
         try {

@@ -1,11 +1,12 @@
 package com.GDTW.dailystatistic.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ChartDataDTO {
+public class ChartDataDTO implements Serializable {
 
     private Map<String, Map<String, List<Integer>>> data;
 
