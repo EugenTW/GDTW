@@ -40,7 +40,7 @@ public class DailyStatisticService {
     // calculate the total usage count of each service
     public TotalServiceStatisticsDTO getTotalServiceStatistics() {
         LocalDate today = LocalDate.now();
-        TotalServiceStatisticsDTO savedResultInRedis = getTotalServiceStatisticsDtoFromRedis("totalStatistics:" + today);
+        TotalServiceStatisticsDTO savedResultInRedis = getTotalServiceStatisticsDtoFromRedis("ds:totalStatistics:" + today);
         if (savedResultInRedis != null) {
             return savedResultInRedis;
         }
@@ -64,7 +64,7 @@ public class DailyStatisticService {
             totalStatistics.setTotalImageAlbumsCreated(row[4] != null ? ((Number) row[4]).intValue() : 0);
             totalStatistics.setTotalImageAlbumsVisited(row[5] != null ? ((Number) row[5]).intValue() : 0);
         }
-        saveTotalServiceStatisticsDtoToRedis("totalStatistics:" + today, totalStatistics);
+        saveTotalServiceStatisticsDtoToRedis("ds:totalStatistics:" + today, totalStatistics);
         return totalStatistics;
     }
 
@@ -93,7 +93,7 @@ public class DailyStatisticService {
     // retrieve daily data for each service for up to the past year
     public ChartDataDTO getRecentStatisticsForCharts() {
         LocalDate today = LocalDate.now();
-        ChartDataDTO cachedChartData = getChartDataDtoFromRedis("recentStatistics:" + today);
+        ChartDataDTO cachedChartData = getChartDataDtoFromRedis("ds:recentStatistics:" + today);
         if (cachedChartData != null) {
             return cachedChartData;
         }
@@ -105,7 +105,7 @@ public class DailyStatisticService {
     public ChartDataDTO calculateRecentStatistics() {
         LocalDate today = LocalDate.now();
         Date currentDate = new Date();
-        Pageable pageable = PageRequest.of(0, 365);
+        Pageable pageable = PageRequest.of(0, 360);
         List<DailyStatisticVO> statistics = dailyStatisticJpa.findRecentStatistics(currentDate, pageable);
 
         ChartDataDTO chartData = new ChartDataDTO();
@@ -117,7 +117,7 @@ public class DailyStatisticService {
             chartData.addUsedData("album", stat.getDsImgAlbumUsed());
             chartData.addUsedData("image", stat.getDsImgUsed());
         }
-        saveChartDataDtoToRedis("recentStatistics:" + today, chartData);
+        saveChartDataDtoToRedis("ds:recentStatistics:" + today, chartData);
         return chartData;
     }
 
@@ -195,8 +195,8 @@ public class DailyStatisticService {
         return redisStringIntegerTemplate.opsForValue().get(key) != null ? redisStringIntegerTemplate.opsForValue().get(key) : Integer.valueOf(0);
     }
 
-    public void clearStatisticsForDate(LocalDate date) {
-        String dateStr = date.toString();
+    public void clearStatisticsForDate() {
+        String dateStr = LocalDate.now().toString();
         redisStringIntegerTemplate.delete("statistic:" + dateStr + ":shortUrlCreated");
         redisStringIntegerTemplate.delete("statistic:" + dateStr + ":shortUrlUsed");
         redisStringIntegerTemplate.delete("statistic:" + dateStr + ":imgCreated");

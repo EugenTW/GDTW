@@ -38,17 +38,6 @@ public class ScheduledDailyStatisticService {
     }
 
     public void saveStatistics() {
-        // Define the date format YYYY-MM-DD
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH);
-        String currentDateStr = LocalDate.now().format(formatter);
-
-        // Convert String to Date
-        Date currentDate;
-        try {
-            currentDate = new SimpleDateFormat("yyyy-MM-dd").parse(currentDateStr);
-        } catch (ParseException e) {
-            throw new RuntimeException("Failed to parse date", e);
-        }
 
         // Get statistics from Redis
         Integer shortUrlCreated = statisticService.getStatisticOrDefault("shortUrlCreated");
@@ -61,6 +50,7 @@ public class ScheduledDailyStatisticService {
         Integer vidUsed = statisticService.getStatisticOrDefault("vidUsed");
 
         // Write statistics to MySQL
+        Date currentDate = java.sql.Date.valueOf(LocalDate.now());
         DailyStatisticVO statistic = dailyStatisticJpa.findByDsDate(currentDate);
 
         if (statistic != null) {
@@ -91,7 +81,7 @@ public class ScheduledDailyStatisticService {
         dailyStatisticJpa.save(statistic);
 
         // Clear the Redis data for the current day
-        statisticService.clearStatisticsForDate(LocalDate.now());
+        statisticService.clearStatisticsForDate();
     }
 
 }
