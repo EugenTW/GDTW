@@ -106,7 +106,9 @@ public class DailyStatisticService {
         LocalDate today = LocalDate.now();
         Date currentDate = new Date();
         Pageable pageable = PageRequest.of(0, 360);
+
         List<DailyStatisticVO> statistics = dailyStatisticJpa.findRecentStatistics(currentDate, pageable);
+        Collections.reverse(statistics);
 
         ChartDataDTO chartData = new ChartDataDTO();
         for (DailyStatisticVO stat : statistics) {
@@ -120,6 +122,7 @@ public class DailyStatisticService {
         saveChartDataDtoToRedis("ds:recentStatistics:" + today, chartData);
         return chartData;
     }
+
 
     private void saveChartDataDtoToRedis(String key, ChartDataDTO dto) {
         try {
