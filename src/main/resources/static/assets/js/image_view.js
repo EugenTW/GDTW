@@ -87,7 +87,10 @@ function displayImages(data) {
     const pageUrlDiv = document.createElement('div');
     pageUrlDiv.classList.add('page-url-text');
     const currentPageUrl = window.location.href;
-    pageUrlDiv.innerHTML = `Share Gallery URL: ${currentPageUrl}`;
+    const url = new URL(currentPageUrl);
+    const cleanUrl = url.origin + url.pathname;
+    pageUrlDiv.innerHTML = `Share Gallery URL: ${cleanUrl}`;
+
     pageUrlDiv.addEventListener('click', function () {
         copyToClipboard(currentPageUrl);
         showCopiedMessage(pageUrlDiv);
@@ -158,7 +161,9 @@ function displaySingleImage(data) {
     const pageUrlDiv = document.createElement('div');
     pageUrlDiv.classList.add('page-url-text');
     const currentPageUrl = window.location.href;
-    pageUrlDiv.innerHTML = `Gallery URL: ${currentPageUrl}`;
+    const url = new URL(currentPageUrl);
+    const cleanUrl = url.origin + url.pathname;
+    pageUrlDiv.innerHTML = `Share Photo URL: ${cleanUrl}`;
 
     pageUrlDiv.addEventListener('click', function () {
         copyToClipboard(currentPageUrl);
