@@ -124,9 +124,7 @@ h3 {
     text-align: center;
     border-radius: 5px;
     cursor: pointer;
-    background-color: rgba(0, 0, 0, 0.8);
-    filter: opacity(0.95);
-    backdrop-filter: blur(50px) contrast(100%);
+    background-color: #000000;
     z-index: 10;
 }
 
