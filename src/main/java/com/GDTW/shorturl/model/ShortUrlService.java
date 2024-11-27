@@ -40,7 +40,7 @@ public class ShortUrlService {
         return encodedUrl;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Map.Entry<String, String> getOriginalUrl(String code) {
         Integer suId = toDecodeSuId(code);
         // Check Redis cache first
