@@ -1,7 +1,7 @@
 package com.GDTW.shorturl.controller;
 
 import com.GDTW.dailystatistic.model.DailyStatisticService;
-import com.GDTW.safebrowing.service.SafeBrowsingService;
+import com.GDTW.safebrowing4.service.SafeBrowsingV4Service;
 import com.GDTW.shorturl.model.*;
 import com.google.common.util.concurrent.RateLimiter;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,9 +22,9 @@ public class ShortUrlRestController {
     private final RateLimiter GetOriginalUrlRateLimiter = RateLimiter.create(600.0); // 600 requests per second
     private final ShortUrlService shortUrlService;
     private final DailyStatisticService statisticService;
-    private final SafeBrowsingService safeBrowsingService;
+    private final SafeBrowsingV4Service safeBrowsingService;
 
-    public ShortUrlRestController(ShortUrlService shortUrlService, DailyStatisticService statisticService, SafeBrowsingService safeBrowsingService) {
+    public ShortUrlRestController(ShortUrlService shortUrlService, DailyStatisticService statisticService, SafeBrowsingV4Service safeBrowsingService) {
         this.shortUrlService = shortUrlService;
         this.statisticService = statisticService;
         this.safeBrowsingService = safeBrowsingService;

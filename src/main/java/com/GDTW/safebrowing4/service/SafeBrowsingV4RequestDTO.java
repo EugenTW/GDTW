@@ -1,11 +1,11 @@
-package com.GDTW.safebrowing.service;
+package com.GDTW.safebrowing4.service;
 
-public class SafeBrowsingRequest {
+public class SafeBrowsingV4RequestDTO {
 
     private Client client;
     private ThreatInfo threatInfo;
 
-    public SafeBrowsingRequest(String url) {
+    public SafeBrowsingV4RequestDTO(String url) {
         this.client = new Client("GDTW_Short_URL", "1.0");
         this.threatInfo = new ThreatInfo(url);
     }

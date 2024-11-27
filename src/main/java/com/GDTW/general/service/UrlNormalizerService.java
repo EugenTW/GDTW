@@ -1,9 +1,9 @@
-package com.GDTW.safebrowing.service;
+package com.GDTW.general.service;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class UrlNormalizer {
+public class UrlNormalizerService {
 
     public static String normalizeUrl(String url) throws URISyntaxException {
         // Parse the URL
