@@ -1,8 +1,8 @@
-package com.GDTW.safebrowing.service;
+package com.GDTW.safebrowing4.service;
 
 import java.util.List;
 
-public class SafeBrowsingResponse {
+public class SafeBrowsingV4ResponseDTO {
 
     private List<ThreatMatch> matches;
 

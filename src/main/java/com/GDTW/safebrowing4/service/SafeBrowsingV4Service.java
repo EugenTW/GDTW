@@ -1,5 +1,6 @@
-package com.GDTW.safebrowing.service;
+package com.GDTW.safebrowing4.service;
 
+import com.GDTW.general.service.UrlNormalizerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,23 +10,21 @@ import org.springframework.web.reactive.function.client.WebClientRequestExceptio
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import static com.GDTW.safebrowing.service.UrlNormalizer.normalizeUrl;
-
 @Service
-public class SafeBrowsingService {
+public class SafeBrowsingV4Service {
 
-    private static final Logger logger = LoggerFactory.getLogger(SafeBrowsingService.class);
+    private static final Logger logger = LoggerFactory.getLogger(SafeBrowsingV4Service.class);
 
     @Value("${gcp.safeBrowsing.api}")
     private String API_KEY;
 
-    @Value("${gcp.safeBrowsing.url}")
-    private String SAFE_BROWSING_API_URL;
+    @Value("${gcp.safeBrowsingV4.url}")
+    private String SAFE_BROWSING_V4_API_URL;
 
     private final WebClient webClient;
 
-    public SafeBrowsingService(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl(SAFE_BROWSING_API_URL).build();
+    public SafeBrowsingV4Service(WebClient.Builder webClientBuilder) {
+        this.webClient = webClientBuilder.baseUrl(SAFE_BROWSING_V4_API_URL).build();
     }
 
     public String checkUrlSafety(String originalUrl) {
@@ -35,23 +34,23 @@ public class SafeBrowsingService {
             return "0";
         }
         // No available google api url, early return
-        if (SAFE_BROWSING_API_URL == null || SAFE_BROWSING_API_URL.trim().isEmpty()) {
+        if (SAFE_BROWSING_V4_API_URL == null || SAFE_BROWSING_V4_API_URL.trim().isEmpty()) {
             return "0";
         }
 
         try {
-            String normalizedUrl = normalizeUrl(originalUrl);
+            String normalizedUrl = UrlNormalizerService.normalizeUrl(originalUrl);
             String requestUrl = UriComponentsBuilder
-                    .fromUriString(SAFE_BROWSING_API_URL)
+                    .fromUriString(SAFE_BROWSING_V4_API_URL)
                     .queryParam("key", API_KEY)
                     .toUriString();
 
-            SafeBrowsingRequest requestBody = new SafeBrowsingRequest(normalizedUrl);
-            SafeBrowsingResponse response = webClient.post()
+            SafeBrowsingV4RequestDTO requestBody = new SafeBrowsingV4RequestDTO(normalizedUrl);
+            SafeBrowsingV4ResponseDTO response = webClient.post()
                     .uri(requestUrl)
                     .bodyValue(requestBody)
                     .retrieve()
-                    .bodyToMono(SafeBrowsingResponse.class)
+                    .bodyToMono(SafeBrowsingV4ResponseDTO.class)
                     .block();
             // Return 1 if the response is null or there are no matches (indicating the URL is safe)
             if (response == null || response.getMatches() == null) {
