@@ -21,7 +21,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/is_api")
 public class ImgShareRestController {
-    private final RateLimiter CreateImageAlbumRateLimiter = RateLimiter.create(25.0); // 25 requests per second
+    private final RateLimiter CreateImageAlbumRateLimiter = RateLimiter.create(10.0); // 10 requests per second
     private final RateLimiter CheckAlbumPasswordRateLimiter = RateLimiter.create(100.0); // 100 requests per second
     private final RateLimiter CheckImagePasswordRateLimiter = RateLimiter.create(100.0); // 100 requests per second
     private static final Logger logger = LoggerFactory.getLogger(ImgShareRestController.class);
