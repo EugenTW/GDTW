@@ -1,4 +1,4 @@
-package com.GDTW.general.service;
+package com.GDTW.general.service.scheduled;
 
 import com.GDTW.imgshare.model.ShareImgAlbumJpa;
 import com.GDTW.imgshare.model.ShareImgAlbumVO;
@@ -50,7 +50,7 @@ public class ScheduledImgCleanupService {
             album.setSiaStatus((byte) 1);
             shareImgAlbumJpa.save(album);
         }
-        logger.info("Expired albums status updated.");
+        logger.info("Expired MySQL albums status updated");
 
         List<ShareImgVO> expiredImages = shareImgJpa.findBySiEndDateBeforeAndSiStatus(today, (byte) 0);
         for (ShareImgVO image : expiredImages) {
@@ -60,7 +60,7 @@ public class ScheduledImgCleanupService {
             shareImgJpa.save(image);
             moveImageFileToTrashCan(originalSiName);
         }
-        logger.info("Expired images deleted and status updated.");
+        logger.info("Expired images deleted and MySQL status updated.");
     }
 
     private void moveImageFileToTrashCan(String fileName) {
@@ -74,7 +74,6 @@ public class ScheduledImgCleanupService {
             Files.createDirectories(targetPath.getParent());
 
             Files.move(sourcePath, targetPath);
-            logger.info("Moved file to trash can: {}", fileName);
         } catch (Exception e) {
             logger.error("Failed to move file to trash can: {}", fileName, e);
         }
@@ -98,7 +97,7 @@ public class ScheduledImgCleanupService {
                 directoryStream.close();
             }
         } catch (Exception e) {
-            logger.error("Failed to clear trash can directory", e);
+            logger.error("Failed to clear trash can directory. ", e);
         }
     }
 

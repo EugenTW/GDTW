@@ -1,9 +1,6 @@
-package com.GDTW.general.service;
+package com.GDTW.general.util;
 
-import org.springframework.stereotype.Service;
-
-@Service
-public class IdEncoderDecoderService {
+public class IdEncoderDecoderUtil {
 
     public static final String ENCRYPT_CHARS_A = "XgUweOlDKZlVAYNp4jq3FWMTQoEuP9I5nHbfCy2czv1mkdS60JxRGs78aBhLi";
     public static final String ENCRYPT_CHARS_B = "TyVM7HzaSlXE4mnL8Kowu2hjgqdIliDFG6vpPQOA0cC9Z1sBU35fbkxeNRJYW";
@@ -12,7 +9,7 @@ public class IdEncoderDecoderService {
     private static final int MIN_ID = 10000000;
     private static final int MAX_ID = 23500000;
 
-    private IdEncoderDecoderService(){}
+    private IdEncoderDecoderUtil(){}
 
     public static String encodeId(Integer id) {
         if (id < MIN_ID || id > MAX_ID) {

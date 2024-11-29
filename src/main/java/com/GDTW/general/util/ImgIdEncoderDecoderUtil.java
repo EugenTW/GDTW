@@ -1,14 +1,11 @@
-package com.GDTW.general.service;
-
-import org.springframework.stereotype.Service;
+package com.GDTW.general.util;
 
 import java.security.SecureRandom;
 
-@Service
-public class ImgFilenameEncoderDecoderService {
+public class ImgIdEncoderDecoderUtil {
 
-    public static final String ENCRYPT_CHARS_A = "q3FWMTQoEuP9I5nHbfCy2czAYNs78aBp4jv1mkdS6XgUweOlDKZlV0JxRGhLi";
-    public static final String ENCRYPT_CHARS_B = "5fbkxeNTyVM7mnL8Kowu2hjgqdIliDFG6vpPQOA0cCHzaSlXE49Z1sBU3RJYW";
+    public static final String ENCRYPT_CHARS_A = "XgUweOlDKZlVAYNp4jq3FWMTQoEuP9I5nHbfCy2czv1mkdS60JxRGs78aBhLi";
+    public static final String ENCRYPT_CHARS_B = "TyVM7HzaSlXE4mnL8Kowu2hjgqdIliDFG6vpPQOA0cC9Z1sBU35fbkxeNRJYW";
     private static final int BASE_A = ENCRYPT_CHARS_A.length();
     private static final int BASE_B = ENCRYPT_CHARS_B.length();
     private static final int MIN_ID = 10000000;
@@ -17,10 +14,10 @@ public class ImgFilenameEncoderDecoderService {
     private static final int RANDOM_BASE = RANDOM_CHARS.length();
     private static final SecureRandom RANDOM = new SecureRandom();
 
-    private ImgFilenameEncoderDecoderService() {
+    private ImgIdEncoderDecoderUtil() {
     }
 
-    public static String encodeImgFilename(Integer id) {
+    public static String encodeImgId(Integer id) {
         if (id < MIN_ID || id > MAX_ID) {
             throw new IllegalArgumentException("ID should be between " + MIN_ID + " and " + MAX_ID + ".");
         }
@@ -28,16 +25,17 @@ public class ImgFilenameEncoderDecoderService {
         return insertRandomCharacters(encodedId);
     }
 
-    public static Integer decodeImgFilename(String encodedImgFilename) {
-        if (encodedImgFilename == null) {
+    public static Integer decodeImgId(String encodedImgId) {
+        if (encodedImgId == null) {
             throw new IllegalArgumentException("The encoded string cannot be null.");
         }
-        if (encodedImgFilename.length() != 12) {
+        if (encodedImgId.length() != 12) {
             throw new IllegalArgumentException("The encoded string should have exactly 12 characters.");
         }
-        String extractedId = extractEncodedId(encodedImgFilename);
+        String extractedId = extractEncodedId(encodedImgId);
         return decodeBase(extractedId);
     }
+
 
     private static String encodeBase(int id) {
         int normalizedId = id - MIN_ID;

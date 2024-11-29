@@ -1,4 +1,4 @@
-package com.GDTW.general.service;
+package com.GDTW.general.exception;
 
 public class InsufficientDiskSpaceException extends RuntimeException {
     public InsufficientDiskSpaceException(String message) {

@@ -1,9 +1,9 @@
-package com.GDTW.general.service;
+package com.GDTW.general.util;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class UrlNormalizerService {
+public class UrlNormalizerUtil {
 
     public static String normalizeUrl(String url) throws URISyntaxException {
         // Parse the URL

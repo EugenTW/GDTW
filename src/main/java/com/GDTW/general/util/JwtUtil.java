@@ -1,4 +1,4 @@
-package com.GDTW.general.service;
+package com.GDTW.general.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -11,9 +11,8 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Date;
 
-public class JwtService {
+public class JwtUtil {
 
-    // 生成密鑰對（私鑰和公鑰）
     private static final KeyPair keyPair = Keys.keyPairFor(SignatureAlgorithm.RS256);
     private static final PrivateKey privateKey = keyPair.getPrivate();
     private static final PublicKey publicKey = keyPair.getPublic();
@@ -46,4 +45,5 @@ public class JwtService {
             return null;
         }
     }
+
 }

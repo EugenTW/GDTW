@@ -1,5 +1,6 @@
 package com.GDTW.general.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import com.redfin.sitemapgenerator.WebSitemapGenerator;
 import java.io.File;
@@ -7,6 +8,9 @@ import java.net.MalformedURLException;
 
 @Service
 public class SitemapService {
+
+    @Value("${app.fullUrl}")
+    private String fullUrl;
 
     public void generateSitemap() throws MalformedURLException {
         // Determine the base directory (current working directory)
@@ -24,7 +28,7 @@ public class SitemapService {
         }
 
         // Build the sitemap generator with the logs directory as the output location
-        WebSitemapGenerator sitemapGen = WebSitemapGenerator.builder("https://gdtw.org/", logsDir)
+        WebSitemapGenerator sitemapGen = WebSitemapGenerator.builder(fullUrl, logsDir)
                 .build();
 
         // Add URLs to the sitemap
