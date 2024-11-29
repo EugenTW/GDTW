@@ -1,10 +1,10 @@
 package com.GDTW.imgshare.model;
 
 import com.GDTW.dailystatistic.model.DailyStatisticService;
-import com.GDTW.general.service.ImgFilenameEncoderDecoderService;
-import com.GDTW.general.service.ImgIdEncoderDecoderService;
-import com.GDTW.general.service.InsufficientDiskSpaceException;
-import com.GDTW.general.service.JwtService;
+import com.GDTW.general.util.ImgFilenameEncoderDecoderUtil;
+import com.GDTW.general.util.ImgIdEncoderDecoderUtil;
+import com.GDTW.general.exception.InsufficientDiskSpaceException;
+import com.GDTW.general.util.JwtUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
@@ -180,7 +180,7 @@ public class ImgShareService {
             boolean requiresPassword = album.getSiaPassword() != null && !album.getSiaPassword().isEmpty();
             response.put("requiresPassword", requiresPassword);
             if (!requiresPassword) {
-                String token = JwtService.generateToken(code, "noPassword");
+                String token = JwtUtil.generateToken(code, "noPassword");
                 response.put("token", token);
             }
         } else {
@@ -209,7 +209,7 @@ public class ImgShareService {
             boolean requiresPassword = image.getSiPassword() != null && !image.getSiPassword().isEmpty();
             response.put("requiresPassword", requiresPassword);
             if (!requiresPassword) {
-                String token = JwtService.generateToken(code, "noPassword");
+                String token = JwtUtil.generateToken(code, "noPassword");
                 response.put("token", token);
             }
         } else {
@@ -232,7 +232,7 @@ public class ImgShareService {
             String storedPassword = album.getSiaPassword();
             if (storedPassword.equals(password)) {
                 response.put("checkPassword", true);
-                String token = JwtService.generateToken(code, "passwordPassed");
+                String token = JwtUtil.generateToken(code, "passwordPassed");
                 response.put("token", token);
             } else {
                 response.put("checkPassword", false);
@@ -255,7 +255,7 @@ public class ImgShareService {
             String storedPassword = image.getSiPassword();
             if (storedPassword.equals(password)) {
                 response.put("checkPassword", true);
-                String token = JwtService.generateToken(code, "passwordPassed");
+                String token = JwtUtil.generateToken(code, "passwordPassed");
                 response.put("token", token);
             } else {
                 response.put("checkPassword", false);
@@ -270,7 +270,7 @@ public class ImgShareService {
     public Map<String, Object> getAlbumImages(String token) {
         Map<String, Object> response = new HashMap<>();
 
-        Claims claims = JwtService.validateToken(token);
+        Claims claims = JwtUtil.validateToken(token);
         if (claims == null) {
             response.put("error", "非法或失效的令牌。 - Invalid or expired token.");
             return response;
@@ -348,7 +348,7 @@ public class ImgShareService {
     public Map<String, Object> getSingleImage(String token) {
         Map<String, Object> response = new HashMap<>();
 
-        Claims claims = JwtService.validateToken(token);
+        Claims claims = JwtUtil.validateToken(token);
         if (claims == null) {
             response.put("error", "非法或失效的令牌。 - Invalid or expired token.");
             return response;
@@ -461,19 +461,19 @@ public class ImgShareService {
     // Supporting methods
 
     public static String toEncodeId(Integer id) {
-        return ImgIdEncoderDecoderService.encodeImgId(id);
+        return ImgIdEncoderDecoderUtil.encodeImgId(id);
     }
 
     public static Integer toDecodeId(String encodeId) {
-        return ImgIdEncoderDecoderService.decodeImgId(encodeId);
+        return ImgIdEncoderDecoderUtil.decodeImgId(encodeId);
     }
 
     public static String toEncodeFilename(Integer id) {
-        return ImgFilenameEncoderDecoderService.encodeImgFilename(id);
+        return ImgFilenameEncoderDecoderUtil.encodeImgFilename(id);
     }
 
     public static Integer toDecodeFilename(String encodeFilename) {
-        return ImgFilenameEncoderDecoderService.decodeImgFilename(encodeFilename);
+        return ImgFilenameEncoderDecoderUtil.decodeImgFilename(encodeFilename);
     }
 
     private boolean hasSufficientDiskSpace(String path, long requiredSpace) {

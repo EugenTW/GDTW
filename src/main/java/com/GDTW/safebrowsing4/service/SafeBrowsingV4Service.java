@@ -1,6 +1,6 @@
-package com.GDTW.safebrowing4.service;
+package com.GDTW.safebrowsing4.service;
 
-import com.GDTW.general.service.UrlNormalizerService;
+import com.GDTW.general.util.UrlNormalizerUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,7 +39,7 @@ public class SafeBrowsingV4Service {
         }
 
         try {
-            String normalizedUrl = UrlNormalizerService.normalizeUrl(originalUrl);
+            String normalizedUrl = UrlNormalizerUtil.normalizeUrl(originalUrl);
             String requestUrl = UriComponentsBuilder
                     .fromUriString(SAFE_BROWSING_V4_API_URL)
                     .queryParam("key", API_KEY)

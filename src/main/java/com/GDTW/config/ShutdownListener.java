@@ -1,7 +1,7 @@
 package com.GDTW.config;
 
 import com.GDTW.general.service.RedisService;
-import com.GDTW.general.service.ScheduledDailyStatisticService;
+import com.GDTW.general.service.scheduled.ScheduledDailyStatisticService;
 import com.GDTW.imgshare.model.ImgShareService;
 import com.GDTW.shorturl.model.ShortUrlService;
 import org.slf4j.Logger;

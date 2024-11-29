@@ -1,6 +1,6 @@
 package com.GDTW.shorturl.model;
 
-import com.GDTW.general.service.IdEncoderDecoderService;
+import com.GDTW.general.util.IdEncoderDecoderUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -185,11 +185,11 @@ public class ShortUrlService {
     // Supporting methods
 
     public static String toEncodeSuId(Integer suId) {
-        return IdEncoderDecoderService.encodeId(suId);
+        return IdEncoderDecoderUtil.encodeId(suId);
     }
 
     public static Integer toDecodeSuId(String encodeSuId) {
-        return IdEncoderDecoderService.decodeId(encodeSuId);
+        return IdEncoderDecoderUtil.decodeId(encodeSuId);
     }
 
 }

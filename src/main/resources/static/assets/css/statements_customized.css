@@ -4,7 +4,7 @@
     margin-bottom: 15px;
 }
 
-.image-container img {
+.image-container img { 
     max-width: 400px;  
     display: block;
     border-radius: 5px;

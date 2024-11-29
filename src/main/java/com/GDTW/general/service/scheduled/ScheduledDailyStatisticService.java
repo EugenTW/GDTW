@@ -1,4 +1,4 @@
-package com.GDTW.general.service;
+package com.GDTW.general.service.scheduled;
 
 import com.GDTW.dailystatistic.model.DailyStatisticJpa;
 import com.GDTW.dailystatistic.model.DailyStatisticService;
@@ -10,11 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
 
 @Service
 public class ScheduledDailyStatisticService {

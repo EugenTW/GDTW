@@ -1,7 +1,7 @@
 package com.GDTW.shorturl.controller;
 
 import com.GDTW.dailystatistic.model.DailyStatisticService;
-import com.GDTW.safebrowing4.service.SafeBrowsingV4Service;
+import com.GDTW.safebrowsing4.service.SafeBrowsingV4Service;
 import com.GDTW.shorturl.model.*;
 import com.google.common.util.concurrent.RateLimiter;
 import jakarta.servlet.http.HttpServletRequest;
