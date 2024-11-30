@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class ShortUrlService {
@@ -90,21 +91,6 @@ public class ShortUrlService {
     @Transactional(readOnly = true)
     public boolean isShortUrlValid(Integer suId) {
         return shortUrlJpa.checkShortUrlStatus(suId);
-    }
-
-    @Transactional(readOnly = true)
-    public boolean isShortUrlHavingUId(Integer suId) {
-        return shortUrlJpa.checkShortUrlCreator(suId);
-    }
-
-    @Transactional(readOnly = true)
-    public ShortUrlVO getAllDataOfShortUrl(Integer suId) {
-        return shortUrlJpa.findBySuId(suId);
-    }
-
-    @Transactional(readOnly = true)
-    public String getShortenUrl(Integer suId) {
-        return shortUrlJpa.findSuShortenedUrlBySuId(suId);
     }
 
     @Transactional(readOnly = true)
