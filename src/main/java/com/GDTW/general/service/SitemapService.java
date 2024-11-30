@@ -12,23 +12,20 @@ public class SitemapService {
     @Value("${app.fullUrl}")
     private String fullUrl;
 
+    @Value("${app.siteMapPath}")
+    private String siteMapPath;
+
     public void generateSitemap() throws MalformedURLException {
-        // Determine the base directory (current working directory)
-        String baseDir = System.getProperty("user.dir");
+        // Create a File object for the siteMapPath directory
+        File siteMapDir = new File(siteMapPath);
 
-        // Create the logs directory path
-        String logsDirPath = baseDir + File.separator + "logs";
-
-        // Create a File object for the logs directory
-        File logsDir = new File(logsDirPath);
-
-        // Check if the logs directory exists; if not, create it
-        if (!logsDir.exists()) {
-            logsDir.mkdirs();  // Create logs directory if it does not exist
+        // Check if the siteMapPath directory exists; if not, create it
+        if (!siteMapDir.exists()) {
+            siteMapDir.mkdirs();  // Create the directory if it does not exist
         }
 
-        // Build the sitemap generator with the logs directory as the output location
-        WebSitemapGenerator sitemapGen = WebSitemapGenerator.builder(fullUrl, logsDir)
+        // Build the sitemap generator with the specified directory as the output location
+        WebSitemapGenerator sitemapGen = WebSitemapGenerator.builder(fullUrl, siteMapDir)
                 .build();
 
         // Add URLs to the sitemap
@@ -44,7 +41,7 @@ public class SitemapService {
         sitemapGen.addUrl("https://gdtw.org/image_share.html");
         sitemapGen.addUrl("https://gdtw.org/show_statistics.html");
 
-        // Write the sitemap.xml file to the logs directory
+        // Write the sitemap.xml file to the siteMapPath directory
         sitemapGen.write();
     }
 }
