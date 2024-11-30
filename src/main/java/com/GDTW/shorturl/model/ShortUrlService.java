@@ -94,21 +94,6 @@ public class ShortUrlService {
     }
 
     @Transactional(readOnly = true)
-    public boolean isShortUrlHavingUId(Integer suId) {
-        return shortUrlJpa.checkShortUrlCreator(suId);
-    }
-
-    @Transactional(readOnly = true)
-    public ShortUrlVO getAllDataOfShortUrl(Integer suId) {
-        return shortUrlJpa.findBySuId(suId);
-    }
-
-    @Transactional(readOnly = true)
-    public String getShortenUrl(Integer suId) {
-        return shortUrlJpa.findSuShortenedUrlBySuId(suId);
-    }
-
-    @Transactional(readOnly = true)
     public Map<String, Object> getSuIdAndSuSafe(Integer suId) {
         return shortUrlJpa.findSuIdAndSuSafeBySuId(suId);
     }
