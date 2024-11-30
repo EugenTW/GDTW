@@ -23,6 +23,7 @@ import java.util.List;
 public class ScheduledImgCleanupService {
     private static final Logger logger = LoggerFactory.getLogger(ScheduledImgCleanupService.class);
 
+
     @Value("${app.imageStoragePath}")
     private String imageStoragePath;
 
