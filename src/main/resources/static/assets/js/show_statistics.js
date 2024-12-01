@@ -53,8 +53,8 @@ document.addEventListener('DOMContentLoaded', function () {
             drawChart('created-image-chart', '圖片建立 - Image Creation', alignData(createdData.image), 'rgba(255, 206, 86, 1)');
 
             drawChart('used-short-url-chart', '短網址使用 - Short URL Usage', alignData(usedData.url), 'rgba(75, 192, 75, 1)');
-            drawChart('used-album-chart', '圖片相簿使用 - Image Album Usage', alignData(usedData.album), 'rgba(54, 162, 235, 1)');
-            drawChart('used-image-chart', '圖片使用 - Image Usage', alignData(usedData.image), 'rgba(255, 206, 86, 1)');
+            drawChart('used-album-chart', '圖片相簿瀏覽 - Photo Album Browsing', alignData(usedData.album), 'rgba(54, 162, 235, 1)');
+            drawChart('used-image-chart', '圖片瀏覽 - Image Browsing', alignData(usedData.image), 'rgba(255, 206, 86, 1)');
         })
         .catch(error => {
             console.error('Error fetching recent statistics:', error);
@@ -65,8 +65,8 @@ document.addEventListener('DOMContentLoaded', function () {
             drawChart('created-image-chart', '圖片建立 - Image Creation', emptyData.image, 'rgba(255, 206, 86, 1)');
 
             drawChart('used-short-url-chart', '短網址使用 - Short URL Usage', emptyData.url, 'rgba(75, 192, 75, 1)');
-            drawChart('used-album-chart', '圖片相簿使用 - Image Album Usage', emptyData.album, 'rgba(54, 162, 235, 1)');
-            drawChart('used-image-chart', '圖片使用 - Image Usage', emptyData.image, 'rgba(255, 206, 86, 1)');
+            drawChart('used-album-chart', '圖片相簿瀏覽 - Image Album Browsing', emptyData.album, 'rgba(54, 162, 235, 1)');
+            drawChart('used-image-chart', '圖片瀏覽 - Image Browsing', emptyData.image, 'rgba(255, 206, 86, 1)');
         });
 
     function initializeEmptyData() {
