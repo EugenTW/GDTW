@@ -4,7 +4,7 @@
 
 	<groupId>com.GDTW</groupId>
 	<artifactId>GDTW_Web</artifactId>
-	<version>1.8.5</version>
+	<version>1.8.6</version>
 	<name>GDTW_Web</name>
 	<description>GDTW project for Spring Boot</description>
 
