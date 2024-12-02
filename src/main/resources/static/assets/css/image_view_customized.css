@@ -96,16 +96,15 @@ h3 {
 
 .photo-wrapper img,
 .photo img {
-    max-width: 750px;
-    max-height: 750px;
+    max-width: 1200px;
+    max-height: 1200px;
     min-width: 400px;
     width: 100%;
     height: auto;
     object-fit: contain;
     border-radius: 5px;
-    border: 3px solid #5f5f5f;
+    border: 3px solid #787878;
     align-items: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .nsfw-mask {
