@@ -269,4 +269,26 @@ h3 {
 }
 
 
+.scroll-to-top {
+    position: fixed;
+    right: 25px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    display: none;
+    z-index: 1000;
+    transition: bottom 0.5s ease; 
+}
+
+.scroll-to-top.show {
+    display: block !important;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+
+
+
+
+
 

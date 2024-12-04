@@ -336,3 +336,51 @@ function showCopiedMessage() {
         document.body.removeChild(toast);
     }, 1500);
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    const backToTopButton = document.getElementById('scrollToTop');
+
+    if (!backToTopButton) {
+        console.error('Back to Top button not found!');
+        return;
+    }
+
+    const minBottom = 175; 
+    const maxBottom = 40; 
+
+    window.addEventListener('scroll', () => {
+        const scrollTop = window.scrollY; 
+        const windowHeight = window.innerHeight; 
+        const docHeight = document.documentElement.scrollHeight; 
+
+        const distanceToBottom = docHeight - (scrollTop + windowHeight);
+
+        if (distanceToBottom <= minBottom) {
+            backToTopButton.style.bottom = `${minBottom}px`;
+        } else {
+            backToTopButton.style.bottom = `${maxBottom}px`;
+        }
+
+        if (scrollTop > 500) {
+            backToTopButton.classList.add('show');
+        } else {
+            backToTopButton.classList.remove('show');
+        }
+    });
+   
+    backToTopButton.addEventListener('click', () => {
+        console.log('Back to Top button clicked!');
+        document.documentElement.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+        document.body.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+});
+
+
+
+

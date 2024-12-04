@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 
 @Service
@@ -51,7 +52,7 @@ public class DailyStatisticService {
     @Transactional(readOnly = true)
     public TotalServiceStatisticsDTO calculateTotalServiceStatistics() {
         LocalDate today = LocalDate.now();
-        Date currentDate = new Date();
+        Date currentDate = Date.from(today.atStartOfDay(ZoneId.systemDefault()).toInstant());
         Object[] result = dailyStatisticJpa.calculateSumsBeforeDate(currentDate);
 
         TotalServiceStatisticsDTO totalStatistics = new TotalServiceStatisticsDTO();
@@ -104,7 +105,7 @@ public class DailyStatisticService {
     @Transactional(readOnly = true)
     public ChartDataDTO calculateRecentStatistics() {
         LocalDate today = LocalDate.now();
-        Date currentDate = new Date();
+        Date currentDate = Date.from(today.atStartOfDay(ZoneId.systemDefault()).toInstant());
         Pageable pageable = PageRequest.of(0, 360);
 
         List<DailyStatisticVO> statistics = dailyStatisticJpa.findRecentStatistics(currentDate, pageable);
