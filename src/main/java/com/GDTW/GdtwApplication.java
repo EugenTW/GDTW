@@ -10,6 +10,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+import java.util.TimeZone;
+
 @SpringBootApplication
 @EnableJpaRepositories
 @EnableScheduling
@@ -34,6 +36,7 @@ public class GdtwApplication {
     @PostConstruct
     public void onStartup() {
         try {
+            TimeZone.setDefault(TimeZone.getTimeZone("Asia/Taipei"));
             sitemapService.generateSitemap();
             boolean confirm = true;
             redisService.clearRedis(confirm);
