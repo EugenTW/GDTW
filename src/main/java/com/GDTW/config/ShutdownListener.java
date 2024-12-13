@@ -36,7 +36,7 @@ public class ShutdownListener implements ApplicationListener<ContextClosedEvent>
             scheduledTaskService.saveStatistics();
 
             // Sync Redis 'Short URL' usage data to MySQL
-            shortUrlService.syncUsageToMySQL();
+            shortUrlService.syncSuUsageToMySQL();
 
             // Sync Redis 'Share Image' usage data to MySQL
             imgShareService.syncSiaUsageToMySQL();

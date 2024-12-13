@@ -30,7 +30,6 @@ public class ScheduledDailyStatisticService {
     @Transactional
     public void collectAndSaveStatistics() {
         saveStatistics();
-        logger.info("Daily statistics is saved successfully and old date is removed.");
     }
 
     public void saveStatistics() {
@@ -78,6 +77,7 @@ public class ScheduledDailyStatisticService {
 
         // Clear the Redis data for the current day
         statisticService.clearStatisticsForDate();
+        logger.info("Sync 'Daily Statistic' to MySQL!");
     }
 
 }
