@@ -3,15 +3,11 @@ let authToken;
 document.addEventListener('DOMContentLoaded', async function () {
     const path = window.location.pathname;
     const isAlbumMode = path.startsWith('/a/');
-    const isSingleMode = path.startsWith('/i/');
     const code = path.split('/')[2];
-
-    // API URLs based on path
     const statusApiUrl = isAlbumMode ? '/is_api/isAlbumPasswordNeeded' : '/is_api/isImagePasswordNeeded';
     const passwordApiUrl = isAlbumMode ? '/is_api/checkAlbumPassword' : '/is_api/checkImagePassword';
     const downloadApiUrl = isAlbumMode ? '/is_api/downloadAlbumImages' : '/is_api/downloadSingleImage';
-
-    const requestData = { code: code };
+    const requestData = {code: code};
 
     // if (isLocalhost) {
     //     console.log('Running on localhost - skipping API requests.');
@@ -25,7 +21,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         const result = await response.json();
 
         if (!result.isValid) {
-            window.location.href = '/error';
+            window.location.href = '/error_410';
             return;
         }
 
@@ -48,7 +44,6 @@ document.addEventListener('DOMContentLoaded', async function () {
 // Initialize page and fetch images
 async function initPage(downloadApiUrl, isAlbumMode) {
     hidePasswordModal();
-
     try {
         const response = await fetch(downloadApiUrl, {
             method: 'POST',
@@ -56,11 +51,10 @@ async function initPage(downloadApiUrl, isAlbumMode) {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${authToken}`
             },
-            body: JSON.stringify({ token: authToken })
+            body: JSON.stringify({token: authToken})
         });
 
         const result = await response.json();
-
         if (result.error) {
             alert(result.error);
             return;
@@ -81,16 +75,14 @@ async function initPage(downloadApiUrl, isAlbumMode) {
 function displayImages(data) {
     const gallery = document.getElementById('gallery');
     gallery.innerHTML = '';
-
     const isNsfw = data.siaNsfw === 1;
-
     const pageUrlDiv = document.createElement('div');
     pageUrlDiv.classList.add('page-url-text');
     const currentPageUrl = window.location.href;
     const url = new URL(currentPageUrl);
     const cleanUrl = url.origin + url.pathname;
-    pageUrlDiv.innerHTML = `Share Gallery URL: ${cleanUrl}`;
 
+    pageUrlDiv.innerHTML = `Share Gallery URL: ${cleanUrl}`;
     pageUrlDiv.addEventListener('click', function () {
         copyToClipboard(currentPageUrl);
         showCopiedMessage(pageUrlDiv);
@@ -100,7 +92,6 @@ function displayImages(data) {
     data.images.forEach(image => {
         const photoDiv = document.createElement('div');
         photoDiv.classList.add('photo');
-
         const imgElement = document.createElement('img');
         imgElement.src = new URL(image.imageUrl, window.location.origin).href;
         imgElement.alt = image.siName;
@@ -125,7 +116,6 @@ function displayImages(data) {
         const urlDiv = document.createElement('div');
         urlDiv.classList.add('single-mode-text');
         urlDiv.innerHTML = `Share URL: ${image.imageSingleModeUrl}`;
-
         urlDiv.addEventListener('click', function () {
             copyToClipboard(image.imageSingleModeUrl);
             showCopiedMessage(urlDiv);
@@ -134,7 +124,7 @@ function displayImages(data) {
         const openLink = document.createElement('a');
         openLink.classList.add('open-link-button');
         openLink.textContent = '🔎';
-        openLink.title='原始尺寸 - Full Size'
+        openLink.title = '原始尺寸 - Full Size'
         openLink.href = image.imageUrl;
         openLink.target = '_blank';
         openLink.rel = 'noopener noreferrer';
@@ -152,19 +142,17 @@ function displayImages(data) {
 }
 
 
-
 // Function to display a single image
 function displaySingleImage(data) {
     const singlePhotoDiv = document.getElementById('single-photo');
     singlePhotoDiv.innerHTML = '';
-
     const pageUrlDiv = document.createElement('div');
     pageUrlDiv.classList.add('page-url-text');
     const currentPageUrl = window.location.href;
     const url = new URL(currentPageUrl);
     const cleanUrl = url.origin + url.pathname;
-    pageUrlDiv.innerHTML = `Share Photo URL: ${cleanUrl}`;
 
+    pageUrlDiv.innerHTML = `Share Photo URL: ${cleanUrl}`;
     pageUrlDiv.addEventListener('click', function () {
         copyToClipboard(currentPageUrl);
         showCopiedMessage(pageUrlDiv);
@@ -174,13 +162,11 @@ function displaySingleImage(data) {
 
     const photoWrapper = document.createElement('div');
     photoWrapper.classList.add('photo-wrapper');
-
     const imgElement = document.createElement('img');
     const imageUrl = data.imageUrl.startsWith('http') ? data.imageUrl : new URL(data.imageUrl, window.location.origin).href;
     imgElement.src = imageUrl;
     imgElement.alt = data.siName;
     imgElement.id = 'photo-img';
-
     photoWrapper.appendChild(imgElement);
 
     if (data.siNsfw === 1) {
@@ -191,10 +177,10 @@ function displaySingleImage(data) {
             nsfwMask.classList.add('hidden');
         });
         photoWrapper.appendChild(nsfwMask);
-    }        
+    }
 
-    singlePhotoDiv.appendChild(photoWrapper);   
-   
+    singlePhotoDiv.appendChild(photoWrapper);
+
     const openLink = document.createElement('a');
     openLink.classList.add('open-link-button');
     openLink.textContent = '🔎';
@@ -208,7 +194,6 @@ function displaySingleImage(data) {
     urlContainer.appendChild(openLink);
 
     singlePhotoDiv.appendChild(urlContainer);
-
     singlePhotoDiv.classList.remove('hidden');
 }
 
@@ -267,7 +252,7 @@ function setupPasswordValidation(passwordApiUrl, code, isAlbumMode) {
         const password = passwordInput.value.trim();
         if (password === '') return;
 
-        const passwordRequestData = { code: code, password: password };
+        const passwordRequestData = {code: code, password: password};
 
         try {
             const response = await fetchWithRetry(passwordApiUrl, passwordRequestData);
@@ -302,7 +287,7 @@ async function fetchWithRetry(url, data, maxRetries = 3) {
         try {
             const response = await fetch(url, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(data)
             });
             if (response.status === 429) {
@@ -345,14 +330,13 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
     }
 
-    const minBottom = 175; 
-    const maxBottom = 40; 
+    const minBottom = 175;
+    const maxBottom = 40;
 
     window.addEventListener('scroll', () => {
-        const scrollTop = window.scrollY; 
-        const windowHeight = window.innerHeight; 
-        const docHeight = document.documentElement.scrollHeight; 
-
+        const scrollTop = window.scrollY;
+        const windowHeight = window.innerHeight;
+        const docHeight = document.documentElement.scrollHeight;
         const distanceToBottom = docHeight - (scrollTop + windowHeight);
 
         if (distanceToBottom <= minBottom) {
@@ -367,7 +351,7 @@ document.addEventListener('DOMContentLoaded', function () {
             backToTopButton.classList.remove('show');
         }
     });
-   
+
     backToTopButton.addEventListener('click', () => {
         console.log('Back to Top button clicked!');
         document.documentElement.scrollTo({

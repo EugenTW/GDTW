@@ -31,15 +31,14 @@ public class ShortUrlController {
     }
 
     @GetMapping("/{code:[a-zA-Z0-9]{4}}")
-    public void redirectToPage(@PathVariable String code, HttpServletResponse response) throws IOException {
+    public String redirectToPage(@PathVariable String code, HttpServletResponse response) throws IOException {
         if (!shortUrlService.checkCodeValid(code)) {
-            response.sendRedirect("/error");
-            return;
+            response.sendRedirect("/error_404");
+            return null;
         }
         statisticService.incrementShortUrlUsed();
-        response.sendRedirect("/short_url_redirection?code=" + code);
+        return "forward:/short_url_redirection.html";
     }
-
 
 }
 

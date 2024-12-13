@@ -16,7 +16,7 @@ public class JwtUtil {
     private static final KeyPair keyPair = Keys.keyPairFor(SignatureAlgorithm.RS256);
     private static final PrivateKey privateKey = keyPair.getPrivate();
     private static final PublicKey publicKey = keyPair.getPublic();
-    private static final long EXPIRATION_TIME = 5 * 60 * 1000;       // 5 mins
+    private static final long EXPIRATION_TIME = 1* 60 * 1000;       // 1 min
 
     // Generate JWT Token with an additional 'stage' claim
     public static String generateToken(String code, String stage) {

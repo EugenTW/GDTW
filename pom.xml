@@ -2,9 +2,17 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
+	<licenses>
+		<license>
+			<name>MIT License</name>
+			<url>https://opensource.org/licenses/MIT</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
 	<groupId>com.GDTW</groupId>
 	<artifactId>GDTW_Web</artifactId>
-	<version>1.8.8</version>
+	<version>1.9.0</version>
 	<name>GDTW_Web</name>
 	<description>GDTW project for Spring Boot</description>
 
