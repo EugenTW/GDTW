@@ -8,8 +8,8 @@ The project currently provides the following features:
 - Image upload and sharing service (with support for auto-destruction, password protection, and NSFW masking).
 - Daily traffic statistics and total traffic data analytics.
 
-The backend server runs on Ubuntu + Nginx. 
-The project is live and can be accessed at the following URL:    
+The backend server runs on Ubuntu + Nginx.  
+The project is live and can be accessed at the following URL:     
 https://gdtw.org/ 
 
 ================================
@@ -21,7 +21,7 @@ https://gdtw.org/
 - 圖片上傳共享服務（包含自動銷毀、密碼保護、NSFW遮罩）。 
 - 每日流量數據統計和總流量數據統計。 
 
-伺服器端使用Ubuntu + Nginx。 
+伺服器端使用Ubuntu + Nginx。  
 此專案目前已上線，可於此網址訪問：    
 https://gdtw.org/ 
 
