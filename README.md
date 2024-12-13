@@ -12,6 +12,8 @@ The backend server runs on Ubuntu + Nginx.
 The project is live and can be accessed at the following URL:   
 https://gdtw.org/
 
+================================
+
 此專案是一個基於MIT協議的開源網站專案，主要使用Java、Spring Boot、Redis和MySQL，並搭配其他開源軟體或免費服務，例如Google Safe Browsing。
 
 目前本專案提供以下功能：
