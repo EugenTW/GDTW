@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 @Service
 public class ShortUrlService {
@@ -147,7 +146,7 @@ public class ShortUrlService {
 
     @Scheduled(cron = "${task.schedule.cron.shortUtlUsageStatisticService}")
     @Transactional
-    public void syncUsageToMySQL() {
+    public void syncSuUsageToMySQL() {
         Set<String> keys = redisStringStringTemplate.keys("su:usage:*");
         if (keys != null) {
             for (String key : keys) {
