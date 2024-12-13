@@ -1,12 +1,15 @@
-$(document).ready(function () {
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get('code');
+$(window).on('load', function () {
+
+    const path = window.location.pathname;
+    const code = path.split('/')[1];
+
+    const currentPageUrl = window.location.href;
+    const url = new URL(currentPageUrl);
+    const cleanUrl = url.origin + url.pathname;
 
     if (code) {
-        const shortUrl = `${window.location.host}/${code}`;
-        $('.shorten-url').text(shortUrl);
-
-        fetchOriginalUrlWithRetry(code, 3, 1000); 
+        $('.shorten-url').text(cleanUrl);
+        fetchOriginalUrlWithRetry(code, 3, 1000);
     } else {
         $('.shorten-url').text('短網址無效 / Invalid short URL.');
         $('.original-url').text('請使用有效的短網址 / Please use a valid short URL.');
@@ -18,7 +21,6 @@ function fetchOriginalUrlWithRetry(code, maxRetries, delay) {
 
     function tryFetch() {
         attempts++;
-        console.log(`Attempt ${attempts} to fetch the original URL.`);
 
         $.ajax({
             url: '/su_api/get_original_url',
@@ -33,7 +35,6 @@ function fetchOriginalUrlWithRetry(code, maxRetries, delay) {
                 } else {
                     const originalUrl = response.originalUrl;
                     const originalUrlSafe = response.originalUrlSafe;
-                    console.log(originalUrlSafe);
 
                     $('.original-url').text(originalUrl);
                     $('.button.green').on('click', function () {
@@ -45,8 +46,7 @@ function fetchOriginalUrlWithRetry(code, maxRetries, delay) {
             },
             error: function (xhr) {
                 if (xhr.status === 429 && attempts <= maxRetries) {
-                    console.warn(`429 Too Many Requests. Retrying in ${delay}ms...`);
-                    setTimeout(tryFetch, delay); 
+                    setTimeout(tryFetch, delay);
                 } else {
                     let errorMessage;
                     if (xhr.status === 404 || xhr.status === 410) {
@@ -54,14 +54,12 @@ function fetchOriginalUrlWithRetry(code, maxRetries, delay) {
                     } else {
                         errorMessage = "內部伺服器錯誤! Internal Server Error!";
                     }
-                    console.error('Error fetching original URL:', xhr);
                     $('.original-url').text(errorMessage).css("color", "red");
                 }
             }
         });
     }
-
-    tryFetch(); 
+    tryFetch();
 }
 
 

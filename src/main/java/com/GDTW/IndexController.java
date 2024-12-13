@@ -46,6 +46,26 @@ public class IndexController {
         return "forward:/show_statistics.html";
     }
 
+    @GetMapping("/error_404")
+    public String handleError404() {
+        return "forward:/error_404.html";
+    }
+
+    @GetMapping("/error_410")
+    public String handleError410() {
+        return "forward:/error_410.html";
+    }
+
+    @GetMapping("/error_403_405")
+    public String handleError403405() {
+        return "forward:/error_403&405.html";
+    }
+
+    @GetMapping("/error_generic")
+    public String handleErrorGeneric() {
+        return "forward:/error_generic.html";
+    }
+
     @GetMapping("/sitemap.xml")
     public ResponseEntity<Resource> getSitemap() {
         // Determine the base directory (current working directory)

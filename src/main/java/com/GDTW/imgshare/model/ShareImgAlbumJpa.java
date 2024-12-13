@@ -10,6 +10,8 @@ import java.util.Optional;
 @Repository
 public interface ShareImgAlbumJpa extends JpaRepository<ShareImgAlbumVO, Integer> {
 
+    boolean existsBySiaId(Integer siaId);
+
     boolean existsBySiaIdAndSiaStatusNot(Integer siaId, Byte siaStatus);
 
     Optional<ShareImgAlbumVO> findBySiaId(Integer siaId);

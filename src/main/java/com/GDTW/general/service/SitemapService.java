@@ -37,9 +37,12 @@ public class SitemapService {
         sitemapGen.addUrl("https://gdtw.org/about_us");
         sitemapGen.addUrl("https://gdtw.org/contact_us");
         sitemapGen.addUrl("https://gdtw.org/error");
-        sitemapGen.addUrl("https://gdtw.org/image_view.html");
-        sitemapGen.addUrl("https://gdtw.org/image_share.html");
-        sitemapGen.addUrl("https://gdtw.org/show_statistics.html");
+        sitemapGen.addUrl("https://gdtw.org/image_view");
+        sitemapGen.addUrl("https://gdtw.org/image_share");
+        sitemapGen.addUrl("https://gdtw.org/error_404");
+        sitemapGen.addUrl("https://gdtw.org/error_410");
+        sitemapGen.addUrl("https://gdtw.org/error_403_405");
+        sitemapGen.addUrl("https://gdtw.org/error_generic");
 
         // Write the sitemap.xml file to the siteMapPath directory
         sitemapGen.write();

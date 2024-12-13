@@ -150,6 +150,18 @@ public class ImgShareService {
     // ==================================================================
     // Reading methods
     @Transactional(readOnly = true)
+    public boolean isSiaIdValid(String code) {
+        Integer siaId = toDecodeId(code);
+        return shareImgAlbumJpa.existsBySiaId(siaId);
+    }
+
+    @Transactional(readOnly = true)
+    public boolean isSiIdValid(String code) {
+        Integer siId = toDecodeId(code);
+        return shareImgJpa.existsBySiId(siId);
+    }
+
+    @Transactional(readOnly = true)
     public boolean isShareImageAlbumCodeValid(String code) {
         Integer siaImageAlbumId = toDecodeId(code);
         return shareImgAlbumJpa.existsBySiaIdAndSiaStatusNot(siaImageAlbumId, (byte) 1);
@@ -277,7 +289,7 @@ public class ImgShareService {
         }
 
         String stage = claims.get("stage", String.class);
-        if (!"passwordPassed".equals(stage)&&!"noPassword".equals(stage)) {
+        if (!"passwordPassed".equals(stage) && !"noPassword".equals(stage)) {
             response.put("error", "未授權的訪問，請重新載入頁面。 - Unauthorized access, please refresh your browser.");
             return response;
         }
@@ -355,7 +367,7 @@ public class ImgShareService {
         }
 
         String stage = claims.get("stage", String.class);
-        if (!"passwordPassed".equals(stage)&&!"noPassword".equals(stage)) {
+        if (!"passwordPassed".equals(stage) && !"noPassword".equals(stage)) {
             response.put("error", "未授權的訪問，請重新載入頁面。 - Unauthorized access, please refresh your browser.");
             return response;
         }
@@ -418,7 +430,7 @@ public class ImgShareService {
                 Optional<ShareImgAlbumVO> optionalSiaObject = shareImgAlbumJpa.findById(siaId);
                 if (optionalSiaObject.isPresent()) {
                     ShareImgAlbumVO shareImgAlbumVO = optionalSiaObject.get();
-                    shareImgAlbumVO.setSiaTotalVisited(shareImgAlbumVO.getSiaTotalVisited()+ usageCount);
+                    shareImgAlbumVO.setSiaTotalVisited(shareImgAlbumVO.getSiaTotalVisited() + usageCount);
                     shareImgAlbumJpa.save(shareImgAlbumVO);
                     // delete recorded data in Redis
                     redisStringStringTemplate.delete(key);
@@ -447,7 +459,7 @@ public class ImgShareService {
                 Optional<ShareImgVO> optionalSiObject = shareImgJpa.findById(siId);
                 if (optionalSiObject.isPresent()) {
                     ShareImgVO shareImgVO = optionalSiObject.get();
-                    shareImgVO.setSiTotalVisited(shareImgVO.getSiTotalVisited()+ usageCount);
+                    shareImgVO.setSiTotalVisited(shareImgVO.getSiTotalVisited() + usageCount);
                     shareImgJpa.save(shareImgVO);
                     // delete recorded data in Redis
                     redisStringStringTemplate.delete(key);

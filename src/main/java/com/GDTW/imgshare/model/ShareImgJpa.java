@@ -9,6 +9,8 @@ import java.util.List;
 @Repository
 public interface ShareImgJpa extends JpaRepository<ShareImgVO, Integer> {
 
+    boolean existsBySiId(Integer siId);
+
     boolean existsBySiIdAndSiStatusNot(Integer siId, Byte siStatus);
 
     List<ShareImgVO> findByAlbum_SiaIdOrderBySiIdAsc(Integer siaId);
