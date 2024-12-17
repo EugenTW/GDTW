@@ -32,3 +32,8 @@ Front-end Template: https://html5up.net/
 Image Source: ChatGPT-4o
 
 ================================
+
+Contact us: 
+gdtw2024@gmail.com 
+
+================================
