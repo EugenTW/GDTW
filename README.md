@@ -28,7 +28,9 @@ https://gdtw.org/
 ================================
 
 Acknowledgment  
+Google Safe Browsing: https://safebrowsing.google.com/  
 Front-end Template: https://html5up.net/  
+Icons: https://www.flaticon.com/  
 Image Source: ChatGPT-4o
 
 ================================
