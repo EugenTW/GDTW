@@ -57,7 +57,7 @@ CREATE TABLE short_url
     u_id             INT NULL,
     FOREIGN KEY (u_id) REFERENCES web_user (u_id)
 );
-ALTER TABLE short_url AUTO_INCREMENT = 10000000;
+ALTER TABLE short_url AUTO_INCREMENT = 11000000;
 
 CREATE TABLE share_img_album
 (
@@ -73,7 +73,7 @@ CREATE TABLE share_img_album
     u_id              INT NULL,
     FOREIGN KEY (u_id) REFERENCES web_user (u_id)
 );
-ALTER TABLE share_img_album AUTO_INCREMENT = 10000000;
+ALTER TABLE share_img_album AUTO_INCREMENT = 11000000;
 
 CREATE TABLE share_img
 (
@@ -92,7 +92,7 @@ CREATE TABLE share_img
     FOREIGN KEY (u_id) REFERENCES web_user (u_id),
     FOREIGN KEY (sia_id) REFERENCES share_img_album (sia_id)
 );
-ALTER TABLE share_img AUTO_INCREMENT = 10000000;
+ALTER TABLE share_img AUTO_INCREMENT = 11000000;
 
 CREATE TABLE share_vid
 (
@@ -108,6 +108,6 @@ CREATE TABLE share_vid
     u_id             INT NULL,
     FOREIGN KEY (u_id) REFERENCES web_user (u_id)
 );
-ALTER TABLE share_vid AUTO_INCREMENT = 10000000;
+ALTER TABLE share_vid AUTO_INCREMENT = 11000000;
 
 

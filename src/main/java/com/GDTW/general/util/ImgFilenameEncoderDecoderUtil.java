@@ -1,20 +1,21 @@
 package com.GDTW.general.util;
 
-import org.hashids.Hashids;
-
 import java.security.SecureRandom;
 
 public class ImgFilenameEncoderDecoderUtil {
 
-    private static final String SALT = "img.file.name";
-    private static final int MIN_LENGTH = 4;
     private static final int MIN_ID = 11000000;
     private static final int MAX_ID = 25000000;
+
+    private static final String ENCRYPT_CHARS_1 = "8vjFZCTRtdegQih2SzkumEBlGH6X09w3afbOJIcPnL7NUYxVqoDr5KAyMpW1s4";
+    private static final String ENCRYPT_CHARS_2 = "3AL7mWhHvDiEV82yX0gNzko16TOpbsPRIje54fZtnlJSqYKGwQrucCxFa9BdMU";
+    private static final String ENCRYPT_CHARS_3 = "nxY96GFJCbAsWf0ajLNoeDp3XPdI8uVZvS41mwERKhUy2rqtMHzOQ7kBi5lgcT";
+    private static final String ENCRYPT_CHARS_4 = "djQAwI1DUgJHF8f3KL52qpXTZnxNhYMemiE7o69kVGvC0WacztrSuRybP4BlsO";
+    private static final int BASE = ENCRYPT_CHARS_1.length();
+
     private static final String RANDOM_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private static final int RANDOM_BASE = RANDOM_CHARS.length();
     private static final SecureRandom RANDOM = new SecureRandom();
-
-    private static final Hashids HASHIDS = new Hashids(SALT, MIN_LENGTH);
 
     private ImgFilenameEncoderDecoderUtil() {}
 
@@ -23,9 +24,18 @@ public class ImgFilenameEncoderDecoderUtil {
             throw new IllegalArgumentException("ID should be between " + MIN_ID + " and " + MAX_ID + ".");
         }
 
-        String encodedId = HASHIDS.encode(id);
+        int normalizedId = id - MIN_ID;
+        char[] encodedChars = new char[4];
 
-        return randomChar() + randomChar() + encodedId + randomChar() + randomChar();
+        encodedChars[3] = ENCRYPT_CHARS_4.charAt(normalizedId % BASE);
+        normalizedId /= BASE;
+        encodedChars[2] = ENCRYPT_CHARS_3.charAt(normalizedId % BASE);
+        normalizedId /= BASE;
+        encodedChars[1] = ENCRYPT_CHARS_2.charAt(normalizedId % BASE);
+        normalizedId /= BASE;
+        encodedChars[0] = ENCRYPT_CHARS_1.charAt(normalizedId % BASE);
+
+        return randomChar() + randomChar() + new String(encodedChars) + randomChar() + randomChar();
     }
 
     public static Integer decodeImgFilename(String encodedImgFilename) {
@@ -36,16 +46,20 @@ public class ImgFilenameEncoderDecoderUtil {
             throw new IllegalArgumentException("The encoded string should have exactly 8 characters.");
         }
 
-        String extractedId = encodedImgFilename.substring(2, 6);
+        String encodedId = encodedImgFilename.substring(2, 6);
 
-        long[] decodedIds = HASHIDS.decode(extractedId);
-        if (decodedIds.length == 0) {
-            throw new IllegalArgumentException("Invalid encodedImgFilename.");
-        }
-        return (int) decodedIds[0];
+        int id = 0;
+        id += ENCRYPT_CHARS_1.indexOf(encodedId.charAt(0)) * BASE * BASE * BASE;
+        id += ENCRYPT_CHARS_2.indexOf(encodedId.charAt(1)) * BASE * BASE;
+        id += ENCRYPT_CHARS_3.indexOf(encodedId.charAt(2)) * BASE;
+        id += ENCRYPT_CHARS_4.indexOf(encodedId.charAt(3));
+
+        return id + MIN_ID;
     }
+
 
     private static char randomChar() {
         return RANDOM_CHARS.charAt(RANDOM.nextInt(RANDOM_BASE));
     }
+
 }

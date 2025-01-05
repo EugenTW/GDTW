@@ -121,13 +121,6 @@
 			<version>2.18.2</version>
 		</dependency>
 
-		<!--	Hashids	-->
-		<dependency>
-			<groupId>org.hashids</groupId>
-			<artifactId>hashids</artifactId>
-			<version>1.0.3</version>
-		</dependency>
-
 	</dependencies>
 
 
