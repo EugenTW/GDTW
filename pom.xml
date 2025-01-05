@@ -12,14 +12,14 @@
 
 	<groupId>com.GDTW</groupId>
 	<artifactId>GDTW_Web</artifactId>
-	<version>1.9.0</version>
+	<version>1.10.2</version>
 	<name>GDTW_Web</name>
 	<description>GDTW project for Spring Boot</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.4.0</version>
+		<version>3.4.1</version>
 	</parent>
 
 	<properties>

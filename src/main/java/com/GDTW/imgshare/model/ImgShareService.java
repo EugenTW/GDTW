@@ -32,6 +32,9 @@ import java.util.*;
 @Service
 public class ImgShareService {
 
+    @Value("${app.baseUrl}")
+    private String baseUrl;
+
     @Value("${app.baseUrlForImageDownload}")
     private String baseUrlForImageDownload;
 
@@ -337,7 +340,7 @@ public class ImgShareService {
             imageMap.put("siName", image.getSiName());
             String imageUrl = baseUrlForImageDownload + imageNginxStaticPath + image.getSiName();
             imageMap.put("imageUrl", imageUrl);
-            String imageSingleModeUrl = baseUrlForImageDownload + "/i/" + image.getSiCode();
+            String imageSingleModeUrl = baseUrl + "/i/" + image.getSiCode();
             imageMap.put("imageSingleModeUrl", imageSingleModeUrl);
             imageList.add(imageMap);
 

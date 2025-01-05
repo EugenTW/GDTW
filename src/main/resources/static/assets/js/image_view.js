@@ -80,7 +80,7 @@ function displayImages(data) {
     pageUrlDiv.classList.add('page-url-text');
     const currentPageUrl = window.location.href;
     const url = new URL(currentPageUrl);
-    const cleanUrl = url.origin + url.pathname;
+    const cleanUrl = url.host + url.pathname;
 
     pageUrlDiv.innerHTML = `Share Gallery URL: ${cleanUrl}`;
     pageUrlDiv.addEventListener('click', function () {
