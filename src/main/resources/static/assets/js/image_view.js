@@ -84,7 +84,7 @@ function displayImages(data) {
 
     pageUrlDiv.innerHTML = `Share Gallery URL: ${cleanUrl}`;
     pageUrlDiv.addEventListener('click', function () {
-        copyToClipboard(currentPageUrl);
+        copyToClipboard(cleanUrl);
         showCopiedMessage(pageUrlDiv);
     });
     gallery.appendChild(pageUrlDiv);
