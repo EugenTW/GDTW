@@ -2,6 +2,8 @@ package com.GDTW.user.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "web_user")
 public class WebUserVO{
@@ -21,10 +23,10 @@ public class WebUserVO{
     private String uPassword;
 
     @Column(name = "u_register_date")
-    private String uRegisterDate;
+    private LocalDate uRegisterDate;
 
     @Column(name = "u_status")
-    private Integer uStatus = 0;
+    private Byte uStatus;
 
     public WebUserVO() {}
 
@@ -60,19 +62,19 @@ public class WebUserVO{
         this.uPassword = uPassword;
     }
 
-    public String getuRegisterDate() {
+    public LocalDate getuRegisterDate() {
         return uRegisterDate;
     }
 
-    public void setuRegisterDate(String uRegisterDate) {
+    public void setuRegisterDate(LocalDate uRegisterDate) {
         this.uRegisterDate = uRegisterDate;
     }
 
-    public Integer getuStatus() {
+    public Byte getuStatus() {
         return uStatus;
     }
 
-    public void setuStatus(Integer uStatus) {
+    public void setuStatus(Byte uStatus) {
         this.uStatus = uStatus;
     }
 }

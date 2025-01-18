@@ -45,7 +45,7 @@ public class ScheduledDailyStatisticService {
         Integer vidUsed = statisticService.getStatisticOrDefault("vidUsed");
 
         // Write statistics to MySQL
-        Date currentDate = java.sql.Date.valueOf(LocalDate.now());
+        LocalDate currentDate = LocalDate.now();
         DailyStatisticVO statistic = dailyStatisticJpa.findByDsDate(currentDate);
 
         if (statistic != null) {

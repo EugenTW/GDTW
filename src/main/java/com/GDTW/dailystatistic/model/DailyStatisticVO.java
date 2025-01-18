@@ -2,6 +2,7 @@ package com.GDTW.dailystatistic.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -14,7 +15,7 @@ public class DailyStatisticVO {
     private Integer dsId;
 
     @Column(name = "ds_date")
-    private Date dsDate;
+    private LocalDate dsDate;
 
     @Column(name = "ds_short_url_created")
     private Integer dsShortUrlCreated;
@@ -51,11 +52,11 @@ public class DailyStatisticVO {
         this.dsId = dsId;
     }
 
-    public Date getDsDate() {
+    public LocalDate getDsDate() {
         return dsDate;
     }
 
-    public void setDsDate(Date dsDate) {
+    public void setDsDate(LocalDate dsDate) {
         this.dsDate = dsDate;
     }
 

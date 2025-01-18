@@ -3,121 +3,117 @@
 
 <head>
     <title>GDTW - Image Gallery</title>
-    <meta property="og:title" content="GDTW - Image Gallery" />
-    <meta property="og:description" content="Image Gallery" />
-    <meta property="og:image" content="https://gdtw.org/images/logo_s.webp" />
-    <meta property="og:url" content="https://gdtw.org/image_share" />
-    <meta property="og:type" content="website" />
+    <meta property="og:title" content="GDTW - Image Gallery"/>
+    <meta property="og:description" content="Image Gallery"/>
+    <meta property="og:image" content="https://gdtw.org/images/logo_s.webp"/>
+    <meta property="og:url" content="https://gdtw.org/image_share"/>
+    <meta property="og:type" content="website"/>
     <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <link rel="stylesheet" href="/assets/css/main.css" />
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" href="/assets/css/main.css"/>
     <noscript>
-        <link rel="stylesheet" href="/assets/css/noscript.css" />
+        <link rel="stylesheet" href="/assets/css/noscript.css"/>
     </noscript>
-    <link rel="stylesheet" href="/assets/css/image_view_customized.css" />
+    <link rel="stylesheet" href="/assets/css/image_view_customized.css"/>
 </head>
 
 <body class="is-preload">
 
-    <!-- Header -->
-    <header id="header">
-        <a class="title">GDTW</a>
-        <nav>
-            <ul>
-                <li><a href="/index.html">Home</a></li>
-                <li><a href="/index.html#one" class="active">Free Services</a></li>
-                <li><a href="/index.html#two">Statements</a></li>
-            </ul>
-        </nav>
-    </header>
+<!-- Header -->
+<header id="header">
+    <a class="title">GDTW</a>
+    <nav>
+        <ul>
+            <li><a href="/index.html">Home</a></li>
+            <li><a href="/index.html#one" class="active">Free Services</a></li>
+            <li><a href="/index.html#two">Statements</a></li>
+        </ul>
+    </nav>
+</header>
 
-    <!-- Wrapper -->
-    <div id="wrapper">
-        <section id="main" class="wrapper">
-            <div class="inner">
-                <h2 class="major">閱覽圖片 - Image Gallery</h2>
+<!-- Wrapper -->
+<div id="wrapper">
+    <section id="main" class="wrapper">
+        <div class="inner">
+            <h2 class="major">閱覽圖片 - Image Gallery</h2>
 
-                <hr>
+            <hr>
 
-                <div id="password-modal" class="hidden">
-                    <form id="password-form">
-                        <h3>請先輸入瀏覽密碼 - Please Enter Password</h3>
-                        <input type="password" id="password-input" placeholder="輸入4~10位數字 - Enter 4 to 10 digits">
-                        <button type="submit" id="password-submit">驗證 - Submit</button>
-                    </form>
-                </div>
-
-                <div id="gallery" class="gallery hidden"></div>
-
-                <div id="single-photo" class="photo hidden">
-                    <div class="photo-wrapper">
-                        <img id="photo-img" src="" alt="Photo" onerror="this.src='/images/pic_not_found.webp';">
-                        <div id="nsfw-mask" class="nsfw-mask hidden">NSFW - Click to reveal.</div>
-                    </div>
-                </div>
-
-                <hr>
-
-                <div class="button-container-back">
-					<a href="/short_url" class="button-back">前往短網址服務 - Go Short URL Service</a>
-					<a href="/img_upload" class="button-back">前往圖片分享服務 - Go Image Share Service</a>
-				</div>
-
-                <hr>
-
-                <h3>使用說明 - Instructions</h3>
-                <details>
-                    <summary>點看詳細教學 - Click & Read Instructions</summary>
-                    <br>
-                    1. 受密碼保護的資源都需要輸入正確密碼才可瀏覽，密碼格式為4~10位數字。<br>
-                    2. NSFW遮罩可通過滑鼠點擊去除。<br>
-                    2. 本服務是免費線上服務，上傳者與閱覽者皆須對自己的行為負責。站方有權隨時調整圖片存活時間且不另行通知。<br>
-                    4. 使用本服務時就表示已同意本站的所有使用條款。<br><br>
-
-                    1. Password-protected resources require entering the correct password to access. The password format must be 4-10 digits.<br>
-                    2. The NSFW mask can be removed by clicking on it.<br>
-                    3. This is a free online service. Uploaders and viewers are responsible for their own actions. The site reserves the right to adjust the image retention period at any time without prior notice.<br>
-                    4. By using this service, you agree to all the terms of use of this site.<br><br>
-                </details>
-                <br>
-
-                <hr>
-
-                <div class="final-cover">
-                    <span class="image fit"><img src="/images/image_view_pic01.webp" alt="" /></span>
-                </div>
-
-                <img id="scrollToTop" class="scroll-to-top hidden" src="/images/top.png" alt="Back to Top">
-
-
+            <div id="password-modal" class="hidden">
+                <form id="password-form">
+                    <h3>請先輸入瀏覽密碼 - Please Enter Password</h3>
+                    <input type="password" id="password-input" placeholder="輸入4~10位數字 - Enter 4 to 10 digits">
+                    <button type="submit" id="password-submit">驗證 - Submit</button>
+                </form>
             </div>
 
+            <div id="gallery" class="gallery hidden"></div>
 
+            <div id="single-photo" class="photo hidden">
+                <div class="photo-wrapper">
+                    <img id="photo-img" src="" alt="Photo" onerror="this.src='/images/pic_not_found.webp';">
+                    <div id="nsfw-mask" class="nsfw-mask hidden">NSFW - Click to reveal.</div>
+                </div>
+            </div>
 
-        </section>
+            <hr>
 
-    </div>
+            <div class="button-container-back">
+                <a href="/short_url" class="button-back">前往短網址服務 - Go Short URL Service</a>
+                <a href="/img_upload" class="button-back">前往圖片分享服務 - Go Image Share Service</a>
+            </div>
 
-    <!-- Footer -->
-    <footer id="footer" class="wrapper alt">
-        <div class="inner">
-            <ul class="menu">
-                <p id="footer-year">Copyright © GDTW. Since 2024</p>
-            </ul>
+            <hr>
+
+            <h3>使用說明 - Instructions</h3>
+            <details>
+                <summary>點看詳細教學 - Click & Read Instructions</summary>
+                <br>
+                1. 受密碼保護的資源都需要輸入正確密碼才可瀏覽，密碼格式為4~10位數字。<br>
+                2. NSFW遮罩可通過滑鼠點擊去除。<br>
+                2. 本服務是免費線上服務，上傳者與閱覽者皆須對自己的行為負責。站方有權隨時調整圖片存活時間且不另行通知。<br>
+                4. 使用本服務時就表示已同意本站的所有使用條款。<br><br>
+
+                1. Password-protected resources require entering the correct password to access. The password format
+                must be 4-10 digits.<br>
+                2. The NSFW mask can be removed by clicking on it.<br>
+                3. This is a free online service. Uploaders and viewers are responsible for their own actions. The site
+                reserves the right to adjust the image retention period at any time without prior notice.<br>
+                4. By using this service, you agree to all the terms of use of this site.<br><br>
+            </details>
+            <br>
+
+            <hr>
+
+            <div class="final-cover">
+                <span class="image fit"><img src="/images/image_view_pic01.webp" alt=""/></span>
+            </div>
+
+            <img id="scrollToTop" class="scroll-to-top hidden" src="/images/top.png" alt="Back to Top">
         </div>
-    </footer>
+    </section>
+</div>
 
-    <!-- Scripts -->
-    <script src="/assets/js/jquery.min.js"></script>
-    <script src="/assets/js/jquery.scrollex.min.js"></script>
-    <script src="/assets/js/jquery.scrolly.min.js"></script>
-    <script src="/assets/js/browser.min.js"></script>
-    <script src="/assets/js/breakpoints.min.js"></script>
-    <script src="/assets/js/util.js"></script>
-    <script src="/assets/js/main.js"></script>
-    <script src="/assets/js/index_customized.js"></script>
-    <script src="/assets/js/image_view.js"></script>
+<!-- Footer -->
+<footer id="footer" class="wrapper alt">
+    <div class="inner">
+        <ul class="menu">
+            <p id="footer-year">Copyright © GDTW. Since 2024</p>
+        </ul>
+    </div>
+</footer>
+
+<!-- Scripts -->
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/jquery.scrollex.min.js"></script>
+<script src="/assets/js/jquery.scrolly.min.js"></script>
+<script src="/assets/js/browser.min.js"></script>
+<script src="/assets/js/breakpoints.min.js"></script>
+<script src="/assets/js/util.js"></script>
+<script src="/assets/js/main.js"></script>
+<script src="/assets/js/index_customized.js"></script>
+<script src="/assets/js/image_view.js"></script>
 </body>
 
 </html>

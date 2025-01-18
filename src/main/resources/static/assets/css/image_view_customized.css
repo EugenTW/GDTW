@@ -9,6 +9,11 @@ hr {
     margin-bottom: 5px;
 }
 
+h2 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
 h3 {
     margin-top: 5px;
     margin-bottom: 5px;
@@ -75,35 +80,41 @@ h3 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
+    gap: 10px;
     margin: 0 auto;
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .photo {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     position: relative;
-    cursor: pointer;
-    margin: 0 auto;
+    margin-bottom: 10px;
 }
 
 .photo-wrapper {
     position: relative;
     display: inline-block;
+    min-width: 300px;
+    min-height: 300px;
+    max-width: 100%;
+    max-height: 100%;
+    overflow: hidden;
 }
 
 .photo-wrapper img,
 .photo img {
-    max-width: 800px;
-    max-height: 800px;
-    min-width: 250px;
-    width: 100%;
+    max-width: 90%;
+    max-height: 100vh;
+    min-width: 300px;
+    min-height: 300px;
+    width: auto;
     height: auto;
     object-fit: contain;
-    border-radius: 5px;
-    border: 3px solid #787878;
+    border-radius: 3px;
+    border: 2px solid #787878;
     align-items: center;
 }
 
@@ -183,16 +194,8 @@ h3 {
     background-color: #6d01e0;
 }
 
-.photo {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    margin-bottom: 10px; 
-}
-
 .page-url-text {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     padding: 10px;
     background-color: #a71400;
     box-shadow: inset 0 0 0 2px #ffd000;
@@ -201,7 +204,7 @@ h3 {
     text-align: center;
     border-radius: 10px;
     cursor: pointer;
-    width: 450px;
+    width: 400px;
     box-sizing: border-box;
 }
 

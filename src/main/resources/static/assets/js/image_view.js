@@ -103,7 +103,7 @@ function displayImages(data) {
         if (isNsfw) {
             const nsfwMask = document.createElement('div');
             nsfwMask.classList.add('nsfw-mask');
-            nsfwMask.textContent = 'NSFW - Click to reveal';
+            nsfwMask.innerHTML = 'R15 or R18 Content<br>NSFW - Click to reveal';
             nsfwMask.addEventListener('click', () => {
                 nsfwMask.style.display = 'none';
             });

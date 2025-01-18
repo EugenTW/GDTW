@@ -11,6 +11,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -117,8 +118,8 @@ public class ShortUrlService {
         ShortUrlVO shortUrl = new ShortUrlVO();
         shortUrl.setSuOriginalUrl(originalUrl);
         shortUrl.setSuCreatedIp(originalIp);
-        shortUrl.setSuCreatedDate(new Date());
-        shortUrl.setSuStatus(0);
+        shortUrl.setSuCreatedDate(LocalDate.now());
+        shortUrl.setSuStatus((byte) 0);
         shortUrl.setSuTotalUsed(0);
         shortUrl.setSuSafe(safeUrlResult);
         ShortUrlVO savedShortUrl = shortUrlJpa.save(shortUrl);

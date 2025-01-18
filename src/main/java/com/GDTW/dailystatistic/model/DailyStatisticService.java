@@ -105,7 +105,7 @@ public class DailyStatisticService {
     @Transactional(readOnly = true)
     public ChartDataDTO calculateRecentStatistics() {
         LocalDate today = LocalDate.now();
-        Date currentDate = Date.from(today.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        LocalDate currentDate = LocalDate.now();
         Pageable pageable = PageRequest.of(0, 360);
 
         List<DailyStatisticVO> statistics = dailyStatisticJpa.findRecentStatistics(currentDate, pageable);
