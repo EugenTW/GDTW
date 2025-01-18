@@ -21,7 +21,7 @@ public class ShortUrlService {
     private final ShortUrlJpa shortUrlJpa;
     private final RedisTemplate<String, String> redisStringStringTemplate;
 
-    private static final Duration TTL_DURATION = Duration.ofHours(36);
+    private static final Duration TTL_DURATION = Duration.ofHours(48);
 
     public ShortUrlService(ShortUrlJpa shortUrlJpa, @Qualifier("redisStringStringTemplate") RedisTemplate<String, String> redisTemplate) {
         this.shortUrlJpa = shortUrlJpa;
