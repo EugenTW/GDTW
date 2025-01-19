@@ -16,7 +16,7 @@ public interface DailyStatisticJpa  extends JpaRepository<DailyStatisticVO, Inte
     DailyStatisticVO findByDsDate(LocalDate dsDate);
 
     @Query("SELECT SUM(dsShortUrlCreated), SUM(dsShortUrlUsed), SUM(dsImgCreated), SUM(dsImgUsed), SUM(dsImgAlbumCreated), SUM(dsImgAlbumUsed) FROM DailyStatisticVO WHERE dsDate < :currentDate")
-    Object[] calculateSumsBeforeDate(@Param("currentDate") Date currentDate);
+    Object[] calculateSumsBeforeDate(@Param("currentDate") LocalDate currentDate);
 
     @Query("SELECT d FROM DailyStatisticVO d WHERE d.dsDate < :currentDate ORDER BY d.dsDate DESC")
     List<DailyStatisticVO> findRecentStatistics(@Param("currentDate") LocalDate currentDate, Pageable pageable);
