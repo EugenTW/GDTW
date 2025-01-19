@@ -13,11 +13,9 @@ import java.io.IOException;
 public class ShortUrlController {
 
     private final ShortUrlService shortUrlService;
-    private final DailyStatisticService statisticService;
 
     public ShortUrlController(ShortUrlService shortUrlService, DailyStatisticService statisticService) {
         this.shortUrlService = shortUrlService;
-        this.statisticService = statisticService;
     }
 
     @GetMapping("/short_url")
@@ -36,7 +34,6 @@ public class ShortUrlController {
             response.sendRedirect("/error_404");
             return null;
         }
-        statisticService.incrementShortUrlUsed();
         return "forward:/short_url_redirection.html";
     }
 

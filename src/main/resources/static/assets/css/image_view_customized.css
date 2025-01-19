@@ -107,7 +107,7 @@ h3 {
 .photo-wrapper img,
 .photo img {
     max-width: 90%;
-    max-height: 100vh;
+    max-height: 90vh;
     min-width: 300px;
     min-height: 300px;
     width: auto;
