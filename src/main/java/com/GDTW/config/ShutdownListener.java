@@ -15,13 +15,13 @@ public class ShutdownListener implements ApplicationListener<ContextClosedEvent>
 
     private static final Logger logger = LoggerFactory.getLogger(ShutdownListener.class);
 
-    private final ScheduledDailyStatisticService scheduledTaskService;
+    private final ScheduledDailyStatisticService scheduledDailyStatisticService;
     private final RedisService redisService;
     private final ShortUrlService shortUrlService;
     private final ImgShareService imgShareService;
 
     public ShutdownListener(ScheduledDailyStatisticService scheduledTaskService, ShortUrlService shortUrlService, RedisService redisService, ImgShareService imgShareService) {
-        this.scheduledTaskService = scheduledTaskService;
+        this.scheduledDailyStatisticService = scheduledTaskService;
         this.shortUrlService = shortUrlService;
         this.redisService = redisService;
         this.imgShareService = imgShareService;
@@ -33,7 +33,7 @@ public class ShutdownListener implements ApplicationListener<ContextClosedEvent>
             logger.info("Starting shutdown process...");
 
             // Save daily statistics
-            scheduledTaskService.saveStatistics();
+            scheduledDailyStatisticService.saveStatistics();
 
             // Sync Redis 'Short URL' usage data to MySQL
             shortUrlService.syncSuUsageToMySQL();

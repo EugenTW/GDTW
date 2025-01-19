@@ -1,33 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-    <!-- 日誌輸出的路徑 -->
     <property name="LOG_HOME" value="./logs" />
-    <!-- 日誌的格式 -->
     <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss} %p %t %c - %m%n%xException{5}" />
 
-
-    <!-- 控制台日誌輸出 -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>${LOG_PATTERN}</pattern>
         </encoder>
     </appender>
 
-    <!-- 文件滾動策略的日誌輸出 -->
     <appender name="ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!-- 每個檔案的命名模式 -->
             <fileNamePattern>${LOG_HOME}/%d{yyyy-MM-dd}.log</fileNamePattern>
-            <!-- 保留的歷史檔案數 -->
-            <maxHistory>60</maxHistory>
+            <maxHistory>90</maxHistory>
         </rollingPolicy>
         <encoder>
             <pattern>${LOG_PATTERN}</pattern>
         </encoder>
     </appender>
 
-    <!-- 設定日誌的全局等級為INFO -->
     <root level="INFO">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="ROLLING" />

@@ -99,6 +99,7 @@ public class ShortUrlRestController {
                 return ResponseEntity.status(HttpStatus.GONE).body(errorResponse);
             } else {
                 ReturnOriginalUrlDTO response = new ReturnOriginalUrlDTO(originalUrl, originalUrlSafe, null);
+                statisticService.incrementShortUrlUsed();
                 return ResponseEntity.ok(response);
             }
         } catch (Exception e) {

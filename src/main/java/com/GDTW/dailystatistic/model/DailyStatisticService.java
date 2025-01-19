@@ -105,7 +105,7 @@ public class DailyStatisticService {
     @Transactional(readOnly = true)
     public ChartDataDTO calculateRecentStatistics() {
         LocalDate today = LocalDate.now();
-        Date currentDate = Date.from(today.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        LocalDate currentDate = LocalDate.now();
         Pageable pageable = PageRequest.of(0, 360);
 
         List<DailyStatisticVO> statistics = dailyStatisticJpa.findRecentStatistics(currentDate, pageable);
@@ -150,8 +150,10 @@ public class DailyStatisticService {
     // daily usage data statistics with Redis
 
     private void incrementAndSetTTL(String key) {
-        redisStringIntegerTemplate.opsForValue().increment(key, 1);
-        redisStringIntegerTemplate.expire(key, TTL_DURATION);
+        Long newValue = redisStringIntegerTemplate.opsForValue().increment(key, 1);
+        if (newValue == 1) {
+            redisStringIntegerTemplate.expire(key, TTL_DURATION);
+        }
     }
 
     public void incrementShortUrlCreated() {
@@ -196,7 +198,8 @@ public class DailyStatisticService {
 
     public Integer getStatisticOrDefault(String type) {
         String key = "statistic:" + getCurrentDate() + ":" + type;
-        return redisStringIntegerTemplate.opsForValue().get(key) != null ? redisStringIntegerTemplate.opsForValue().get(key) : Integer.valueOf(0);
+        Integer value = redisStringIntegerTemplate.opsForValue().get(key);
+        return value != null ? value : Integer.valueOf(0);
     }
 
     public void clearStatisticsForDate() {

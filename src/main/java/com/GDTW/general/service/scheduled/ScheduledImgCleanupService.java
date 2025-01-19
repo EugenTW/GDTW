@@ -51,7 +51,7 @@ public class ScheduledImgCleanupService {
             album.setSiaStatus((byte) 1);
             shareImgAlbumJpa.save(album);
         }
-        logger.info("Expired MySQL albums status updated");
+        logger.info("Expired MySQL album status updated");
 
         List<ShareImgVO> expiredImages = shareImgJpa.findBySiEndDateBeforeAndSiStatus(today, (byte) 0);
         for (ShareImgVO image : expiredImages) {
@@ -61,7 +61,7 @@ public class ScheduledImgCleanupService {
             shareImgJpa.save(image);
             moveImageFileToTrashCan(originalSiName);
         }
-        logger.info("Expired images deleted and MySQL status updated.");
+        logger.info("Expired MySQL image status updated and images removed.");
     }
 
     private void moveImageFileToTrashCan(String fileName) {
@@ -90,12 +90,12 @@ public class ScheduledImgCleanupService {
                 for (Path file : directoryStream) {
                     try {
                         Files.deleteIfExists(file);
-                        logger.info("Deleted file from trash can: {}", file.getFileName());
                     } catch (Exception e) {
                         logger.error("Failed to delete file: {}", file.getFileName(), e);
                     }
                 }
                 directoryStream.close();
+                logger.info("Trash can cleaned up.");
             }
         } catch (Exception e) {
             logger.error("Failed to clear trash can directory. ", e);

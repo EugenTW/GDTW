@@ -53,7 +53,7 @@ public class ImgShareService {
     private final RedisTemplate<String, String> redisStringStringTemplate;
     private ObjectMapper objectMapper;
     private static final Logger logger = LoggerFactory.getLogger(ImgShareService.class);
-    private static final Duration TTL_DURATION = Duration.ofHours(36);
+    private static final Duration TTL_DURATION = Duration.ofHours(48);
 
     public ImgShareService(ShareImgAlbumJpa shareImgAlbumJpa, ShareImgJpa shareImgJpa, DailyStatisticService dailyStatisticService, @Qualifier("redisStringStringTemplate") RedisTemplate<String, String> redisTemplate, ObjectMapper objectMapper) {
         this.shareImgAlbumJpa = shareImgAlbumJpa;

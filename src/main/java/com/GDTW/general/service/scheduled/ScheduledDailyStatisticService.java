@@ -34,6 +34,9 @@ public class ScheduledDailyStatisticService {
 
     public void saveStatistics() {
 
+        LocalDate currentDate = LocalDate.now();
+        DailyStatisticVO statistic = dailyStatisticJpa.findByDsDate(currentDate);
+
         // Get statistics from Redis
         Integer shortUrlCreated = statisticService.getStatisticOrDefault("shortUrlCreated");
         Integer shortUrlUsed = statisticService.getStatisticOrDefault("shortUrlUsed");
@@ -45,9 +48,6 @@ public class ScheduledDailyStatisticService {
         Integer vidUsed = statisticService.getStatisticOrDefault("vidUsed");
 
         // Write statistics to MySQL
-        Date currentDate = java.sql.Date.valueOf(LocalDate.now());
-        DailyStatisticVO statistic = dailyStatisticJpa.findByDsDate(currentDate);
-
         if (statistic != null) {
             // If there is already data for the current day, merge the statistics
             statistic.setDsShortUrlCreated(statistic.getDsShortUrlCreated() + shortUrlCreated);

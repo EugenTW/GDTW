@@ -11,6 +11,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -21,7 +22,7 @@ public class ShortUrlService {
     private final ShortUrlJpa shortUrlJpa;
     private final RedisTemplate<String, String> redisStringStringTemplate;
 
-    private static final Duration TTL_DURATION = Duration.ofHours(36);
+    private static final Duration TTL_DURATION = Duration.ofHours(48);
 
     public ShortUrlService(ShortUrlJpa shortUrlJpa, @Qualifier("redisStringStringTemplate") RedisTemplate<String, String> redisTemplate) {
         this.shortUrlJpa = shortUrlJpa;
@@ -117,8 +118,8 @@ public class ShortUrlService {
         ShortUrlVO shortUrl = new ShortUrlVO();
         shortUrl.setSuOriginalUrl(originalUrl);
         shortUrl.setSuCreatedIp(originalIp);
-        shortUrl.setSuCreatedDate(new Date());
-        shortUrl.setSuStatus(0);
+        shortUrl.setSuCreatedDate(LocalDate.now());
+        shortUrl.setSuStatus((byte) 0);
         shortUrl.setSuTotalUsed(0);
         shortUrl.setSuSafe(safeUrlResult);
         ShortUrlVO savedShortUrl = shortUrlJpa.save(shortUrl);
