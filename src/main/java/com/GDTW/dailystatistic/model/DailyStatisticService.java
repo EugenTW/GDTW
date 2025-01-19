@@ -52,8 +52,7 @@ public class DailyStatisticService {
     @Transactional(readOnly = true)
     public TotalServiceStatisticsDTO calculateTotalServiceStatistics() {
         LocalDate today = LocalDate.now();
-        Date currentDate = Date.from(today.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        Object[] result = dailyStatisticJpa.calculateSumsBeforeDate(currentDate);
+        Object[] result = dailyStatisticJpa.calculateSumsBeforeDate(today);
 
         TotalServiceStatisticsDTO totalStatistics = new TotalServiceStatisticsDTO();
         if (result != null && result.length > 0) {
@@ -105,10 +104,9 @@ public class DailyStatisticService {
     @Transactional(readOnly = true)
     public ChartDataDTO calculateRecentStatistics() {
         LocalDate today = LocalDate.now();
-        LocalDate currentDate = LocalDate.now();
         Pageable pageable = PageRequest.of(0, 360);
 
-        List<DailyStatisticVO> statistics = dailyStatisticJpa.findRecentStatistics(currentDate, pageable);
+        List<DailyStatisticVO> statistics = dailyStatisticJpa.findRecentStatistics(today, pageable);
         Collections.reverse(statistics);
 
         ChartDataDTO chartData = new ChartDataDTO();
