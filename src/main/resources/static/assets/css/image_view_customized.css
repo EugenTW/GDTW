@@ -177,7 +177,7 @@ h3 {
 
 .button-back {
     display: inline-block;
-    width: 350px;
+    width: 325px;
     padding: 12px 24px;
     background-color: #390061;
     color: #ffffff;
@@ -194,22 +194,54 @@ h3 {
     background-color: #6d01e0;
 }
 
+.album-url-container {
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 .page-url-text {
-    margin-bottom: 10px;
-    padding: 10px;
+    width: 350px;
+    font-size: 16px;
+    padding: 5px 10px;
     background-color: #a71400;
     box-shadow: inset 0 0 0 2px #ffd000;
     color: #ffffff;
-    font-size: 14px;
     text-align: center;
     border-radius: 10px;
     cursor: pointer;
-    width: 400px;
     box-sizing: border-box;
 }
 
 .page-url-text:hover {
     background-color: #db3e00;
+}
+
+.download-album-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: #26042b;
+    box-shadow: inset 0 0 0 2px #ffffff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 18px;
+    height: 40px;
+    width: 40px;
+    padding-left: 6px;
+    padding-right: 2px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    transition: background-color 0.3s ease;
+}
+
+.download-album-button:hover {
+    background-color: #5d0b6f;
 }
 
 .url-container {
@@ -276,6 +308,7 @@ h3 {
 .download-link-button:hover {
     background-color: #5d0b6f;
 }
+
 .toast-message {
     position: fixed;
     top: 50%;

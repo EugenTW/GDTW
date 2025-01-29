@@ -67,7 +67,7 @@ async function initPage(downloadApiUrl, isAlbumMode) {
             displaySingleImage(result);
         }
     } catch (error) {
-        console.error('Error occurred during initPage execution:', error);
+        // console.error('Error occurred during initPage execution:', error);
         alert('載入圖片失敗，請稍後再試。\nFailed to load images. Please try again later.');
     }
 }
@@ -77,18 +77,31 @@ function displayImages(data) {
     const gallery = document.getElementById('gallery');
     gallery.innerHTML = '';
     const isNsfw = data.siaNsfw === 1;
+
     const pageUrlDiv = document.createElement('div');
     pageUrlDiv.classList.add('page-url-text');
     const currentPageUrl = window.location.href;
     const url = new URL(currentPageUrl);
     const cleanUrl = url.host + url.pathname;
-
     pageUrlDiv.innerHTML = `Share Gallery URL: ${cleanUrl}`;
     pageUrlDiv.addEventListener('click', function () {
         copyToClipboard(cleanUrl);
         showCopiedMessage(pageUrlDiv);
     });
-    gallery.appendChild(pageUrlDiv);
+
+    const downloadAlbumButton = document.createElement('button');
+    downloadAlbumButton.classList.add('download-album-button');
+    downloadAlbumButton.textContent = '⬇️';
+    downloadAlbumButton.title = '下載所有圖片 - Download Gallery';
+    downloadAlbumButton.addEventListener('click', function () {
+        downloadEntireAlbum(data.images);
+    });
+
+    const albumUrlContainer = document.createElement('div');
+    albumUrlContainer.classList.add('album-url-container');
+    albumUrlContainer.appendChild(pageUrlDiv);
+    albumUrlContainer.appendChild(downloadAlbumButton);
+    gallery.appendChild(albumUrlContainer);
 
     data.images.forEach(image => {
         const photoDiv = document.createElement('div');
@@ -125,7 +138,7 @@ function displayImages(data) {
         const openLink = document.createElement('a');
         openLink.classList.add('open-link-button');
         openLink.textContent = '🔎';
-        openLink.title = '原始尺寸 - Full Size'
+        openLink.title = '原始尺寸 - Full Size';
         openLink.href = image.imageUrl;
         openLink.target = '_blank';
         openLink.rel = 'noopener noreferrer';
@@ -152,6 +165,41 @@ function displayImages(data) {
     gallery.classList.remove('hidden');
 }
 
+function downloadEntireAlbum(images) {
+    if (!images || images.length === 0) {
+        console.error("No images to download.");
+        return;
+    }
+
+    const zip = new JSZip();
+
+    const currentPageUrl = window.location.href;
+    const url = new URL(currentPageUrl);
+    let albumName = url.host + url.pathname;
+
+    albumName = albumName.replace(/[\/:?*"<>|]/g, "_");
+
+    let count = 0;
+
+    images.forEach((image) => {
+        fetch(image.imageUrl)
+            .then(response => response.blob())
+            .then(blob => {
+                let fileName = image.siName;
+                fileName = fileName.replace(/[\/:?*"<>|]/g, "_");
+
+                zip.file(`${fileName}.jpg`, blob);
+                count++;
+
+                if (count === images.length) {
+                    zip.generateAsync({ type: "blob" }).then(content => {
+                        saveAs(content, `${albumName}.zip`);
+                    });
+                }
+            })
+            .catch(error => console.error(`Error downloading ${image.imageUrl}:`, error));
+    });
+}
 
 // Function to display a single image
 function displaySingleImage(data) {
