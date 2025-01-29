@@ -340,7 +340,7 @@ public class ImgShareService {
             imageMap.put("siName", image.getSiName());
             String imageUrl = baseUrlForImageDownload + imageNginxStaticPath + image.getSiName();
             imageMap.put("imageUrl", imageUrl);
-            String imageSingleModeUrl = baseUrl + "/i/" + image.getSiCode();
+            String imageSingleModeUrl = baseUrl + "i/" + image.getSiCode();
             imageMap.put("imageSingleModeUrl", imageSingleModeUrl);
             imageList.add(imageMap);
 

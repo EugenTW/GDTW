@@ -67,6 +67,7 @@ async function initPage(downloadApiUrl, isAlbumMode) {
             displaySingleImage(result);
         }
     } catch (error) {
+        console.error('Error occurred during initPage execution:', error);
         alert('載入圖片失敗，請稍後再試。\nFailed to load images. Please try again later.');
     }
 }
@@ -129,10 +130,20 @@ function displayImages(data) {
         openLink.target = '_blank';
         openLink.rel = 'noopener noreferrer';
 
+        const downloadLink = document.createElement('a');
+        downloadLink.classList.add('download-link-button');
+        downloadLink.textContent = '⬇️';
+        downloadLink.title = '下載圖片 - Download';
+        downloadLink.href = image.imageUrl;
+        downloadLink.download = image.siName;
+        downloadLink.setAttribute('target', '_blank');
+        downloadLink.setAttribute('rel', 'noopener noreferrer');
+
         const urlContainer = document.createElement('div');
         urlContainer.classList.add('url-container');
         urlContainer.appendChild(urlDiv);
         urlContainer.appendChild(openLink);
+        urlContainer.appendChild(downloadLink);
 
         photoDiv.appendChild(urlContainer);
         gallery.appendChild(photoDiv);
@@ -146,6 +157,7 @@ function displayImages(data) {
 function displaySingleImage(data) {
     const singlePhotoDiv = document.getElementById('single-photo');
     singlePhotoDiv.innerHTML = '';
+
     const pageUrlDiv = document.createElement('div');
     pageUrlDiv.classList.add('page-url-text');
     const currentPageUrl = window.location.href;
@@ -162,6 +174,7 @@ function displaySingleImage(data) {
 
     const photoWrapper = document.createElement('div');
     photoWrapper.classList.add('photo-wrapper');
+
     const imgElement = document.createElement('img');
     const imageUrl = data.imageUrl.startsWith('http') ? data.imageUrl : new URL(data.imageUrl, window.location.origin).href;
     imgElement.src = imageUrl;
@@ -189,13 +202,24 @@ function displaySingleImage(data) {
     openLink.target = '_blank';
     openLink.rel = 'noopener noreferrer';
 
+    const downloadLink = document.createElement('a');
+    downloadLink.classList.add('download-link-button');
+    downloadLink.textContent = '⬇️';
+    downloadLink.title = '下載圖片 - Download';
+    downloadLink.href = imageUrl;
+    downloadLink.download = data.siName;
+    downloadLink.setAttribute('target', '_blank');
+    downloadLink.setAttribute('rel', 'noopener noreferrer');
+
     const urlContainer = document.createElement('div');
     urlContainer.classList.add('url-container');
     urlContainer.appendChild(openLink);
+    urlContainer.appendChild(downloadLink);
 
     singlePhotoDiv.appendChild(urlContainer);
     singlePhotoDiv.classList.remove('hidden');
 }
+
 
 
 // Show the password input modal
