@@ -1,9 +1,11 @@
 package com.GDTW.shorturl.controller;
 
 import com.GDTW.dailystatistic.model.DailyStatisticService;
+import com.GDTW.general.exception.ShortUrlBannedException;
+import com.GDTW.general.exception.ShortUrlNotFoundException;
+import com.GDTW.general.service.RateLimiterService;
 import com.GDTW.safebrowsing4.service.SafeBrowsingV4Service;
 import com.GDTW.shorturl.model.*;
-import com.google.common.util.concurrent.RateLimiter;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,16 +20,16 @@ import java.util.Map;
 @RequestMapping("/su_api")
 public class ShortUrlRestController {
     private static final Logger logger = LoggerFactory.getLogger(ShortUrlRestController.class);
-    private final RateLimiter CreatShortUrlRateLimiter = RateLimiter.create(60.0); // 60 requests per second
-    private final RateLimiter GetOriginalUrlRateLimiter = RateLimiter.create(600.0); // 600 requests per second
     private final ShortUrlService shortUrlService;
     private final DailyStatisticService statisticService;
     private final SafeBrowsingV4Service safeBrowsingService;
+    private final RateLimiterService rateLimiterService;
 
-    public ShortUrlRestController(ShortUrlService shortUrlService, DailyStatisticService statisticService, SafeBrowsingV4Service safeBrowsingService) {
+    public ShortUrlRestController(ShortUrlService shortUrlService, DailyStatisticService statisticService, SafeBrowsingV4Service safeBrowsingService, RateLimiterService rateLimiterService) {
         this.shortUrlService = shortUrlService;
         this.statisticService = statisticService;
         this.safeBrowsingService = safeBrowsingService;
+        this.rateLimiterService = rateLimiterService;
     }
 
     @Value("${app.baseUrl}")
@@ -36,11 +38,8 @@ public class ShortUrlRestController {
     @PostMapping("/create_new_short_url")
     public ResponseEntity<ReturnCreatedShortUrlDTO> createNewShortUrl(@RequestBody CreateShortUrlRequestDTO shortUrlRequest, HttpServletRequest request) {
 
-        if (!CreatShortUrlRateLimiter.tryAcquire()) {
-            ReturnCreatedShortUrlDTO errorResponse = new ReturnCreatedShortUrlDTO(null, null, "請求過於頻繁! 請稍後再試! Too many requests! Please try again later.");
-            logger.warn("Short Url creation limit exceeded.");
-            return ResponseEntity.status(429).body(errorResponse);
-        }
+        String clientIp = request.getRemoteAddr();
+        rateLimiterService.checkCreateShortUrlLimit(clientIp);
 
         String originalUrl = shortUrlRequest.getOriginalUrl();
         String originalIp = request.getHeader("X-Forwarded-For");
@@ -77,36 +76,33 @@ public class ShortUrlRestController {
     }
 
     @PostMapping("/get_original_url")
-    public ResponseEntity<ReturnOriginalUrlDTO> getOriginalUrl(@RequestBody GetOriginalUrlDTO codeRequest) {
+    public ResponseEntity<ReturnOriginalUrlDTO> getOriginalUrl(@RequestBody GetOriginalUrlDTO codeRequest, HttpServletRequest request) {
 
-        if (!GetOriginalUrlRateLimiter.tryAcquire()) {
-            ReturnOriginalUrlDTO errorResponse = new ReturnOriginalUrlDTO(null, null, "請求過於頻繁! 請稍後再試! Too many requests! Please try again later.");
-            logger.warn("Original Url request limit exceeded.");
-            return ResponseEntity.status(429).body(errorResponse);
-        }
+        String clientIp = request.getRemoteAddr();
+        rateLimiterService.checkGetOriginalUrlLimit(clientIp);
 
         try {
             String code = codeRequest.getCode();
             Map.Entry<String, String> result = shortUrlService.getOriginalUrl(code);
-            String originalUrl = result.getKey();
-            String originalUrlSafe = result.getValue();
+            statisticService.incrementShortUrlUsed();
 
-            if (originalUrl == null || originalUrl.equals("na")) {
-                ReturnOriginalUrlDTO errorResponse = new ReturnOriginalUrlDTO(null, null, "此短網址尚未建立! Original url not found!");
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
-            } else if (originalUrl.equals("ban")) {
-                ReturnOriginalUrlDTO errorResponse = new ReturnOriginalUrlDTO(null, null, "此短網址已失效! The short url is banned.");
-                return ResponseEntity.status(HttpStatus.GONE).body(errorResponse);
-            } else {
-                ReturnOriginalUrlDTO response = new ReturnOriginalUrlDTO(originalUrl, originalUrlSafe, null);
-                statisticService.incrementShortUrlUsed();
-                return ResponseEntity.ok(response);
-            }
+            return ResponseEntity.ok(new ReturnOriginalUrlDTO(result.getKey(), result.getValue(), null));
+
+        } catch (ShortUrlNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ReturnOriginalUrlDTO(null, null, e.getMessage()));
+
+        } catch (ShortUrlBannedException e) {
+            return ResponseEntity.status(HttpStatus.GONE)
+                    .body(new ReturnOriginalUrlDTO(null, null, e.getMessage()));
+
         } catch (Exception e) {
-            logger.error("Failed to return original url due to the internal server error.");
-            ReturnOriginalUrlDTO errorResponse = new ReturnOriginalUrlDTO(null, null, "內部伺服器錯誤! Internal server error!");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+            logger.error("Failed to return original URL due to internal server error.", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ReturnOriginalUrlDTO(null, null, "內部伺服器錯誤! Internal Server Error!"));
         }
     }
 
 }
+
+

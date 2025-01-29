@@ -1,5 +1,4 @@
 $(window).on('load', function () {
-
     const path = window.location.pathname;
     const code = path.split('/')[1];
 
@@ -11,10 +10,10 @@ $(window).on('load', function () {
         $('.shorten-url').text(cleanUrl);
         fetchOriginalUrlWithRetry(code, 3, 1000);
     } else {
-        $('.shorten-url').text('短網址無效 / Invalid short URL.');
-        $('.original-url').text('請使用有效的短網址 / Please use a valid short URL.');
+        showError("短網址無效 / Invalid short URL.");
     }
 });
+
 
 function fetchOriginalUrlWithRetry(code, maxRetries, delay) {
     let attempts = 0;
@@ -26,40 +25,64 @@ function fetchOriginalUrlWithRetry(code, maxRetries, delay) {
             url: '/su_api/get_original_url',
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({ code: code }),
-            success: function (response) {
-                console.log("Response received: ", response);
-
-                if (response.errorMessage) {
-                    $('.original-url').text(response.errorMessage).css("color", "red");
-                } else {
-                    const originalUrl = response.originalUrl;
-                    const originalUrlSafe = response.originalUrlSafe;
-
-                    $('.original-url').text(originalUrl);
-                    $('.button.green').on('click', function () {
-                        window.location.href = originalUrl;
-                    });
-
-                    updateGoogleSafeCheck(originalUrlSafe);
-                }
-            },
-            error: function (xhr) {
-                if (xhr.status === 429 && attempts <= maxRetries) {
-                    setTimeout(tryFetch, delay);
-                } else {
-                    let errorMessage;
-                    if (xhr.status === 404 || xhr.status === 410) {
-                        errorMessage = xhr.responseText;
-                    } else {
-                        errorMessage = "內部伺服器錯誤! Internal Server Error!";
-                    }
-                    $('.original-url').text(errorMessage).css("color", "red");
-                }
-            }
-        });
+            data: JSON.stringify({ code: code })
+        })
+            .done(handleSuccess)
+            .fail(function (xhr) {
+                handleFailure(xhr, attempts, maxRetries, delay, tryFetch);
+            });
     }
+
     tryFetch();
+}
+
+
+function handleSuccess(response) {
+    if (response.errorMessage) {
+        showError(response.errorMessage);
+    } else {
+        const originalUrl = response.originalUrl;
+        const originalUrlSafe = response.originalUrlSafe || "0"; // 預設為 "未檢查"
+
+        $('.original-url').text(originalUrl);
+        $('.button.green').off('click').on('click', function () {
+            window.location.href = originalUrl;
+        });
+
+        updateGoogleSafeCheck(originalUrlSafe);
+    }
+}
+
+
+function handleFailure(xhr, attempts, maxRetries, delay, retryFunction) {
+    let errorMessage = "內部伺服器錯誤! Internal Server Error!";
+
+    if (xhr.responseJSON && xhr.responseJSON.errorMessage) {
+        errorMessage = xhr.responseJSON.errorMessage;
+    } else {
+        switch (xhr.status) {
+            case 429:
+                errorMessage = "請求過於頻繁! Too many requests!";
+                break;
+            case 404:
+                errorMessage = "此短網址尚未建立! Original URL not found!";
+                break;
+            case 410:
+                errorMessage = "此短網址已失效! The short URL is banned.";
+                break;
+        }
+    }
+
+    showError(errorMessage);
+
+    if (xhr.status === 429 && attempts <= maxRetries) {
+        setTimeout(retryFunction, delay);
+    }
+}
+
+
+function showError(message) {
+    $('.original-url').text(message).css({ "color": "red", "font-weight": "bold" });
 }
 
 
@@ -67,14 +90,13 @@ function updateGoogleSafeCheck(originalUrlSafe) {
     const safeValue = parseInt(originalUrlSafe, 10);
     const iconElement = $('#google-safe-icon');
 
-    if (safeValue === 0) {
-        iconElement.attr('src', '/images/circle.png');
-        iconElement.attr('title', 'Unchecked URL!');
-    } else if (safeValue === 1) {
-        iconElement.attr('src', '/images/check.png');
-        iconElement.attr('title', 'Safe URL!');
-    } else if (safeValue === 2) {
-        iconElement.attr('src', '/images/warn.png');
-        iconElement.attr('title', 'Unsafe URL!');
-    }
+    const safeStatus = {
+        0: { src: '/images/circle.png', title: 'Unchecked URL!' },
+        1: { src: '/images/check.png', title: 'Safe URL!' },
+        2: { src: '/images/warn.png', title: 'Unsafe URL!' }
+    };
+
+    const status = safeStatus[safeValue] || safeStatus[0]; // 預設為未檢查狀態
+    iconElement.attr('src', status.src);
+    iconElement.attr('title', status.title);
 }

@@ -1,5 +1,7 @@
 package com.GDTW.shorturl.model;
 
+import com.GDTW.general.exception.ShortUrlBannedException;
+import com.GDTW.general.exception.ShortUrlNotFoundException;
 import com.GDTW.general.util.IdEncoderDecoderUtil;
 
 import org.slf4j.Logger;
@@ -44,29 +46,36 @@ public class ShortUrlService {
     @Transactional(readOnly = true)
     public Map.Entry<String, String> getOriginalUrl(String code) {
         Integer suId = toDecodeSuId(code);
-        // Check Redis cache first
+
         String redisKeyForID = "su:suId:" + code;
         String redisKeyForSafe = "su:suSafe:" + code;
         String cachedOriginalUrl = redisStringStringTemplate.opsForValue().get(redisKeyForID);
         String cachedOriginalUrlSafe = redisStringStringTemplate.opsForValue().get(redisKeyForSafe);
+
         if (cachedOriginalUrl != null && cachedOriginalUrlSafe != null) {
             countShortUrlUsage(suId);
             return new AbstractMap.SimpleEntry<>(cachedOriginalUrl, cachedOriginalUrlSafe);
         }
+
         if (!isShortUrlIdExist(suId)) {
-            return new AbstractMap.SimpleEntry<>("na", "null");
+            throw new ShortUrlNotFoundException("此短網址尚未建立! Original URL not found!");
         }
+
         if (!isShortUrlValid(suId)) {
-            return new AbstractMap.SimpleEntry<>("ban", "null");
+            throw new ShortUrlBannedException("此短網址已失效! The short URL is banned.");
         }
+
         Map<String, Object> result = getSuIdAndSuSafe(suId);
         String originalUrl = (String) result.get("suOriginalUrl");
         String originalUrlSafe = (String) result.get("suSafe");
+
         cacheShortUrl(code, originalUrl);
         cacheShortUrlSafety(code, originalUrlSafe);
         countShortUrlUsage(suId);
+
         return new AbstractMap.SimpleEntry<>(originalUrl, originalUrlSafe);
     }
+
 
     // ==================================================================
     // Redis caching methods
