@@ -66,9 +66,7 @@ public class ShortUrlRestController {
                 ReturnCreatedShortUrlDTO errorResponse = new ReturnCreatedShortUrlDTO(null, safeUrlResult, "短網址建立失敗!請稍後再次嘗試! The short URL creation failed! Please try again later!");
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
             }
-
         } catch (Exception e) {
-            // Log the error and return error response as JSON
             logger.error("Failed to create new shortUrl due to the web server error. The failed url was: '" + originalUrl + "'.");
             ReturnCreatedShortUrlDTO errorResponse = new ReturnCreatedShortUrlDTO(null, null, "內部伺服器錯誤!請等待站方維修! Internal server error! Please wait for the site to be fixed!");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
@@ -87,15 +85,12 @@ public class ShortUrlRestController {
             statisticService.incrementShortUrlUsed();
 
             return ResponseEntity.ok(new ReturnOriginalUrlDTO(result.getKey(), result.getValue(), null));
-
         } catch (ShortUrlNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new ReturnOriginalUrlDTO(null, null, e.getMessage()));
-
         } catch (ShortUrlBannedException e) {
             return ResponseEntity.status(HttpStatus.GONE)
                     .body(new ReturnOriginalUrlDTO(null, null, e.getMessage()));
-
         } catch (Exception e) {
             logger.error("Failed to return original URL due to internal server error.", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

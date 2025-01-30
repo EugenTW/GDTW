@@ -71,7 +71,6 @@ public class SafeBrowsingV4Service {
             // Handle network errors or request failures
             logger.error("Request Error: " + ex.getMessage());
             return "0";
-
         } catch (Exception ex) {
             // Handle any unexpected exceptions
             logger.error("Unexpected error: " + ex.getMessage());
