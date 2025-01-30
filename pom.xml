@@ -106,7 +106,6 @@
             <version>0.11.5</version>
         </dependency>
 
-
         <!-- Google Guava -->
         <!-- Since RateLimiter is still a Beta API, stop using Guava. The last used version was GDTW v1.11.2. -->
         <!--		<dependency>-->
@@ -129,9 +128,7 @@
             <version>2.3.0</version>
         </dependency>
 
-
     </dependencies>
-
 
     <build>
         <plugins>
