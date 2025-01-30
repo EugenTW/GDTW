@@ -18,20 +18,6 @@ CREATE TABLE web_user
 );
 ALTER TABLE web_user AUTO_INCREMENT = 1000000;
 
-CREATE TABLE daily_statistic
-(
-    ds_id                INT AUTO_INCREMENT PRIMARY KEY,
-    ds_date              DATE,
-    ds_short_url_created INT,
-    ds_short_url_used    INT,
-    ds_img_created       INT,
-    ds_img_used          INT,
-    ds_img_album_created INT,
-    ds_img_album_used    INT,
-    ds_vid_created       INT,
-    ds_vid_used          INT
-);
-
 CREATE TABLE web_admin
 (
     am_id                INT AUTO_INCREMENT PRIMARY KEY,
@@ -43,6 +29,18 @@ CREATE TABLE web_admin
     am_status            TINYINT DEFAULT 0
 );
 ALTER TABLE web_admin AUTO_INCREMENT = 100;
+
+CREATE TABLE daily_statistic
+(
+    ds_id                INT AUTO_INCREMENT PRIMARY KEY,
+    ds_date              DATE,
+    ds_short_url_created INT,
+    ds_short_url_used    INT,
+    ds_img_created       INT,
+    ds_img_used          INT,
+    ds_img_album_created INT,
+    ds_img_album_used    INT
+);
 
 CREATE TABLE short_url
 (
@@ -94,20 +92,5 @@ CREATE TABLE share_img
 );
 ALTER TABLE share_img AUTO_INCREMENT = 11000000;
 
-CREATE TABLE share_vid
-(
-    sv_id            INT AUTO_INCREMENT PRIMARY KEY,
-    sv_code          VARCHAR(100),
-    sv_name          VARCHAR(100),
-    sv_password      VARCHAR(10),
-    sv_created_date  DATE,
-    sv_created_ip    VARCHAR(40),
-    sv_end_date      DATE,
-    sv_total_visited INT     DEFAULT 0,
-    sv_status        TINYINT DEFAULT 0,
-    u_id             INT NULL,
-    FOREIGN KEY (u_id) REFERENCES web_user (u_id)
-);
-ALTER TABLE share_vid AUTO_INCREMENT = 11000000;
 
 
