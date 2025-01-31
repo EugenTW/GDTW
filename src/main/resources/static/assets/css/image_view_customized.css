@@ -20,8 +20,8 @@ h3 {
 }
 
 #password-modal {
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
     min-width: 400px;
     text-align: center;
     display: flex;
@@ -74,7 +74,7 @@ h3 {
 }
 
 #password-submit:hover {
-    background-color: #0945ad;
+    background-color: #1753b9;
 }
 
 .gallery {
@@ -108,7 +108,7 @@ h3 {
 .photo-wrapper img,
 .photo img {
     max-width: 90%;
-    max-height: 90vh;
+    max-height: 95vh;
     min-width: 300px;
     min-height: 300px;
     width: auto;
