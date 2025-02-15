@@ -81,7 +81,7 @@ public class ScheduledImgCleanupService {
     }
 
     // automatically empty trash monthly
-    @Scheduled(cron = "${task.schedule.cron.monthlyImgTrashCleanupService}")
+    @Scheduled(cron = "${task.schedule.cron.weeklyImgTrashCleanupService}")
     public void clearTrashCan() {
         Path trashCanPath = Paths.get(imageTrashCanPath);
         try {

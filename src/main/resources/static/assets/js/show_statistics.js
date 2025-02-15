@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return response.json();
         })
         .then(data => {
+            document.getElementById('total-web-service').textContent = data.totalWebServiceCount || 0;
             document.getElementById('total-short-urls-created').textContent = data.totalShortUrlsCreated || 0;
             document.getElementById('total-short-urls-used').textContent = data.totalShortUrlsUsed || 0;
             document.getElementById('total-image-albums-created').textContent = data.totalImageAlbumsCreated || 0;

@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.*;
 
 @Service
@@ -63,6 +62,7 @@ public class DailyStatisticService {
             totalStatistics.setTotalImagesVisited(row[3] != null ? ((Number) row[3]).intValue() : 0);
             totalStatistics.setTotalImageAlbumsCreated(row[4] != null ? ((Number) row[4]).intValue() : 0);
             totalStatistics.setTotalImageAlbumsVisited(row[5] != null ? ((Number) row[5]).intValue() : 0);
+            totalStatistics.setTotalWebServiceCount(row[6] != null ? ((Number) row[6]).intValue() : 0);
         }
         saveTotalServiceStatisticsDtoToRedis("ds:totalStatistics:" + today, totalStatistics);
         return totalStatistics;

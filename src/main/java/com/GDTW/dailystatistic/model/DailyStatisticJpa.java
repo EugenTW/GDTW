@@ -7,7 +7,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -15,7 +14,7 @@ public interface DailyStatisticJpa  extends JpaRepository<DailyStatisticVO, Inte
 
     DailyStatisticVO findByDsDate(LocalDate dsDate);
 
-    @Query("SELECT SUM(dsShortUrlCreated), SUM(dsShortUrlUsed), SUM(dsImgCreated), SUM(dsImgUsed), SUM(dsImgAlbumCreated), SUM(dsImgAlbumUsed) FROM DailyStatisticVO WHERE dsDate < :currentDate")
+    @Query("SELECT SUM(dsShortUrlCreated), SUM(dsShortUrlUsed), SUM(dsImgCreated), SUM(dsImgUsed), SUM(dsImgAlbumCreated), SUM(dsImgAlbumUsed), COUNT(*) FROM DailyStatisticVO WHERE dsDate < :currentDate")
     Object[] calculateSumsBeforeDate(@Param("currentDate") LocalDate currentDate);
 
     @Query("SELECT d FROM DailyStatisticVO d WHERE d.dsDate < :currentDate ORDER BY d.dsDate DESC")
