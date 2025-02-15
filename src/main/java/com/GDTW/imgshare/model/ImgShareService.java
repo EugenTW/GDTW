@@ -153,34 +153,22 @@ public class ImgShareService {
     // ==================================================================
     // Reading methods
     @Transactional(readOnly = true)
-    public boolean isSiaIdValid(String code) {
+    public boolean isValidShareImageAlbum(String code) {
         Integer siaId = toDecodeId(code);
-        return shareImgAlbumJpa.existsBySiaId(siaId);
+        return shareImgAlbumJpa.existsBySiaIdAndSiaStatusNot(siaId, (byte) 1);
     }
 
     @Transactional(readOnly = true)
-    public boolean isSiIdValid(String code) {
-        Integer siId = toDecodeId(code);
-        return shareImgJpa.existsBySiId(siId);
-    }
-
-    @Transactional(readOnly = true)
-    public boolean isShareImageAlbumCodeValid(String code) {
-        Integer siaImageAlbumId = toDecodeId(code);
-        return shareImgAlbumJpa.existsBySiaIdAndSiaStatusNot(siaImageAlbumId, (byte) 1);
-    }
-
-    @Transactional(readOnly = true)
-    public boolean isShareImageCodeValid(String code) {
-        Integer siImageId = toDecodeId(code);
-        return shareImgJpa.existsBySiIdAndSiStatusNot(siImageId, (byte) 1);
+    public boolean isValidShareImage(String code) {
+        Integer siaId = toDecodeId(code);
+        return shareImgJpa.existsBySiIdAndSiStatusNot(siaId, (byte) 1);
     }
 
     @Transactional(readOnly = true)
     public Map<String, Object> isShareImageAlbumPasswordProtected(String code) {
         Map<String, Object> response = new HashMap<>();
 
-        boolean isAlbumValid = isShareImageAlbumCodeValid(code);
+        boolean isAlbumValid = isValidShareImageAlbum(code);
         response.put("isValid", isAlbumValid);
 
         if (!isAlbumValid) {
@@ -209,7 +197,7 @@ public class ImgShareService {
     public Map<String, Object> isShareImagePasswordProtected(String code) {
         Map<String, Object> response = new HashMap<>();
 
-        boolean isImageValid = isShareImageCodeValid(code);
+        boolean isImageValid = isValidShareImage(code);
         response.put("isValid", isImageValid);
 
         if (!isImageValid) {

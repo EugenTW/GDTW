@@ -30,10 +30,7 @@ public class ImgShareController {
 
     @GetMapping("/a/{code:[a-zA-Z0-9]{6}}")
     public String imageAlbumView(@PathVariable String code, HttpServletResponse response) throws IOException {
-        if (!imgShareService.isSiaIdValid(code)) {
-            response.sendRedirect("/error_404");
-            return null;
-        } else if (!imgShareService.isShareImageAlbumCodeValid(code)) {
+        if (!imgShareService.isValidShareImageAlbum(code)) {
             response.sendRedirect("/error_410");
             return null;
         }
@@ -42,10 +39,7 @@ public class ImgShareController {
 
     @GetMapping("/i/{code:[a-zA-Z0-9]{6}}")
     public String imageSingleView(@PathVariable String code, HttpServletResponse response) throws IOException {
-        if (!imgShareService.isSiIdValid(code)) {
-            response.sendRedirect("/error_404");
-            return null;
-        } else if (!imgShareService.isShareImageCodeValid(code)) {
+        if (!imgShareService.isValidShareImage(code)) {
             response.sendRedirect("/error_410");
             return null;
         }
