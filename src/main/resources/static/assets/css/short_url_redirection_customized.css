@@ -15,6 +15,23 @@ hr {
     gap: 5px;
 }
 
+.data-display {
+    width: 350px;
+    height: 45px;
+    background-color: #3d0000;
+    color: #FFFFFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    line-height: 40px;
+    border: 3px solid #ff278f;
+    border-radius: 10px;
+    font-size: 16px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
 .reminder {
     color: #ffffff;
     text-align: center;
@@ -51,7 +68,7 @@ hr {
 }
 
 .data-display.large-box.original-url {
-    width: 80%;
+    width: 90%;
     min-width: 300px;
     max-width: 800px;
     min-height: 50px;    
@@ -160,7 +177,7 @@ hr {
 
 .button-back {
     display: inline-block;
-    width: 350px;
+    width: 325px;
     padding: 12px 24px;
     background-color: #390061;
     color: #ffffff;
