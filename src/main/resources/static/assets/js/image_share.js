@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Handle file selection and filtering
     function handleFileSelect(event) {
         const files = event.target.files;
+        let totalSize = 0;
 
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
@@ -32,8 +33,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 continue;
             }
 
-            // Check if file size exceeds 25MB
-            if (file.size > 25 * 1024 * 1024) {
+            // Check if file size exceeds 30MB
+            if (file.size > 30 * 1024 * 1024) {
                 alert(`單檔不得超過25MB - File too large (max 25MB): ${file.name}`);
                 continue;
             }
@@ -41,6 +42,13 @@ document.addEventListener('DOMContentLoaded', function () {
             // Limit the number of files to 50
             if (selectedFiles.length >= 50) {
                 alert("單次最多50個檔案 - Up to 50 files only.");
+                break;
+            }
+
+            // Limit total size of files
+            totalSize += file.size;
+            if (totalSize > 1 * 1024 * 1024 * 1024) {
+                alert("總檔案大小不得超過1GB - Total file size exceeds 1GB.");
                 break;
             }
 

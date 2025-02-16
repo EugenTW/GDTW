@@ -21,8 +21,8 @@ hr {
 }
 
 #long_url {
-    width: 100%;
-    min-width: 400px;
+    width: 90%;
+    min-width: 300px;
     max-width: 800px;
     height: 50px;
     padding: 10px;
