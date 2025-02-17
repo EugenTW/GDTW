@@ -51,11 +51,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
             drawChart('created-short-url-chart', '短網址建立 - Short URL Creation', alignData(createdData.url), 'rgb(48,255,48)');
             drawChart('created-album-chart', '圖片相簿建立 - Image Album Creation', alignData(createdData.album), 'rgb(24,255,255)');
-            drawChart('created-image-chart', '圖片建立 - Image Creation', alignData(createdData.image), 'rgb(255,213,0)');
+            drawChart('created-image-chart', '圖片建立 - Image Creation', alignData(createdData.image), 'rgb(255,204,0)');
 
             drawChart('used-short-url-chart', '短網址使用 - Short URL Usage', alignData(usedData.url), 'rgba(48,255,48)');
             drawChart('used-album-chart', '圖片相簿瀏覽 - Photo Album Browsing', alignData(usedData.album), 'rgba(24,255,255)');
-            drawChart('used-image-chart', '圖片瀏覽 - Image Browsing', alignData(usedData.image), 'rgba(255,213,0)');
+            drawChart('used-image-chart', '圖片瀏覽 - Image Browsing', alignData(usedData.image), 'rgba(255,204,0)');
         })
         .catch(error => {
             console.error('Error fetching recent statistics:', error);
@@ -94,8 +94,8 @@ document.addEventListener('DOMContentLoaded', function () {
     
         const ctx = canvas.getContext('2d');
     
-        const maxDataValue = Math.max(...dataset.filter(v => v !== null), 10);
-        const suggestedMax = Math.max(maxDataValue + 5, 10);
+        const maxDataValue = Math.max(...dataset.filter(v => v !== null), 5);
+        const suggestedMax = Math.max(maxDataValue + 25, 40);
     
         new Chart(ctx, {
             type: 'line',
