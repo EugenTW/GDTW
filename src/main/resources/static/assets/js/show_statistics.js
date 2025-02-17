@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         borderColor: color,
                         borderWidth: 1, 
                         pointBackgroundColor: color, 
-                        pointRadius: 1.75,
+                        pointRadius: 2,
                         pointHoverRadius: 3,
                         fill: false,
                         tension: 0.1,
