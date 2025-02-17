@@ -2,8 +2,8 @@ package com.GDTW;
 
 public class WebVersion {
 
-    private static final String WebVersion = "1.12.3";
-    private static final String BuildDate = "2025Feb15";
+    private static final String WebVersion = "1.12.5";
+    private static final String BuildDate = "2025Feb18";
 
     public static String getWebVersion() {
         return WebVersion;

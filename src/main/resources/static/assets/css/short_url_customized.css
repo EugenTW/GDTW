@@ -21,8 +21,8 @@ hr {
 }
 
 #long_url {
-    width: 100%;
-    min-width: 400px;
+    width: 90%;
+    min-width: 300px;
     max-width: 800px;
     height: 50px;
     padding: 10px;
@@ -122,13 +122,13 @@ hr {
 .button-back {
     display: inline-block;
     width: 350px;
-    padding: 12px 24px;
+    padding: 12px 20px;
     background-color: #390061;
     color: #ffffff;
     text-align: center;
     text-decoration: none;
     border-radius: 5px;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: bold;
     cursor: pointer;
     box-shadow: inset 0 0 0 2px #ffffff;
