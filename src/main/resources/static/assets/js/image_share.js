@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Check if file size exceeds 30MB
             if (file.size > 30 * 1024 * 1024) {
-                alert(`單檔不得超過25MB - File too large (max 25MB): ${file.name}`);
+                alert(`單檔不得超過30MB - File too large (max 30MB): ${file.name}`);
                 continue;
             }
 

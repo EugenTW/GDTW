@@ -49,13 +49,13 @@ document.addEventListener('DOMContentLoaded', function () {
             const createdData = data.created || initializeEmptyData();
             const usedData = data.used || initializeEmptyData();
 
-            drawChart('created-short-url-chart', '短網址建立 - Short URL Creation', alignData(createdData.url), 'rgba(75, 192, 75, 1)');
-            drawChart('created-album-chart', '圖片相簿建立 - Image Album Creation', alignData(createdData.album), 'rgba(54, 162, 235, 1)');
-            drawChart('created-image-chart', '圖片建立 - Image Creation', alignData(createdData.image), 'rgba(255, 206, 86, 1)');
+            drawChart('created-short-url-chart', '短網址建立 - Short URL Creation', alignData(createdData.url), 'rgb(48,255,48)');
+            drawChart('created-album-chart', '圖片相簿建立 - Image Album Creation', alignData(createdData.album), 'rgb(24,255,255)');
+            drawChart('created-image-chart', '圖片建立 - Image Creation', alignData(createdData.image), 'rgb(255,213,0)');
 
-            drawChart('used-short-url-chart', '短網址使用 - Short URL Usage', alignData(usedData.url), 'rgba(75, 192, 75, 1)');
-            drawChart('used-album-chart', '圖片相簿瀏覽 - Photo Album Browsing', alignData(usedData.album), 'rgba(54, 162, 235, 1)');
-            drawChart('used-image-chart', '圖片瀏覽 - Image Browsing', alignData(usedData.image), 'rgba(255, 206, 86, 1)');
+            drawChart('used-short-url-chart', '短網址使用 - Short URL Usage', alignData(usedData.url), 'rgba(48,255,48)');
+            drawChart('used-album-chart', '圖片相簿瀏覽 - Photo Album Browsing', alignData(usedData.album), 'rgba(24,255,255)');
+            drawChart('used-image-chart', '圖片瀏覽 - Image Browsing', alignData(usedData.image), 'rgba(255,213,0)');
         })
         .catch(error => {
             console.error('Error fetching recent statistics:', error);
@@ -71,12 +71,12 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
     function initializeEmptyData() {
-        return Array(360).fill(0);
+        return Array(365).fill(0);
     }
 
     function alignData(data) {
-        const aligned = Array(360).fill(null);
-        const startIndex = 360 - data.length;
+        const aligned = Array(365).fill(null);
+        const startIndex = 365 - data.length;
         data.forEach((value, index) => {
             aligned[startIndex + index] = value;
         });
@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function () {
         new Chart(ctx, {
             type: 'line',
             data: {
-                labels: Array(360).fill(''),
+                labels: Array(365).fill(''),
                 datasets: [
                     {
                         label: title,
@@ -108,8 +108,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         borderColor: color,
                         borderWidth: 1, 
                         pointBackgroundColor: color, 
-                        pointRadius: 2, 
-                        pointHoverRadius: 4, 
+                        pointRadius: 1.75,
+                        pointHoverRadius: 3,
                         fill: false,
                         tension: 0.1,
                     },
@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         callbacks: {
                             title: (tooltipItems) => {
                                 const dayIndex = tooltipItems[0].dataIndex;
-                                return `Past Day: ${360 - dayIndex}`;
+                                return `Past Day: ${365 - dayIndex}`;
                             },
                         },
                     },
