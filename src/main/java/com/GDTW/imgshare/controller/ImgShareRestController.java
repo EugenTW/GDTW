@@ -43,11 +43,9 @@ public class ImgShareRestController {
             @RequestParam(value = "password", required = false) String password,
             HttpServletRequest request) {
 
-        String clientIp = request.getRemoteAddr();
-        rateLimiterService.checkCreateShareImageLimit(clientIp);
+        String originalIp = request.getHeader("X-Forwarded-For");
+        rateLimiterService.checkCreateShareImageLimit(originalIp);
 
-        // Get client IP address
-        String originalIp = getClientIp(request);
         AlbumCreationRequestDTO requestDTO = new AlbumCreationRequestDTO(files, expiryDays, nsfw, password, originalIp);
 
         try {
@@ -67,14 +65,18 @@ public class ImgShareRestController {
     }
 
     @PostMapping("/isAlbumPasswordNeeded")
-    public ResponseEntity<Map<String, Object>> isAlbumPasswordNeeded(@RequestBody Map<String, String> request) {
+    public ResponseEntity<Map<String, Object>> isAlbumPasswordNeeded(@RequestBody Map<String, String> request, HttpServletRequest originRequest) {
+        String originalIp = originRequest.getHeader("X-Forwarded-For");
+        rateLimiterService.checkGetShareImageLimit(originalIp);
         String code = request.get("code");
         Map<String, Object> result = imgShareService.isShareImageAlbumPasswordProtected(code);
         return ResponseEntity.ok(result);
     }
 
     @PostMapping("/isImagePasswordNeeded")
-    public ResponseEntity<Map<String, Object>> isImagePasswordNeeded(@RequestBody Map<String, String> request) {
+    public ResponseEntity<Map<String, Object>> isImagePasswordNeeded(@RequestBody Map<String, String> request, HttpServletRequest originRequest) {
+        String originalIp = originRequest.getHeader("X-Forwarded-For");
+        rateLimiterService.checkGetShareImageLimit(originalIp);
         String code = request.get("code");
         Map<String, Object> result = imgShareService.isShareImagePasswordProtected(code);
         return ResponseEntity.ok(result);
@@ -85,8 +87,8 @@ public class ImgShareRestController {
             @RequestBody Map<String, String> request,
             HttpServletRequest originRequest) {
 
-        String clientIp = originRequest.getRemoteAddr();
-        rateLimiterService.checkGetShareImageLimit(clientIp);
+        String originalIp = originRequest.getHeader("X-Forwarded-For");
+        rateLimiterService.checkGetShareImageLimit(originalIp);
 
         // Extract request parameters
         String code = request.get("code");
@@ -102,8 +104,8 @@ public class ImgShareRestController {
             @RequestBody Map<String, String> request,
             HttpServletRequest originRequest) {
 
-        String clientIp = originRequest.getRemoteAddr();
-        rateLimiterService.checkGetShareImageLimit(clientIp);
+        String originalIp = originRequest.getHeader("X-Forwarded-For");
+        rateLimiterService.checkGetShareImageLimit(originalIp);
 
         // Extract request parameters
         String code = request.get("code");
@@ -116,7 +118,11 @@ public class ImgShareRestController {
 
 
     @PostMapping("/downloadAlbumImages")
-    public ResponseEntity<Map<String, Object>> downloadAlbumImages(@RequestBody Map<String, String> request) {
+    public ResponseEntity<Map<String, Object>> downloadAlbumImages(@RequestBody Map<String, String> request, HttpServletRequest originRequest) {
+
+        String originalIp = originRequest.getHeader("X-Forwarded-For");
+        rateLimiterService.checkGetShareImageLimit(originalIp);
+
         String token = request.get("token");
         Map<String, Object> result = imgShareService.getAlbumImages(token);
         if (result.containsKey("error")) {
@@ -127,7 +133,11 @@ public class ImgShareRestController {
     }
 
     @PostMapping("/downloadSingleImage")
-    public ResponseEntity<Map<String, Object>> downloadSingleImage(@RequestBody Map<String, String> request) {
+    public ResponseEntity<Map<String, Object>> downloadSingleImage(@RequestBody Map<String, String> request, HttpServletRequest originRequest) {
+
+        String originalIp = originRequest.getHeader("X-Forwarded-For");
+        rateLimiterService.checkGetShareImageLimit(originalIp);
+
         String token = request.get("token");
         Map<String, Object> result = imgShareService.getSingleImage(token);
         if (result.containsKey("error")) {
@@ -135,27 +145,6 @@ public class ImgShareRestController {
         }
         dailyStatisticService.incrementImgUsed();
         return ResponseEntity.ok(result);
-    }
-
-    // ===============================================================================================
-    // Tools
-    private String getClientIp(HttpServletRequest request) {
-        String ip = request.getHeader("X-Forwarded-For");
-        if (ip != null && !ip.isEmpty()) {
-            ip = ip.split(",")[0];
-        } else {
-            ip = request.getHeader("X-Real-IP");
-        }
-        if (ip == null || ip.isEmpty()) {
-            ip = request.getRemoteAddr();
-        }
-        return ip;
-    }
-
-    private ResponseEntity<Map<String, Object>> createTooManyRequestsResponse() {
-        Map<String, Object> response = new HashMap<>();
-        response.put("error", "Too many requests. Please try again later.");
-        return ResponseEntity.status(429).body(response);
     }
 
 }

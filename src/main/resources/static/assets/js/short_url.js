@@ -1,33 +1,44 @@
 $(document).ready(function () {
-    // Validate the URL input on blur event
-    $("#long_url").on('blur', function () {
-        var url = $(this).val();
-        var httpsRegex = /^https:\/\/[a-zA-Z0-9\-\.]+\.[a-z]{2,}(:\d+)?(\/.*)?$/;
+    const $longUrlInput = $("#long_url");
+    const $generateButton = $("#generate");
+    const maxRetries = 5;
 
-        // Check if URL length exceeds 200 characters
+    $longUrlInput.on('blur', function () {
+        const url = $(this).val().trim();
+
+        if (!url) {
+            $generateButton.prop('disabled', true);
+            return;
+        }
+
         if (url.length > 200) {
-            alert("您輸入的網址長度已超過 200 字元。 - The URL you entered exceeds 200 characters.");
+            alert("您輸入的網址長度已超過 200 字元。 - The URL exceeds 200 characters.");
+            $(this).val('');
+            $generateButton.prop('disabled', true);
+            return;
         }
 
-        // Ensure the URL matches HTTPS pattern
+        const httpsRegex = /^https:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,}(:\d+)?(\/.*)?$/;
         if (!httpsRegex.test(url)) {
-            alert("請輸入正確的 URL，必須使用 HTTPS 並且符合最基本的 URL 結構。 - The URL must start with HTTPS and follow the basic structure.");
-            $(this).val(''); // Clear invalid input
+            alert("請輸入正確的 URL，必須使用 HTTPS 並且符合最基本的 URL 結構。");
+            $(this).val('');
+            $generateButton.prop('disabled', true);
+            return;
         }
+
+        $generateButton.prop('disabled', false);
     });
 
-    // Handle "Generate Short URL" button click
-    $("#generate").on('click', function () {
-        const longUrl = $("#long_url").val();
+    $generateButton.on('click', function () {
+        const longUrl = $longUrlInput.val().trim();
         if (!longUrl) {
             alert("請輸入一個網址 / Please enter a valid URL.");
             return;
         }
 
-        const maxRetries = 5; // Maximum retry attempts for 429 response
-        let attempt = 0;
+        $generateButton.prop('disabled', true);
 
-        // Function to send the AJAX request for creating a short URL
+        let attempt = 0;
         function tryCreateShortUrl() {
             $.ajax({
                 url: '/su_api/create_new_short_url',
@@ -35,69 +46,70 @@ $(document).ready(function () {
                 contentType: 'application/json',
                 data: JSON.stringify({ originalUrl: longUrl }),
                 success: function (response) {
-                    // Process the successful response
                     if (response && typeof response === "object") {
-                        const shortUrl = response.fullShortUrl;
-                        const message = response.message;
+                        const shortUrl     = response.fullShortUrl;
+                        const message      = response.message;
                         const safeUrlResult = response.safeUrlResult;
 
                         console.log("Safe URL Result: ", safeUrlResult);
 
                         if (shortUrl) {
-                            // Display the generated short URL
-                            $("#shorten_url").text(shortUrl).css("background-color", "yellow");
-                            $("#shorten_url").off('click').on('click', copyToClipboard);
+                            $("#shorten_url")
+                                .text(shortUrl)
+                                .css("background-color", "yellow")
+                                .off('click').on('click', copyToClipboard);
 
-                            // Generate a QR Code for the short URL
-                            $("#qrcode").empty(); // Clear previous QR Code
+                            $("#qrcode").empty();
                             new QRCode(document.getElementById("qrcode"), {
-                                text: shortUrl, // Short URL as QR Code content
+                                text: shortUrl,
                                 width: 100,
                                 height: 100
                             });
-
-                            $("#qrcode").css("display", "block"); // Show the QR Code
+                            $("#qrcode").css("display", "block");
                         } else {
-                            // Display response message if short URL is not provided
-                            $("#shorten_url").text(message).css("background-color", "pink");
-                            $("#qrcode").css("display", "none"); // Hide QR Code
+                            $("#shorten_url")
+                                .text(message)
+                                .css("background-color", "pink");
+                            $("#qrcode").css("display", "none");
                         }
                     } else {
                         console.error("Invalid response!");
-                        $("#shorten_url").text("無效的回應! 請稍後重試! Invalid response! Please try again later.").css("background-color", "pink");
-                        $("#qrcode").css("display", "none"); // Hide QR Code
+                        $("#shorten_url")
+                            .text("無效的回應! 請稍後重試!")
+                            .css("background-color", "pink");
+                        $("#qrcode").css("display", "none");
                     }
                 },
                 error: function (xhr) {
-                    // Handle 429 Too Many Requests response
                     if (xhr.status === 429) {
                         attempt++;
                         console.warn(`Request rate limit hit. Retry attempt: ${attempt}`);
                         if (attempt < maxRetries) {
-                            setTimeout(tryCreateShortUrl, 1000); // Retry after 1 second
+                            setTimeout(tryCreateShortUrl, 1000); // 1 秒後重試
                         } else {
-                            // Inform the user if maximum retries are exceeded
-                            $("#shorten_url").text("伺服器忙碌，稍後再試。 - Server busy. Try later.")
+                            $("#shorten_url")
+                                .text("伺服器忙碌，稍後再試。 - Server busy. Try later.")
                                 .css("background-color", "pink");
-                            $("#qrcode").css("display", "none"); // Hide QR Code
+                            $("#qrcode").css("display", "none");
                         }
                     } else {
-                        // Handle other errors
                         console.error(`Error: ${xhr.status} - ${xhr.responseText}`);
-                        $("#shorten_url").text("錯誤: 請稍後再試! Error: Please try again later.")
+                        $("#shorten_url")
+                            .text("錯誤: 請稍後再試! Error: Please try again later.")
                             .css("background-color", "pink");
-                        $("#qrcode").css("display", "none"); // Hide QR Code
+                        $("#qrcode").css("display", "none");
                     }
+                },
+                complete: function() {
+                    $generateButton.prop('disabled', true);
                 }
             });
         }
 
-        // Initiate the first request
         tryCreateShortUrl();
     });
 });
 
-// Copy the short URL to clipboard
 function copyToClipboard() {
     const copyText = document.getElementById("shorten_url").textContent;
     navigator.clipboard.writeText(copyText)
@@ -110,7 +122,6 @@ function copyToClipboard() {
         });
 }
 
-// Display alert message in the center of the screen
 function showAlert(message, color) {
     const alertDiv = document.createElement("div");
     alertDiv.textContent = message;
@@ -127,7 +138,6 @@ function showAlert(message, color) {
     alertDiv.style.zIndex = "9999";
     document.body.appendChild(alertDiv);
 
-    // Remove alert after 1 second
     setTimeout(function () {
         document.body.removeChild(alertDiv);
     }, 1000);

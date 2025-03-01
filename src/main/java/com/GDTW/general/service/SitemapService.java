@@ -43,6 +43,7 @@ public class SitemapService {
         sitemapGen.addUrl("https://gdtw.org/error_410");
         sitemapGen.addUrl("https://gdtw.org/error_403_405");
         sitemapGen.addUrl("https://gdtw.org/error_generic");
+        sitemapGen.addUrl("https://gdtw.org/url_safety_check");
 
         // Write the sitemap.xml file to the siteMapPath directory
         sitemapGen.write();

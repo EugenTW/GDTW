@@ -1,6 +1,5 @@
 package com.GDTW.shorturl.controller;
 
-import com.GDTW.dailystatistic.model.DailyStatisticService;
 import com.GDTW.shorturl.model.ShortUrlService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
@@ -14,7 +13,7 @@ public class ShortUrlController {
 
     private final ShortUrlService shortUrlService;
 
-    public ShortUrlController(ShortUrlService shortUrlService, DailyStatisticService statisticService) {
+    public ShortUrlController(ShortUrlService shortUrlService) {
         this.shortUrlService = shortUrlService;
     }
 
