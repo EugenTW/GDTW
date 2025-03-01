@@ -38,11 +38,9 @@ public class ShortUrlRestController {
     @PostMapping("/create_new_short_url")
     public ResponseEntity<ReturnCreatedShortUrlDTO> createNewShortUrl(@RequestBody CreateShortUrlRequestDTO shortUrlRequest, HttpServletRequest request) {
 
-        String clientIp = request.getRemoteAddr();
-        rateLimiterService.checkCreateShortUrlLimit(clientIp);
-
         String originalUrl = shortUrlRequest.getOriginalUrl();
         String originalIp = request.getHeader("X-Forwarded-For");
+        rateLimiterService.checkCreateShortUrlLimit(originalIp);
 
         try {
             if (originalIp == null || originalIp.isEmpty()) {
@@ -76,8 +74,8 @@ public class ShortUrlRestController {
     @PostMapping("/get_original_url")
     public ResponseEntity<ReturnOriginalUrlDTO> getOriginalUrl(@RequestBody GetOriginalUrlDTO codeRequest, HttpServletRequest request) {
 
-        String clientIp = request.getRemoteAddr();
-        rateLimiterService.checkGetOriginalUrlLimit(clientIp);
+        String originalIp = request.getHeader("X-Forwarded-For");
+        rateLimiterService.checkGetOriginalUrlLimit(originalIp);
 
         try {
             String code = codeRequest.getCode();
