@@ -9,13 +9,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     const downloadApiUrl = isAlbumMode ? '/is_api/downloadAlbumImages' : '/is_api/downloadSingleImage';
     const requestData = {code: code};
 
-    // if (isLocalhost) {
-    //     console.log('Running on localhost - skipping API requests.');
-    //     initPage(downloadApiUrl, isAlbumMode);
-    //     return;
-    // }
-
-    // Step 1: Check if password is needed
+    // Check if password is needed
     try {
         const response = await fetchWithRetry(statusApiUrl, requestData);
         const result = await response.json();
@@ -62,7 +56,7 @@ async function initPage(downloadApiUrl, isAlbumMode) {
 
         // Display content based on mode (Album or Single Image)
         if (isAlbumMode) {
-            displayImages(result);
+            displayImagesSequentially(data);
         } else {
             displaySingleImage(result);
         }
@@ -72,8 +66,8 @@ async function initPage(downloadApiUrl, isAlbumMode) {
     }
 }
 
-// Function to display album images
-function displayImages(data) {
+// Function to display album images sequentially
+async function displayImagesSequentially(data) {
     const gallery = document.getElementById('gallery');
     gallery.innerHTML = '';
     const isNsfw = data.siaNsfw === 1;
@@ -103,15 +97,28 @@ function displayImages(data) {
     albumUrlContainer.appendChild(downloadAlbumButton);
     gallery.appendChild(albumUrlContainer);
 
-    data.images.forEach(image => {
+    for (const image of data.images) {
+        await loadImageSequentially(image, gallery, isNsfw);
+    }
+
+    gallery.classList.remove('hidden');
+}
+
+// Function to load each image sequentially
+function loadImageSequentially(image, gallery, isNsfw) {
+    return new Promise((resolve) => {
         const photoDiv = document.createElement('div');
         photoDiv.classList.add('photo');
+
         const imgElement = document.createElement('img');
         imgElement.src = new URL(image.imageUrl, window.location.origin).href;
         imgElement.alt = image.siName;
         imgElement.classList.add('gallery-image');
         imgElement.onerror = function () {
             this.src = '/images/pic_not_found.webp';
+        };
+        imgElement.onload = () => {
+            resolve();
         };
 
         if (isNsfw) {
@@ -161,8 +168,6 @@ function displayImages(data) {
         photoDiv.appendChild(urlContainer);
         gallery.appendChild(photoDiv);
     });
-
-    gallery.classList.remove('hidden');
 }
 
 function downloadEntireAlbum(images) {
@@ -268,8 +273,6 @@ function displaySingleImage(data) {
     singlePhotoDiv.classList.remove('hidden');
 }
 
-
-
 // Show the password input modal
 function showPasswordModal() {
     const passwordModal = document.getElementById('password-modal');
@@ -350,7 +353,6 @@ function setupPasswordValidation(passwordApiUrl, code, isAlbumMode) {
         }
     });
 }
-
 
 // Fetch with retry logic
 async function fetchWithRetry(url, data, maxRetries = 3) {
