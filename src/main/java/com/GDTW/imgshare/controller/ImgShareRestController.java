@@ -32,9 +32,6 @@ public class ImgShareRestController {
         this.rateLimiterService = rateLimiterService;
     }
 
-    @Value("${app.baseUrl}")
-    private String baseUrl;
-
     @PostMapping("/create_new_album")
     public ResponseEntity<Map<String, String>> createNewAlbum(
             @RequestParam("files") List<MultipartFile> files,

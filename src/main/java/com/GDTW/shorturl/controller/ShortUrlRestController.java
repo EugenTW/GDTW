@@ -76,12 +76,10 @@ public class ShortUrlRestController {
 
         String originalIp = request.getHeader("X-Forwarded-For");
         rateLimiterService.checkGetOriginalUrlLimit(originalIp);
-
+        String code = codeRequest.getCode();
         try {
-            String code = codeRequest.getCode();
             Map.Entry<String, String> result = shortUrlService.getOriginalUrl(code);
             statisticService.incrementShortUrlUsed();
-
             return ResponseEntity.ok(new ReturnOriginalUrlDTO(result.getKey(), result.getValue(), null));
         } catch (ShortUrlNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -90,7 +88,7 @@ public class ShortUrlRestController {
             return ResponseEntity.status(HttpStatus.GONE)
                     .body(new ReturnOriginalUrlDTO(null, null, e.getMessage()));
         } catch (Exception e) {
-            logger.error("Failed to return original URL due to internal server error.", e);
+            logger.error("Failed to create new shortUrl due to the web server error. The failed code was: '" + code + "'. \n" + e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ReturnOriginalUrlDTO(null, null, "內部伺服器錯誤! Internal Server Error!"));
         }

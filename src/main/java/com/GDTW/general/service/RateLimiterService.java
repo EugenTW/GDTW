@@ -15,7 +15,7 @@ public class RateLimiterService {
 
     private final ConcurrentMap<String, RateLimiter> rateLimiters = new ConcurrentHashMap<>();
     private final ConcurrentMap<String, Long> lastAccessTime = new ConcurrentHashMap<>();
-    private static final long EXPIRATION_TIME_MS = Duration.ofMinutes(10).toMillis();
+    private static final long EXPIRATION_TIME_MS = Duration.ofMinutes(5).toMillis();
 
     private RateLimiter createRateLimiter(int requestsPerSecond) {
         return RateLimiter.of("default",
@@ -37,15 +37,15 @@ public class RateLimiterService {
     }
 
     public void checkCreateShortUrlLimit(String clientIp) {
-        checkRateLimit(clientIp, 3);
+        checkRateLimit(clientIp, 5);
     }
 
     public void checkGetOriginalUrlLimit(String clientIp) {
-        checkRateLimit(clientIp, 50);
+        checkRateLimit(clientIp, 25);
     }
 
     public void checkCreateShareImageLimit(String clientIp) {
-        checkRateLimit(clientIp, 5);
+        checkRateLimit(clientIp, 25);
     }
 
     public void checkGetShareImageLimit(String clientIp) {
@@ -53,14 +53,14 @@ public class RateLimiterService {
     }
 
     public void checkGetDailyStatisticLimit(String clientIp) {
-        checkRateLimit(clientIp, 50);
+        checkRateLimit(clientIp, 25);
     }
 
     public void checkGetUrlSafeCheckLimit(String clientIp) {
-        checkRateLimit(clientIp, 3);
+        checkRateLimit(clientIp, 5);
     }
 
-    @Scheduled(fixedRate = 600000)
+    @Scheduled(fixedRate = 300000)
     public void cleanUpRateLimiters() {
         long now = System.currentTimeMillis();
         for (Map.Entry<String, Long> entry : lastAccessTime.entrySet()) {
