@@ -56,12 +56,12 @@ async function initPage(downloadApiUrl, isAlbumMode) {
 
         // Display content based on mode (Album or Single Image)
         if (isAlbumMode) {
-            displayImagesSequentially(data);
+            await displayImagesSequentially(result);
         } else {
             displaySingleImage(result);
         }
     } catch (error) {
-        // console.error('Error occurred during initPage execution:', error);
+        console.error('Error occurred during initPage execution:', error);
         alert('載入圖片失敗，請稍後再試。\nFailed to load images. Please try again later.');
     }
 }

@@ -1,8 +1,6 @@
 package com.GDTW.urlSafetyCheck.controller;
 
-import com.GDTW.dailystatistic.model.DailyStatisticService;
 import com.GDTW.general.service.RateLimiterService;
-import com.GDTW.safebrowsing4.service.SafeBrowsingV4Service;
 import com.GDTW.urlSafetyCheck.model.UrlSafetyCheckService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -22,7 +20,6 @@ import java.util.Map;
 public class UrlSafetyCheckRestController {
 
     private static final Logger logger = LoggerFactory.getLogger(UrlSafetyCheckRestController.class);
-    private final DailyStatisticService statisticService;
     private final RedisTemplate<String, Integer> redisStringIntegerTemplate;
     private final RateLimiterService rateLimiterService;
     private final UrlSafetyCheckService urlSafetyCheckService;
@@ -30,8 +27,7 @@ public class UrlSafetyCheckRestController {
     private static final String REDIS_CALL_COUNT_KEY = "URL_SAFETY_API_CALL_COUNT";
     private static final int DAILY_LIMIT = 2500;
 
-    public UrlSafetyCheckRestController(DailyStatisticService statisticService, RedisTemplate<String, Integer> redisStringIntegerTemplate, RateLimiterService rateLimiterService, UrlSafetyCheckService urlSafetyCheckService) {
-        this.statisticService = statisticService;
+    public UrlSafetyCheckRestController(RedisTemplate<String, Integer> redisStringIntegerTemplate, RateLimiterService rateLimiterService, UrlSafetyCheckService urlSafetyCheckService) {
         this.redisStringIntegerTemplate = redisStringIntegerTemplate;
         this.rateLimiterService = rateLimiterService;
         this.urlSafetyCheckService = urlSafetyCheckService;
@@ -69,6 +65,5 @@ public class UrlSafetyCheckRestController {
         redisStringIntegerTemplate.opsForValue().set(REDIS_CALL_COUNT_KEY, 0);
         logger.info("The usage count for the UrlSafetyCheck API has been reset.");
     }
-
 
 }
