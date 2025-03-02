@@ -70,6 +70,7 @@ async function initPage(downloadApiUrl, isAlbumMode) {
 async function displayImagesSequentially(data) {
     const gallery = document.getElementById('gallery');
     gallery.innerHTML = '';
+    gallery.classList.remove('hidden');
     const isNsfw = data.siaNsfw === 1;
 
     const pageUrlDiv = document.createElement('div');
@@ -101,7 +102,6 @@ async function displayImagesSequentially(data) {
         await loadImageSequentially(image, gallery, isNsfw);
     }
 
-    gallery.classList.remove('hidden');
 }
 
 // Function to load each image sequentially
