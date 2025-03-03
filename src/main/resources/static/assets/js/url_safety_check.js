@@ -2,6 +2,21 @@ document.addEventListener('DOMContentLoaded', function () {
     const longUrlInput = document.getElementById('long_url');
     const generateButton = document.getElementById('generate');
     const googleSafeIcon = document.getElementById('google-safe-icon');
+    let lastValidUrl = '';
+
+    function isValidUrl(url) {
+        const pattern = /^https?:\/\/[\w\-]+(\.[\w\-]+)+.*$/i;
+        return pattern.test(url) && url.length <= 200;
+    }
+
+    function toggleButtonState() {
+        const urlValue = longUrlInput.value.trim();
+        generateButton.disabled = !isValidUrl(urlValue);
+    }
+
+    longUrlInput.addEventListener('input', function () {
+        toggleButtonState();
+    });
 
     longUrlInput.addEventListener('blur', function () {
         const urlValue = longUrlInput.value.trim();
@@ -13,17 +28,16 @@ document.addEventListener('DOMContentLoaded', function () {
                 generateButton.disabled = true;
                 return;
             }
-            const pattern = /^https?:\/\/[\w\-]+(\.[\w\-]+)+.*$/i;
-            if (pattern.test(urlValue)) {
-                generateButton.disabled = false;
-                googleSafeIcon.src = '/images/circle.png';
-                googleSafeIcon.title = 'Unchecked URL!';
-            } else {
+            if (!isValidUrl(urlValue)) {
                 longUrlInput.value = '';
-                alert('請輸入有效的網址(需含http或https) / ' +
-                    'Please enter a valid URL (must start with http or https).');
+                alert('請輸入有效的網址(需含http或https) / Please enter a valid URL (must start with http or https).');
                 generateButton.disabled = true;
+                return;
             }
+            lastValidUrl = urlValue;
+            generateButton.disabled = false;
+            googleSafeIcon.src = '/images/circle.png';
+            googleSafeIcon.title = 'Unchecked URL!';
         } else {
             generateButton.disabled = true;
         }
@@ -31,21 +45,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
     generateButton.addEventListener('click', function () {
         const urlToCheck = longUrlInput.value.trim();
-        if (!urlToCheck) return;
+        if (!isValidUrl(urlToCheck)) return;
 
         generateButton.disabled = true;
 
         fetch('/usc_api/check_url_safety', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({original_url: urlToCheck})
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ original_url: urlToCheck })
         })
             .then(response => response.json())
             .then(data => {
                 const safeValue = parseInt(data.safeValue, 10);
-
                 let iconSrc = '/images/circle.png';
                 let iconTitle = 'Unchecked URL!';
                 if (safeValue === 1) {
@@ -55,7 +66,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     iconSrc = '/images/warn.png';
                     iconTitle = 'Unsafe URL!';
                 }
-
                 googleSafeIcon.src = iconSrc;
                 googleSafeIcon.title = iconTitle;
             })
@@ -63,7 +73,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.error('Error:', error);
             })
             .finally(() => {
-                generateButton.disabled = true;
+                if (longUrlInput.value.trim() === lastValidUrl) {
+                    generateButton.disabled = true;
+                }
             });
     });
 });
