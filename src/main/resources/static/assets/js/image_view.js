@@ -125,9 +125,13 @@ function loadImageSequentially(image, gallery, isNsfw) {
             const nsfwMask = document.createElement('div');
             nsfwMask.classList.add('nsfw-mask');
             nsfwMask.innerHTML = 'R15 or R18 Content<br>NSFW - Click to reveal';
+
             nsfwMask.addEventListener('click', () => {
-                nsfwMask.style.display = 'none';
+                document.querySelectorAll('.nsfw-mask').forEach(mask => {
+                    mask.style.display = 'none';
+                });
             });
+
             photoDiv.appendChild(imgElement);
             photoDiv.appendChild(nsfwMask);
         } else {

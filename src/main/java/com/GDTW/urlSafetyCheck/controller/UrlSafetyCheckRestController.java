@@ -25,7 +25,7 @@ public class UrlSafetyCheckRestController {
     private final UrlSafetyCheckService urlSafetyCheckService;
 
     private static final String REDIS_CALL_COUNT_KEY = "URL_SAFETY_API_CALL_COUNT";
-    private static final int DAILY_LIMIT = 2500;
+    private static final int DAILY_LIMIT = 4000;
 
     public UrlSafetyCheckRestController(RedisTemplate<String, Integer> redisStringIntegerTemplate, RateLimiterService rateLimiterService, UrlSafetyCheckService urlSafetyCheckService) {
         this.redisStringIntegerTemplate = redisStringIntegerTemplate;
