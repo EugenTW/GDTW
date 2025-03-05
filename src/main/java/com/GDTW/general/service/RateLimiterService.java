@@ -37,27 +37,27 @@ public class RateLimiterService {
     }
 
     public void checkCreateShortUrlLimit(String clientIp) {
-        checkRateLimit(clientIp, 5);
+        checkRateLimit(clientIp, 3);
     }
 
     public void checkGetOriginalUrlLimit(String clientIp) {
-        checkRateLimit(clientIp, 25);
+        checkRateLimit(clientIp, 15);
     }
 
     public void checkCreateShareImageLimit(String clientIp) {
-        checkRateLimit(clientIp, 25);
+        checkRateLimit(clientIp, 3);
     }
 
     public void checkGetShareImageLimit(String clientIp) {
-        checkRateLimit(clientIp, 25);
+        checkRateLimit(clientIp, 15);
     }
 
     public void checkGetDailyStatisticLimit(String clientIp) {
-        checkRateLimit(clientIp, 25);
+        checkRateLimit(clientIp, 15);
     }
 
     public void checkGetUrlSafeCheckLimit(String clientIp) {
-        checkRateLimit(clientIp, 5);
+        checkRateLimit(clientIp, 3);
     }
 
     @Scheduled(fixedRate = 300000)
