@@ -3,8 +3,7 @@ package com.GDTW.shorturl.model;
 import com.GDTW.user.model.WebUserVO;
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "short_url")
@@ -22,7 +21,7 @@ public class ShortUrlVO {
     private String suShortenedUrl;
 
     @Column(name = "su_created_date")
-    private LocalDate suCreatedDate;
+    private LocalDateTime suCreatedDate;
 
     @Column(name = "su_created_ip")
     private String suCreatedIp;
@@ -66,11 +65,11 @@ public class ShortUrlVO {
         this.suShortenedUrl = suShortenedUrl;
     }
 
-    public LocalDate getSuCreatedDate() {
+    public LocalDateTime getSuCreatedDate() {
         return suCreatedDate;
     }
 
-    public void setSuCreatedDate(LocalDate suCreatedDate) {
+    public void setSuCreatedDate(LocalDateTime suCreatedDate) {
         this.suCreatedDate = suCreatedDate;
     }
 
@@ -113,4 +112,5 @@ public class ShortUrlVO {
     public void setUser(WebUserVO user) {
         this.user = user;
     }
+
 }

@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.FileStore;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 import java.io.IOException;
@@ -80,12 +81,11 @@ public class ImgShareService {
         return response;
     }
 
-
     @Transactional
     protected ShareImgAlbumVO createNewAlbumInMySQL(AlbumCreationRequestDTO requestDTO) {
         ShareImgAlbumVO shareImgAlbumVO = new ShareImgAlbumVO();
         shareImgAlbumVO.setSiaPassword(requestDTO.getPassword());
-        shareImgAlbumVO.setSiaCreatedDate(LocalDate.now());
+        shareImgAlbumVO.setSiaCreatedDate(LocalDateTime.now());
         shareImgAlbumVO.setSiaEndDate(LocalDate.now().plusDays(requestDTO.getExpiryDays()));
         shareImgAlbumVO.setSiaCreatedIp(requestDTO.getClientIp());
         shareImgAlbumVO.setSiaNsfw(requestDTO.isNsfw() ? (byte) 1 : (byte) 0);

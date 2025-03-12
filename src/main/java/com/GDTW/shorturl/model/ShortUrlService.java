@@ -13,7 +13,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -127,7 +127,7 @@ public class ShortUrlService {
         ShortUrlVO shortUrl = new ShortUrlVO();
         shortUrl.setSuOriginalUrl(originalUrl);
         shortUrl.setSuCreatedIp(originalIp);
-        shortUrl.setSuCreatedDate(LocalDate.now());
+        shortUrl.setSuCreatedDate(LocalDateTime.now());
         shortUrl.setSuStatus((byte) 0);
         shortUrl.setSuTotalUsed(0);
         shortUrl.setSuSafe(safeUrlResult);

@@ -3,6 +3,7 @@ package com.GDTW.imgshare.model;
 import com.GDTW.user.model.WebUserVO;
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "share_img_album")
@@ -20,7 +21,7 @@ public class ShareImgAlbumVO {
     private String siaPassword;
 
     @Column(name = "sia_created_date")
-    private LocalDate siaCreatedDate;
+    private LocalDateTime siaCreatedDate;
 
     @Column(name = "sia_created_ip", length = 40)
     private String siaCreatedIp;
@@ -68,11 +69,11 @@ public class ShareImgAlbumVO {
         this.siaPassword = siaPassword;
     }
 
-    public LocalDate getSiaCreatedDate() {
+    public LocalDateTime getSiaCreatedDate() {
         return siaCreatedDate;
     }
 
-    public void setSiaCreatedDate(LocalDate siaCreatedDate) {
+    public void setSiaCreatedDate(LocalDateTime siaCreatedDate) {
         this.siaCreatedDate = siaCreatedDate;
     }
 
@@ -123,4 +124,5 @@ public class ShareImgAlbumVO {
     public void setUser(WebUserVO user) {
         this.user = user;
     }
+
 }
