@@ -4,6 +4,7 @@ import com.GDTW.user.model.WebUserVO;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "share_img")
@@ -24,7 +25,7 @@ public class ShareImgVO {
     private String siPassword;
 
     @Column(name = "si_created_date")
-    private LocalDate siCreatedDate;
+    private LocalDateTime siCreatedDate;
 
     @Column(name = "si_created_ip", length = 40)
     private String siCreatedIp;
@@ -84,11 +85,11 @@ public class ShareImgVO {
         this.siPassword = siPassword;
     }
 
-    public LocalDate getSiCreatedDate() {
+    public LocalDateTime getSiCreatedDate() {
         return siCreatedDate;
     }
 
-    public void setSiCreatedDate(LocalDate siCreatedDate) {
+    public void setSiCreatedDate(LocalDateTime siCreatedDate) {
         this.siCreatedDate = siCreatedDate;
     }
 

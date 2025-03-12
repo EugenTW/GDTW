@@ -42,26 +42,33 @@ public class ScheduledImgCleanupService {
     @Scheduled(cron = "${task.schedule.cron.dailyImgCleanupService}")
     @Transactional
     public void cleanupExpiredImages() {
-        logger.info("Starting cleanup of expired images...");
+        logger.info("Starting cleanup of expired albums and images...");
+        LocalDate expiredDate = LocalDate.now().plusDays(1);
 
-        LocalDate today = LocalDate.now();
-
-        List<ShareImgAlbumVO> expiredAlbums = shareImgAlbumJpa.findBySiaEndDateBeforeAndSiaStatus(today, (byte) 0);
+        List<ShareImgAlbumVO> expiredAlbums = shareImgAlbumJpa.findBySiaEndDateBeforeAndSiaStatus(expiredDate, (byte) 0);
         for (ShareImgAlbumVO album : expiredAlbums) {
+            String note = "  - album ID: " + album.getSiaId().toString() +" (code: " + album.getSiaCode() + ") is expired.";
+            logger.info(note);
             album.setSiaStatus((byte) 1);
             shareImgAlbumJpa.save(album);
         }
-        logger.info("Expired MySQL album status updated");
+        logger.info("All expired MySQL album status updated.");
 
-        List<ShareImgVO> expiredImages = shareImgJpa.findBySiEndDateBeforeAndSiStatus(today, (byte) 0);
+        List<ShareImgVO> expiredImages = shareImgJpa.findBySiEndDateBeforeAndSiStatus(expiredDate, (byte) 0);
         for (ShareImgVO image : expiredImages) {
             String originalSiName = image.getSiName();
+            String originalSiId = image.getSiId().toString();
+            String originalSiCode = image.getSiCode();
+
+            String note = "  - image ID:  " + originalSiId + " (code: " + originalSiCode + "& name:" + originalSiName+ ") is expired.";
+            logger.info(note);
+
             image.setSiName(null);
             image.setSiStatus((byte) 1);
             shareImgJpa.save(image);
             moveImageFileToTrashCan(originalSiName);
         }
-        logger.info("Expired MySQL image status updated and images removed.");
+        logger.info("All expired MySQL image status updated and images removed.");
     }
 
     private void moveImageFileToTrashCan(String fileName) {
@@ -81,7 +88,7 @@ public class ScheduledImgCleanupService {
     }
 
     // automatically empty trash monthly
-    @Scheduled(cron = "${task.schedule.cron.weeklyImgTrashCleanupService}")
+    @Scheduled(cron = "${task.schedule.cron.scheduledImgTrashCleanupService}")
     public void clearTrashCan() {
         Path trashCanPath = Paths.get(imageTrashCanPath);
         try {

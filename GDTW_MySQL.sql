@@ -39,7 +39,9 @@ CREATE TABLE daily_statistic
     ds_img_created       INT,
     ds_img_used          INT,
     ds_img_album_created INT,
-    ds_img_album_used    INT
+    ds_img_album_used    INT,
+    ds_vid_created       INT,
+    ds_vid_used          INT
 );
 
 CREATE TABLE short_url
@@ -47,7 +49,7 @@ CREATE TABLE short_url
     su_id            INT AUTO_INCREMENT PRIMARY KEY,
     su_original_url  VARCHAR(200),
     su_shortened_url VARCHAR(10),
-    su_created_date  DATE,
+    su_created_date  DATETIME,
     su_created_ip    VARCHAR(40),
     su_total_used    INT        DEFAULT 0,
     su_status        TINYINT    DEFAULT 0,
@@ -62,7 +64,7 @@ CREATE TABLE share_img_album
     sia_id            INT AUTO_INCREMENT PRIMARY KEY,
     sia_code          VARCHAR(100),
     sia_password      VARCHAR(10) DEFAULT NULL,
-    sia_created_date  DATE,
+    sia_created_date  DATETIME,
     sia_created_ip    VARCHAR(40),
     sia_end_date      DATE,
     sia_total_visited INT         DEFAULT 0,
@@ -79,7 +81,7 @@ CREATE TABLE share_img
     si_code          VARCHAR(100),
     si_name          VARCHAR(100),
     si_password      VARCHAR(10) DEFAULT NULL,
-    si_created_date  DATE,
+    si_created_date  DATETIME,
     si_created_ip    VARCHAR(40),
     si_end_date      DATE,
     si_total_visited INT         DEFAULT 0,

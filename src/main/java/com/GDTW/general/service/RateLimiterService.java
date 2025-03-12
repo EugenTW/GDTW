@@ -28,6 +28,11 @@ public class RateLimiterService {
     }
 
     private void checkRateLimit(String clientIp, int requestLimit) {
+
+        if (clientIp == null || "0:0:0:0:0:0:0:1".equals(clientIp) || "127.0.0.1".equals(clientIp)) {
+            clientIp = "localhost";
+        }
+
         rateLimiters.computeIfAbsent(clientIp, k -> createRateLimiter(requestLimit));
         lastAccessTime.put(clientIp, System.currentTimeMillis());
 
