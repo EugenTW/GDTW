@@ -5,10 +5,12 @@
 }
 
 .image-container img {
-    max-width: 200px;  
+    width: 175px;
+    height: 175px;
     display: block;
     border-radius: 5px;
     border: 2px solid #fffdca;
+    object-fit: contain;
 }
 
 .button{
