@@ -20,11 +20,10 @@ import java.util.*;
 public class ShortUrlService {
 
     private static final Logger logger = LoggerFactory.getLogger(ShortUrlService.class);
+    private static final Duration TTL_DURATION = Duration.ofMinutes(10);
 
     private final ShortUrlJpa shortUrlJpa;
     private final RedisTemplate<String, String> redisStringStringTemplate;
-
-    private static final Duration TTL_DURATION = Duration.ofHours(48);
 
     public ShortUrlService(ShortUrlJpa shortUrlJpa, @Qualifier("redisStringStringTemplate") RedisTemplate<String, String> redisTemplate) {
         this.shortUrlJpa = shortUrlJpa;

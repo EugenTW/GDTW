@@ -8,12 +8,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UrlSafetyCheckService {
-    private static final Logger logger = LoggerFactory.getLogger(UrlSafetyCheckService.class);
-    private final RedisTemplate<String, Integer> redisStringIntegerTemplate;
     private final SafeBrowsingV4Service safeBrowsingV4Service;
 
-    public UrlSafetyCheckService(RedisTemplate<String, Integer> redisStringIntegerTemplate, SafeBrowsingV4Service safeBrowsingV4Service) {
-        this.redisStringIntegerTemplate = redisStringIntegerTemplate;
+    public UrlSafetyCheckService(SafeBrowsingV4Service safeBrowsingV4Service) {
         this.safeBrowsingV4Service = safeBrowsingV4Service;
     }
 

@@ -22,7 +22,9 @@ import java.util.Map;
 @RestController
 @RequestMapping("/is_api")
 public class ImgShareRestController {
+
     private static final Logger logger = LoggerFactory.getLogger(ImgShareRestController.class);
+
     private final ImgShareService imgShareService;
     private final DailyStatisticService dailyStatisticService;
     private final RateLimiterService rateLimiterService;

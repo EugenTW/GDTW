@@ -48,13 +48,14 @@ public class ImgShareService {
     @Value("${app.min-disk-space}")
     private String minDiskSpace;
 
+    private static final Logger logger = LoggerFactory.getLogger(ImgShareService.class);
+    private static final Duration TTL_DURATION = Duration.ofMinutes(10);
+
     private final ShareImgAlbumJpa shareImgAlbumJpa;
     private final ShareImgJpa shareImgJpa;
     private final DailyStatisticService dailyStatisticService;
     private final RedisTemplate<String, String> redisStringStringTemplate;
-    private ObjectMapper objectMapper;
-    private static final Logger logger = LoggerFactory.getLogger(ImgShareService.class);
-    private static final Duration TTL_DURATION = Duration.ofHours(48);
+    private final ObjectMapper objectMapper;
 
     public ImgShareService(ShareImgAlbumJpa shareImgAlbumJpa, ShareImgJpa shareImgJpa, DailyStatisticService dailyStatisticService, @Qualifier("redisStringStringTemplate") RedisTemplate<String, String> redisTemplate, ObjectMapper objectMapper) {
         this.shareImgAlbumJpa = shareImgAlbumJpa;
@@ -520,6 +521,5 @@ public class ImgShareService {
         if (jsonResponse == null) return null;
         return objectMapper.readValue(jsonResponse, Map.class);
     }
-
 
 }
