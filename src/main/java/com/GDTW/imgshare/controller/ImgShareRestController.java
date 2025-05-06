@@ -5,6 +5,7 @@ import com.GDTW.general.exception.InsufficientDiskSpaceException;
 import com.GDTW.general.service.RateLimiterService;
 import com.GDTW.imgshare.model.AlbumCreationRequestDTO;
 import com.GDTW.imgshare.model.ImgShareService;
+import com.GDTW.imgshare.model.TokenRequestDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,9 +81,7 @@ public class ImgShareRestController {
     }
 
     @PostMapping("/checkAlbumPassword")
-    public ResponseEntity<Map<String, Object>> checkAlbumPassword(
-            @RequestBody Map<String, String> request,
-            HttpServletRequest originRequest) {
+    public ResponseEntity<Map<String, Object>> checkAlbumPassword(@RequestBody Map<String, String> request, HttpServletRequest originRequest) {
 
         String originalIp = originRequest.getHeader("X-Forwarded-For");
         rateLimiterService.checkGetShareImageLimit(originalIp);
@@ -97,9 +96,7 @@ public class ImgShareRestController {
     }
 
     @PostMapping("/checkImagePassword")
-    public ResponseEntity<Map<String, Object>> checkImagePassword(
-            @RequestBody Map<String, String> request,
-            HttpServletRequest originRequest) {
+    public ResponseEntity<Map<String, Object>> checkImagePassword(@RequestBody Map<String, String> request, HttpServletRequest originRequest) {
 
         String originalIp = originRequest.getHeader("X-Forwarded-For");
         rateLimiterService.checkGetShareImageLimit(originalIp);
@@ -115,12 +112,12 @@ public class ImgShareRestController {
 
 
     @PostMapping("/downloadAlbumImages")
-    public ResponseEntity<Map<String, Object>> downloadAlbumImages(@RequestBody Map<String, String> request, HttpServletRequest originRequest) {
+    public ResponseEntity<Map<String, Object>> downloadAlbumImages(@RequestBody TokenRequestDTO request, HttpServletRequest originRequest) {
 
+        String token = request.getToken();
         String originalIp = originRequest.getHeader("X-Forwarded-For");
         rateLimiterService.checkGetShareImageLimit(originalIp);
 
-        String token = request.get("token");
         Map<String, Object> result = imgShareService.getAlbumImages(token);
         if (result.containsKey("error")) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
@@ -130,12 +127,12 @@ public class ImgShareRestController {
     }
 
     @PostMapping("/downloadSingleImage")
-    public ResponseEntity<Map<String, Object>> downloadSingleImage(@RequestBody Map<String, String> request, HttpServletRequest originRequest) {
+    public ResponseEntity<Map<String, Object>> downloadSingleImage(@RequestBody TokenRequestDTO request, HttpServletRequest originRequest) {
 
+        String token = request.getToken();
         String originalIp = originRequest.getHeader("X-Forwarded-For");
         rateLimiterService.checkGetShareImageLimit(originalIp);
 
-        String token = request.get("token");
         Map<String, Object> result = imgShareService.getSingleImage(token);
         if (result.containsKey("error")) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);

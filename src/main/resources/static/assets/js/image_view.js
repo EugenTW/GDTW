@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 async function initPage(downloadApiUrl, isAlbumMode) {
     hidePasswordModal();
     try {
-        const response = await fetch(downloadApiUrl, {
+        const response = await fetch(new URL(downloadApiUrl, window.location.origin), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -71,14 +71,20 @@ async function displayImagesSequentially(data) {
     const gallery = document.getElementById('gallery');
     gallery.innerHTML = '';
     gallery.classList.remove('hidden');
-    const isNsfw = data.siaNsfw === 1;
+
+    const endDate = data.siaEndDate ?? 'N/A';
+    const totalVisited = data.siaTotalVisited ?? 0;
+    const statusDiv = document.createElement('div');
+    statusDiv.classList.add('status-area');
+    statusDiv.innerHTML = `Expiration Date: ${endDate} | Total Visited: ${totalVisited}`;
+    gallery.appendChild(statusDiv);
 
     const pageUrlDiv = document.createElement('div');
     pageUrlDiv.classList.add('page-url-text');
     const currentPageUrl = window.location.href;
     const url = new URL(currentPageUrl);
     const cleanUrl = url.host + url.pathname;
-    pageUrlDiv.innerHTML = `Share Gallery URL: ${cleanUrl}`;
+    pageUrlDiv.innerHTML = `Share Gallery: ${cleanUrl}`;
     pageUrlDiv.addEventListener('click', function () {
         copyToClipboard(cleanUrl);
         showCopiedMessage(pageUrlDiv);
@@ -98,11 +104,12 @@ async function displayImagesSequentially(data) {
     albumUrlContainer.appendChild(downloadAlbumButton);
     gallery.appendChild(albumUrlContainer);
 
+    const isNsfw = data.siaNsfw === 1;
     for (const image of data.images) {
         await loadImageSequentially(image, gallery, isNsfw);
     }
-
 }
+
 
 // Function to load each image sequentially
 function loadImageSequentially(image, gallery, isNsfw) {
@@ -215,19 +222,28 @@ function displaySingleImage(data) {
     const singlePhotoDiv = document.getElementById('single-photo');
     singlePhotoDiv.innerHTML = '';
 
+    const endDate = data.siEndDate ?? 'N/A';
+    const totalVisited = data.siTotalVisited ?? 0;
+    const statusDiv = document.createElement('div');
+    statusDiv.classList.add('status-area');
+    statusDiv.innerHTML = `Expiration Date: ${endDate} | Total Visited: ${totalVisited}`;
+
     const pageUrlDiv = document.createElement('div');
     pageUrlDiv.classList.add('page-url-text');
     const currentPageUrl = window.location.href;
     const url = new URL(currentPageUrl);
     const cleanUrl = url.origin + url.pathname;
-
-    pageUrlDiv.innerHTML = `Share Photo URL: ${cleanUrl}`;
+    pageUrlDiv.innerHTML = `Share URL: ${cleanUrl}`;
     pageUrlDiv.addEventListener('click', function () {
         copyToClipboard(currentPageUrl);
         showCopiedMessage(pageUrlDiv);
     });
 
-    singlePhotoDiv.appendChild(pageUrlDiv);
+    const statusUrlContainer = document.createElement('div');
+    statusUrlContainer.classList.add('photo-url-container');
+    statusUrlContainer.appendChild(statusDiv);
+    statusUrlContainer.appendChild(pageUrlDiv);
+    singlePhotoDiv.appendChild(statusUrlContainer);
 
     const photoWrapper = document.createElement('div');
     photoWrapper.classList.add('photo-wrapper');
@@ -276,6 +292,7 @@ function displaySingleImage(data) {
     singlePhotoDiv.appendChild(urlContainer);
     singlePhotoDiv.classList.remove('hidden');
 }
+
 
 // Show the password input modal
 function showPasswordModal() {
