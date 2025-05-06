@@ -1,6 +1,8 @@
-$(document).ready(function () {
-    const $longUrlInput = $("#long_url");
-    const $generateButton = $("#generate");
+document.addEventListener('DOMContentLoaded', function () {
+    const longUrlInput = document.getElementById('long_url');
+    const generateButton = document.getElementById('generate');
+    const shortenUrlDisplay = document.getElementById('shorten_url');
+    const qrcodeContainer = document.getElementById('qrcode');
     const maxRetries = 5;
 
     function isValidUrl(url) {
@@ -10,105 +12,92 @@ $(document).ready(function () {
     }
 
     function toggleButtonState() {
-        const url = $longUrlInput.val().trim();
-        $generateButton.prop('disabled', !isValidUrl(url));
+        const url = longUrlInput.value.trim();
+        generateButton.disabled = !isValidUrl(url);
     }
 
-    $longUrlInput.on('input', function () {
-        toggleButtonState();
-    });
+    longUrlInput.addEventListener('input', toggleButtonState);
 
-    $longUrlInput.on('blur', function () {
-        const url = $(this).val().trim();
+    longUrlInput.addEventListener('blur', function () {
+        const url = longUrlInput.value.trim();
         if (!isValidUrl(url)) {
-            $(this).val('');
+            longUrlInput.value = '';
             showAlert("請輸入有效的 HTTPS 網址，且不超過 200 字元。 - Please enter a valid HTTPS URL, and it should not exceed 200 characters.", "darkred");
-            $generateButton.prop('disabled', true);
+            generateButton.disabled = true;
         }
     });
 
-    $generateButton.on('click', function () {
-        const longUrl = $longUrlInput.val().trim();
+    generateButton.addEventListener('click', function () {
+        const longUrl = longUrlInput.value.trim();
         if (!isValidUrl(longUrl)) {
             showAlert("請輸入正確的 URL（https 開頭且不超過 200 字元）。 - Please enter a correct URL (starting with https and not exceeding 200 characters).", "darkred");
             return;
         }
 
-        $generateButton.prop('disabled', true);
-
+        generateButton.disabled = true;
         let attempt = 0;
 
         function tryCreateShortUrl() {
-            $.ajax({
-                url: '/su_api/create_new_short_url',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({ originalUrl: longUrl })
+            fetch('/su_api/create_new_short_url', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ originalUrl: longUrl })
             })
-                .done(function (response) {
-                    if (response && typeof response === "object") {
-                        const shortUrl = response.fullShortUrl;
-                        const message = response.message;
-
-                        if (shortUrl) {
-                            $("#shorten_url")
-                                .text(shortUrl)
-                                .css("background-color", "yellow")
-                                .off("click")
-                                .on("click", copyToClipboard);
-
-                            $("#qrcode").empty();
-                            new QRCode(document.getElementById("qrcode"), {
-                                text: shortUrl,
-                                width: 100,
-                                height: 100
-                            });
-                            $("#qrcode").css("display", "block");
-                        } else {
-                            $("#shorten_url")
-                                .text(message)
-                                .css("background-color", "pink");
-                            $("#qrcode").css("display", "none");
-                        }
-                    } else {
-                        console.error("Invalid response!");
-                        $("#shorten_url")
-                            .text("無效的回應! 請稍後重試! - Invalid response! Try later.")
-                            .css("background-color", "pink");
-                        $("#qrcode").css("display", "none");
-                    }
-                })
-                .fail(function (xhr) {
-                    if (xhr.status === 429) {
+                .then(response => {
+                    if (response.status === 429) {
                         attempt++;
-                        console.warn(`Request rate limit hit. Retry attempt: ${attempt}`);
                         if (attempt < maxRetries) {
                             setTimeout(tryCreateShortUrl, 1000);
                         } else {
-                            $("#shorten_url")
-                                .text("伺服器忙碌，稍後再試。 - Server busy. Try later.")
-                                .css("background-color", "pink");
-                            $("#qrcode").css("display", "none");
+                            shortenUrlDisplay.textContent = "伺服器忙碌，稍後再試。 - Server busy. Try later.";
+                            shortenUrlDisplay.style.backgroundColor = "pink";
+                            qrcodeContainer.style.display = "none";
                         }
+                        return null;
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (!data) return;
+                    const shortUrl = data.fullShortUrl;
+                    const message = data.message;
+
+                    if (shortUrl) {
+                        shortenUrlDisplay.textContent = shortUrl;
+                        shortenUrlDisplay.style.backgroundColor = "yellow";
+                        shortenUrlDisplay.onclick = () => copyToClipboard(shortUrl);
+
+                        qrcodeContainer.innerHTML = "";
+                        new QRCode(qrcodeContainer, {
+                            text: shortUrl,
+                            width: 100,
+                            height: 100
+                        });
+                        qrcodeContainer.style.display = "block";
+
+                        copyToClipboard(shortUrl);
                     } else {
-                        console.error(`Error: ${xhr.status} - ${xhr.responseText}`);
-                        $("#shorten_url")
-                            .text("錯誤: 請稍後再試! Error: Please try again later.")
-                            .css("background-color", "pink");
-                        $("#qrcode").css("display", "none");
+                        shortenUrlDisplay.textContent = message;
+                        shortenUrlDisplay.style.backgroundColor = "pink";
+                        qrcodeContainer.style.display = "none";
                     }
                 })
-                .always(function () {
-                    $generateButton.prop('disabled', true);
+                .catch(err => {
+                    console.error(err);
+                    shortenUrlDisplay.textContent = "錯誤: 請稍後再試! Error: Please try again later.";
+                    shortenUrlDisplay.style.backgroundColor = "pink";
+                    qrcodeContainer.style.display = "none";
+                })
+                .finally(() => {
+                    generateButton.disabled = true;
                 });
         }
 
         tryCreateShortUrl();
     });
 
-    function copyToClipboard() {
-        const copyText = document.getElementById("shorten_url").textContent;
-        navigator.clipboard.writeText(copyText)
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text)
             .then(() => {
                 showAlert("短網址已複製到剪貼簿 / The short URL is copied!", "darkgreen");
             })
@@ -119,22 +108,24 @@ $(document).ready(function () {
     }
 
     function showAlert(message, color) {
-        const alertDiv = $("<div></div>")
-            .text(message)
-            .css({
-                position: "fixed",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                backgroundColor: color || "#484848",
-                color: "#FFFFFF",
-                padding: "15px",
-                borderWidth: "3px",
-                borderRadius: "5px",
-                zIndex: "9999",
-            });
+        const alertDiv = document.createElement("div");
+        alertDiv.textContent = message;
+        alertDiv.style.position = "fixed";
+        alertDiv.style.top = "50%";
+        alertDiv.style.left = "50%";
+        alertDiv.style.transform = "translate(-50%, -50%)";
+        alertDiv.style.backgroundColor = color || "#484848";
+        alertDiv.style.color = "#FFFFFF";
+        alertDiv.style.padding = "15px";
+        alertDiv.style.borderRadius = "5px";
+        alertDiv.style.zIndex = "9999";
+        alertDiv.style.borderWidth = "3px";
 
-        $("body").append(alertDiv);
-        setTimeout(() => alertDiv.fadeOut(300, () => alertDiv.remove()), 1500);
+        document.body.appendChild(alertDiv);
+        setTimeout(() => {
+            alertDiv.style.transition = "opacity 0.3s";
+            alertDiv.style.opacity = 0;
+            setTimeout(() => alertDiv.remove(), 300);
+        }, 1500);
     }
 });

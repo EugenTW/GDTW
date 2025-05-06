@@ -310,13 +310,15 @@ public class ImgShareService {
         }
 
         Optional<ShareImgAlbumVO> albumOptional = shareImgAlbumJpa.findBySiaId(siaImageId);
-        if (!albumOptional.isPresent()) {
+        if (albumOptional.isEmpty()) {
             response.put("error", "Album not found.");
             return response;
         }
 
         ShareImgAlbumVO album = albumOptional.get();
         response.put("siaNsfw", album.getSiaNsfw());
+        response.put("siaEndDate", album.getSiaEndDate().toString());
+        response.put("siaTotalVisited", album.getSiaTotalVisited());
 
         List<ShareImgVO> images = shareImgJpa.findByAlbum_SiaIdOrderBySiIdAsc(siaImageId);
         List<Map<String, Object>> imageList = new ArrayList<>();
@@ -378,7 +380,7 @@ public class ImgShareService {
         }
 
         Optional<ShareImgVO> imageOptional = shareImgJpa.findById(siImageId);
-        if (!imageOptional.isPresent()) {
+        if (imageOptional.isEmpty()) {
             response.put("error", "Image not found.");
             return response;
         }
@@ -388,6 +390,8 @@ public class ImgShareService {
         response.put("siCode", image.getSiCode());
         response.put("siName", image.getSiName());
         response.put("siNsfw", image.getSiNsfw());
+        response.put("siEndDate", image.getSiEndDate().toString());
+        response.put("siTotalVisited", image.getSiTotalVisited());
         String imageUrl = baseUrlForImageDownload + imageNginxStaticPath + image.getSiName();
         response.put("imageUrl", imageUrl);
 
@@ -399,7 +403,6 @@ public class ImgShareService {
         countImageUsage(siImageId);
         return response;
     }
-
 
     // ==================================================================
     // Redis caching methods

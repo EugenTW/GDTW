@@ -39,9 +39,9 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:8082", "https://gdtw.org"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
         configuration.setExposedHeaders(Arrays.asList("Cache-Control", "ETag", "Last-Modified"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "OPTIONS"));
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
