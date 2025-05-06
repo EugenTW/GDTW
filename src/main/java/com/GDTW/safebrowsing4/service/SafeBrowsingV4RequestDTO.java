@@ -19,7 +19,6 @@ public class SafeBrowsingV4RequestDTO {
             this.clientVersion = clientVersion;
         }
 
-        // Getters and Setters
         public String getClientId() {
             return clientId;
         }
@@ -38,7 +37,14 @@ public class SafeBrowsingV4RequestDTO {
     }
 
     public static class ThreatInfo {
-        private String[] threatTypes = {"MALWARE", "SOCIAL_ENGINEERING"};
+
+        private String[] threatTypes = {
+                "MALWARE",
+                "SOCIAL_ENGINEERING",
+                "UNWANTED_SOFTWARE",
+                "POTENTIALLY_HARMFUL_APPLICATION"
+        };
+
         private String[] platformTypes = {"ANY_PLATFORM"};
         private String[] threatEntryTypes = {"URL"};
         private ThreatEntry[] threatEntries;
@@ -54,7 +60,6 @@ public class SafeBrowsingV4RequestDTO {
                 this.url = url;
             }
 
-            // Getters and Setters
             public String getUrl() {
                 return url;
             }
@@ -64,7 +69,6 @@ public class SafeBrowsingV4RequestDTO {
             }
         }
 
-        // Getters and Setters
         public String[] getThreatTypes() {
             return threatTypes;
         }
@@ -98,7 +102,6 @@ public class SafeBrowsingV4RequestDTO {
         }
     }
 
-    // Getters and Setters for client and threatInfo
     public Client getClient() {
         return client;
     }

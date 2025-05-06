@@ -1,5 +1,7 @@
 package com.GDTW.safebrowsing4.service;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.List;
 
 public class SafeBrowsingV4ResponseDTO {
@@ -14,13 +16,16 @@ public class SafeBrowsingV4ResponseDTO {
         this.matches = matches;
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class ThreatMatch {
+
         private String threatType;
         private String platformType;
         private String threatEntryType;
         private Threat threat;
+        private String cacheDuration;
 
-        // Getters and setters
+        // Getters and Setters
         public String getThreatType() {
             return threatType;
         }
@@ -53,10 +58,18 @@ public class SafeBrowsingV4ResponseDTO {
             this.threat = threat;
         }
 
+        public String getCacheDuration() {
+            return cacheDuration;
+        }
+
+        public void setCacheDuration(String cacheDuration) {
+            this.cacheDuration = cacheDuration;
+        }
+
+        @JsonIgnoreProperties(ignoreUnknown = true)
         public static class Threat {
             private String url;
 
-            // Getters and setters
             public String getUrl() {
                 return url;
             }
@@ -65,6 +78,5 @@ public class SafeBrowsingV4ResponseDTO {
                 this.url = url;
             }
         }
-
     }
 }
