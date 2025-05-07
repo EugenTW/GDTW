@@ -1,185 +1,166 @@
 <!DOCTYPE HTML>
-<html>
-
+<html lang="en">
 <head>
     <title>GDTW - 免費圖片分享與上傳 | Secure Image Sharing with Privacy Controls</title>
 
-    <meta name="description" content="免費上傳並分享圖片，支援加密保護、設定保存期限，並提供 NSFW 遮罩功能。快速、安全、隱私至上！Upload and share images for free with encryption, expiration settings, and NSFW masking.">
-    <meta name="keywords" content="免費圖片分享, 圖片上傳, 加密圖片分享, 私密圖片分享, 圖片保存期限, NSFW 遮罩, image sharing, secure image upload, encrypted image hosting, NSFW image masking">
+    <meta name="description"
+          content="免費上傳並分享圖片，支援加密保護、設定保存期限，並提供 NSFW 遮罩功能。快速、安全、隱私至上！Upload and share images for free with encryption, expiration settings, and NSFW masking.">
+    <meta name="keywords"
+          content="免費圖片分享, 圖片上傳, 加密圖片分享, 私密圖片分享, 圖片保存期限, NSFW 遮罩, image sharing, secure image upload, encrypted image hosting, NSFW image masking">
 
-    <meta property="og:title" content="GDTW - 免費圖片分享與上傳 | Secure Image Sharing with Privacy Controls" />
-    <meta property="og:description" content="免費上傳並分享圖片，支援加密保護、設定保存期限，並提供 NSFW 遮罩功能。快速、安全、隱私至上！" />
+    <meta property="og:title" content="GDTW - 免費圖片分享與上傳 | Secure Image Sharing with Privacy Controls"/>
+    <meta property="og:description" content="免費上傳並分享圖片，支援加密保護、設定保存期限，並提供 NSFW 遮罩功能。快速、安全、隱私至上！"/>
     <meta property="og:image" content="https://gdtw.org/images/logo_s.webp"/>
-    <meta property="og:url" content="https://gdtw.org/image_share" />
-    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://gdtw.org/image_share"/>
+    <meta property="og:type" content="website"/>
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="GDTW - 免費圖片分享與上傳 | Secure Image Sharing with Privacy Controls">
     <meta name="twitter:description" content="免費上傳並分享圖片，支援加密保護、設定保存期限，並提供 NSFW 遮罩功能。快速、安全、隱私至上！">
     <meta name="twitter:image" content="https://gdtw.org/images/logo_s.webp">
 
-    <link rel="alternate" hreflang="zh-TW" href="https://gdtw.org/image_share" />
-    <link rel="alternate" hreflang="en" href="https://gdtw.org/en/image_share" />
+    <link rel="alternate" hreflang="zh-TW" href="https://gdtw.org/image_share"/>
+    <link rel="alternate" hreflang="en" href="https://gdtw.org/en/image_share"/>
+
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
-    <link rel="stylesheet" href="/assets/css/main.css"/>
-    <noscript>
-        <link rel="stylesheet" href="/assets/css/noscript.css"/>
-    </noscript>
-    <link rel="stylesheet" href="/assets/css/image_share_customized.css">
+
+    <link rel="stylesheet" href="/css/header_customized.css">
+    <link rel="stylesheet" href="/css/footer_customized.css">
+    <link rel="stylesheet" href="/css/image_share_customized.css">
 </head>
 
-<body class="is-preload">
+<body>
 
-<!-- Header -->
-<header id="header">
-    <a class="title">GDTW</a>
-    <nav>
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/#one" class="active">Free Services</a></li>
-            <li><a href="/#two">Statements</a></li>
-        </ul>
-    </nav>
-</header>
+<div id="header"></div>
 
-<!-- Wrapper -->
-<div id="wrapper">
-    <section id="main" class="wrapper">
-        <div class="inner">
-            <h2 class="major">圖片分享服務 - Image Share</h2>
+<main>
+    <div class="inner">
+        <h2 class="major" id="service-topic">圖片分享服務 - Image Share</h2>
 
-            <hr>
+        <hr>
 
-            <div class="images-update">
-                <!-- File Upload Area -->
-                <div class="upload-area" id="upload-area">
-                    點擊此區域選擇要上傳的圖檔 - Click this area to select the images to upload.
-                </div>
+        <div class="images-update">
+            <!-- File Upload Area -->
+            <div class="upload-area" id="upload-area">
+                點擊此區域選擇要上傳的圖檔 - Click this area to select the images to upload.
+            </div>
 
-                <!-- File Input (Hidden) -->
-                <input id="file-input" type="file" multiple accept=".jpg,.jpeg,.png,.gif,.webp"
-                       style="display:none">
-                <div id="file-list" class="file-list"></div>
+            <!-- File Input (Hidden) -->
+            <input id="file-input" type="file" multiple accept=".jpg,.jpeg,.png,.gif,.webp"
+                   style="display:none">
+            <div id="file-list" class="file-list"></div>
 
-                <!-- Settings Area -->
-                <div class="settings-area">
-                    <!-- Expiry Days Selection -->
-                    <h3>分享期限 (天) - Expiry Date (days):</h3>
-                    <select id="expiry-select">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="7">7</option>
-                        <option value="14">14</option>
-                        <option value="30" selected>30</option>
-                        <option value="45">45</option>
-                        <option value="60">60</option>
-                        <option value="75">75</option>
-                        <option value="90">90</option>
-                    </select>
+            <!-- Settings Area -->
+            <div class="settings-area">
+                <!-- Expiry Days Selection -->
+                <h3>分享期限 (天) - Expiry Date (days):</h3>
+                <select id="expiry-select">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="7">7</option>
+                    <option value="14">14</option>
+                    <option value="30" selected>30</option>
+                    <option value="45">45</option>
+                    <option value="60">60</option>
+                    <option value="75">75</option>
+                    <option value="90">90</option>
+                </select>
 
-                    <hr>
-                    <!-- NSFW Checkbox -->
-                    <h3>NSFW (R15 & R18)</h3>
-                    <input type="radio" id="nsfw-checkbox-no" name="nsfw" value="false" checked>
-                    <label for="nsfw-checkbox-no">No</label>
-                    <input type="radio" id="nsfw-checkbox-yes" name="nsfw" value="true">
-                    <label for="nsfw-checkbox-yes">Yes</label>
+                <hr>
+                <!-- NSFW Checkbox -->
+                <h3>NSFW (R15 & R18)</h3>
+                <input type="radio" id="nsfw-checkbox-no" name="nsfw" value="false" checked>
+                <label for="nsfw-checkbox-no">No</label>
+                <input type="radio" id="nsfw-checkbox-yes" name="nsfw" value="true">
+                <label for="nsfw-checkbox-yes">Yes</label>
 
-                    <hr>
-                    <!-- Password Input Field -->
-                    <h3>閱覽密碼 - Access Password (4-10 digits):</h3>
-                    <input type="text" id="password-input" maxlength="10"
-                           placeholder="不設密碼則不輸入 - Leave blank for no password">
+                <hr>
+                <!-- Password Input Field -->
+                <h3>閱覽密碼 - Access Password (4-10 digits):</h3>
+                <input type="text" id="password-input" maxlength="10"
+                       placeholder="不設密碼則不輸入 - Leave blank for no password">
 
-                    <!-- Upload Button -->
-                    <div class="button-container">
-                        <button type="button" class="img-upload" id="upload-button" disabled>上傳 - Upload</button>
-                    </div>
+                <!-- Upload Button -->
+                <div class="button-container">
+                    <button type="button" class="img-upload" id="upload-button" disabled>上傳 - Upload</button>
                 </div>
             </div>
+        </div>
+        <hr>
+        <h3>使用說明 - Instructions</h3>
+        <details>
+            <summary>點看詳細教學 - Click & Read Instructions</summary>
+            <br>
+            1. 本站支援單檔不超過20MB且格式為JPG/JPEG/PNG/GIF/WEBP的檔案，本站不會對圖檔進行任何壓縮處理。<br>
+            2. 選擇想要上傳的單張或複數圖片(最大單次50張圖片)，單次上傳圖片總容量不得超過500MB，檔案都是自動依照檔名排序，不會受到其他因素影響。<br>
+            3. 手動設定圖片存活時間/是否需要NSFW警告/設定閱覽密碼(空白表示無密碼)等選項，再按下上傳按鈕。預設方案是分享期限30天(最長90天)且無閱覽密碼和無NSFW警告。<br>
+            4. 分享期限是以「換日」為基準計算，不論上傳時間為何，若設定的分享期限為 1 天，檔案將在隔日午夜失效。閱覽圖片時，畫面上方會顯示「Expiration
+            Date」，表示一旦跨日進入該日期，圖片將立即失效，無法再瀏覽。本站使用台灣時區（GMT+8）作為判斷依據。<br>
+            5. 本站提供的密碼設定僅防君子不防小人，請勿用於保護高敏感圖片。如有設定密碼請自行記好，站方不提供人工找回密碼服務。<br>
+            6. 上傳成功的檔案無法自行手動刪除，如發現上傳錯誤或想修改，請重新上傳一次正確的圖片即可，所有超過閱覽期限的圖片本站都會自動銷毀，並不會另外保存。<br>
+            7. 屬於R15或R18等級的圖片請務必遵守分級法規勾選NSFW選項，並建議使用加密功能保護。<br>
+            8. 本服務是善意免費服務，站方已盡最大努力維持軟硬體運行狀態，但仍無法保證因軟硬體故障導致圖檔丟失，請務必自行保存原始圖片檔。另站方有權隨時視需求來調整圖片存活時間且不另行通知。<br>
+            9. 使用本服務時就表示已同意本站的所有使用條款。<br><br>
 
-            <h3>使用說明 - Instructions</h3>
-            <details>
-                <summary>點看詳細教學 - Click & Read Instructions</summary>
-                <br>
-                1. 本站支援單檔不超過20MB且格式為JPG/JPEG/PNG/GIF/WEBP的檔案，本站不會對圖檔進行任何壓縮處理。<br>
-                2. 選擇想要上傳的單張或複數圖片(最大單次50張圖片)，單次上傳圖片總容量不得超過500MB，檔案都是自動依照檔名排序，不會受到其他因素影響。<br>
-                3. 手動設定圖片存活時間/是否需要NSFW警告/設定閱覽密碼(空白表示無密碼)等選項，再按下上傳按鈕。預設方案是分享期限30天(最長90天)且無閱覽密碼和無NSFW警告。<br>
-                4. 分享期限是以「換日」為基準計算，不論上傳時間為何，若設定的分享期限為 1 天，檔案將在隔日午夜失效。閱覽圖片時，畫面上方會顯示「Expiration Date」，表示一旦跨日進入該日期，圖片將立即失效，無法再瀏覽。本站使用台灣時區（GMT+8）作為判斷依據。<br>
-                5. 本站提供的密碼設定僅防君子不防小人，請勿用於保護高敏感圖片。如有設定密碼請自行記好，站方不提供人工找回密碼服務。<br>
-                6. 上傳成功的檔案無法自行手動刪除，如發現上傳錯誤或想修改，請重新上傳一次正確的圖片即可，所有超過閱覽期限的圖片本站都會自動銷毀，並不會另外保存。<br>
-                7. 屬於R15或R18等級的圖片請務必遵守分級法規勾選NSFW選項，並建議使用加密功能保護。<br>
-                8. 本服務是善意免費服務，站方已盡最大努力維持軟硬體運行狀態，但仍無法保證因軟硬體故障導致圖檔丟失，請務必自行保存原始圖片檔。另站方有權隨時視需求來調整圖片存活時間且不另行通知。<br>
-                9. 使用本服務時就表示已同意本站的所有使用條款。<br><br>
+            1. This site supports files no larger than 20MB in size and in JPG/JPEG/PNG/GIF/WEBP formats, with no
+            compression applied to uploaded images.<br>
+            2. Select a single image or multiple images (up to 50 images per upload). The total upload size of images in one session must
+            not exceed 500MB. Files are automatically
+            sorted by filename and are not affected by any other factors.<br>
+            3. Manually configure options such as image lifespan, whether an NSFW warning is required, or a
+            viewing password (leave blank for no password), and then click the upload button. The default settings
+            are a 30 days sharing period (up to 90 days), no viewing password, and no NSFW warning.<br>
+            4. The sharing period is based on the day transition. Regardless of the upload time, if the sharing period is set to 1 day, the
+            file will expire at midnight on the following day. While viewing the image, an "Expiration Date" is displayed at the top. This
+            indicates that once the specified date begins, the image will expire and become inaccessible. The expiration is based on Taiwan
+            Time (GMT+8).<br>
+            5. The password protection provided by this site is intended for basic privacy and should not be
+            used for securing highly sensitive images. If you set a password, please remember it yourself, as the
+            site does not offer a password recovery service.<br>
+            6. Uploaded files cannot be manually deleted. If you find an error in the upload or want to make
+            changes, simply re-upload the correct images. All images that exceed the sharing period will be
+            automatically deleted and will not be retained.<br>
+            7. Images classified as R15 or R18 must comply with rating regulations. Please ensure to select the NSFW
+            option and consider using the encryption feature for protection.<br>
+            8. This service is provided free of charge and in good faith. While the site makes every effort to
+            maintain the operation of its hardware and software, it cannot guarantee against potential image
+            loss due to hardware or software failures. Please be sure to keep a copy of your original images.
+            The site also reserves the right to adjust image lifespans as necessary without prior notice.<br>
+            9. By using this service, you agree to all terms of use outlined by the site.<br><br>
+        </details>
+        <hr>
 
-                1. This site supports files no larger than 20MB in size and in JPG/JPEG/PNG/GIF/WEBP formats, with no
-                compression applied to uploaded images.<br>
-                2. Select a single image or multiple images (up to 50 images per upload). The total upload size of images in one session must not exceed 500MB. Files are automatically
-                sorted by filename and are not affected by any other factors.<br>
-                3. Manually configure options such as image lifespan, whether an NSFW warning is required, or a
-                viewing password (leave blank for no password), and then click the upload button. The default settings
-                are a 30 days sharing period (up to 90 days), no viewing password, and no NSFW warning.<br>
-                4. The sharing period is based on the day transition. Regardless of the upload time, if the sharing period is set to 1 day, the file will expire at midnight on the following day. While viewing the image, an "Expiration Date" is displayed at the top. This indicates that once the specified date begins, the image will expire and become inaccessible. The expiration is based on Taiwan Time (GMT+8).<br>
-                5. The password protection provided by this site is intended for basic privacy and should not be
-                used for securing highly sensitive images. If you set a password, please remember it yourself, as the
-                site does not offer a password recovery service.<br>
-                6. Uploaded files cannot be manually deleted. If you find an error in the upload or want to make
-                changes, simply re-upload the correct images. All images that exceed the sharing period will be
-                automatically deleted and will not be retained.<br>
-                7. Images classified as R15 or R18 must comply with rating regulations. Please ensure to select the NSFW
-                option and consider using the encryption feature for protection.<br>
-                8. This service is provided free of charge and in good faith. While the site makes every effort to
-                maintain the operation of its hardware and software, it cannot guarantee against potential image
-                loss due to hardware or software failures. Please be sure to keep a copy of your original images.
-                The site also reserves the right to adjust image lifespans as necessary without prior notice.<br>
-                9. By using this service, you agree to all terms of use outlined by the site.<br><br>
-            </details>
-            <hr>
-
-            <div class="button-container-back">
-                <a href="/short_url" class="button-back">往短網址服務 - Go Short URL Service</a>
-            </div>
-
-            <hr>
-            <div class="final-cover">
-                <span class="image fit"><img src="/images/image_share_pic01.webp" alt=""/></span>
-            </div>
-
+        <div class="button-container-back">
+            <a href="/short_url" class="button-back">往短網址服務 - Go Short URL Service</a>
         </div>
 
-        <div id="upload-overlay" class="hidden" style="display: none;">
-            <div id="overlay-content">
-                <img src="/images/uploading02.webp" alt="Uploading...">
-            </div>
+        <hr>
+        <div class="final-cover">
+            <span class="image fit"><img src="/images/image_share_pic01.webp" alt=""/></span>
         </div>
+
+    </div>
+
+    <div id="upload-overlay" style="display: none;">
+        <div id="overlay-content">
+            <img src="/images/uploading02.webp" alt="Uploading...">
+        </div>
+    </div>
 
     </section>
 
-</div>
+</main>
 
-<!-- Footer -->
-<footer id="footer" class="wrapper alt">
-    <div class="inner">
-        <ul class="menu">
-            <p id="footer-year">Copyright © GDTW. Since 2024</p>
-        </ul>
-    </div>
-</footer>
 
-<!-- Scripts -->
-<script src="/assets/js/jquery.min.js"></script>
-<script src="/assets/js/jquery.scrollex.min.js"></script>
-<script src="/assets/js/jquery.scrolly.min.js"></script>
-<script src="/assets/js/browser.min.js"></script>
-<script src="/assets/js/breakpoints.min.js"></script>
-<script src="/assets/js/util.js"></script>
-<script src="/assets/js/main.js"></script>
-<script src="/assets/js/index_customized.js"></script>
-<script src="/assets/js/image_share.js"></script>
+<div id="footer"></div>
+
+<script src="/js/header&footer.js"></script>
+<script src="/js/image_share.js"></script>
+
 </body>
-
 </html>
+
