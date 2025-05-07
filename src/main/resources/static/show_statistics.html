@@ -1,176 +1,138 @@
 <!DOCTYPE HTML>
-<!--
-	Hyperspace by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html>
-
+<html lang="en">
 <head>
     <title>GDTW - 站點統計與使用次數記錄 | Site Usage & Statistics</title>
 
-    <meta name="description" content="查看 GDTW 網站的使用統計，包括每日流量、歷史總訪問次數及服務使用情況。Explore GDTW's usage statistics, including daily visits, total usage, and service records.">
-    <meta name="keywords" content="網站統計, 使用次數記錄, 短網址統計, 服務流量, daily visits, site usage statistics, URL shortener analytics, GDTW stats">
+    <meta name="description"
+          content="查看 GDTW 網站的使用統計，包括每日流量、歷史總訪問次數及服務使用情況。Explore GDTW's usage statistics, including daily visits, total usage, and service records.">
+    <meta name="keywords"
+          content="網站統計, 使用次數記錄, 短網址統計, 服務流量, daily visits, site usage statistics, URL shortener analytics, GDTW stats">
 
-    <meta property="og:title" content="GDTW - 站點統計與使用次數記錄 | Site Usage & Statistics" />
-    <meta property="og:description" content="查看 GDTW 網站的使用統計，包括每日流量、歷史總訪問次數及服務使用情況。" />
+    <meta property="og:title" content="GDTW - 站點統計與使用次數記錄 | Site Usage & Statistics"/>
+    <meta property="og:description" content="查看 GDTW 網站的使用統計，包括每日流量、歷史總訪問次數及服務使用情況。"/>
     <meta property="og:image" content="https://gdtw.org/images/logo_s.webp"/>
-    <meta property="og:url" content="https://gdtw.org/statistics" />
-    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://gdtw.org/statistics"/>
+    <meta property="og:type" content="website"/>
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="GDTW - 站點統計與使用次數記錄 | Site Usage & Statistics">
     <meta name="twitter:description" content="查看 GDTW 網站的使用統計，包括每日流量、歷史總訪問次數及服務使用情況。">
     <meta name="twitter:image" content="https://gdtw.org/images/logo_s.webp">
 
-    <link rel="alternate" hreflang="zh-TW" href="https://gdtw.org/statistics" />
-    <link rel="alternate" hreflang="en" href="https://gdtw.org/en/statistics" />
+    <link rel="alternate" hreflang="zh-TW" href="https://gdtw.org/statistics"/>
+    <link rel="alternate" hreflang="en" href="https://gdtw.org/en/statistics"/>
+
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
-    <link rel="stylesheet" href="/assets/css/main.css"/>
-    <noscript>
-        <link rel="stylesheet" href="/assets/css/noscript.css"/>
-    </noscript>
-    <link rel="stylesheet" href="/assets/css/show_statistics_customized.css">
+
+    <link rel="stylesheet" href="/css/header_customized.css">
+    <link rel="stylesheet" href="/css/footer_customized.css">
+    <link rel="stylesheet" href="/css/show_statistics_customized.css">
 </head>
+<body>
 
-<body class="is-preload">
+<div id="header"></div>
 
-<!-- Header -->
-<header id="header">
-    <a class="title">GDTW</a>
-    <nav>
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/#one">Free Services</a></li>
-            <li><a href="/#two" class="active">Statements</a></li>
-        </ul>
-    </nav>
-</header>
+<main>
+    <div class="inner">
+        <h2 class="major" id="service-topic">服務次數統計數據 - Service Frequency Statistics</h2>
 
-<!-- Wrapper -->
-<div id="wrapper">
+        <hr>
 
-    <!-- Main -->
-    <section id="main" class="wrapper">
-        <div class="inner">
-            <h2 class="major">服務次數統計數據 - Service Frequency Statistics</h2>
+        <h3>累計服務總次數 - Total Cumulative Service Count</h3>
+        <div class="table-wrapper">
 
-            <hr>
-
-            <h3>累計服務總次數 - Total Cumulative Service Count</h3>
-            <div class="table-wrapper">
-
-                <table class="alt total-cumulative-table">
-                    <br>
-                    <thead>
-                    <tr>
-                        <th>服務類型 - Service Type</th>
-                        <th>次數 - Counts</th>
-                    </tr>
-                    </thead>
-
-                    <tbody>
-                    <tr>
-                        <td>網站服務總天數 - Total Website Service Days</td>
-                        <td id="total-web-service"></td>
-                    </tr>
-                    <tr>
-                        <td>短網址建立次數 - Total Short URLs Created</td>
-                        <td id="total-short-urls-created"></td>
-                    </tr>
-                    <tr>
-                        <td>短網址使用次數 - Total Short URLs Used</td>
-                        <td id="total-short-urls-used"></td>
-                    </tr>
-                    <tr>
-                        <td>相簿建立次數 - Total Image Albums Created</td>
-                        <td id="total-image-albums-created"></td>
-                    </tr>
-                    <tr>
-                        <td>相簿瀏覽次數 - Total Image Albums Browsing</td>
-                        <td id="total-image-albums-visited"></td>
-                    </tr>
-                    <tr>
-                        <td>圖片建立次數 - Total Images Created</td>
-                        <td id="total-images-created"></td>
-                    </tr>
-                    <tr>
-                        <td>圖片瀏覽次數 - Total Images Browsing</td>
-                        <td id="total-images-visited"></td>
-                    </tr>
-                    </tbody>
-                </table>
-
-            </div>
-
-            <hr>
-
-            <h3>每日服務次數統計圖 - Daily Service Count Statistics Chart</h3>
-
-            <div id="chart-container">
+            <table class="alt total-cumulative-table">
                 <br>
-                <h4>短網址統計 - Short URL Statistics</h4>
-                <canvas id="created-short-url-chart" style="margin-bottom: 30px;"></canvas>
-                <canvas id="used-short-url-chart" style="margin-bottom: 30px;"></canvas>
-                <br>
-                <h4>圖片相簿統計 - Image Album Statistics</h4>
-                <canvas id="created-album-chart" style="margin-bottom: 30px;"></canvas>
-                <canvas id="used-album-chart" style="margin-bottom: 30px;"></canvas>
-                <br>
-                <h4>圖片統計 - Image Statistics</h4>
-                <canvas id="created-image-chart" style="margin-bottom: 30px;"></canvas>
-                <canvas id="used-image-chart" style="margin-bottom: 30px;"></canvas>
-                <br>
-            </div>
+                <thead>
+                <tr>
+                    <th>服務類型 - Service Type</th>
+                    <th>次數 - Counts</th>
+                </tr>
+                </thead>
 
-            <h3>數據說明 - Instructions</h3>
-            <details>
-                <summary>點看詳細說明 - Click & Read Instructions</summary>
-                <br>
-                <p>
-                    此頁面上半部分的統計表格顯示的是建站以來每日數據的累計總和；下半部分的圖表則展示了過去（不含今天）365天內的使用數據。圖表最右側的第一筆數據代表昨日，最左側的數據則代表365天前的情況。
-                    <br>
-                    The upper section of this page displays the cumulative daily data since the website's launch. The lower section shows
-                    usage data from the past 365 days (excluding today). In the chart, the first entry on the far right represents
-                    yesterday, while the leftmost entry represents 365 days ago.
-                </p>
-            </details>
-
-            <hr>
-
-            <div class="final-cover">
-                <span class="image fit"><img src="/images/show_statistics_pic01.webp" alt=""/></span>
-            </div>
+                <tbody>
+                <tr>
+                    <td>網站服務總天數 - Total Website Service Days</td>
+                    <td id="total-web-service"></td>
+                </tr>
+                <tr>
+                    <td>短網址建立次數 - Total Short URLs Created</td>
+                    <td id="total-short-urls-created"></td>
+                </tr>
+                <tr>
+                    <td>短網址使用次數 - Total Short URLs Used</td>
+                    <td id="total-short-urls-used"></td>
+                </tr>
+                <tr>
+                    <td>相簿建立次數 - Total Image Albums Created</td>
+                    <td id="total-image-albums-created"></td>
+                </tr>
+                <tr>
+                    <td>相簿瀏覽次數 - Total Image Albums Browsing</td>
+                    <td id="total-image-albums-visited"></td>
+                </tr>
+                <tr>
+                    <td>圖片建立次數 - Total Images Created</td>
+                    <td id="total-images-created"></td>
+                </tr>
+                <tr>
+                    <td>圖片瀏覽次數 - Total Images Browsing</td>
+                    <td id="total-images-visited"></td>
+                </tr>
+                </tbody>
+            </table>
 
         </div>
-    </section>
 
-</div>
+        <hr>
 
-<!-- Footer -->
-<footer id="footer" class="wrapper alt">
-    <div class="inner">
-        <ul class="menu">
-            <p id="footer-year">Copyright © GDTW. Since 2024</p>
-        </ul>
+        <h3>每日服務次數統計圖 - Daily Service Count Statistics Chart</h3>
+
+        <div id="chart-container">
+            <h4>短網址統計 - Short URL Statistics</h4>
+            <canvas id="created-short-url-chart" style="margin-bottom: 30px;"></canvas>
+            <canvas id="used-short-url-chart" style="margin-bottom: 30px;"></canvas>
+            <h4>圖片相簿統計 - Image Album Statistics</h4>
+            <canvas id="created-album-chart" style="margin-bottom: 30px;"></canvas>
+            <canvas id="used-album-chart" style="margin-bottom: 30px;"></canvas>
+            <h4>圖片統計 - Image Statistics</h4>
+            <canvas id="created-image-chart" style="margin-bottom: 30px;"></canvas>
+            <canvas id="used-image-chart" style="margin-bottom: 30px;"></canvas>
+        </div>
+        <hr>
+        <h3>數據說明 - Instructions</h3>
+        <details>
+            <summary>點看詳細說明 - Click & Read Instructions</summary>
+            <br>
+            <p>
+                此頁面上半部分的統計表格顯示的是建站以來每日數據的累計總和；下半部分的圖表則展示了過去（不含今天）365天內的使用數據。圖表最右側的第一筆數據代表昨日，最左側的數據則代表365天前的情況。
+                <br>
+                The upper section of this page displays the cumulative daily data since the website's launch. The lower section shows
+                usage data from the past 365 days (excluding today). In the chart, the first entry on the far right represents
+                yesterday, while the leftmost entry represents 365 days ago.
+            </p>
+        </details>
+
+        <hr>
+
+        <div class="final-cover">
+            <span class="image fit"><img src="/images/show_statistics_pic01.webp" alt=""/></span>
+        </div>
+
     </div>
-</footer>
 
-<!-- Scripts -->
-<script src="/assets/js/jquery.min.js"></script>
-<script src="/assets/js/jquery.scrollex.min.js"></script>
-<script src="/assets/js/jquery.scrolly.min.js"></script>
-<script src="/assets/js/browser.min.js"></script>
-<script src="/assets/js/breakpoints.min.js"></script>
-<script src="/assets/js/util.js"></script>
-<script src="/assets/js/main.js"></script>
-<script src="/assets/js/chart.umd.min.js"></script>
-<script src="/assets/js/index_customized.js"></script>
-<script src="/assets/js/show_statistics.js"></script>
+
+</main>
+
+
+<div id="footer"></div>
+<script src="/js/chart.umd.min.js"></script>
+<script src="/js/header&footer.js"></script>
+<script src="/js/show_statistics.js"></script>
 
 </body>
-
 </html>
+

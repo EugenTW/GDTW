@@ -1,167 +1,141 @@
 <!DOCTYPE HTML>
-<!--
-	Hyperspace by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html>
-	<head>
-		<title>GDTW - 免費網址安全檢測 | Free URL Safety Check with Google Safe Browsing</title>
+<html lang="en">
+<head>
+    <title>GDTW - 免費網址安全檢測 | Free URL Safety Check with Google Safe Browsing</title>
 
-		<meta name="description" content="使用 GDTW 免費網址安全檢測工具，透過 Google Safe Browsing 檢查網址是否安全，防範惡意網站、釣魚攻擊、病毒與詐騙！Check if a URL is safe with GDTW's free security tool using Google Safe Browsing.">
-		<meta name="keywords" content="網址安全檢測, Google Safe Browsing, URL 安全性, 釣魚網站檢測, 免費網站安全檢查, URL safety check, malicious site detection, phishing protection">
+    <meta name="description"
+          content="使用 GDTW 免費網址安全檢測工具，透過 Google Safe Browsing 檢查網址是否安全，防範惡意網站、釣魚攻擊、病毒與詐騙！Check if a URL is safe with GDTW's free security tool using Google Safe Browsing.">
+    <meta name="keywords"
+          content="網址安全檢測, Google Safe Browsing, URL 安全性, 釣魚網站檢測, 免費網站安全檢查, URL safety check, malicious site detection, phishing protection">
 
-		<meta property="og:title" content="GDTW - 免費網址安全檢測 | Free URL Safety Check with Google Safe Browsing" />
-		<meta property="og:description" content="使用 GDTW 免費網址安全檢測工具，透過 Google Safe Browsing 檢查網址是否安全，防範惡意網站、釣魚攻擊、病毒與詐騙！" />
-		<meta property="og:image" content="https://gdtw.org/images/logo_s.webp"/>
-		<meta property="og:url" content="https://gdtw.org/url_safety_check" />
-		<meta property="og:type" content="website" />
+    <meta property="og:title" content="GDTW - 免費網址安全檢測 | Free URL Safety Check with Google Safe Browsing"/>
+    <meta property="og:description"
+          content="使用 GDTW 免費網址安全檢測工具，透過 Google Safe Browsing 檢查網址是否安全，防範惡意網站、釣魚攻擊、病毒與詐騙！"/>
+    <meta property="og:image" content="https://gdtw.org/images/logo_s.webp"/>
+    <meta property="og:url" content="https://gdtw.org/url_safety_check"/>
+    <meta property="og:type" content="website"/>
 
-		<meta name="twitter:card" content="summary_large_image">
-		<meta name="twitter:title" content="GDTW - 免費網址安全檢測 | Free URL Safety Check with Google Safe Browsing">
-		<meta name="twitter:description" content="使用 GDTW 免費網址安全檢測工具，透過 Google Safe Browsing 檢查網址是否安全，防範惡意網站、釣魚攻擊、病毒與詐騙！">
-		<meta name="twitter:image" content="https://gdtw.org/images/logo_s.webp">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="GDTW - 免費網址安全檢測 | Free URL Safety Check with Google Safe Browsing">
+    <meta name="twitter:description"
+          content="使用 GDTW 免費網址安全檢測工具，透過 Google Safe Browsing 檢查網址是否安全，防範惡意網站、釣魚攻擊、病毒與詐騙！">
+    <meta name="twitter:image" content="https://gdtw.org/images/logo_s.webp">
 
-		<link rel="alternate" hreflang="zh-TW" href="https://gdtw.org/url_safety_check" />
-		<link rel="alternate" hreflang="en" href="https://gdtw.org/en/url_safety_check" />
+    <link rel="alternate" hreflang="zh-TW" href="https://gdtw.org/url_safety_check"/>
+    <link rel="alternate" hreflang="en" href="https://gdtw.org/en/url_safety_check"/>
 
-		<link rel="icon" href="/images/favicon.ico" type="image/x-icon">
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="/assets/css/main.css" />
-		<noscript><link rel="stylesheet" href="/assets/css/noscript.css" /></noscript>
-		<link rel="stylesheet" href="/assets/css/url_safety_check_customized.css">
-	</head>
-	<body class="is-preload">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<!-- Header -->
-			<header id="header">
-				<a class="title">GDTW</a>
-				<nav>					
-					<ul>
-						<li><a href="/">Home</a></li>
-						<li><a href="/#one" class="active">Free Services</a></li>
-						<li><a href="/#two">Statements</a></li>
-					</ul>
-				</nav>
-			</header>
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
 
-		<!-- Wrapper -->
-			<div id="wrapper">
+    <link rel="stylesheet" href="/css/header_customized.css">
+    <link rel="stylesheet" href="/css/footer_customized.css">
+    <link rel="stylesheet" href="/css/url_safety_check_customized.css">
+</head>
+<body>
 
-				<!-- Main -->
-					<section id="main" class="wrapper">
-						<div class="inner">
-							<h2 class="major">網址安全性檢查 - URL Safety Check</h2>
+<div id="header"></div>
 
-							<hr>
-							
-							<div class="to-check-url">
-								<input type="text" id="long_url" placeholder="請先在此輸入原始網址 / Please enter an URL here first." maxlength="200">
-								
-								<button type="button" id="generate">點此檢查 - Click Here</button>
+<main>
+    <div class="inner">
+        <h2 class="major" id="service-topic">網址安全性檢查 - URL Safety Check</h2>
 
-								<div class="safe-check">
-									<div class="google-safe-check" id="safe-check-result">
-										<img id="google-safebrowsing-icon" src="/images/safebrowsing-logo.svg"
-											 alt="SafeBrowsingLogo">
-										<span id="google-safe-text">Google Safe Browsing Result: </span>
-										<img id="google-safe-icon" src="/images/circle.png" title="Unchecked URL!" alt="Unchecked URL!">
-									</div>
-								</div>
+        <hr>
 
-							</div>						
-							
-							<hr>
-							<br>
+        <div class="to-check-url">
+            <input type="text" id="long_url" placeholder="請先在此輸入原始網址 / Please enter an URL here first." maxlength="200">
 
-							<h3>關於Google 安全瀏覽服務 - About Google Safe Browsing</h3>
-							<br>
-							本站使用免費的「Google 安全瀏覽服務V4」自動檢查目標網址的安全性，我們會依據 「Google 安全瀏覽服務V4」的檢測結果來顯示潛在的風險。請注意「Google
-							安全瀏覽服務V4」所提供的警告並不表示該網站百分之百不安全，它僅表示該網站可能存在風險。當使用者看到顯示目標網址不安全時，請理解這是「Google
-							安全瀏覽服務V4」基於潛在風險的評估。<br><br>
-							This site uses the free "Google Safe Browsing Service V4" to automatically check the safety of
-							target URLs. We display potential risks based on the detection results from the "Google Safe
-							Browsing Service V4". Please note that a warning from the service does not mean the website is 100%
-							unsafe; it simply indicates that there may be potential risks. If a target URL is flagged as unsafe,
-							please understand that it is an assessment based on Google's evaluation of potential risks.
-							<br><br>
-							<details>
-								<summary>點看更多圖示定義說明 - Click For Icon Explanation</summary>
-								<br>
-								<p>
-									本站依據「Google 安全瀏覽服務」的檢測結果將在畫面上顯示不同圖標:<br>
-									1. <img src="/images/circle.png" class="icon-explanation">「Unchecked!」: 此網址可能因為「Google
-									安全瀏覽服務」的每日檢測額度已滿或網路因素未成功被「Google 安全瀏覽服務」檢測<br>
-									2. <img src="/images/check.png" class="icon-explanation">「Checked!」: 此網址通過「Google 安全瀏覽服務」檢測,
-									屬於風險較低的原始網址<br>
-									3. <img src="/images/warn.png" class="icon-explanation">「Unsafe!」: 此網址未通過「Google 安全瀏覽服務」,
-									此原始網址具有高度風險性, 請自行評估是否繼續前往<br><br>
+            <button type="button" id="generate">點此檢查 - Click Here</button>
 
-									本站使用「Google 安全瀏覽服務」檢查以下潛在風險：<br>
-									1. 社交工程（例如釣魚網站）<br>
-									2. 惡意軟體（例如病毒、木馬、勒索軟體）<br>
-									3. 不受歡迎的軟體（例如偷偷安裝、改首頁）<br>
-									4. 可能有害的應用程式（通常為行動裝置上的 APK）<br>
+            <div class="safe-check">
+                <div class="google-safe-check" id="safe-check-result">
+                    <img id="google-safebrowsing-icon" src="/images/safebrowsing-logo.svg"
+                         alt="SafeBrowsingLogo">
+                    <span id="google-safe-text">Google Safe Browsing Result: </span>
+                    <img id="google-safe-icon" src="/images/circle.png" title="Unchecked URL!" alt="Unchecked URL!">
+                </div>
+            </div>
 
-									最後，務必理解「Google 安全瀏覽服務」所提供的保護並非完美無缺。網站可能會出現誤報（將安全網站標記為有風險），或未檢測到某些真正有風險的網站。Google
-									致力於提供準確且最新的資訊，但無法保證其結果完全正確。<br><br>
+        </div>
 
-									Based on the results from Google Safe Browsing, different icons will be displayed on the
-									screen:<br>
-									1. <img src="/images/circle.png" class="icon-explanation">"Unchecked!": The URL may not have
-									been successfully checked by Google Safe Browsing due to reaching the daily check limit or
-									network issues.<br>
-									2. <img src="/images/check.png" class="icon-explanation">"Checked!": The URL has passed
-									Google Safe Browsing inspection and is considered a lower-risk original URL.<br>
-									3. <img src="/images/warn.png" class="icon-explanation">"Unsafe!": The URL has failed Google
-									Safe Browsing checks and is deemed highly risky. Please assess carefully whether to
-									proceed.<br><br>
+        <hr>
+        <br>
 
-									This site checks for the following potential risks using Google Safe Browsing:<br>
-									1. Social Engineering (e.g., phishing sites)<br>
-									2. Malware (e.g., viruses, trojans, ransomware)<br>
-									3. Unwanted Software (e.g., silently installed apps or homepage hijackers)<br>
-									4. Potentially Harmful Applications (typically APKs on mobile devices)<br>
-									Finally, it's important to understand that the protection provided by Google Safe Browsing
-									is not foolproof. There may be false positives (marking a safe website as risky) or failures
-									to detect certain truly risky sites. Google strives to provide accurate and up-to-date
-									information, but cannot guarantee that the results are always correct.
-								</p>
-							</details>
+        <h3>關於Google 安全瀏覽服務 - About Google Safe Browsing</h3>
+        <br>
+        <p id="one-content">
+            本站使用免費的「Google 安全瀏覽服務V4」自動檢查目標網址的安全性，我們會依據 「Google 安全瀏覽服務V4」的檢測結果來顯示潛在的風險。請注意「Google
+            安全瀏覽服務V4」所提供的警告並不表示該網站百分之百不安全，它僅表示該網站可能存在風險。當使用者看到顯示目標網址不安全時，請理解這是「Google
+            安全瀏覽服務V4」基於潛在風險的評估。<br><br>
+            This site uses the free "Google Safe Browsing Service V4" to automatically check the safety of
+            target URLs. We display potential risks based on the detection results from the "Google Safe
+            Browsing Service V4". Please note that a warning from the service does not mean the website is 100%
+            unsafe; it simply indicates that there may be potential risks. If a target URL is flagged as unsafe,
+            please understand that it is an assessment based on Google's evaluation of potential risks.
+        </p>
+        <br><br>
+        <details>
+            <summary>點看更多圖示定義說明 - Click For Icon Explanation</summary>
+            <br>
+            <p>
+                本站依據「Google 安全瀏覽服務」的檢測結果將在畫面上顯示不同圖標:<br>
+                1. <img src="/images/circle.png" class="icon-explanation">「Unchecked!」: 此網址可能因為「Google
+                安全瀏覽服務」的每日檢測額度已滿或網路因素未成功被「Google 安全瀏覽服務」檢測<br>
+                2. <img src="/images/check.png" class="icon-explanation">「Checked!」: 此網址通過「Google 安全瀏覽服務」檢測,
+                屬於風險較低的原始網址<br>
+                3. <img src="/images/warn.png" class="icon-explanation">「Unsafe!」: 此網址未通過「Google 安全瀏覽服務」,
+                此原始網址具有高度風險性, 請自行評估是否繼續前往<br><br>
 
-							<br>
-							<hr>
+                本站使用「Google 安全瀏覽服務」檢查以下潛在風險：<br>
+                1. 社交工程（例如釣魚網站）<br>
+                2. 惡意軟體（例如病毒、木馬、勒索軟體）<br>
+                3. 不受歡迎的軟體（例如偷偷安裝、改首頁）<br>
+                4. 可能有害的應用程式（通常為行動裝置上的 APK）<br>
 
-							<div class="final-cover">
-								<span class="image fit"><img src="/images/url_safe_check_pic01.webp" alt="" /></span>
-							</div>
+                最後，務必理解「Google 安全瀏覽服務」所提供的保護並非完美無缺。網站可能會出現誤報（將安全網站標記為有風險），或未檢測到某些真正有風險的網站。Google
+                致力於提供準確且最新的資訊，但無法保證其結果完全正確。<br><br>
 
-						</div>
-					</section>
+                Based on the results from Google Safe Browsing, different icons will be displayed on the
+                screen:<br>
+                1. <img src="/images/circle.png" class="icon-explanation">"Unchecked!": The URL may not have
+                been successfully checked by Google Safe Browsing due to reaching the daily check limit or
+                network issues.<br>
+                2. <img src="/images/check.png" class="icon-explanation">"Checked!": The URL has passed
+                Google Safe Browsing inspection and is considered a lower-risk original URL.<br>
+                3. <img src="/images/warn.png" class="icon-explanation">"Unsafe!": The URL has failed Google
+                Safe Browsing checks and is deemed highly risky. Please assess carefully whether to
+                proceed.<br><br>
 
-			</div>
+                This site checks for the following potential risks using Google Safe Browsing:<br>
+                1. Social Engineering (e.g., phishing sites)<br>
+                2. Malware (e.g., viruses, trojans, ransomware)<br>
+                3. Unwanted Software (e.g., silently installed apps or homepage hijackers)<br>
+                4. Potentially Harmful Applications (typically APKs on mobile devices)<br>
+                Finally, it's important to understand that the protection provided by Google Safe Browsing
+                is not foolproof. There may be false positives (marking a safe website as risky) or failures
+                to detect certain truly risky sites. Google strives to provide accurate and up-to-date
+                information, but cannot guarantee that the results are always correct.
+            </p>
+        </details>
 
-		<!-- Footer -->
-			<footer id="footer" class="wrapper alt">
-				<div class="inner">
-					<ul class="menu">
-						<p id="footer-year">Copyright © GDTW. Since 2024</p> 
-					</ul>
-				</div>
-			</footer>
+        <br>
+        <hr>
 
-		<!-- Scripts -->
-			<script src="/assets/js/jquery.min.js"></script>
-			<script src="/assets/js/jquery.scrollex.min.js"></script>
-			<script src="/assets/js/jquery.scrolly.min.js"></script>
-			<script src="/assets/js/browser.min.js"></script>
-			<script src="/assets/js/breakpoints.min.js"></script>
-			<script src="/assets/js/util.js"></script>
-			<script src="/assets/js/main.js"></script>
-			<script src="/assets/js/index_customized.js"></script>			
-			<script src="/assets/js/qrcode.min.js"></script>	
-			<script src="/assets/js/url_safety_check.js"></script>
-			
-	</body>
+        <div class="final-cover">
+            <span class="image fit"><img src="/images/url_safe_check_pic01.webp" alt=""/></span>
+        </div>
+
+    </div>
+
+
+</main>
+
+
+<div id="footer"></div>
+
+<script src="/js/header&footer.js"></script>
+<script src="/js/url_safety_check.js"></script>
+
+</body>
 </html>

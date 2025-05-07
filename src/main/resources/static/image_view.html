@@ -1,6 +1,5 @@
 <!DOCTYPE HTML>
-<html>
-
+<html lang="en">
 <head>
     <title>GDTW - 圖片相簿分享 | View Shared Album</title>
 
@@ -20,35 +19,22 @@
     <link rel="alternate" hreflang="zh-TW" href="https://gdtw.org/album/{ALBUM_ID}" />
     <link rel="alternate" hreflang="en" href="https://gdtw.org/en/album/{ALBUM_ID}" />
 
-    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
     <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
-    <link rel="stylesheet" href="/assets/css/main.css"/>
-    <noscript>
-        <link rel="stylesheet" href="/assets/css/noscript.css"/>
-    </noscript>
-    <link rel="stylesheet" href="/assets/css/image_view_customized.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/header_customized.css">
+    <link rel="stylesheet" href="/css/footer_customized.css">
+    <link rel="stylesheet" href="/css/image_view_customized.css">
 </head>
+<body>
 
-<body class="is-preload">
+<div id="header"></div>
 
-<!-- Header -->
-<header id="header">
-    <a class="title">GDTW</a>
-    <nav>
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/#one" class="active">Free Services</a></li>
-            <li><a href="/#two">Statements</a></li>
-        </ul>
-    </nav>
-</header>
-
-<!-- Wrapper -->
-<div id="wrapper">
-    <section id="main" class="wrapper">
-        <div class="inner">
-            <h2 class="major">閱覽圖片 - Image Gallery</h2>
+<main>
+    <div class="inner">
+        <h2 class="major" id="service-topic">閱覽圖片 - Image Gallery</h2>
 
             <hr>
 
@@ -104,30 +90,16 @@
 
             <img id="scrollToTop" class="scroll-to-top hidden" src="/images/top.png" alt="Back to Top">
         </div>
-    </section>
-</div>
 
-<!-- Footer -->
-<footer id="footer" class="wrapper alt">
-    <div class="inner">
-        <ul class="menu">
-            <p id="footer-year">Copyright © GDTW. Since 2024</p>
-        </ul>
-    </div>
-</footer>
 
-<!-- Scripts -->
-<script src="/assets/js/jquery.min.js"></script>
-<script src="/assets/js/jquery.scrollex.min.js"></script>
-<script src="/assets/js/jquery.scrolly.min.js"></script>
-<script src="/assets/js/jszip_3.10.1.min.js"></script>
-<script src="/assets/js/filesaver_2.0.5.min.js"></script>
-<script src="/assets/js/browser.min.js"></script>
-<script src="/assets/js/breakpoints.min.js"></script>
-<script src="/assets/js/util.js"></script>
-<script src="/assets/js/main.js"></script>
-<script src="/assets/js/index_customized.js"></script>
-<script src="/assets/js/image_view.js"></script>
+
+</main>
+
+
+<div id="footer"></div>
+
+<script src="/js/header&footer.js"></script>
+<script src="/js/image_view.js"></script>
+
 </body>
-
 </html>

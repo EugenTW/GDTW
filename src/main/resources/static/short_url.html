@@ -1,126 +1,106 @@
 <!DOCTYPE HTML>
-<!--
-	Hyperspace by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html>
-	<head>
-		<title>GDTW - 免費短網址 & QR Code 產生器 | Free Short URL & QR Code Generator</title>
-		<meta name="description" content="使用 GDTW 免費短網址與 QR Code 產生器，快速縮短連結，方便分享並追蹤點擊數據！Shorten your URLs and generate QR codes for free with GDTW!">
-		<meta name="keywords" content="免費短網址, QR Code 產生器, 短網址服務, Short URL, QR Code generator, free URL shortener">
+<html lang="en">
+<head>
+    <title>GDTW - 免費短網址 & QR Code 產生器 | Free Short URL & QR Code Generator</title>
+    <meta name="description"
+          content="使用 GDTW 免費短網址與 QR Code 產生器，快速縮短連結，方便分享並追蹤點擊數據！Shorten your URLs and generate QR codes for free with GDTW!">
+    <meta name="keywords" content="免費短網址, QR Code 產生器, 短網址服務, Short URL, QR Code generator, free URL shortener">
 
-		<meta property="og:title" content="GDTW - 免費短網址 & QR Code 產生器 | Free Short URL & QR Code Generator" />
-		<meta property="og:description" content="使用 GDTW 免費短網址與 QR Code 產生器，快速縮短連結，方便分享並追蹤點擊數據！" />
-		<meta property="og:image" content="https://gdtw.org/images/logo_s.webp"/>
-		<meta property="og:url" content="https://gdtw.org/short_url" />
-		<meta property="og:type" content="website" />
+    <meta property="og:title" content="GDTW - 免費短網址 & QR Code 產生器 | Free Short URL & QR Code Generator"/>
+    <meta property="og:description" content="使用 GDTW 免費短網址與 QR Code 產生器，快速縮短連結，方便分享並追蹤點擊數據！"/>
+    <meta property="og:image" content="https://gdtw.org/images/logo_s.webp"/>
+    <meta property="og:url" content="https://gdtw.org/short_url"/>
+    <meta property="og:type" content="website"/>
 
-		<meta name="twitter:card" content="summary_large_image">
-		<meta name="twitter:title" content="GDTW - 免費短網址 & QR Code 產生器 | Free Short URL & QR Code Generator">
-		<meta name="twitter:description" content="使用 GDTW 免費短網址與 QR Code 產生器，快速縮短連結，方便分享並追蹤點擊數據！">
-		<meta name="twitter:image" content="https://gdtw.org/images/logo_s.webp">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="GDTW - 免費短網址 & QR Code 產生器 | Free Short URL & QR Code Generator">
+    <meta name="twitter:description" content="使用 GDTW 免費短網址與 QR Code 產生器，快速縮短連結，方便分享並追蹤點擊數據！">
+    <meta name="twitter:image" content="https://gdtw.org/images/logo_s.webp">
 
-		<link rel="alternate" hreflang="zh-TW" href="https://gdtw.org/short_url" />
-		<link rel="alternate" hreflang="en" href="https://gdtw.org/en/short_url" />
+    <link rel="alternate" hreflang="zh-TW" href="https://gdtw.org/short_url"/>
+    <link rel="alternate" hreflang="en" href="https://gdtw.org/en/short_url"/>
 
-		<link rel="icon" href="/images/favicon.ico" type="image/x-icon">
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="/assets/css/main.css" />
-		<noscript><link rel="stylesheet" href="/assets/css/noscript.css" /></noscript>
-		<link rel="stylesheet" href="/assets/css/short_url_customized.css">
-	</head>
-	<body class="is-preload">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<!-- Header -->
-			<header id="header">
-				<a class="title">GDTW</a>
-				<nav>					
-					<ul>
-						<li><a href="/">Home</a></li>
-						<li><a href="/#one" class="active">Free Services</a></li>
-						<li><a href="/#two">Statements</a></li>
-					</ul>
-				</nav>
-			</header>
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
 
-		<!-- Wrapper -->
-			<div id="wrapper">
+    <link rel="stylesheet" href="/css/header_customized.css">
+    <link rel="stylesheet" href="/css/footer_customized.css">
+    <link rel="stylesheet" href="/css/short_url_customized.css">
+</head>
+<body>
 
-				<!-- Main -->
-					<section id="main" class="wrapper">
-						<div class="inner">
-							<h2 class="major">短網址服務 - Short URL</h2>
+<div id="header"></div>
 
-							<hr>
-							
-							<div class="to-short-url">       
-								<input type="text" id="long_url" placeholder="請先在此輸入原始網址 / Please enter an URL here first." maxlength="200">
-								
-								<button type="button" id="generate">點此生成 - Click Here</button>
-								
-								<p class="reminder">點擊下方黃框複製生成的短網址<br>Click the yellow box below to copy the generated short URL</p>
-								
-								<div id="shorten_url" class="reminder" onclick="copyToClipboard()">即將生成的短網址<br>Short URL will be generated here.</div>             
-								
-								<div id="qrcode"></div>
-							</div>						
-							
-							<hr>
-							<br>
-							
-							<h3>使用說明 - Instructions</h3>
-							<details>			
-								<summary>點看詳細教學 - Click & Read Instructions</summary>	
-								<br>
-								1. 貼上您想要縮短的網址並按下"縮短網址"按鈕，即可生成短網址。本站支援最長200字的原始網址。<br>
-								2. 為提升安全性，本站提供的短網址不會直接跳轉目標網址，而是會先跳轉至本站頁面顯示對應的完整網址，再由使用者自行決定是否前往。<br>
-								3. 在網路條件許可時，本站在創建短網址時，會同步使用Google Safe Browsing V4檢查原始網址，並在短網址被使用時的兩段式跳轉頁面顯示檢測結果，方便使用者快速評估原始網址的安全性，但請注意Google Safe Browsing V4的檢測結果僅是評估性質，不代表百分百準確。<br>
-								4. 生成的短網址沒有使用效期，若碰上異常狀況包含但不限於硬體故障、資料庫異常、營運終止等不可抗力則不保證永久有效，請自行保管好原始網址。<br>
-								5. 使用本服務時就表示已同意本站的所有使用條款。<br><br>
+<main>
+    <div class="inner">
+        <h2 class="major" id="service-topic">短網址服務 - Short URL</h2>
 
-								1. Paste the URL you want to shorten and click the "Generate Short URL" button to create a short URL. This site supports URLs up to 200 characters long.<br>
-								2. To enhance security, the short URLs provided by this site will not directly redirect to the target URL. Instead, they will first redirect to a page on this site displaying the full corresponding URL, allowing the user to decide whether to proceed.<br>
-								3. When network conditions permit, this site will use Google Safe Browsing V4 to check the original URL while creating a shortened URL. The detection results will be displayed on the two-step redirect page when the shortened URL is used, allowing users to quickly assess the security of the original URL. However, please note that the Google Safe Browsing V4 detection results are for evaluation purposes only and do not guarantee 100% accuracy.<br>
-								4. The generated short URLs do not have an expiration date. However, in cases of anomalies, including but not limited to hardware failure, database issues, or cessation of operations, the short URLs may not remain valid indefinitely. Please keep the original URL safe.<br>
-								5. By using this service, you agree to all the terms of use of this site.
-							</details>	
-							<hr>
+        <hr>
 
-							<div class="button-container-back">
-								<a href="/img_upload" class="button-back">往圖片分享服務 - Go Image Share Service</a>
-							</div>
+        <div class="to-short-url">
+            <input type="text" id="long_url" placeholder="請先在此輸入原始網址 / Please enter an URL here first." maxlength="200">
 
-							<hr>
-							<div class="final-cover">
-							<span class="image fit"><img src="/images/short_url_pic01.webp" alt="" /></span>	
-							</div>							
-						</div>
-					</section>
+            <button type="button" id="generate">點此生成 - Click Here</button>
 
-			</div>
+            <p class="reminder">點擊下方黃框複製生成的短網址<br>Click the yellow box below to copy the generated short URL</p>
 
-		<!-- Footer -->
-			<footer id="footer" class="wrapper alt">
-				<div class="inner">
-					<ul class="menu">
-						<p id="footer-year">Copyright © GDTW. Since 2024</p> 
-					</ul>
-				</div>
-			</footer>
+            <div id="shorten_url" class="reminder" onclick="copyToClipboard()">即將生成的短網址<br>Short URL will be generated here.</div>
 
-		<!-- Scripts -->
-			<script src="/assets/js/jquery.min.js"></script>
-			<script src="/assets/js/jquery.scrollex.min.js"></script>
-			<script src="/assets/js/jquery.scrolly.min.js"></script>
-			<script src="/assets/js/browser.min.js"></script>
-			<script src="/assets/js/breakpoints.min.js"></script>
-			<script src="/assets/js/util.js"></script>
-			<script src="/assets/js/main.js"></script>
-			<script src="/assets/js/index_customized.js"></script>			
-			<script src="/assets/js/qrcode.min.js"></script>	
-			<script src="/assets/js/short_url.js"></script>
-			
-	</body>
+            <div id="qrcode"></div>
+        </div>
+
+        <hr>
+        <br>
+
+        <h3>使用說明 - Instructions</h3>
+        <details>
+            <summary>點看詳細教學 - Click & Read Instructions</summary>
+            <br>
+            1. 貼上您想要縮短的網址並按下"縮短網址"按鈕，即可生成短網址。本站支援最長200字的原始網址。<br>
+            2. 為提升安全性，本站提供的短網址不會直接跳轉目標網址，而是會先跳轉至本站頁面顯示對應的完整網址，再由使用者自行決定是否前往。<br>
+            3. 在網路條件許可時，本站在創建短網址時，會同步使用Google Safe Browsing
+            V4檢查原始網址，並在短網址被使用時的兩段式跳轉頁面顯示檢測結果，方便使用者快速評估原始網址的安全性，但請注意Google Safe Browsing
+            V4的檢測結果僅是評估性質，不代表百分百準確。<br>
+            4. 生成的短網址沒有使用效期，若碰上異常狀況包含但不限於硬體故障、資料庫異常、營運終止等不可抗力則不保證永久有效，請自行保管好原始網址。<br>
+            5. 使用本服務時就表示已同意本站的所有使用條款。<br><br>
+
+            1. Paste the URL you want to shorten and click the "Generate Short URL" button to create a short URL. This site supports URLs up
+            to 200 characters long.<br>
+            2. To enhance security, the short URLs provided by this site will not directly redirect to the target URL. Instead, they will
+            first redirect to a page on this site displaying the full corresponding URL, allowing the user to decide whether to proceed.<br>
+            3. When network conditions permit, this site will use Google Safe Browsing V4 to check the original URL while creating a
+            shortened URL. The detection results will be displayed on the two-step redirect page when the shortened URL is used, allowing
+            users to quickly assess the security of the original URL. However, please note that the Google Safe Browsing V4 detection
+            results are for evaluation purposes only and do not guarantee 100% accuracy.<br>
+            4. The generated short URLs do not have an expiration date. However, in cases of anomalies, including but not limited to
+            hardware failure, database issues, or cessation of operations, the short URLs may not remain valid indefinitely. Please keep the
+            original URL safe.<br>
+            5. By using this service, you agree to all the terms of use of this site.
+        </details>
+        <hr>
+
+        <div class="button-container-back">
+            <a href="/img_upload" class="button-back">往圖片分享服務 - Go Image Share Service</a>
+        </div>
+
+        <hr>
+        <div class="final-cover">
+            <span class="image fit"><img src="/images/short_url_pic01.webp" alt=""/></span>
+        </div>
+    </div>
+
+
+</main>
+
+
+<div id="footer"></div>
+
+<script src="/js/header&footer.js"></script>
+<script src="/js/qrcode.min.js"></script>
+<script src="/js/short_url.js"></script>
+
+</body>
 </html>
+
