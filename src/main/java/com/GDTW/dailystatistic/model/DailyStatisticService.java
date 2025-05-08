@@ -1,4 +1,4 @@
-package com.GDTW.dailystatistic.service;
+package com.GDTW.dailystatistic.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;

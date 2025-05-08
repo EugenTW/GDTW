@@ -2,7 +2,8 @@ package com.GDTW.general.service.ratelimiter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -12,12 +13,12 @@ import java.time.Duration;
 @Service
 public class RateLimiterService {
 
+    private final RedisTemplate<String, String> redisTemplate;
     private static final Logger logger = LoggerFactory.getLogger(RateLimiterService.class);
-    private final StringRedisTemplate redisTemplate;
 
     private volatile long lastRedisErrorLogTime = 0;
 
-    public RateLimiterService(StringRedisTemplate redisTemplate) {
+    public RateLimiterService(@Qualifier("redisStringStringTemplate") RedisTemplate<String, String> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
