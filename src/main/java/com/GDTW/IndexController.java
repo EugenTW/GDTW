@@ -41,11 +41,6 @@ public class IndexController {
         return "forward:/contact_us.html";
     }
 
-    @GetMapping("/show_statistics")
-    public String showStatistics() {
-        return "forward:/show_statistics.html";
-    }
-
     @GetMapping("/error_404")
     public String handleError404() {
         return "forward:/error_404.html";
