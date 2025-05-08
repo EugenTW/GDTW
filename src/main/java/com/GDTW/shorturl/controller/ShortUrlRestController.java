@@ -4,7 +4,7 @@ import com.GDTW.dailystatistic.model.DailyStatisticService;
 import com.GDTW.general.exception.ShortUrlBannedException;
 import com.GDTW.general.exception.ShortUrlNotFoundException;
 import com.GDTW.general.service.RateLimiterService;
-import com.GDTW.safebrowsing4.service.SafeBrowsingV4Service;
+import com.GDTW.general.service.safebrowsing4.SafeBrowsingV4Service;
 import com.GDTW.shorturl.model.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;

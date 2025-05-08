@@ -1,4 +1,4 @@
-package com.GDTW.safebrowsing4.service;
+package com.GDTW.general.service.safebrowsing4;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
