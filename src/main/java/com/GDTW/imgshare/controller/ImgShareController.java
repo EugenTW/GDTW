@@ -1,6 +1,5 @@
 package com.GDTW.imgshare.controller;
 
-import com.GDTW.dailystatistic.model.DailyStatisticService;
 import com.GDTW.imgshare.model.ImgShareService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
