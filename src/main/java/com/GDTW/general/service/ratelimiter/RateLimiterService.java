@@ -15,11 +15,25 @@ public class RateLimiterService {
     private static final Logger logger = LoggerFactory.getLogger(RateLimiterService.class);
     private final StringRedisTemplate redisTemplate;
 
+    private volatile long lastRedisErrorLogTime = 0;
+
     public RateLimiterService(StringRedisTemplate redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
     public void checkLimit(String clientIp, RateLimitRule rule) {
+        try {
+            doRateLimitCheck(clientIp, rule);
+        } catch (Exception e) {
+            long now = System.currentTimeMillis();
+            if (now - lastRedisErrorLogTime > Duration.ofMinutes(15).toMillis()) {
+                lastRedisErrorLogTime = now;
+                logger.error("Redis unavailable. Rate limit check skipped. Reason: {}", e.getMessage());
+            }
+        }
+    }
+
+    private void doRateLimitCheck(String clientIp, RateLimitRule rule) {
         if (clientIp == null || clientIp.isBlank() || "0:0:0:0:0:0:0:1".equals(clientIp) || "127.0.0.1".equals(clientIp)) {
             clientIp = "localhost";
         }
