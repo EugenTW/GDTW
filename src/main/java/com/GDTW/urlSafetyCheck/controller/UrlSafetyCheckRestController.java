@@ -1,6 +1,6 @@
 package com.GDTW.urlSafetyCheck.controller;
 
-import com.GDTW.general.service.RateLimiterService;
+import com.GDTW.general.service.ratelimiter.RateLimiterService;
 import com.GDTW.urlSafetyCheck.model.UrlSafetyCheckService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;

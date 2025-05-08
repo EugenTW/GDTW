@@ -3,7 +3,7 @@ package com.GDTW.shorturl.controller;
 import com.GDTW.dailystatistic.service.DailyStatisticService;
 import com.GDTW.general.exception.ShortUrlBannedException;
 import com.GDTW.general.exception.ShortUrlNotFoundException;
-import com.GDTW.general.service.RateLimiterService;
+import com.GDTW.general.service.ratelimiter.RateLimiterService;
 import com.GDTW.general.service.safebrowsing4.SafeBrowsingV4Service;
 import com.GDTW.shorturl.model.*;
 import jakarta.servlet.http.HttpServletRequest;

@@ -3,7 +3,7 @@ package com.GDTW.dailystatistic.controller;
 import com.GDTW.dailystatistic.service.ChartDataDTO;
 import com.GDTW.dailystatistic.service.DailyStatisticService;
 import com.GDTW.dailystatistic.service.TotalServiceStatisticsDTO;
-import com.GDTW.general.service.RateLimiterService;
+import com.GDTW.general.service.ratelimiter.RateLimiterService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

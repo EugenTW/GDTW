@@ -2,7 +2,7 @@ package com.GDTW.imgshare.controller;
 
 import com.GDTW.dailystatistic.service.DailyStatisticService;
 import com.GDTW.general.exception.InsufficientDiskSpaceException;
-import com.GDTW.general.service.RateLimiterService;
+import com.GDTW.general.service.ratelimiter.RateLimiterService;
 import com.GDTW.imgshare.model.AlbumCreationRequestDTO;
 import com.GDTW.imgshare.model.ImgShareService;
 import com.GDTW.imgshare.model.TokenRequestDTO;
