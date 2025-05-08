@@ -76,7 +76,7 @@ async function displayImagesSequentially(data) {
     const totalVisited = data.siaTotalVisited ?? 0;
     const statusDiv = document.createElement('div');
     statusDiv.classList.add('status-area');
-    statusDiv.innerHTML = `Expiration Date: ${endDate} | Total Visited: ${totalVisited}`;
+    statusDiv.innerHTML = `Expires on: ${endDate} | Views: ${totalVisited}`;
     gallery.appendChild(statusDiv);
 
     const pageUrlDiv = document.createElement('div');
@@ -226,7 +226,7 @@ function displaySingleImage(data) {
     const totalVisited = data.siTotalVisited ?? 0;
     const statusDiv = document.createElement('div');
     statusDiv.classList.add('status-area');
-    statusDiv.innerHTML = `Expiration Date: ${endDate} | Total Visited: ${totalVisited}`;
+    statusDiv.innerHTML = `Expires on: ${endDate} | Views: ${totalVisited}`;
 
     const pageUrlDiv = document.createElement('div');
     pageUrlDiv.classList.add('page-url-text');

@@ -1,8 +1,8 @@
 package com.GDTW.dailystatistic.controller;
 
-import com.GDTW.dailystatistic.service.ChartDataDTO;
-import com.GDTW.dailystatistic.service.DailyStatisticService;
-import com.GDTW.dailystatistic.service.TotalServiceStatisticsDTO;
+import com.GDTW.dailystatistic.model.ChartDataDTO;
+import com.GDTW.dailystatistic.model.DailyStatisticService;
+import com.GDTW.dailystatistic.model.TotalServiceStatisticsDTO;
 import com.GDTW.general.service.ratelimiter.RateLimiterService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
