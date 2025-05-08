@@ -1,0 +1,152 @@
+body {
+    background-color: #2e2e2e;
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+main {
+    flex: 1;
+    padding: 50px 0 30px 0;
+    width: 90%;
+    max-width: 1200px;
+    min-width: 450px;
+    margin: 0 auto;
+}
+
+hr {
+    margin: 10px 0;
+    border: none;
+    border-top: 1px solid #555;
+}
+
+h2, h3, h4 {
+    text-align: center;
+    color: #ffffff;
+}
+
+h2.major {
+    font-size: 26px;
+    margin-bottom: 10px;
+}
+
+h3 {
+    font-size: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+h4 {
+    font-size: 18px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.total-cumulative-table {
+    width: 80%;
+    border-collapse: collapse;
+    margin: 0 auto;
+    font-size: 16px;
+    min-width: 450px;
+}
+
+.total-cumulative-table th,
+.total-cumulative-table td {
+    border: 1px solid #444;
+    padding: 12px 16px;
+    text-align: left;
+}
+
+.total-cumulative-table thead {
+    background-color: #580062;
+    font-weight: bold;
+}
+
+.total-cumulative-table tbody tr:nth-child(even) {
+    background-color: #3c004f;
+}
+
+.total-cumulative-table tbody tr:nth-child(odd) {
+    background-color: #260067;
+}
+
+details {
+    padding: 0 16px;
+    max-width: 900px;
+    margin: 0 auto;
+    line-height: 1.8;
+    text-align: justify;
+    color: #e0e0e0;
+}
+
+#chart-container {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+canvas {
+    background-color: rgb(29, 2, 29);
+    border-radius: 5px;
+    border: 3px solid #7a0a64;
+    margin-bottom: 30px;
+    display: block;
+    width: 100%;
+    min-width: 450px;
+    max-width: 100%;
+    min-height: 150px;
+}
+
+.final-cover {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.final-cover .image {
+    width: 550px;
+    display: flex;
+    justify-content: center;
+}
+
+.final-cover .image img {
+    margin-top: 10px;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    border-radius: 5px;
+}
+
+.total-cumulative-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.total-cumulative-table th:first-child {
+    border-top-left-radius: 8px;
+}
+
+.total-cumulative-table th:last-child {
+    border-top-right-radius: 8px;
+}
+
+.total-cumulative-table tr:last-child td:first-child {
+    border-bottom-left-radius: 8px;
+}
+
+.total-cumulative-table tr:last-child td:last-child {
+    border-bottom-right-radius: 8px;
+}
