@@ -165,10 +165,27 @@ function loadImageSequentially(image, gallery, isNsfw) {
         downloadLink.classList.add('download-link-button');
         downloadLink.textContent = '⬇️';
         downloadLink.title = '下載圖片 - Download';
-        downloadLink.href = image.imageUrl;
-        downloadLink.download = image.siName;
-        downloadLink.setAttribute('target', '_blank');
-        downloadLink.setAttribute('rel', 'noopener noreferrer');
+
+        downloadLink.addEventListener('click', async (event) => {
+            event.preventDefault();
+
+            try {
+                const response = await fetch(image.imageUrl, { mode: 'cors' });
+                const blob = await response.blob();
+
+                const blobUrl = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = blobUrl;
+                a.download = image.siName || 'download.jpg';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(blobUrl);
+            } catch (err) {
+                console.error('Download failed:', err);
+                alert('下載失敗! - Download Failed!');
+            }
+        });
 
         const urlContainer = document.createElement('div');
         urlContainer.classList.add('url-container');
@@ -279,10 +296,27 @@ function displaySingleImage(data) {
     downloadLink.classList.add('download-link-button');
     downloadLink.textContent = '⬇️';
     downloadLink.title = '下載圖片 - Download';
-    downloadLink.href = imageUrl;
-    downloadLink.download = data.siName;
-    downloadLink.setAttribute('target', '_blank');
-    downloadLink.setAttribute('rel', 'noopener noreferrer');
+
+    downloadLink.addEventListener('click', async (event) => {
+        event.preventDefault();
+
+        try {
+            const response = await fetch(image.imageUrl, { mode: 'cors' });
+            const blob = await response.blob();
+
+            const blobUrl = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = blobUrl;
+            a.download = image.siName || 'download.jpg';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(blobUrl);
+        } catch (err) {
+            console.error('Download failed:', err);
+            alert('下載失敗! - Download Failed!');
+        }
+    });
 
     const urlContainer = document.createElement('div');
     urlContainer.classList.add('url-container');

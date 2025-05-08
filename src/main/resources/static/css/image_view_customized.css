@@ -40,8 +40,8 @@ details {
 }
 
 #password-modal {
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 25px;
+    margin-bottom: 25px;
     min-width: 400px;
     text-align: center;
     display: flex;
@@ -59,6 +59,7 @@ details {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 5px 5px;
 }
 
 #password-input {
@@ -87,7 +88,7 @@ details {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #06267d;
+    background-color: #002793;
     box-shadow: inset 0 0 0 3px #1eeae0;
     color: white;
     transition: background-color 0.3s ease;
@@ -95,6 +96,17 @@ details {
 
 #password-submit:hover {
     background-color: #1753b9;
+}
+
+#password-submit:disabled {
+    cursor: not-allowed;
+    background-color: #001f65;
+    box-shadow: none;
+    color: #818181;
+}
+
+#password-submit:disabled:hover {
+    background-color: #002475;
 }
 
 .gallery {
@@ -126,8 +138,22 @@ details {
     margin-bottom: 10px;
 }
 
+#single-photo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#single-photo .photo-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+}
+
 .photo-wrapper {
     position: relative;
+    align-items: center;
     display: block;
     line-height: 0;
     min-width: 250px;
@@ -140,7 +166,6 @@ details {
 .photo-wrapper img,
 .photo img {
     display: block;
-    margin: 0;
     padding: 0;
     max-width: 90%;
     max-height: 95vh;
@@ -151,6 +176,7 @@ details {
     object-fit: contain;
     border-radius: 3px;
     border: 2px solid #787878;
+    margin: 0 auto;
 }
 
 
