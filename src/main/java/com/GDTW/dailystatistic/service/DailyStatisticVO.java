@@ -1,9 +1,8 @@
-package com.GDTW.dailystatistic.model;
+package com.GDTW.dailystatistic.service;
 
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 @Table(name = "daily_statistic")

@@ -1,4 +1,4 @@
-package com.GDTW.dailystatistic.model;
+package com.GDTW.dailystatistic.service;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

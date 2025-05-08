@@ -1,6 +1,6 @@
 package com.GDTW.shorturl.controller;
 
-import com.GDTW.dailystatistic.model.DailyStatisticService;
+import com.GDTW.dailystatistic.service.DailyStatisticService;
 import com.GDTW.general.exception.ShortUrlBannedException;
 import com.GDTW.general.exception.ShortUrlNotFoundException;
 import com.GDTW.general.service.RateLimiterService;

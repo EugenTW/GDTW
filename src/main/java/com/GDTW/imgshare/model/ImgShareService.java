@@ -1,6 +1,6 @@
 package com.GDTW.imgshare.model;
 
-import com.GDTW.dailystatistic.model.DailyStatisticService;
+import com.GDTW.dailystatistic.service.DailyStatisticService;
 import com.GDTW.general.util.ImgFilenameEncoderDecoderUtil;
 import com.GDTW.general.util.ImgIdEncoderDecoderUtil;
 import com.GDTW.general.exception.InsufficientDiskSpaceException;

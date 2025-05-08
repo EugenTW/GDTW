@@ -1,17 +1,14 @@
 package com.GDTW.dailystatistic.controller;
 
-import com.GDTW.dailystatistic.model.ChartDataDTO;
-import com.GDTW.dailystatistic.model.DailyStatisticService;
-import com.GDTW.dailystatistic.model.TotalServiceStatisticsDTO;
+import com.GDTW.dailystatistic.service.ChartDataDTO;
+import com.GDTW.dailystatistic.service.DailyStatisticService;
+import com.GDTW.dailystatistic.service.TotalServiceStatisticsDTO;
 import com.GDTW.general.service.RateLimiterService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping("/ds_api")
