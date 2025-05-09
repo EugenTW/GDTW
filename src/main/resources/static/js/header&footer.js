@@ -15,3 +15,8 @@ fetch("/footer.html")
             footer.textContent = `Copyright © 2024 – ${year} GDTW. All rights reserved.`;
         }
     });
+
+function toggleMenu() {
+    const nav = document.querySelector("nav");
+    nav.classList.toggle("show");
+}
