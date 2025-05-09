@@ -8,11 +8,11 @@ body {
 
 main {
     flex: 1;
-    padding: 50px 0 30px 0;
+    padding: 50px 0 30px;
     width: 90%;
     max-width: 1200px;
-    min-width: 450px;
     margin: 0 auto;
+    box-sizing: border-box;
 }
 
 hr {
@@ -33,35 +33,48 @@ h2.major {
 
 h3 {
     font-size: 20px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin: 10px 0;
 }
 
 h4 {
     font-size: 18px;
-    margin-top: 10px;
-    margin-bottom: 5px;
+    margin: 10px 0 5px;
+}
+
+details {
+    padding: 0 16px;
+    max-width: 900px;
+    margin: 0 auto;
+    line-height: 1.8;
+    text-align: justify;
+    color: #e0e0e0;
 }
 
 .table-wrapper {
-    overflow-x: auto;
     width: 100%;
-    margin: 0 auto;
+    padding: 0 10px;
+    box-sizing: border-box;
+    overflow-x: hidden;
 }
 
 .total-cumulative-table {
-    width: 80%;
+    width: 100%;
+    table-layout: fixed;
     border-collapse: collapse;
-    margin: 0 auto;
     font-size: 16px;
-    min-width: 450px;
+    margin: 0 auto;
+    border-radius: 8px;
+    overflow: hidden;
+    word-wrap: break-word;
+    word-break: break-word;
 }
 
 .total-cumulative-table th,
 .total-cumulative-table td {
     border: 1px solid #444;
-    padding: 12px 16px;
+    padding: 12px 10px;
     text-align: left;
+    white-space: normal;
 }
 
 .total-cumulative-table thead {
@@ -75,73 +88,6 @@ h4 {
 
 .total-cumulative-table tbody tr:nth-child(odd) {
     background-color: #260067;
-}
-
-details {
-    padding: 0 16px;
-    max-width: 900px;
-    margin: 0 auto;
-    line-height: 1.8;
-    text-align: justify;
-    color: #e0e0e0;
-}
-
-#chart-container {
-    width: 100%;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-canvas {
-    background-color: rgb(29, 2, 29);
-    border-radius: 5px;
-    border: 3px solid #7a0a64;
-    margin-bottom: 30px;
-    display: block;
-    width: 100%;
-    min-width: 450px;
-    max-width: 100%;
-    min-height: 150px;
-}
-
-.final-cover {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto;
-}
-
-.final-cover .image {
-    width: 550px;
-    display: flex;
-    justify-content: center;
-}
-
-.final-cover .image img {
-    margin-top: 10px;
-    width: 100%;
-    height: auto;
-    object-fit: contain;
-    border-radius: 5px;
-}
-
-.final-cover img {
-    width: 100%;
-    max-width: 500px;
-    height: auto;
-    border-radius: 8px;
-    display: block;
-    margin: 0 auto;
-}
-
-.total-cumulative-table {
-    border-collapse: separate;
-    border-spacing: 0;
-    border-radius: 8px;
-    overflow: hidden;
 }
 
 .total-cumulative-table th:first-child {
@@ -158,4 +104,95 @@ canvas {
 
 .total-cumulative-table tr:last-child td:last-child {
     border-bottom-right-radius: 8px;
+}
+
+.total-cumulative-table th:nth-child(1),
+.total-cumulative-table td:nth-child(1) {
+    width: 70%;
+}
+
+.total-cumulative-table th:nth-child(2),
+.total-cumulative-table td:nth-child(2) {
+    width: 30%;
+}
+
+#chart-container {
+    width: 100%;
+    padding: 0 10px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+canvas.chart-canvas {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    background-color: rgb(29, 2, 29);
+    border-radius: 5px;
+    border: 3px solid #7a0a64;
+    margin-bottom: 30px;
+    box-sizing: border-box;
+}
+
+canvas.chart-canvas:empty {
+    display: none;
+}
+
+.final-cover {
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.final-cover .image {
+    width: 100%;
+    max-width: 550px;
+    display: flex;
+    justify-content: center;
+}
+
+.final-cover .image img,
+.final-cover img {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px;
+    display: block;
+    margin: 10px auto 0;
+}
+
+@media (max-width: 768px) {
+    .total-cumulative-table {
+        font-size: 13px;
+    }
+
+    .total-cumulative-table th,
+    .total-cumulative-table td {
+        padding: 8px 6px;
+    }
+
+    h2.major {
+        font-size: 22px;
+    }
+
+    h3 {
+        font-size: 18px;
+    }
+
+    h4 {
+        font-size: 16px;
+    }
+
+    canvas.chart-canvas {
+        max-height: 300px;
+        height: auto;
+    }
 }

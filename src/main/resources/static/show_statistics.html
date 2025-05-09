@@ -48,38 +48,38 @@
                 <br>
                 <thead>
                 <tr>
-                    <th>服務類型 - Service Type</th>
-                    <th>次數 - Counts</th>
+                    <th>服務類型<br>Service Type</th>
+                    <th>次數<br>Counts</th>
                 </tr>
                 </thead>
 
                 <tbody>
                 <tr>
-                    <td>網站服務總天數 - Total Website Service Days</td>
+                    <td>網站服務總天數<br>Total Website Service Days</td>
                     <td id="total-web-service"></td>
                 </tr>
                 <tr>
-                    <td>短網址建立次數 - Total Short URLs Created</td>
+                    <td>短網址建立次數<br>Total Short URLs Created</td>
                     <td id="total-short-urls-created"></td>
                 </tr>
                 <tr>
-                    <td>短網址使用次數 - Total Short URLs Used</td>
+                    <td>短網址使用次數<br>Total Short URLs Used</td>
                     <td id="total-short-urls-used"></td>
                 </tr>
                 <tr>
-                    <td>相簿建立次數 - Total Image Albums Created</td>
+                    <td>相簿建立次數<br>Total Image Albums Created</td>
                     <td id="total-image-albums-created"></td>
                 </tr>
                 <tr>
-                    <td>相簿瀏覽次數 - Total Image Albums Browsing</td>
+                    <td>相簿瀏覽次數<br>Total Image Albums Browsing</td>
                     <td id="total-image-albums-visited"></td>
                 </tr>
                 <tr>
-                    <td>圖片建立次數 - Total Images Created</td>
+                    <td>圖片建立次數<br>Total Images Created</td>
                     <td id="total-images-created"></td>
                 </tr>
                 <tr>
-                    <td>圖片瀏覽次數 - Total Images Browsing</td>
+                    <td>圖片瀏覽次數<br>Total Images Browsing</td>
                     <td id="total-images-visited"></td>
                 </tr>
                 </tbody>
@@ -93,15 +93,17 @@
 
         <div id="chart-container">
             <h4>短網址統計 - Short URL Statistics</h4>
-            <canvas id="created-short-url-chart" style="margin-bottom: 30px;"></canvas>
-            <canvas id="used-short-url-chart" style="margin-bottom: 30px;"></canvas>
+            <canvas id="created-short-url-chart" class="chart-canvas"></canvas>
+            <canvas id="used-short-url-chart" class="chart-canvas"></canvas>
             <h4>圖片相簿統計 - Image Album Statistics</h4>
-            <canvas id="created-album-chart" style="margin-bottom: 30px;"></canvas>
-            <canvas id="used-album-chart" style="margin-bottom: 30px;"></canvas>
+            <canvas id="created-album-chart" class="chart-canvas"></canvas>
+            <canvas id="used-album-chart" class="chart-canvas"></canvas>
             <h4>圖片統計 - Image Statistics</h4>
-            <canvas id="created-image-chart" style="margin-bottom: 30px;"></canvas>
-            <canvas id="used-image-chart" style="margin-bottom: 30px;"></canvas>
+            <canvas id="created-image-chart" class="chart-canvas"></canvas>
+            <canvas id="used-image-chart" class="chart-canvas"></canvas>
         </div>
+
+
         <hr>
         <h3>數據說明 - Instructions</h3>
         <details>
