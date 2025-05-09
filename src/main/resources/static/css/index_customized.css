@@ -1,5 +1,5 @@
 body{
-    background-color: #333333;
+    background-color: #212121;
 }
 
 main {
@@ -8,8 +8,9 @@ main {
 }
 
 .hero-section {
-    background-color: #333333;
+    background-color: #212121;
     color: #ffffff;
+    padding: 20px 20px 20px 20px;
 }
 
 .hero-container {
