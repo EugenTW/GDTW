@@ -16,15 +16,15 @@ header {
     top: 0;
     left: 0;
     width: 100%;
-    background-color: #000065;
+    background-color: #001A6E;
     color: white;
     z-index: 1000;
 }
 
 .top-bar {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    gap: 20px;
     padding: 8px 20px;
 }
 
@@ -70,7 +70,7 @@ nav ul li a {
 }
 
 nav ul li a:hover {
-    background-color: #0000a4;
+    background-color: #074799;
     text-decoration: none;
 }
 
@@ -79,9 +79,9 @@ nav ul li a:hover {
     position: absolute;
     top: 100%;
     left: 0;
-    background-color: #171717;
+    background-color: #075e54;
     min-width: 300px;
-    border: 2px solid #444;
+    border: 2px solid #80fff3;
     border-radius: 4px;
     z-index: 999;
 }
@@ -94,7 +94,7 @@ nav ul li a:hover {
 }
 
 .dropdown-content a:hover {
-    background-color: #cbcbcb;
+    background-color: #E1FFBB;
     color: #000;
     text-decoration: none;
 }
@@ -103,7 +103,6 @@ nav ul li a:hover {
     display: block;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
     .hamburger {
         display: block;
@@ -112,7 +111,7 @@ nav ul li a:hover {
     nav {
         display: none;
         width: 100%;
-        background-color: #000065;
+        background-color: #001A6E;
     }
 
     nav.show {

@@ -327,9 +327,10 @@ details {
 
 .button-back {
     display: inline-block;
-    width: 350px;
+    width: 100%;
+    max-width: 350px;
     padding: 12px 20px;
-    background-color: #390061;
+    background-color: #48007e;
     color: #ffffff;
     text-align: center;
     text-decoration: none;
@@ -341,7 +342,7 @@ details {
 }
 
 .button-back:hover {
-    background-color: #6d01e0;
+    background-color: #4a0096;
 }
 
 .status-container {

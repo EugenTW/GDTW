@@ -43,9 +43,9 @@ details {
     height: 50px;
     padding: 10px;
     font-size: 16px;
-    color: #9efffc;
-    background-color: #00023a;
-    border: 3px solid #00fff7;
+    color: #3DC2EC;
+    background-color: #001557;
+    border: 3px solid #a0fffc;
     border-radius: 5px;
     margin: 10px 0;
     box-sizing: border-box;
@@ -55,11 +55,11 @@ details {
     width: 300px;
     height: 50px;
     margin: 10px 0;
-    background-color: rgb(90, 10, 78);
-    color: #ffffff;
+    background-color: #480e81;
+    color: #ffd6e8;
     font-size: 16px;
     border-radius: 10px;
-    box-shadow: inset 0 0 0 2px #cc00b4;
+    border: 3px solid #FF3EA5;
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -68,17 +68,17 @@ details {
 }
 
 #generate:hover {
-    background-color: #7c135f;
+    background-color: #8838d9;
 }
 
 #shorten_url {
     width: 300px;
     height: 50px;
     margin: 10px 0;
-    background-color: rgb(252, 252, 185);
-    color: rgb(0, 0, 0);
+    background-color: #E9F5BE;
+    color: #000000;
     font-size: 16px;
-    border: 3px solid rgb(255, 157, 0);
+    border: 3px solid #ff4f5d;
     border-radius: 10px;
     display: flex;
     justify-content: center;
@@ -89,7 +89,7 @@ details {
 #qrcode {
     display: none;
     margin: 10px 0;
-    border: 2px solid #cdcdcd;
+    border: 2px solid #E9F5BE;
 }
 
 .reminder {
@@ -140,7 +140,7 @@ details {
     width: 100%;
     max-width: 350px;
     padding: 12px 20px;
-    background-color: #390061;
+    background-color: #48007e;
     color: #ffffff;
     text-align: center;
     text-decoration: none;
@@ -152,5 +152,5 @@ details {
 }
 
 .button-back:hover {
-    background-color: #6d01e0;
+    background-color: #4a0096;
 }
