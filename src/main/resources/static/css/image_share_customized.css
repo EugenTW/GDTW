@@ -1,23 +1,39 @@
-hr {
-    margin-top: 5px;
-    margin-bottom: 5px;
+body {
+    background-color: #2e2e2e;
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
 }
 
 main {
     flex: 1;
-    padding: 50px 0px 0px 0px;
+    padding: 50px 0 30px;
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+hr {
+    margin: 10px 0;
+    border: none;
+    border-top: 1px solid #555;
+}
+
+h2, h3 {
+    text-align: center;
     color: #ffffff;
 }
 
-#service-topic {
-    text-align: center;
+h2.major {
+    font-size: 26px;
+    margin-bottom: 10px;
 }
 
 h3 {
-    text-align: center;
-    margin-top: 10px;
-    margin-bottom: 5px;
     font-size: 20px;
+    margin: 10px 0;
 }
 
 details {
@@ -26,6 +42,7 @@ details {
     margin: 0 auto;
     line-height: 1.8;
     text-align: justify;
+    color: #e0e0e0;
 }
 
 .images-update {
@@ -37,24 +54,26 @@ details {
 }
 
 .upload-area {
-    width: 70%;
-    min-width: 400px;
+    width: 100%;
+    max-width: 600px;
     padding: 20px;
     border: 3px dashed #ffffff;
     background-color: #4d4d4d;
     text-align: center;
     cursor: pointer;
-    margin-top: 15px;
-    margin-bottom: 5px;
+    margin: 15px auto 5px;
+    box-sizing: border-box;
 }
 
 .file-list {
     display: grid;
-    grid-template-columns: repeat(10, 100px);
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    width: 100%;
     max-width: 1100px;
-    margin: 10px auto 20px auto;
+    margin: 10px auto 20px;
     gap: 10px;
-    justify-content: center;
+    box-sizing: border-box;
+    padding: 0 10px;
 }
 
 .file-item {
@@ -62,7 +81,8 @@ details {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 100px;
+    width: 100%;
+    max-width: 100px;
 }
 
 .thumbnail {
@@ -81,97 +101,15 @@ details {
     margin-top: 5px;
 }
 
-#upload-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.7);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    display: flex;
-}
-
-#overlay-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#overlay-content img {
-    max-width: 250px;
-    max-height: 250px;
-    border: 3px solid #ffd100;
-    border-radius: 10px;
-}
-
-.hidden {
-    display: none;
-}
-
-.final-cover {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto;
-}
-
-.final-cover .image {
-    width: 550px;
-    display: flex;
-    justify-content: center;
-}
-
-.final-cover .image img {
-    margin-top: 10px;
-    width: 100%;
-    height: auto;
-    object-fit: contain;
-    border-radius: 5px;
-}
-
-.button-container-back {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 20px 0;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-.button-back {
-    display: inline-block;
-    width: 350px;
-    padding: 12px 20px;
-    background-color: #390061;
-    color: #ffffff;
-    text-align: center;
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 12px;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: inset 0 0 0 2px #ffffff;
-}
-
-.button-back:hover {
-    background-color: #6d01e0;
-}
-
 .settings-area {
-    width: 60%;
-    min-width: 400px;
+    width: 100%;
     max-width: 600px;
-    margin-top: 20px;
-    margin-bottom: 5px;
+    margin: 20px auto 5px;
     padding: 10px;
     border: 3px solid #b413d8;
     border-radius: 10px;
     background-color: #2b0035;
+    box-sizing: border-box;
 }
 
 .settings-area select,
@@ -200,9 +138,9 @@ details {
     border: 2px solid #ffffff;
     border-radius: 50%;
     background-color: transparent;
-    margin: 0 6px 0 0;
-    vertical-align: middle;
+    margin-right: 6px;
     position: relative;
+    vertical-align: middle;
 }
 
 .settings-area input[type="radio"]:checked::before {
@@ -252,4 +190,110 @@ details {
     color: #949494;
     box-shadow: none;
     cursor: not-allowed;
+}
+
+.button-container-back {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.button-back {
+    display: inline-block;
+    width: 100%;
+    max-width: 350px;
+    padding: 12px 20px;
+    background-color: #48007e;
+    color: #ffffff;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: inset 0 0 0 2px #ffffff;
+}
+
+.button-back:hover {
+    background-color: #4a0096;
+}
+
+.final-cover {
+    width: 100%;
+    padding: 0 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.final-cover .image {
+    width: 100%;
+    max-width: 550px;
+    display: flex;
+    justify-content: center;
+}
+
+.final-cover .image img,
+.final-cover img {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px;
+    display: block;
+    margin: 10px auto 0;
+}
+
+#upload-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+#overlay-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#overlay-content img {
+    max-width: 250px;
+    max-height: 250px;
+    border: 3px solid #ffd100;
+    border-radius: 10px;
+}
+
+.hidden {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .upload-area,
+    .settings-area {
+        min-width: unset;
+        width: 90%;
+    }
+
+    h2.major {
+        font-size: 22px;
+    }
+
+    h3 {
+        font-size: 18px;
+    }
+
+    .settings-area label {
+        font-size: 16px;
+    }
 }

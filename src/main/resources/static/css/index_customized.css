@@ -1,15 +1,16 @@
-body{
-    background-color: #333333;
+body {
+    background-color: #212121;
 }
 
 main {
     flex: 1;
-    padding: 50px 0px 0px 0px;
+    padding: 50px 0 0;
 }
 
 .hero-section {
-    background-color: #333333;
+    background-color: #212121;
     color: #ffffff;
+    padding: 20px;
 }
 
 .hero-container {
@@ -38,9 +39,9 @@ main {
 }
 
 .service-section {
-    background-color: #3e008c;
+    background-color: #7A73D1;
     color: #ffffff;
-    padding: 30px 30px 30px 30px;
+    padding: 30px;
 }
 
 .service-grid {
@@ -52,9 +53,9 @@ main {
 }
 
 .service-card {
-    background-color: #43006c;
+    background-color: #211C84;
+    border: 3px solid #B5A8D5;
     border-radius: 10px;
-    border: 3px solid #b413d8;
     padding: 20px;
     text-align: center;
     transition: background-color 0.5s ease;
@@ -70,7 +71,7 @@ main {
 }
 
 a img:hover {
-    opacity: 0.9;
+    opacity: 0.95;
     transition: opacity 0.15s;
 }
 
@@ -80,34 +81,30 @@ a img:hover {
 
 .service-card h2 {
     font-size: 20px;
-    margin-top: 2px;
-    margin-bottom: 2px;
+    margin: 2px 0;
 }
 
 .service-card p {
     font-size: 15px;
-    color: #dcdcdc;
+    color: #ffffff;
     text-align: left;
-    margin-top: 2px;
-    margin-bottom: 2px;
+    margin: 2px 0;
     padding: 0 10px;
+
+    line-height: 1.5;
 }
 
 .service-btn {
     display: inline-block;
     padding: 8px 16px;
-    background-color: #d3d3d3;
+    background-color: #B5A8D5;
     color: #000000;
     border-radius: 4px;
     text-decoration: none;
     font-weight: bold;
-    margin-top: 5px;
-    margin-bottom: 5px;
+    margin: 5px 0;
 }
 
 .service-btn:hover {
-    background-color: #ababab;
+    background-color: #d6cff6;
 }
-
-
-

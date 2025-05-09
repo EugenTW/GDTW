@@ -1,34 +1,24 @@
-hr {
-    margin-top: 5px;
-    margin-bottom: 5px;
-}
-
-
 main {
     flex: 1;
-    padding: 50px 0px 0px 0px;
+    padding: 50px 0 0;
     color: #ffffff;
 }
 
-#service-topic{
+hr {
+    margin: 5px 0;
+}
+
+#service-topic,
+h3 {
     text-align: center;
 }
 
 h3 {
-    text-align: center;
-    margin-top: 10px;
-    margin-bottom: 5px;
+    margin: 10px 0 5px;
     font-size: 20px;
 }
 
-details {
-    padding: 0 16px;
-    max-width: 900px;
-    margin: 0 auto;
-    line-height: 1.8;
-    text-align: justify;
-}
-
+details,
 #one-content {
     padding: 0 16px;
     max-width: 900px;
@@ -38,12 +28,10 @@ details {
 }
 
 .short-url-direction {
-    width: 80%;
+    width: 90%;
+    max-width: 900px;
+    margin: 3px auto;
     display: flex;
-    margin-top: 3px;
-    margin-bottom: 3px;
-    margin-left: auto;
-    margin-right: auto;
     flex-direction: column;
     align-items: center;
     gap: 5px;
@@ -53,44 +41,119 @@ details {
     width: 350px;
     height: 45px;
     background-color: #3d0000;
-    color: #FFFFFF;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    line-height: 40px;
+    color: #ffffff;
     border: 3px solid #ff278f;
     border-radius: 10px;
     font-size: 16px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 40px;
+    margin: 10px 0;
+}
+
+.data-display.large-box.original-url {
+    width: 90%;
+    min-width: 300px;
+    max-width: 800px;
+    min-height: 50px;
+    height: auto;
+    padding: 10px;
+    color: #ffffff;
+    background-color: #00096c;
+    border: 3px solid rgb(158, 242, 255);
+    font-size: 16px;
+    line-height: 1.5;
+    text-align: justify;
+    word-break: break-all;
+    box-sizing: border-box;
+    overflow-y: auto;
+    overflow-wrap: break-word;
+    margin: 10px 0;
 }
 
 .reminder {
     color: #ffffff;
     text-align: center;
-    margin-top: 5px; 
-    margin-bottom: 5px; 
-    line-height: 1.2; 
+    margin: 5px 0;
+    line-height: 1.2;
 }
 
-.button-container {    
+.safe-check {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.google-safe-check {
+    width: 300px;
+    height: 40px;
+    font-size: 16px;
+    background-color: #fff9df;
+    padding: 5px;
+    border: 3px solid #e67e00;
+    border-radius: 5px;
     display: flex;
     justify-content: center;
-    margin-top: 10px;    
-    margin-bottom: 10px;
+    align-items: center;
+    margin: 10px 0;
+}
+
+#google-safebrowsing-icon,
+#google-safe-icon,
+#google-explanation {
+    width: 25px;
+    height: 25px;
+}
+
+#google-explanation {
+    width: 20px;
+    height: 20px;
+    margin: 0 2px;
+}
+
+#google-safe-icon {
+    margin-left: 5px;
+}
+
+#google-safebrowsing-icon {
+    margin-right: 5px;
+}
+
+#google-safe-text {
+    color: #000;
+}
+
+#google-explanation-link {
+    text-decoration: none;
+}
+
+.icon-explanation {
+    width: 15px;
+    height: 15px;
+    margin-right: 5px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0;
 }
 
 .button {
-    width: 350px;
+    width: 100%;
+    min-width: 350px;
     height: 50px;
     font-size: 14px;
     border-radius: 10px;
+    border: 2px solid #0dff00;
     cursor: pointer;
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    box-shadow: inset 0 0 0 2px #0dff00;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     color: #ffffff;
 }
 
@@ -99,106 +162,7 @@ details {
 }
 
 .button.green:hover {
-    background-color: #0f742f;   
-}
-
-.data-display.large-box.original-url {
-    width: 90%;
-    min-width: 300px;
-    max-width: 800px;
-    min-height: 50px;    
-    color: #ffffff;
-    height: auto;  
-    background-color: #00096c; 
-    border: 3px solid rgb(158, 242, 255); 
-    padding: 10px;      
-    font-size: 16px;    
-    line-height: 1.5;   
-    text-align: justify; 
-    overflow-wrap: break-word;  
-    word-wrap: break-word;     
-    word-break: break-all;    
-    box-sizing: border-box; 
-    margin-top: 10px;    
-    margin-bottom: 10px;
-    overflow-y: auto;    
-}
-
-.safe-check{
-    display: flex;
-    align-items: center; 
-    justify-content: flex-start; 
-    gap: 10px;
-}
-
-.google-safe-check {
-    width: 300px;
-    height: 40px;
-    font-size: 16px; 
-    background-color: #fff9df; 
-    padding: 5px;
-    border-radius: 5px;
-    display: flex;
-    justify-content: center; 
-    align-items: center; 
-    margin-top: 10px;
-    margin-bottom: 10px;
-    border: 3px solid #e67e00; 
-}
-
-#google-safebrowsing-icon{
-    width: 25px; 
-    height: 25px; 
-    margin-right: 5px;    
-}
-
-#google-safe-icon{
-    width: 25px; 
-    height: 25px; 
-    margin-left: 5px;    
-}
-
-#google-explanation{
-    width: 20px; 
-    height: 20px; 
-    margin-left: 2px;
-    margin-right: 2px;
-}
-
-#google-safe-text{
-    color: #000;
-}
-
-#google-explanation-link {
-    text-decoration: none; 
-}
-
-.icon-explanation{
-    width: 15px; 
-    height: 15px; 
-    margin-right: 5px;    
-}
-
-.final-cover {
-    width: 100%; 
-    display: flex;
-    justify-content: center; 
-    align-items: center;
-    margin: 0 auto; 
-}
-
-.final-cover .image {
-    width: 550px;
-    display: flex;
-    justify-content: center; 
-}
-
-.final-cover .image img {
-    margin-top: 10px;
-    width: 100%;
-    height: auto; 
-    object-fit: contain; 
-    border-radius: 5px; 
+    background-color: #05591e;
 }
 
 .button-container-back {
@@ -212,9 +176,10 @@ details {
 
 .button-back {
     display: inline-block;
-    width: 350px;
+    width: 100%;
+    max-width: 350px;
     padding: 12px 20px;
-    background-color: #390061;
+    background-color: #48007e;
     color: #ffffff;
     text-align: center;
     text-decoration: none;
@@ -226,16 +191,32 @@ details {
 }
 
 .button-back:hover {
-    background-color: #6d01e0;
+    background-color: #4a0096;
 }
 
+.final-cover {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
 
+.final-cover .image {
+    width: 100%;
+    max-width: 550px;
+    display: flex;
+    justify-content: center;
+}
 
-
-
-
-
-
-
-
-
+.final-cover .image img,
+.final-cover img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px;
+    display: block;
+    margin: 10px auto 0;
+}

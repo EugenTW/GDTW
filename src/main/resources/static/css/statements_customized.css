@@ -7,8 +7,8 @@ main {
 .inner {
     max-width: 900px;
     margin: 0 auto;
-    line-height: 1.8;
     font-size: 15px;
+    line-height: 1.8;
     color: #ffffff;
 }
 
@@ -29,8 +29,12 @@ main {
 }
 
 .final-cover img {
-    max-width: 60%;
+    width: 100%;
+    max-width: 500px;
+    height: auto;
     border-radius: 8px;
+    display: block;
+    margin: 0 auto;
 }
 
 a {
@@ -42,7 +46,8 @@ a:hover {
     text-decoration: underline;
 }
 
-h2, h3 {
+h2,
+h3 {
     color: #ffffff;
     margin-top: 30px;
 }
