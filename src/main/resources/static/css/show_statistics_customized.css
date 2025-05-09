@@ -128,6 +128,15 @@ canvas {
     border-radius: 5px;
 }
 
+.final-cover img {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    border-radius: 8px;
+    display: block;
+    margin: 0 auto;
+}
+
 .total-cumulative-table {
     border-collapse: separate;
     border-spacing: 0;

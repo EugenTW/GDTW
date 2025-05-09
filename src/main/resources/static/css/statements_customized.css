@@ -29,8 +29,12 @@ main {
 }
 
 .final-cover img {
-    max-width: 60%;
+    width: 100%;
+    max-width: 500px;
+    height: auto;
     border-radius: 8px;
+    display: block;
+    margin: 0 auto;
 }
 
 a {
