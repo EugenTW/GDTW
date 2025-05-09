@@ -18,7 +18,7 @@ main {
 hr {
     margin: 10px 0;
     border: none;
-    border-top: 1px solid #555;
+    border-top: 1px solid #7c7c7c;
 }
 
 h2, h3, h4 {
@@ -71,23 +71,23 @@ details {
 
 .total-cumulative-table th,
 .total-cumulative-table td {
-    border: 1px solid #444;
+    border: 1px solid #565656;
     padding: 12px 10px;
     text-align: left;
     white-space: normal;
 }
 
 .total-cumulative-table thead {
-    background-color: #580062;
+    background-color: #00594e;
     font-weight: bold;
 }
 
 .total-cumulative-table tbody tr:nth-child(even) {
-    background-color: #3c004f;
+    background-color: #01442f;
 }
 
 .total-cumulative-table tbody tr:nth-child(odd) {
-    background-color: #260067;
+    background-color: #28394f;
 }
 
 .total-cumulative-table th:first-child {
