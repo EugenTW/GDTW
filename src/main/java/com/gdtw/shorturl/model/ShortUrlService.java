@@ -50,7 +50,8 @@ public class ShortUrlService {
         String cachedOriginalUrl = redisStringStringTemplate.opsForValue().get(redisKeyForID);
         String cachedOriginalUrlSafe = redisStringStringTemplate.opsForValue().get(redisKeyForSafe);
 
-        if (cachedOriginalUrl != null && cachedOriginalUrlSafe != null) {
+        if (cachedOriginalUrl != null && !cachedOriginalUrl.isBlank() &&
+                cachedOriginalUrlSafe != null && !cachedOriginalUrlSafe.isBlank()) {
             countShortUrlUsage(suId);
             return new AbstractMap.SimpleEntry<>(cachedOriginalUrl, cachedOriginalUrlSafe);
         }

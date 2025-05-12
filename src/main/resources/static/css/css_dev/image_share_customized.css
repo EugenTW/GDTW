@@ -268,8 +268,8 @@ details {
 }
 
 #overlay-content img {
-    max-width: 200px;
-    max-height: 200px;
+    max-width: 480px;
+    max-height: 270px;
     border: 3px solid #ffd100;
     border-radius: 10px;
 }

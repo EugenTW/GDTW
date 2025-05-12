@@ -1,5 +1,6 @@
 package com.gdtw.shorturl.model;
 
+import com.gdtw.general.util.codec.IdEncoderDecoderUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,7 +34,7 @@ public class ShortUrlInternalService {
         Optional<ShortUrlVO> optionalShortUrl = shortUrlJpa.findById(suId);
         if (optionalShortUrl.isPresent()) {
             ShortUrlVO shortUrl = optionalShortUrl.get();
-            String encodedUrl = ShortUrlService.toEncodeSuId(suId);
+            String encodedUrl = IdEncoderDecoderUtil.encodeId(suId);
             shortUrl.setSuShortenedUrl(encodedUrl);
             shortUrlJpa.save(shortUrl);
             return encodedUrl;

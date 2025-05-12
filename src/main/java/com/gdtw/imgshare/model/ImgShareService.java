@@ -145,12 +145,13 @@ public class ImgShareService {
             return response;
         }
         String code = (String) claims.get("subject");
+
         Integer siaImageId = toDecodeId(code);
         String redisKey = "albumImages:" + siaImageId;
 
         try {
             Map<String, Object> cachedResponse = getResponseFromRedis(redisKey);
-            if (cachedResponse != null) {
+            if ((!cachedResponse.isEmpty() && cachedResponse.get("images") instanceof List<?> list && !list.isEmpty())) {
                 countAlbumUsage(siaImageId);
 
                 Object rawImages = cachedResponse.get("images");
@@ -173,7 +174,6 @@ public class ImgShareService {
                         countImageUsage(siId);
                     }
                 }
-
                 return cachedResponse;
             }
         } catch (JsonProcessingException e) {
@@ -216,6 +216,7 @@ public class ImgShareService {
         } catch (JsonProcessingException e) {
             logger.error("Failed to cache response for key: {}", redisKey, e);
         }
+
         countAlbumUsage(siaImageId);
         return response;
     }
@@ -238,7 +239,7 @@ public class ImgShareService {
 
         try {
             Map<String, Object> cachedResponse = getResponseFromRedis(redisKey);
-            if (cachedResponse != null) {
+            if (!cachedResponse.isEmpty() && cachedResponse.get("siId") instanceof Integer) {
                 countImageUsage(siImageId);
                 return cachedResponse;
             }
@@ -374,7 +375,10 @@ public class ImgShareService {
 
     private Map<String, Object> getResponseFromRedis(String key) throws JsonProcessingException {
         String jsonResponse = redisStringStringTemplate.opsForValue().get(key);
-        if (jsonResponse == null) return Collections.emptyMap();
+        if (jsonResponse == null) {
+            logger.debug("Redis cache miss for key: {}", key);
+            return Collections.emptyMap();
+        }
         return objectMapper.readValue(jsonResponse, new TypeReference<>() {
         });
     }
