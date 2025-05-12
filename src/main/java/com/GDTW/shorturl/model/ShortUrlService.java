@@ -2,7 +2,7 @@ package com.GDTW.shorturl.model;
 
 import com.GDTW.general.exception.ShortUrlBannedException;
 import com.GDTW.general.exception.ShortUrlNotFoundException;
-import com.GDTW.general.util.IdEncoderDecoderUtil;
+import com.GDTW.general.util.codec.IdEncoderDecoderUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

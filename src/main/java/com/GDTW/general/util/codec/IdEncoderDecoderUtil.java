@@ -1,4 +1,4 @@
-package com.GDTW.general.util;
+package com.GDTW.general.util.codec;
 
 public class IdEncoderDecoderUtil {
 
