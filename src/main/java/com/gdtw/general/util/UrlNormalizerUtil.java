@@ -5,6 +5,8 @@ import java.net.URISyntaxException;
 
 public class UrlNormalizerUtil {
 
+    private UrlNormalizerUtil() {}
+
     public static String normalizeUrl(String url) throws URISyntaxException {
         // Parse the URL
         URI uri = new URI(url);

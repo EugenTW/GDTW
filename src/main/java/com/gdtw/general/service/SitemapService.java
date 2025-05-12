@@ -1,13 +1,18 @@
 package com.gdtw.general.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import com.redfin.sitemapgenerator.WebSitemapGenerator;
+
 import java.io.File;
 import java.net.MalformedURLException;
 
 @Service
 public class SitemapService {
+
+    private static final Logger logger = LoggerFactory.getLogger(SitemapService.class);
 
     @Value("${app.fullUrl}")
     private String fullUrl;
@@ -16,19 +21,15 @@ public class SitemapService {
     private String siteMapPath;
 
     public void generateSitemap() throws MalformedURLException {
-        // Create a File object for the siteMapPath directory
         File siteMapDir = new File(siteMapPath);
 
-        // Check if the siteMapPath directory exists; if not, create it
-        if (!siteMapDir.exists()) {
-            siteMapDir.mkdirs();  // Create the directory if it does not exist
+        if (!siteMapDir.exists() && !siteMapDir.mkdirs()) {
+            logger.error("Failed to create sitemap directory at path: {}.", siteMapPath);
+            return;
         }
 
-        // Build the sitemap generator with the specified directory as the output location
-        WebSitemapGenerator sitemapGen = WebSitemapGenerator.builder(fullUrl, siteMapDir)
-                .build();
+        WebSitemapGenerator sitemapGen = WebSitemapGenerator.builder(fullUrl, siteMapDir).build();
 
-        // Add URLs to the sitemap
         sitemapGen.addUrl("https://gdtw.org/");
         sitemapGen.addUrl("https://gdtw.org/index");
         sitemapGen.addUrl("https://gdtw.org/short_url");
@@ -45,7 +46,7 @@ public class SitemapService {
         sitemapGen.addUrl("https://gdtw.org/error_generic");
         sitemapGen.addUrl("https://gdtw.org/url_safety_check");
 
-        // Write the sitemap.xml file to the siteMapPath directory
         sitemapGen.write();
     }
+
 }
