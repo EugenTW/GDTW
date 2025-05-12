@@ -1,4 +1,4 @@
-package com.gdtw.urlSafetyCheck.controller;
+package com.gdtw.urlsafetycheck.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

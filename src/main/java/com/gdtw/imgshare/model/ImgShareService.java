@@ -140,15 +140,15 @@ public class ImgShareService {
                 dailyStatisticService.incrementImgCreated();
             }
         } catch (IOException e) {
-            logger.error("Error saving files, rolling back transaction", e);
+            logger.error("Error saving files, rolling back transaction.", e);
             for (Path path : savedFilePaths) {
                 try {
                     Files.deleteIfExists(path);
                 } catch (IOException ex) {
-                    logger.error("Failed to delete file: " + path, ex);
+                    logger.error("Failed to delete file: {}.", path, ex);
                 }
             }
-            throw new RuntimeException("File saving failed", e);
+            throw new RuntimeException("File saving failed.", e);
         }
     }
 
@@ -223,7 +223,6 @@ public class ImgShareService {
 
         return response;
     }
-
 
     @Transactional(readOnly = true)
     public Map<String, Object> checkAlbumPassword(String code, String password) {
@@ -309,7 +308,7 @@ public class ImgShareService {
                 return cachedResponse;
             }
         } catch (JsonProcessingException e) {
-            logger.error("Failed to parse cached response for key: " + redisKey, e);
+            logger.error("Failed to parse cached response for key: {}", redisKey, e);
         }
 
         Optional<ShareImgAlbumVO> albumOptional = shareImgAlbumJpa.findBySiaId(siaImageId);
@@ -346,7 +345,7 @@ public class ImgShareService {
         try {
             saveResponseToRedis(redisKey, response);
         } catch (JsonProcessingException e) {
-            logger.error("Failed to cache response for key: " + redisKey, e);
+            logger.error("Failed to cache response for key: {}", redisKey, e);
         }
         countAlbumUsage(siaImageId);
         return response;
@@ -380,7 +379,7 @@ public class ImgShareService {
                 return cachedResponse;
             }
         } catch (JsonProcessingException e) {
-            logger.error("Failed to parse cached response for key: " + redisKey, e);
+            logger.error("Failed to parse cached response for key: {}", redisKey, e);
         }
 
         Optional<ShareImgVO> imageOptional = shareImgJpa.findById(siImageId);
@@ -402,7 +401,7 @@ public class ImgShareService {
         try {
             saveResponseToRedis(redisKey, response);
         } catch (JsonProcessingException e) {
-            logger.error("Failed to cache response for key: " + redisKey, e);
+            logger.error("Failed to cache response for key: {}.", redisKey, e);
         }
         countImageUsage(siImageId);
         return response;
@@ -437,7 +436,6 @@ public class ImgShareService {
                     shareImgAlbumJpa.save(shareImgAlbumVO);
                     // delete recorded data in Redis
                     redisStringStringTemplate.delete(key);
-
                 }
             }
 
@@ -497,7 +495,7 @@ public class ImgShareService {
             long usableSpace = fileStore.getUsableSpace();
             return usableSpace >= requiredSpace;
         } catch (IOException e) {
-            logger.error("Failed to check disk space for path: {}", path);
+            logger.error("Failed to check disk space for path: {}.", path, e);
             return false;
         }
     }
@@ -512,7 +510,7 @@ public class ImgShareService {
                 throw new IllegalArgumentException("Invalid disk space format: " + space);
             }
         } catch (NumberFormatException e) {
-            logger.error("Invalid disk space value: {}", space);
+            logger.error("Invalid disk space value: {}.", space, e);
             throw new IllegalArgumentException("Invalid disk space format: " + space);
         }
     }

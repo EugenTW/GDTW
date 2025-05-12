@@ -12,10 +12,6 @@ public class AlbumCreationRequestDTO {
     private String password;
     private String clientIp;
 
-    // Constructors
-    public AlbumCreationRequestDTO() {
-    }
-
     public AlbumCreationRequestDTO(List<MultipartFile> files, int expiryDays, boolean nsfw, String password, String clientIp) {
         this.files = files;
         this.expiryDays = expiryDays;
