@@ -91,8 +91,11 @@ public class RateLimiterService {
         String violationKey = String.format("ratelimit:violation:%s:%s", actionKey, clientIp);
         Long violations = redisTemplate.opsForValue().increment(violationKey);
 
-        if (violations != null && redisTemplate.getExpire(violationKey) == -1) {
-            redisTemplate.expire(violationKey, Duration.ofMinutes(15));
+        if (violations != null) {
+            Long ttl = redisTemplate.getExpire(violationKey);
+            if (ttl == -1L) {
+                redisTemplate.expire(violationKey, Duration.ofMinutes(15));
+            }
         }
 
         logger.warn("Rate limit exceeded by IP: {}, action: {}, violation count: {}.", clientIp, actionKey, violations);
