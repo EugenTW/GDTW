@@ -13,7 +13,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -22,10 +21,12 @@ public class ShortUrlService {
     private static final Logger logger = LoggerFactory.getLogger(ShortUrlService.class);
     private static final Duration TTL_DURATION = Duration.ofMinutes(10);
 
+    private final ShortUrlInternalService shortUrlInternalService;
     private final ShortUrlJpa shortUrlJpa;
     private final RedisTemplate<String, String> redisStringStringTemplate;
 
-    public ShortUrlService(ShortUrlJpa shortUrlJpa, @Qualifier("redisStringStringTemplate") RedisTemplate<String, String> redisTemplate) {
+    public ShortUrlService(ShortUrlInternalService shortUrlInternalService, ShortUrlJpa shortUrlJpa, @Qualifier("redisStringStringTemplate") RedisTemplate<String, String> redisTemplate) {
+        this.shortUrlInternalService = shortUrlInternalService;
         this.shortUrlJpa = shortUrlJpa;
         this.redisStringStringTemplate = redisTemplate;
     }
@@ -34,15 +35,13 @@ public class ShortUrlService {
 
     @Transactional
     public String createNewShortUrl(String originalUrl, String originalIp, String safeUrlResult) {
-        Integer suId = recordOriginalUrl(originalUrl, originalIp, safeUrlResult);
-        // Cache the mapping in Redis
-        String encodedUrl = encodeShortUrl(suId);
+        Integer suId = shortUrlInternalService.recordOriginalUrl(originalUrl, originalIp, safeUrlResult);
+        String encodedUrl = shortUrlInternalService.encodeShortUrl(suId);
         cacheShortUrl(encodedUrl, originalUrl);
         cacheShortUrlSafety(encodedUrl, safeUrlResult);
         return encodedUrl;
     }
 
-    @Transactional(readOnly = true)
     public Map.Entry<String, String> getOriginalUrl(String code) {
         Integer suId = toDecodeSuId(code);
 
@@ -75,7 +74,6 @@ public class ShortUrlService {
         return new AbstractMap.SimpleEntry<>(originalUrl, originalUrlSafe);
     }
 
-
     // ==================================================================
     // Redis caching methods
     private void cacheShortUrl(String encodedSuId, String originalUrl) {
@@ -91,22 +89,18 @@ public class ShortUrlService {
     // ==================================================================
     // Read-only methods
 
-    @Transactional(readOnly = true)
     public boolean isShortUrlIdExist(Integer suId) {
         return shortUrlJpa.existsBySuId(suId);
     }
 
-    @Transactional(readOnly = true)
     public boolean isShortUrlValid(Integer suId) {
         return shortUrlJpa.checkShortUrlStatus(suId);
     }
 
-    @Transactional(readOnly = true)
     public Map<String, Object> getSuIdAndSuSafe(Integer suId) {
         return shortUrlJpa.findSuIdAndSuSafeBySuId(suId);
     }
 
-    @Transactional(readOnly = true)
     public boolean checkCodeValid(String code) {
         Integer suId = toDecodeSuId(code);
         // Check Redis cache first
@@ -121,33 +115,6 @@ public class ShortUrlService {
     // ==================================================================
     // Writing methods
 
-    @Transactional
-    public Integer recordOriginalUrl(String originalUrl, String originalIp, String safeUrlResult) {
-        ShortUrlVO shortUrl = new ShortUrlVO();
-        shortUrl.setSuOriginalUrl(originalUrl);
-        shortUrl.setSuCreatedIp(originalIp);
-        shortUrl.setSuCreatedDate(LocalDateTime.now());
-        shortUrl.setSuStatus((byte) 0);
-        shortUrl.setSuTotalUsed(0);
-        shortUrl.setSuSafe(safeUrlResult);
-        ShortUrlVO savedShortUrl = shortUrlJpa.save(shortUrl);
-        return savedShortUrl.getSuId();
-    }
-
-    @Transactional
-    public String encodeShortUrl(Integer suId) {
-        Optional<ShortUrlVO> optionalShortUrl = shortUrlJpa.findById(suId);
-        if (optionalShortUrl.isPresent()) {
-            ShortUrlVO shortUrl = optionalShortUrl.get();
-            String encodedUrl = toEncodeSuId(suId);
-            shortUrl.setSuShortenedUrl(encodedUrl);
-            shortUrlJpa.save(shortUrl);
-            return encodedUrl;
-        } else {
-            throw new IllegalArgumentException("Invalid suId: " + suId);
-        }
-    }
-
     public void countShortUrlUsage(Integer suId) {
         String redisKey = "su:usage:" + suId; // prefix 'su:usage:'
         redisStringStringTemplate.opsForValue().increment(redisKey, 1);
@@ -157,19 +124,22 @@ public class ShortUrlService {
     @Transactional
     public void syncSuUsageToMySQL() {
         Set<String> keys = redisStringStringTemplate.keys("su:usage:*");
-        if (keys != null) {
-            for (String key : keys) {
-                Integer suId = Integer.parseInt(key.split(":")[2]);
-                Integer usageCount = Integer.parseInt(redisStringStringTemplate.opsForValue().get(key));
+        for (String key : keys) {
+            Integer suId = Integer.parseInt(key.split(":")[2]);
+            String rawValue = redisStringStringTemplate.opsForValue().get(key);
+            if (rawValue == null) {
+                logger.warn("Missing Redis value for key '{}', skipping...", key);
+                continue;
+            }
+            Integer usageCount = Integer.parseInt(rawValue);
 
-                Optional<ShortUrlVO> optionalShortUrl = shortUrlJpa.findById(suId);
-                if (optionalShortUrl.isPresent()) {
-                    ShortUrlVO shortUrl = optionalShortUrl.get();
-                    shortUrl.setSuTotalUsed(shortUrl.getSuTotalUsed() + usageCount);
-                    shortUrlJpa.save(shortUrl);
-                    // delete recorded data in Redis
-                    redisStringStringTemplate.delete(key);
-                }
+            Optional<ShortUrlVO> optionalShortUrl = shortUrlJpa.findById(suId);
+            if (optionalShortUrl.isPresent()) {
+                ShortUrlVO shortUrl = optionalShortUrl.get();
+                shortUrl.setSuTotalUsed(shortUrl.getSuTotalUsed() + usageCount);
+                shortUrlJpa.save(shortUrl);
+                // delete recorded data in Redis
+                redisStringStringTemplate.delete(key);
             }
         }
         logger.info("Sync 'Short URL' usage to MySQL!");

@@ -60,12 +60,12 @@ public class ShortUrlRestController {
                 return ResponseEntity.ok(response);
             } else {
                 // Log the error and return error response as JSON
-                logger.error("Failed to create new shortUrl on MySQL. The failed url was: '" + originalUrl + "'.");
+                logger.error("Failed to create new shortUrl on MySQL. The failed url was: '{}'.", originalUrl);
                 ReturnCreatedShortUrlDTO errorResponse = new ReturnCreatedShortUrlDTO(null, safeUrlResult, "短網址建立失敗!請稍後再次嘗試! The short URL creation failed! Please try again later!");
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
             }
         } catch (Exception e) {
-            logger.error("Failed to create new shortUrl due to the web server error. The failed url was: '" + originalUrl + "'.");
+            logger.error("Failed to create new shortUrl due to the web server error. The failed url was: '{}", originalUrl);
             ReturnCreatedShortUrlDTO errorResponse = new ReturnCreatedShortUrlDTO(null, null, "內部伺服器錯誤!請等待站方維修! Internal server error! Please wait for the site to be fixed!");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
@@ -94,7 +94,7 @@ public class ShortUrlRestController {
             return ResponseEntity.status(HttpStatus.GONE)
                     .body(new ReturnOriginalUrlDTO(null, null, e.getMessage()));
         } catch (Exception e) {
-            logger.error("Invalid code input or internal server error. The input code was: '" + code + "'. \n" + e);
+            logger.error("Invalid code input or internal server error. The input code was: '{}'.",code, e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ReturnOriginalUrlDTO(null, null, "內部伺服器錯誤! Internal Server Error!"));
         }
