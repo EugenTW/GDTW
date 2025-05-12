@@ -1,13 +1,12 @@
 package com.GDTW.imgshare.model;
 
 import com.GDTW.dailystatistic.model.DailyStatisticService;
-import com.GDTW.general.util.ImgFilenameEncoderDecoderUtil;
-import com.GDTW.general.util.ImgIdEncoderDecoderUtil;
+import com.GDTW.general.util.codec.ImgFilenameEncoderDecoderUtil;
+import com.GDTW.general.util.codec.ImgIdEncoderDecoderUtil;
 import com.GDTW.general.exception.InsufficientDiskSpaceException;
-import com.GDTW.general.util.JwtUtil;
+import com.GDTW.general.util.jwt.JwtUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.Claims;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -53,13 +52,15 @@ public class ImgShareService {
 
     private final ShareImgAlbumJpa shareImgAlbumJpa;
     private final ShareImgJpa shareImgJpa;
+    private final JwtUtil jwtUtil;
     private final DailyStatisticService dailyStatisticService;
     private final RedisTemplate<String, String> redisStringStringTemplate;
     private final ObjectMapper objectMapper;
 
-    public ImgShareService(ShareImgAlbumJpa shareImgAlbumJpa, ShareImgJpa shareImgJpa, DailyStatisticService dailyStatisticService, @Qualifier("redisStringStringTemplate") RedisTemplate<String, String> redisTemplate, ObjectMapper objectMapper) {
+    public ImgShareService(ShareImgAlbumJpa shareImgAlbumJpa, ShareImgJpa shareImgJpa, JwtUtil jwtUtil, DailyStatisticService dailyStatisticService, @Qualifier("redisStringStringTemplate") RedisTemplate<String, String> redisTemplate, ObjectMapper objectMapper) {
         this.shareImgAlbumJpa = shareImgAlbumJpa;
         this.shareImgJpa = shareImgJpa;
+        this.jwtUtil = jwtUtil;
         this.dailyStatisticService = dailyStatisticService;
         this.redisStringStringTemplate = redisTemplate;
         this.objectMapper = objectMapper;
@@ -184,7 +185,7 @@ public class ImgShareService {
             boolean requiresPassword = album.getSiaPassword() != null && !album.getSiaPassword().isEmpty();
             response.put("requiresPassword", requiresPassword);
             if (!requiresPassword) {
-                String token = JwtUtil.generateToken(code, "noPassword");
+                String token = jwtUtil.generateToken(code, "noPassword");
                 response.put("token", token);
             }
         } else {
@@ -213,7 +214,7 @@ public class ImgShareService {
             boolean requiresPassword = image.getSiPassword() != null && !image.getSiPassword().isEmpty();
             response.put("requiresPassword", requiresPassword);
             if (!requiresPassword) {
-                String token = JwtUtil.generateToken(code, "noPassword");
+                String token = jwtUtil.generateToken(code, "noPassword");
                 response.put("token", token);
             }
         } else {
@@ -236,7 +237,7 @@ public class ImgShareService {
             String storedPassword = album.getSiaPassword();
             if (storedPassword.equals(password)) {
                 response.put("checkPassword", true);
-                String token = JwtUtil.generateToken(code, "passwordPassed");
+                String token = jwtUtil.generateToken(code, "passwordPassed");
                 response.put("token", token);
             } else {
                 response.put("checkPassword", false);
@@ -259,7 +260,7 @@ public class ImgShareService {
             String storedPassword = image.getSiPassword();
             if (storedPassword.equals(password)) {
                 response.put("checkPassword", true);
-                String token = JwtUtil.generateToken(code, "passwordPassed");
+                String token = jwtUtil.generateToken(code, "passwordPassed");
                 response.put("token", token);
             } else {
                 response.put("checkPassword", false);
@@ -274,19 +275,20 @@ public class ImgShareService {
     public Map<String, Object> getAlbumImages(String token) {
         Map<String, Object> response = new HashMap<>();
 
-        Claims claims = JwtUtil.validateToken(token);
+        Map<String, Object> claims = jwtUtil.validateToken(token);
         if (claims == null) {
             response.put("error", "非法或失效的令牌。 - Invalid or expired token.");
             return response;
         }
 
-        String stage = claims.get("stage", String.class);
+        String stage = (String) claims.get("stage");
         if (!"passwordPassed".equals(stage) && !"noPassword".equals(stage)) {
             response.put("error", "未授權的訪問，請重新載入頁面。 - Unauthorized access, please refresh your browser.");
             return response;
         }
 
-        String code = claims.getSubject();
+        String code = (String) claims.get("subject");
+
         Integer siaImageId = toDecodeId(code);
         String redisKey = "albumImages:" + siaImageId;
 
@@ -354,19 +356,20 @@ public class ImgShareService {
     public Map<String, Object> getSingleImage(String token) {
         Map<String, Object> response = new HashMap<>();
 
-        Claims claims = JwtUtil.validateToken(token);
+        Map<String, Object> claims = jwtUtil.validateToken(token);
         if (claims == null) {
             response.put("error", "非法或失效的令牌。 - Invalid or expired token.");
             return response;
         }
 
-        String stage = claims.get("stage", String.class);
+        String stage = (String) claims.get("stage");
         if (!"passwordPassed".equals(stage) && !"noPassword".equals(stage)) {
             response.put("error", "未授權的訪問，請重新載入頁面。 - Unauthorized access, please refresh your browser.");
             return response;
         }
 
-        String code = claims.getSubject();
+        String code = (String) claims.get("subject");
+
         Integer siImageId = toDecodeId(code);
         String redisKey = "singleImage:" + siImageId;
 
@@ -420,7 +423,12 @@ public class ImgShareService {
         if (keys != null) {
             for (String key : keys) {
                 Integer siaId = Integer.parseInt(key.split(":")[2]);
-                Integer usageCount = Integer.parseInt(redisStringStringTemplate.opsForValue().get(key));
+                String value = redisStringStringTemplate.opsForValue().get(key);
+                if (value == null) {
+                    logger.warn("Missing Redis value for key '{}', skipping...", key);
+                    continue;
+                }
+                Integer usageCount = Integer.parseInt(value);
 
                 Optional<ShareImgAlbumVO> optionalSiaObject = shareImgAlbumJpa.findById(siaId);
                 if (optionalSiaObject.isPresent()) {
