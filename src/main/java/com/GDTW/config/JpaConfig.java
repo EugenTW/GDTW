@@ -9,5 +9,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
         "com.GDTW.imgshare.model",
         "com.GDTW.shorturl.model"
 })
+
 public class JpaConfig {
 }

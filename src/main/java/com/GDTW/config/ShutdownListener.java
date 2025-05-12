@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextClosedEvent;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -28,7 +29,7 @@ public class ShutdownListener implements ApplicationListener<ContextClosedEvent>
     }
 
     @Override
-    public void onApplicationEvent(ContextClosedEvent event) {
+    public void onApplicationEvent(@NonNull ContextClosedEvent event) {
         try {
             logger.info("Starting shutdown process...");
 
@@ -48,8 +49,9 @@ public class ShutdownListener implements ApplicationListener<ContextClosedEvent>
 
             logger.info("All Redis statistic data are saved into MySQL. Shutdown process completed successfully.");
         } catch (Exception e) {
-            logger.error("Error during saving Redis Statistic Data before shutdown process: " + e.getMessage(), e);
+            logger.error("Error during saving Redis statistic data before shutdown", e);
         }
     }
+
 }
 
