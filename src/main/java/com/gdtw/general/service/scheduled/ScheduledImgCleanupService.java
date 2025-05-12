@@ -83,7 +83,7 @@ public class ScheduledImgCleanupService {
 
             Files.move(sourcePath, targetPath);
         } catch (Exception e) {
-            logger.error("Failed to move file to trash can: {}", fileName, e);
+            logger.error("Failed to move file to trash can: {}.", fileName, e);
         }
     }
 
@@ -93,19 +93,23 @@ public class ScheduledImgCleanupService {
         Path trashCanPath = Paths.get(imageTrashCanPath);
         try {
             if (Files.exists(trashCanPath)) {
-                DirectoryStream<Path> directoryStream = Files.newDirectoryStream(trashCanPath);
-                for (Path file : directoryStream) {
-                    try {
-                        Files.deleteIfExists(file);
-                    } catch (Exception e) {
-                        logger.error("Failed to delete file: {}", file.getFileName(), e);
+                try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(trashCanPath)) {
+                    for (Path file : directoryStream) {
+                        deleteFileSafely(file);
                     }
                 }
-                directoryStream.close();
                 logger.info("Trash can cleaned up.");
             }
         } catch (Exception e) {
-            logger.error("Failed to clear trash can directory. ", e);
+            logger.error("Failed to clear trash can directory.", e);
+        }
+    }
+
+    private void deleteFileSafely(Path file) {
+        try {
+            Files.deleteIfExists(file);
+        } catch (Exception e) {
+            logger.error("Failed to delete file: {}.", file.getFileName(), e);
         }
     }
 

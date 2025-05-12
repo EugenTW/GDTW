@@ -89,7 +89,8 @@ public class DailyStatisticService {
             String json = objectMapper.writeValueAsString(dto);
             redisStringStringTemplate.opsForValue().set(key, json, TTL_DURATION);
         } catch (Exception e) {
-            logger.error("Failed to save TotalServiceStatisticsDTO to Redis. Key: {}, Error: {}", key, e.getMessage(), e);
+            logger.error("Failed to save TotalServiceStatisticsDTO to Redis. Key: {}.", key, e);
+
         }
     }
 
@@ -100,7 +101,7 @@ public class DailyStatisticService {
                 return objectMapper.readValue(json, TotalServiceStatisticsDTO.class);
             }
         } catch (Exception e) {
-            logger.error("Failed to retrieve TotalServiceStatisticsDTO from Redis. Key: {}, Error: {}", key, e.getMessage(), e);
+            logger.error("Failed to retrieve TotalServiceStatisticsDTO from Redis. Key: {}.", key, e);
         }
         return null;
     }
@@ -147,7 +148,7 @@ public class DailyStatisticService {
             String json = objectMapper.writeValueAsString(dto);
             redisStringStringTemplate.opsForValue().set(key, json, TTL_DURATION);
         } catch (Exception e) {
-            logger.error("Failed to save ChartDataDTO to Redis. Key: {}, Error: {}", key, e.getMessage());
+            logger.error("Failed to save ChartDataDTO to Redis. Key: {}.", key, e);
         }
     }
 
@@ -158,7 +159,7 @@ public class DailyStatisticService {
                 return objectMapper.readValue(json, ChartDataDTO.class);
             }
         } catch (Exception e) {
-            logger.error("Failed to retrieve ChartDataDTO from Redis. Key: {}, Error: {}", key, e.getMessage());
+            logger.error("Failed to retrieve ChartDataDTO from Redis. Key: {}.", key, e);
         }
         return null;
     }

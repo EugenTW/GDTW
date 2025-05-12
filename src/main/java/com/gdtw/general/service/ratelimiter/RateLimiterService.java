@@ -29,7 +29,7 @@ public class RateLimiterService {
             long now = System.currentTimeMillis();
             if (now - lastRedisErrorLogTime > Duration.ofMinutes(15).toMillis()) {
                 lastRedisErrorLogTime = now;
-                logger.error("Redis unavailable. Rate limit check skipped. Reason: {}", e.getMessage());
+                logger.error("Redis unavailable. Rate limit check skipped.", e);
             }
         }
     }
@@ -52,7 +52,7 @@ public class RateLimiterService {
         String banKey = String.format("banlist:%s", clientIp);
         Boolean isBanned = redisTemplate.hasKey(banKey);
         if (Boolean.TRUE.equals(isBanned)) {
-            logger.warn("Blocked IP tried to access: {}", clientIp);
+            logger.warn("Blocked IP tried to access: '{}'.", clientIp);
             throw new ResponseStatusException(HttpStatus.TOO_MANY_REQUESTS,
                     "您暫時被封鎖，請稍後再試! - You are temporarily banned. Please try again later.");
         }
@@ -74,11 +74,11 @@ public class RateLimiterService {
         }
 
         if (globalCount == 2001) {
-            logger.warn("High traffic warning: globalCount exceeds 2000 RPS. Current count: {}", globalCount);
+            logger.warn("High traffic warning: globalCount exceeds 2000 RPS. Current count: {}.", globalCount);
         }
 
         if (globalCount == 2501) {
-            logger.warn("Global request limit exceeded threshold (2500 RPS). Current count: {}", globalCount);
+            logger.warn("Global request limit exceeded threshold (2500 RPS). Current count: {}.", globalCount);
         }
 
         if (globalCount > 2500) {
@@ -95,7 +95,7 @@ public class RateLimiterService {
             redisTemplate.expire(violationKey, Duration.ofMinutes(15));
         }
 
-        logger.warn("Rate limit exceeded by IP: {}, action: {}, violation count: {}", clientIp, actionKey, violations);
+        logger.warn("Rate limit exceeded by IP: {}, action: {}, violation count: {}.", clientIp, actionKey, violations);
 
         if (violations != null && violations >= 5) {
             redisTemplate.opsForValue().set(banKey, "1", Duration.ofMinutes(15));

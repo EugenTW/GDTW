@@ -33,7 +33,7 @@ public class RedisService {
             connection.serverCommands().flushDb();
             logger.info("Redis database has been cleared.");
         } catch (Exception e) {
-            logger.error("Failed to clear Redis database: " + e.getMessage(), e);
+            logger.error("Failed to clear Redis database.", e);
         }
     }
 }

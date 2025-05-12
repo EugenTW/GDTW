@@ -4,6 +4,7 @@ import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,7 +14,7 @@ public class JwtUtil {
     private final JwtEncoder jwtEncoder;
     private final JwtDecoder jwtDecoder;
 
-    private static final long EXPIRATION_TIME_MILLIS = 5 * 60 * 1000;
+    private static final long EXPIRATION_TIME_MILLIS = 5L * 60 * 1000;
 
     public JwtUtil(JwtEncoder jwtEncoder, JwtDecoder jwtDecoder) {
         this.jwtEncoder = jwtEncoder;
@@ -31,10 +32,9 @@ public class JwtUtil {
         return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 
-
     public Map<String, Object> validateToken(String token) {
         if (token == null || token.isBlank()) {
-            return null;
+            return Collections.emptyMap();
         }
         try {
             Jwt jwt = jwtDecoder.decode(token);
@@ -42,9 +42,8 @@ public class JwtUtil {
             claims.put("subject", jwt.getSubject());
             return claims;
         } catch (JwtException e) {
-            return null;
+            return Collections.emptyMap();
         }
     }
 
 }
-
