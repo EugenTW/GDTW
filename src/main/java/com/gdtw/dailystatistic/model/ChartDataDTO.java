@@ -1,25 +1,30 @@
 package com.gdtw.dailystatistic.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ChartDataDTO implements Serializable {
 
-    private Map<String, Map<String, List<Integer>>> data;
+    private static final String CREATED = "created";
+    private static final String USED = "used";
+    private static final String URL = "url";
+    private static final String ALBUM = "album";
+    private static final String IMAGE = "image";
+
+    private final Map<String, Map<String, List<Integer>>> data;
 
     public ChartDataDTO() {
         data = new HashMap<>();
-        data.put("created", new HashMap<>());
-        data.put("used", new HashMap<>());
-        data.get("created").put("url", new ArrayList<>());
-        data.get("created").put("album", new ArrayList<>());
-        data.get("created").put("image", new ArrayList<>());
-        data.get("used").put("url", new ArrayList<>());
-        data.get("used").put("album", new ArrayList<>());
-        data.get("used").put("image", new ArrayList<>());
+        data.put(CREATED, new HashMap<>());
+        data.put(USED, new HashMap<>());
+
+        data.get(CREATED).put(URL, new ArrayList<>());
+        data.get(CREATED).put(ALBUM, new ArrayList<>());
+        data.get(CREATED).put(IMAGE, new ArrayList<>());
+
+        data.get(USED).put(URL, new ArrayList<>());
+        data.get(USED).put(ALBUM, new ArrayList<>());
+        data.get(USED).put(IMAGE, new ArrayList<>());
     }
 
     public Map<String, Map<String, List<Integer>>> getData() {
@@ -27,18 +32,19 @@ public class ChartDataDTO implements Serializable {
     }
 
     public List<Integer> getCreatedData(String type) {
-        return data.get("created").get(type);
+        return data.get(CREATED).get(type);
     }
 
     public List<Integer> getUsedData(String type) {
-        return data.get("used").get(type);
+        return data.get(USED).get(type);
     }
 
     public void addCreatedData(String type, Integer value) {
-        data.get("created").get(type).add(value);
+        data.get(CREATED).get(type).add(value);
     }
 
     public void addUsedData(String type, Integer value) {
-        data.get("used").get(type).add(value);
+        data.get(USED).get(type).add(value);
     }
+
 }

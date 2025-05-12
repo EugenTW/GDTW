@@ -9,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -17,6 +16,9 @@ import java.util.*;
 
 @Service
 public class DailyStatisticService {
+
+    private static final String REDIS_KEY_TOTAL_STATS_PREFIX = "ds:totalStatistics:";
+    private static final String REDIS_KEY_STATISTIC_PREFIX = "statistic:";
 
     private static final Logger logger = LoggerFactory.getLogger(DailyStatisticService.class);
     private final RedisTemplate<String, String> redisStringStringTemplate;
@@ -40,7 +42,8 @@ public class DailyStatisticService {
     // calculate the total usage count of each service
     public TotalServiceStatisticsDTO getTotalServiceStatistics() {
         LocalDate today = LocalDate.now();
-        TotalServiceStatisticsDTO savedResultInRedis = getTotalServiceStatisticsDtoFromRedis("ds:totalStatistics:" + today);
+        String key = REDIS_KEY_TOTAL_STATS_PREFIX + today;
+        TotalServiceStatisticsDTO savedResultInRedis = getTotalServiceStatisticsDtoFromRedis(key);
         if (savedResultInRedis != null) {
             return savedResultInRedis;
         }
@@ -48,23 +51,36 @@ public class DailyStatisticService {
     }
 
     @Scheduled(cron = "${task.schedule.cron.dailyCalculateTotalServiceStatistics}")
-    @Transactional(readOnly = true)
     public TotalServiceStatisticsDTO calculateTotalServiceStatistics() {
         LocalDate today = LocalDate.now();
         Object[] result = dailyStatisticJpa.calculateSumsBeforeDate(today);
 
         TotalServiceStatisticsDTO totalStatistics = new TotalServiceStatisticsDTO();
-        if (result != null && result.length > 0) {
-            Object[] row = (Object[]) result[0];
-            totalStatistics.setTotalShortUrlsCreated(row[0] != null ? ((Number) row[0]).intValue() : 0);
-            totalStatistics.setTotalShortUrlsUsed(row[1] != null ? ((Number) row[1]).intValue() : 0);
-            totalStatistics.setTotalImagesCreated(row[2] != null ? ((Number) row[2]).intValue() : 0);
-            totalStatistics.setTotalImagesVisited(row[3] != null ? ((Number) row[3]).intValue() : 0);
-            totalStatistics.setTotalImageAlbumsCreated(row[4] != null ? ((Number) row[4]).intValue() : 0);
-            totalStatistics.setTotalImageAlbumsVisited(row[5] != null ? ((Number) row[5]).intValue() : 0);
-            totalStatistics.setTotalWebServiceCount(row[6] != null ? ((Number) row[6]).intValue() : 0);
+        String key = REDIS_KEY_TOTAL_STATS_PREFIX + today;
+        if (result == null || result.length == 0) {
+            saveTotalServiceStatisticsDtoToRedis(key, totalStatistics);
+            return totalStatistics;
         }
-        saveTotalServiceStatisticsDtoToRedis("ds:totalStatistics:" + today, totalStatistics);
+
+        Object[] row = (Object[]) result[0];
+        int[] safeValues = new int[7];
+        for (int i = 0; i < safeValues.length; i++) {
+            if (row[i] instanceof Number number) {
+                safeValues[i] = number.intValue();
+            } else {
+                safeValues[i] = 0;
+            }
+        }
+
+        totalStatistics.setTotalShortUrlsCreated(safeValues[0]);
+        totalStatistics.setTotalShortUrlsUsed(safeValues[1]);
+        totalStatistics.setTotalImagesCreated(safeValues[2]);
+        totalStatistics.setTotalImagesVisited(safeValues[3]);
+        totalStatistics.setTotalImageAlbumsCreated(safeValues[4]);
+        totalStatistics.setTotalImageAlbumsVisited(safeValues[5]);
+        totalStatistics.setTotalWebServiceCount(safeValues[6]);
+
+        saveTotalServiceStatisticsDtoToRedis(key, totalStatistics);
         return totalStatistics;
     }
 
@@ -73,7 +89,7 @@ public class DailyStatisticService {
             String json = objectMapper.writeValueAsString(dto);
             redisStringStringTemplate.opsForValue().set(key, json, TTL_DURATION);
         } catch (Exception e) {
-            logger.error("Failed to save TotalServiceStatisticsDTO to Redis" + e.getMessage());
+            logger.error("Failed to save TotalServiceStatisticsDTO to Redis. Key: {}, Error: {}", key, e.getMessage(), e);
         }
     }
 
@@ -84,7 +100,7 @@ public class DailyStatisticService {
                 return objectMapper.readValue(json, TotalServiceStatisticsDTO.class);
             }
         } catch (Exception e) {
-            logger.error("Failed to retrieve TotalServiceStatisticsDTO from Redis" + e.getMessage());
+            logger.error("Failed to retrieve TotalServiceStatisticsDTO from Redis. Key: {}, Error: {}", key, e.getMessage(), e);
         }
         return null;
     }
@@ -101,7 +117,6 @@ public class DailyStatisticService {
     }
 
     @Scheduled(cron = "${task.schedule.cron.dailyGetEachServiceStatistics}")
-    @Transactional(readOnly = true)
     public ChartDataDTO calculateRecentStatistics() {
         LocalDate today = LocalDate.now();
         Pageable pageable = PageRequest.of(0, 365);
@@ -109,6 +124,12 @@ public class DailyStatisticService {
         List<DailyStatisticVO> statistics = dailyStatisticJpa.findRecentStatistics(today, pageable);
         Collections.reverse(statistics);
 
+        ChartDataDTO chartData = buildChartDataFromStatistics(statistics);
+        saveChartDataDtoToRedis("ds:recentStatistics:" + today, chartData);
+        return chartData;
+    }
+
+    private ChartDataDTO buildChartDataFromStatistics(List<DailyStatisticVO> statistics) {
         ChartDataDTO chartData = new ChartDataDTO();
         for (DailyStatisticVO stat : statistics) {
             chartData.addCreatedData("url", stat.getDsShortUrlCreated());
@@ -118,10 +139,8 @@ public class DailyStatisticService {
             chartData.addUsedData("album", stat.getDsImgAlbumUsed());
             chartData.addUsedData("image", stat.getDsImgUsed());
         }
-        saveChartDataDtoToRedis("ds:recentStatistics:" + today, chartData);
         return chartData;
     }
-
 
     private void saveChartDataDtoToRedis(String key, ChartDataDTO dto) {
         try {
@@ -149,67 +168,67 @@ public class DailyStatisticService {
 
     private void incrementAndSetTTL(String key) {
         Long newValue = redisStringIntegerTemplate.opsForValue().increment(key, 1);
-        if (newValue == 1) {
+        if (newValue != null && newValue == 1L) {
             redisStringIntegerTemplate.expire(key, TTL_DURATION);
         }
     }
 
     public void incrementShortUrlCreated() {
-        String key = "statistic:" + getCurrentDate() + ":shortUrlCreated";
+        String key = REDIS_KEY_STATISTIC_PREFIX + getCurrentDate() + ":shortUrlCreated";
         incrementAndSetTTL(key);
     }
 
     public void incrementShortUrlUsed() {
-        String key = "statistic:" + getCurrentDate() + ":shortUrlUsed";
+        String key = REDIS_KEY_STATISTIC_PREFIX + getCurrentDate() + ":shortUrlUsed";
         incrementAndSetTTL(key);
     }
 
     public void incrementImgCreated() {
-        String key = "statistic:" + getCurrentDate() + ":imgCreated";
+        String key = REDIS_KEY_STATISTIC_PREFIX + getCurrentDate() + ":imgCreated";
         incrementAndSetTTL(key);
     }
 
     public void incrementImgUsed() {
-        String key = "statistic:" + getCurrentDate() + ":imgUsed";
+        String key = REDIS_KEY_STATISTIC_PREFIX + getCurrentDate() + ":imgUsed";
         incrementAndSetTTL(key);
     }
 
     public void incrementImgAlbumCreated() {
-        String key = "statistic:" + getCurrentDate() + ":imgAlbumCreated";
+        String key = REDIS_KEY_STATISTIC_PREFIX + getCurrentDate() + ":imgAlbumCreated";
         incrementAndSetTTL(key);
     }
 
     public void incrementImgAlbumUsed() {
-        String key = "statistic:" + getCurrentDate() + ":imgAlbumUsed";
+        String key = REDIS_KEY_STATISTIC_PREFIX + getCurrentDate() + ":imgAlbumUsed";
         incrementAndSetTTL(key);
     }
 
     public void incrementVidCreated() {
-        String key = "statistic:" + getCurrentDate() + ":vidCreated";
+        String key = REDIS_KEY_STATISTIC_PREFIX + getCurrentDate() + ":vidCreated";
         incrementAndSetTTL(key);
     }
 
     public void incrementVidUsed() {
-        String key = "statistic:" + getCurrentDate() + ":vidUsed";
+        String key = REDIS_KEY_STATISTIC_PREFIX + getCurrentDate() + ":vidUsed";
         incrementAndSetTTL(key);
     }
 
     public Integer getStatisticOrDefault(String type) {
-        String key = "statistic:" + getCurrentDate() + ":" + type;
+        String key = REDIS_KEY_STATISTIC_PREFIX + getCurrentDate() + ":" + type;
         Integer value = redisStringIntegerTemplate.opsForValue().get(key);
         return value != null ? value : Integer.valueOf(0);
     }
 
     public void clearStatisticsForDate() {
-        String dateStr = LocalDate.now().toString();
-        redisStringIntegerTemplate.delete("statistic:" + dateStr + ":shortUrlCreated");
-        redisStringIntegerTemplate.delete("statistic:" + dateStr + ":shortUrlUsed");
-        redisStringIntegerTemplate.delete("statistic:" + dateStr + ":imgCreated");
-        redisStringIntegerTemplate.delete("statistic:" + dateStr + ":imgUsed");
-        redisStringIntegerTemplate.delete("statistic:" + dateStr + ":imgAlbumCreated");
-        redisStringIntegerTemplate.delete("statistic:" + dateStr + ":imgAlbumUsed");
-        redisStringIntegerTemplate.delete("statistic:" + dateStr + ":vidCreated");
-        redisStringIntegerTemplate.delete("statistic:" + dateStr + ":vidUsed");
+        String dateStr = getCurrentDate();
+        redisStringIntegerTemplate.delete(REDIS_KEY_STATISTIC_PREFIX + dateStr + ":shortUrlCreated");
+        redisStringIntegerTemplate.delete(REDIS_KEY_STATISTIC_PREFIX + dateStr + ":shortUrlUsed");
+        redisStringIntegerTemplate.delete(REDIS_KEY_STATISTIC_PREFIX + dateStr + ":imgCreated");
+        redisStringIntegerTemplate.delete(REDIS_KEY_STATISTIC_PREFIX + dateStr + ":imgUsed");
+        redisStringIntegerTemplate.delete(REDIS_KEY_STATISTIC_PREFIX + dateStr + ":imgAlbumCreated");
+        redisStringIntegerTemplate.delete(REDIS_KEY_STATISTIC_PREFIX + dateStr + ":imgAlbumUsed");
+        redisStringIntegerTemplate.delete(REDIS_KEY_STATISTIC_PREFIX + dateStr + ":vidCreated");
+        redisStringIntegerTemplate.delete(REDIS_KEY_STATISTIC_PREFIX + dateStr + ":vidUsed");
     }
 
     private static String getCurrentDate() {
