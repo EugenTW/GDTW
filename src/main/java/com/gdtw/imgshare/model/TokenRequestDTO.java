@@ -10,4 +10,5 @@ public class TokenRequestDTO {
     public void setToken(String token) {
         this.token = token;
     }
+
 }

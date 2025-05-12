@@ -28,6 +28,9 @@ public class ImgShareRestController {
     private final DailyStatisticService dailyStatisticService;
     private final RateLimiterService rateLimiterService;
 
+    private static final String HEADER_X_FORWARDED_FOR = "X-Forwarded-For";
+    private static final String ERROR_KEY = "error";
+
     public ImgShareRestController(ImgShareService imgShareService, DailyStatisticService dailyStatisticService, RateLimiterService rateLimiterService) {
         this.imgShareService = imgShareService;
         this.dailyStatisticService = dailyStatisticService;
@@ -42,7 +45,7 @@ public class ImgShareRestController {
             @RequestParam(value = "password", required = false) String password,
             HttpServletRequest request) {
 
-        String originalIp = request.getHeader("X-Forwarded-For");
+        String originalIp = request.getHeader(HEADER_X_FORWARDED_FOR);
         rateLimiterService.checkCreateShareImageLimit(originalIp);
 
         AlbumCreationRequestDTO requestDTO = new AlbumCreationRequestDTO(files, expiryDays, nsfw, password, originalIp);
@@ -51,21 +54,21 @@ public class ImgShareRestController {
             Map<String, String> response = imgShareService.createNewAlbumAndImage(requestDTO);
             return ResponseEntity.ok(response);
         } catch (InsufficientDiskSpaceException e) {
-            logger.error("Failed to create album: {}", e.getMessage());
+            logger.error("Failed to create album.", e);
             Map<String, String> response = new HashMap<>();
-            response.put("error", "The server has reached its maximum capacity limit. Image Share service is temporarily suspended.");
+            response.put(ERROR_KEY, "The server has reached its maximum capacity limit. Image Share service is temporarily suspended.");
             return ResponseEntity.status(507).body(response);
         } catch (Exception e) {
-            logger.error("Unexpected error occurred: {}", e.getMessage());
+            logger.error("Unexpected error occurred.", e);
             Map<String, String> response = new HashMap<>();
-            response.put("error", "An unexpected error occurred. Please try again later.");
+            response.put(ERROR_KEY, "An unexpected error occurred. Please try again later.");
             return ResponseEntity.status(500).body(response);
         }
     }
 
     @PostMapping("/isAlbumPasswordNeeded")
     public ResponseEntity<Map<String, Object>> isAlbumPasswordNeeded(@RequestBody Map<String, String> request, HttpServletRequest originRequest) {
-        String originalIp = originRequest.getHeader("X-Forwarded-For");
+        String originalIp = originRequest.getHeader(HEADER_X_FORWARDED_FOR);
         rateLimiterService.checkGetShareImageLimit(originalIp);
         String code = request.get("code");
         Map<String, Object> result = imgShareService.isShareImageAlbumPasswordProtected(code);
@@ -74,7 +77,7 @@ public class ImgShareRestController {
 
     @PostMapping("/isImagePasswordNeeded")
     public ResponseEntity<Map<String, Object>> isImagePasswordNeeded(@RequestBody Map<String, String> request, HttpServletRequest originRequest) {
-        String originalIp = originRequest.getHeader("X-Forwarded-For");
+        String originalIp = originRequest.getHeader(HEADER_X_FORWARDED_FOR);
         rateLimiterService.checkGetShareImageLimit(originalIp);
         String code = request.get("code");
         Map<String, Object> result = imgShareService.isShareImagePasswordProtected(code);
@@ -84,7 +87,7 @@ public class ImgShareRestController {
     @PostMapping("/checkAlbumPassword")
     public ResponseEntity<Map<String, Object>> checkAlbumPassword(@RequestBody Map<String, String> request, HttpServletRequest originRequest) {
 
-        String originalIp = originRequest.getHeader("X-Forwarded-For");
+        String originalIp = originRequest.getHeader(HEADER_X_FORWARDED_FOR);
         rateLimiterService.checkGetShareImageLimit(originalIp);
 
         // Extract request parameters
@@ -99,7 +102,7 @@ public class ImgShareRestController {
     @PostMapping("/checkImagePassword")
     public ResponseEntity<Map<String, Object>> checkImagePassword(@RequestBody Map<String, String> request, HttpServletRequest originRequest) {
 
-        String originalIp = originRequest.getHeader("X-Forwarded-For");
+        String originalIp = originRequest.getHeader(HEADER_X_FORWARDED_FOR);
         rateLimiterService.checkGetShareImageLimit(originalIp);
 
         // Extract request parameters
@@ -116,11 +119,11 @@ public class ImgShareRestController {
     public ResponseEntity<Map<String, Object>> downloadAlbumImages(@RequestBody TokenRequestDTO request, HttpServletRequest originRequest) {
 
         String token = request.getToken();
-        String originalIp = originRequest.getHeader("X-Forwarded-For");
+        String originalIp = originRequest.getHeader(HEADER_X_FORWARDED_FOR);
         rateLimiterService.checkGetShareImageLimit(originalIp);
 
         Map<String, Object> result = imgShareService.getAlbumImages(token);
-        if (result.containsKey("error")) {
+        if (result.containsKey(ERROR_KEY)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
         }
         dailyStatisticService.incrementImgAlbumUsed();
@@ -131,11 +134,11 @@ public class ImgShareRestController {
     public ResponseEntity<Map<String, Object>> downloadSingleImage(@RequestBody TokenRequestDTO request, HttpServletRequest originRequest) {
 
         String token = request.getToken();
-        String originalIp = originRequest.getHeader("X-Forwarded-For");
+        String originalIp = originRequest.getHeader(HEADER_X_FORWARDED_FOR);
         rateLimiterService.checkGetShareImageLimit(originalIp);
 
         Map<String, Object> result = imgShareService.getSingleImage(token);
-        if (result.containsKey("error")) {
+        if (result.containsKey(ERROR_KEY)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
         }
         dailyStatisticService.incrementImgUsed();
