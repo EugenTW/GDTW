@@ -62,15 +62,34 @@ nav ul li {
 }
 
 nav ul li a {
+    all: unset;
     color: #fff;
     font-size: 15px;
     padding: 5px 8px;
     border-radius: 4px;
+    background-color: transparent;
+    display: inline-block;
 }
 
 nav ul li a:hover {
     background-color: #074799;
+    color: #fff;
     text-decoration: none;
+}
+
+.dropdown-toggle {
+    color: #fff;
+    font-size: 15px;
+    padding: 5px 8px;
+    border-radius: 4px;
+    background-color: transparent;
+    display: inline-block;
+    cursor: default;
+}
+
+.dropdown:hover .dropdown-toggle {
+    background-color: #074799;
+    color: #fff;
 }
 
 .dropdown-content {
@@ -96,6 +115,12 @@ nav ul li a:hover {
     background-color: #E1FFBB;
     color: #000;
     text-decoration: none;
+}
+
+nav ul li a,
+.dropdown-toggle,
+.dropdown-content a {
+    cursor: pointer;
 }
 
 .dropdown:hover .dropdown-content {
