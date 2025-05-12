@@ -176,7 +176,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         beginAtZero: true,
                         suggestedMax: suggestedMax,
                         ticks: {
-                            stepSize: 1, 
+                            beginAtZero: true,
+                            maxTicksLimit: 13,
                             callback: function (value) {
                                 return Number.isInteger(value) ? value : '';
                             },
