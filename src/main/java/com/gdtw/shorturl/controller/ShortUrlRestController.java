@@ -78,6 +78,11 @@ public class ShortUrlRestController {
         rateLimiterService.checkGetOriginalUrlLimit(originalIp);
         String code = codeRequest.getCode();
 
+        if (!code.matches("^[a-zA-Z0-9]{4}$")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ReturnOriginalUrlDTO(null, null, "短碼格式錯誤! Invalid short code format!"));
+        }
+
         if (code.equalsIgnoreCase("short_url_redirection")) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ReturnOriginalUrlDTO(null, null, "無原始網址! No original URL!"));
