@@ -42,7 +42,7 @@ public class ImgShareService {
     private String minDiskSpace;
 
     private static final Logger logger = LoggerFactory.getLogger(ImgShareService.class);
-    private static final Duration TTL_DURATION = Duration.ofMinutes(10);
+    private static final Duration TTL_DURATION = Duration.ofMinutes(15);
 
     private final ImgShareInternalService imgShareInternalService;
     private final ShareImgAlbumJpa shareImgAlbumJpa;
