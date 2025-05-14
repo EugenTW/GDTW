@@ -67,8 +67,13 @@ details {
     text-align: center;
 }
 
-#generate:hover {
+#generate:hover:enabled {
     background-color: #8838d9;
+}
+
+#generate:disabled {
+    background-color: #480e81;
+    cursor: not-allowed;
 }
 
 #shorten_url {
