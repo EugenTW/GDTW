@@ -20,7 +20,7 @@ import java.util.*;
 public class ShortUrlService {
 
     private static final Logger logger = LoggerFactory.getLogger(ShortUrlService.class);
-    private static final Duration TTL_DURATION = Duration.ofMinutes(15);
+    private static final Duration TTL_DURATION = Duration.ofMinutes(10);
     private static final String SHORT_URL_INFO_CACHE_PREFIX = "su:info:";
     private static final String USAGE_KEY_PREFIX = "su:usage:";
 
@@ -29,7 +29,7 @@ public class ShortUrlService {
     private final RedisTemplate<String, Object> universalRedisTemplate;
 
 
-    public ShortUrlService(ShortUrlJpa shortUrlJpa, @Qualifier("redisStringStringTemplate") RedisTemplate<String, String> redisTemplate, RedisTemplate<String, Object> universalRedisTemplate) {
+    public ShortUrlService(ShortUrlJpa shortUrlJpa, @Qualifier("redisStringStringTemplate") RedisTemplate<String, String> redisTemplate, @Qualifier("universalRedisTemplate") RedisTemplate<String, Object> universalRedisTemplate) {
         this.shortUrlJpa = shortUrlJpa;
         this.redisStringStringTemplate = redisTemplate;
         this.universalRedisTemplate = universalRedisTemplate;
