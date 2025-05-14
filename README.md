@@ -7,6 +7,7 @@ The project currently provides the following features:
 - Free two-step redirect short URL service.
 - Free image upload and sharing service (includes auto-deletion, password protection, and NSFW masking).
 - Free URL safety check (powered by Google Safe Browsing V4).
+- Free CSS & JS Minifier.
 - Daily traffic statistics and total traffic data analytics.
 
 The backend server runs on Ubuntu + Nginx.  
@@ -21,6 +22,7 @@ https://gdtw.org/
 - 免費二段式跳轉短網址服務。 
 - 免費圖片上傳共享服務（包含自動銷毀、密碼保護、NSFW遮罩）。
 - 免費的網址安全性檢查（使用Google Safe Browsing V4）。
+- 免費CSS和JS壓縮服務。
 - 每日流量數據統計和總流量數據統計。 
 
 伺服器端使用Ubuntu + Nginx。  
