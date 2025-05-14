@@ -13,6 +13,20 @@ h3 {
     text-align: center;
 }
 
+h3 {
+    margin: 10px 0 5px;
+    font-size: 20px;
+}
+
+#one-content,
+details {
+    padding: 0 16px;
+    max-width: 900px;
+    margin: 0 auto;
+    line-height: 1.8;
+    text-align: justify;
+}
+
 .compressor-container {
     max-width: 1000px;
     margin: 30px auto;
