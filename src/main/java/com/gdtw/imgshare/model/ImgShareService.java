@@ -42,147 +42,153 @@ public class ImgShareService {
     private String minDiskSpace;
 
     private static final Logger logger = LoggerFactory.getLogger(ImgShareService.class);
-    private static final Duration TTL_DURATION = Duration.ofMinutes(15);
+    private static final String ALBUM_RETURN_SIA_CODE_KEY = "sia_code";
+    private static final String CACHE_KEY_ALBUM_IMAGES_PREFIX = "albumImages:";
+    private static final String CACHE_KEY_SINGLE_IMAGE_PREFIX = "singleImage:";
+    private static final String CACHE_KEY_IMAGES = "images";
+    private static final String CACHE_KEY_ERROR = "error";
+    private static final String ERROR_INVALID_TOKEN = "非法或失效的令牌。 - Invalid or expired token.";
+    private static final String ERROR_UNAUTHORIZED = "未授權的訪問，請重新載入頁面。 - Unauthorized access, please refresh your browser.";
+    private static final String ERROR_ALBUM_NOT_FOUND = "Album not found.";
+    private static final String ERROR_IMAGE_NOT_FOUND = "Image not found.";
+    private static final String USAGE_SIA_KEY_PREFIX = "sia:usage:";
+    private static final String USAGE_SI_KEY_PREFIX = "si:usage:";
+    private static final Duration TTL_DURATION = Duration.ofMinutes(10);
 
-    private final ImgShareInternalService imgShareInternalService;
+    private final ImgSharePersistenceService imgSharePersistenceService;
     private final ShareImgAlbumJpa shareImgAlbumJpa;
     private final ShareImgJpa shareImgJpa;
     private final JwtUtil jwtUtil;
     private final DailyStatisticService dailyStatisticService;
     private final RedisTemplate<String, String> redisStringStringTemplate;
+    private final RedisTemplate<String, Object> universalRedisTemplate;
     private final ObjectMapper objectMapper;
 
-    public ImgShareService(ImgShareInternalService imgShareInternalService,
-                           ShareImgAlbumJpa shareImgAlbumJpa,
-                           ShareImgJpa shareImgJpa,
-                           JwtUtil jwtUtil,
-                           DailyStatisticService dailyStatisticService,
-                           @Qualifier("redisStringStringTemplate") RedisTemplate<String, String> redisTemplate,
-                           ObjectMapper objectMapper) {
-        this.imgShareInternalService = imgShareInternalService;
+    public ImgShareService(
+            ImgSharePersistenceService imgSharePersistenceService,
+            ShareImgAlbumJpa shareImgAlbumJpa,
+            ShareImgJpa shareImgJpa,
+            JwtUtil jwtUtil,
+            DailyStatisticService dailyStatisticService,
+            @Qualifier("redisStringStringTemplate") RedisTemplate<String, String> redisStringStringTemplate,
+            @Qualifier("universalRedisTemplate") RedisTemplate<String, Object> universalRedisTemplate,
+            ObjectMapper objectMapper
+    ) {
+        this.imgSharePersistenceService = imgSharePersistenceService;
         this.shareImgAlbumJpa = shareImgAlbumJpa;
         this.shareImgJpa = shareImgJpa;
         this.jwtUtil = jwtUtil;
         this.dailyStatisticService = dailyStatisticService;
-        this.redisStringStringTemplate = redisTemplate;
+        this.redisStringStringTemplate = redisStringStringTemplate;
+        this.universalRedisTemplate = universalRedisTemplate;
         this.objectMapper = objectMapper;
     }
 
     @Transactional
     public Map<String, String> createNewAlbumAndImage(AlbumCreationRequestDTO requestDTO) {
+
         long requiredSpace = parseDiskSpace(minDiskSpace);
         if (!hasSufficientDiskSpace(imageStoragePath, requiredSpace)) {
             logger.error("Insufficient disk space at path {}. At least {} is required.", imageStoragePath, minDiskSpace);
             throw new InsufficientDiskSpaceException("Insufficient disk space. The server has reached its capacity limit.");
         }
-        ShareImgAlbumVO createdAlbumVO = imgShareInternalService.createNewAlbumInMySQL(requestDTO);
-        imgShareInternalService.createNewImagesInMySQL(requestDTO, createdAlbumVO);
+
+        ShareImgAlbumVO createdAlbumVO = imgSharePersistenceService.createNewAlbumInMySQL(requestDTO);
+        imgSharePersistenceService.createNewImagesInMySQL(requestDTO, createdAlbumVO);
+
         Map<String, String> response = new HashMap<>();
-        response.put("sia_code", createdAlbumVO.getSiaCode());
+        response.put(ALBUM_RETURN_SIA_CODE_KEY, createdAlbumVO.getSiaCode());
+
         return response;
     }
 
     public Map<String, Object> isShareImageAlbumPasswordProtected(String code) {
-        return imgShareInternalService.isShareImageAlbumPasswordProtected(code);
+        return imgSharePersistenceService.isShareImageAlbumPasswordProtected(code);
     }
 
     public Map<String, Object> isShareImagePasswordProtected(String code) {
-        return imgShareInternalService.isShareImagePasswordProtected(code);
+        return imgSharePersistenceService.isShareImagePasswordProtected(code);
     }
-    
+
     public Map<String, Object> checkAlbumPassword(String code, String password) {
-        Map<String, Object> response = new HashMap<>();
-        Integer siaImageAlbumId = toDecodeId(code);
-        Optional<ShareImgAlbumVO> albumOptional = shareImgAlbumJpa.findById(siaImageAlbumId);
 
-        if (albumOptional.isPresent()) {
-            ShareImgAlbumVO album = albumOptional.get();
-            String storedPassword = album.getSiaPassword();
-            if (storedPassword.equals(password)) {
-                response.put("checkPassword", true);
-                String token = jwtUtil.generateToken(code, "passwordPassed");
-                response.put("token", token);
-            } else {
-                response.put("checkPassword", false);
-            }
-        } else {
-            response.put("checkPassword", false);
+        Map<String, Object> response = new HashMap<>();
+        Integer siaId = ImgIdEncoderDecoderUtil.decodeImgId(code);
+        String redisKey = ImgSharePersistenceService.ALBUM_INFO_CACHE_PREFIX + siaId;
+
+        ShareImgAlbumInfoDTO dto = (ShareImgAlbumInfoDTO) universalRedisTemplate.opsForValue().get(redisKey);
+
+        if (dto == null) {
+            imgSharePersistenceService.isShareImageAlbumPasswordProtected(code);
+            dto = (ShareImgAlbumInfoDTO) universalRedisTemplate.opsForValue().get(redisKey);
         }
+
+        if (dto != null && password.equalsIgnoreCase(dto.getSiaPassword())) {
+            response.put(ImgSharePersistenceService.STAGE_CHECK_PASSWORD, true);
+            String token = jwtUtil.generateToken(code, ImgSharePersistenceService.STAGE_PASSED_PASSWORD);
+            response.put(ImgSharePersistenceService.DOWNLOAD_TOKEN, token);
+        } else {
+            response.put(ImgSharePersistenceService.STAGE_CHECK_PASSWORD, false);
+        }
+
         return response;
     }
-    
+
     public Map<String, Object> checkImagePassword(String code, String password) {
-        Map<String, Object> response = new HashMap<>();
-        Integer siImageId = toDecodeId(code);
-        Optional<ShareImgVO> imageOptional = shareImgJpa.findById(siImageId);
 
-        if (imageOptional.isPresent()) {
-            ShareImgVO image = imageOptional.get();
-            String storedPassword = image.getSiPassword();
-            if (storedPassword.equals(password)) {
-                response.put("checkPassword", true);
-                String token = jwtUtil.generateToken(code, "passwordPassed");
-                response.put("token", token);
-            } else {
-                response.put("checkPassword", false);
-            }
-        } else {
-            response.put("checkPassword", false);
+        Map<String, Object> response = new HashMap<>();
+        Integer siId = ImgIdEncoderDecoderUtil.decodeImgId(code);
+        String redisKey = ImgSharePersistenceService.IMAGE_INFO_CACHE_PREFIX + siId;
+
+        ShareImgInfoDTO dto = (ShareImgInfoDTO) universalRedisTemplate.opsForValue().get(redisKey);
+
+        if (dto == null) {
+            imgSharePersistenceService.isShareImagePasswordProtected(code);
+            dto = (ShareImgInfoDTO) universalRedisTemplate.opsForValue().get(redisKey);
         }
+
+        if (dto != null && password.equals(dto.getSiPassword())) {
+            response.put(ImgSharePersistenceService.STAGE_CHECK_PASSWORD, true);
+            String token = jwtUtil.generateToken(code, ImgSharePersistenceService.STAGE_PASSED_PASSWORD);
+            response.put(ImgSharePersistenceService.DOWNLOAD_TOKEN, token);
+        } else {
+            response.put(ImgSharePersistenceService.STAGE_CHECK_PASSWORD, false);
+        }
+
         return response;
     }
-    
+
     public Map<String, Object> getAlbumImages(String token) {
+
         Map<String, Object> response = new HashMap<>();
-        Map<String, Object> claims = jwtUtil.validateToken(token);
-        if (claims == null) {
-            response.put("error", "非法或失效的令牌。 - Invalid or expired token.");
-            return response;
-        }
-        String stage = (String) claims.get("stage");
-        if (!"passwordPassed".equals(stage) && !"noPassword".equals(stage)) {
-            response.put("error", "未授權的訪問，請重新載入頁面。 - Unauthorized access, please refresh your browser.");
-            return response;
-        }
+        Map<String, Object> claims = validateTokenAndStage(token);
+        if (claims.containsKey(CACHE_KEY_ERROR)) return claims;
+
         String code = (String) claims.get("subject");
+        Integer siaImageId = ImgIdEncoderDecoderUtil.decodeImgId(code);
+        String redisKey = CACHE_KEY_ALBUM_IMAGES_PREFIX + siaImageId;
 
-        Integer siaImageId = toDecodeId(code);
-        String redisKey = "albumImages:" + siaImageId;
-
-        try {
-            Map<String, Object> cachedResponse = getResponseFromRedis(redisKey);
-            if ((!cachedResponse.isEmpty() && cachedResponse.get("images") instanceof List<?> list && !list.isEmpty())) {
-                countAlbumUsage(siaImageId);
-
-                Object rawImages = cachedResponse.get("images");
-                List<Map<String, Object>> imageList = new ArrayList<>();
-
-                if (rawImages instanceof List<?>) {
-                    for (Object item : (List<?>) rawImages) {
-                        if (item instanceof Map<?, ?>) {
-                            @SuppressWarnings("unchecked")
-                            Map<String, Object> imageMap = (Map<String, Object>) item;
-                            imageList.add(imageMap);
+        Map<String, Object> cachedResponse = getResponseFromRedis(redisKey);
+        if (!cachedResponse.isEmpty()) {
+            Object images = cachedResponse.get(CACHE_KEY_IMAGES);
+            if (images instanceof List<?> list && !list.isEmpty()) {
+                for (Object item : list) {
+                    if (item instanceof Map<?, ?> imageMap) {
+                        Object siIdObj = imageMap.get("siId");
+                        if (siIdObj instanceof Number siId) {
+                            countImageUsage(siId.intValue());
+                            dailyStatisticService.incrementImgUsed();
                         }
                     }
                 }
-
-                for (Map<String, Object> imageMap : imageList) {
-                    Integer siId = (Integer) imageMap.get("siId");
-                    if (siId != null) {
-                        dailyStatisticService.incrementImgUsed();
-                        countImageUsage(siId);
-                    }
-                }
+                countAlbumUsage(siaImageId);
                 return cachedResponse;
             }
-        } catch (JsonProcessingException e) {
-            logger.error("Failed to parse cached response for key: {}", redisKey, e);
         }
 
         Optional<ShareImgAlbumVO> albumOptional = shareImgAlbumJpa.findBySiaId(siaImageId);
         if (albumOptional.isEmpty()) {
-            response.put("error", "Album not found.");
+            response.put(CACHE_KEY_ERROR, ERROR_ALBUM_NOT_FOUND);
             return response;
         }
 
@@ -209,47 +215,31 @@ public class ImgShareService {
             dailyStatisticService.incrementImgUsed();
         }
 
-        response.put("images", imageList);
-
-        try {
+        response.put(CACHE_KEY_IMAGES, imageList);
             saveResponseToRedis(redisKey, response);
-        } catch (JsonProcessingException e) {
-            logger.error("Failed to cache response for key: {}", redisKey, e);
-        }
-
         countAlbumUsage(siaImageId);
         return response;
     }
-    
-    public Map<String, Object> getSingleImage(String token) {
-        Map<String, Object> response = new HashMap<>();
-        Map<String, Object> claims = jwtUtil.validateToken(token);
-        if (claims == null) {
-            response.put("error", "非法或失效的令牌。 - Invalid or expired token.");
-            return response;
-        }
-        String stage = (String) claims.get("stage");
-        if (!"passwordPassed".equals(stage) && !"noPassword".equals(stage)) {
-            response.put("error", "未授權的訪問，請重新載入頁面。 - Unauthorized access, please refresh your browser.");
-            return response;
-        }
-        String code = (String) claims.get("subject");
-        Integer siImageId = toDecodeId(code);
-        String redisKey = "singleImage:" + siImageId;
 
-        try {
-            Map<String, Object> cachedResponse = getResponseFromRedis(redisKey);
-            if (!cachedResponse.isEmpty() && cachedResponse.get("siId") instanceof Integer) {
-                countImageUsage(siImageId);
-                return cachedResponse;
-            }
-        } catch (JsonProcessingException e) {
-            logger.error("Failed to parse cached response for key: {}", redisKey, e);
+    public Map<String, Object> getSingleImage(String token) {
+
+        Map<String, Object> response = new HashMap<>();
+        Map<String, Object> claims = validateTokenAndStage(token);
+        if (claims.containsKey(CACHE_KEY_ERROR)) return claims;
+
+        String code = (String) claims.get("subject");
+        Integer siImageId = ImgIdEncoderDecoderUtil.decodeImgId(code);
+        String redisKey = CACHE_KEY_SINGLE_IMAGE_PREFIX + siImageId;
+
+        Map<String, Object> cachedResponse = getResponseFromRedis(redisKey);
+        if (!cachedResponse.isEmpty() && cachedResponse.get("siId") instanceof Number siId) {
+            countImageUsage(siId.intValue());
+            return cachedResponse;
         }
 
         Optional<ShareImgVO> imageOptional = shareImgJpa.findById(siImageId);
         if (imageOptional.isEmpty()) {
-            response.put("error", "Image not found.");
+            response.put(CACHE_KEY_ERROR, ERROR_IMAGE_NOT_FOUND);
             return response;
         }
 
@@ -263,39 +253,39 @@ public class ImgShareService {
         String imageUrl = baseUrlForImageDownload + imageNginxStaticPath + image.getSiName();
         response.put("imageUrl", imageUrl);
 
-        try {
-            saveResponseToRedis(redisKey, response);
-        } catch (JsonProcessingException e) {
-            logger.error("Failed to cache response for key: {}.", redisKey, e);
-        }
+        saveResponseToRedis(redisKey, response);
         countImageUsage(siImageId);
         return response;
     }
 
     public boolean isValidShareImageAlbum(String code) {
-        Integer siaId = ImgIdEncoderDecoderUtil.decodeImgId(code);
-        return shareImgAlbumJpa.existsBySiaIdAndSiaStatusNot(siaId, (byte) 1);
+        return Boolean.TRUE.equals(
+                imgSharePersistenceService.isShareImageAlbumPasswordProtected(code)
+                        .get(ImgSharePersistenceService.RESP_IS_VALID)
+        );
     }
 
     public boolean isValidShareImage(String code) {
-        Integer siaId = ImgIdEncoderDecoderUtil.decodeImgId(code);
-        return shareImgJpa.existsBySiIdAndSiStatusNot(siaId, (byte) 1);
+        return Boolean.TRUE.equals(
+                imgSharePersistenceService.isShareImagePasswordProtected(code)
+                        .get(ImgSharePersistenceService.RESP_IS_VALID)
+        );
     }
 
     public void countAlbumUsage(Integer siaId) {
-        String redisKey = "sia:usage:" + siaId;
+        String redisKey = USAGE_SIA_KEY_PREFIX + siaId;
         redisStringStringTemplate.opsForValue().increment(redisKey, 1);
     }
 
     public void countImageUsage(Integer siId) {
-        String redisKey = "si:usage:" + siId;
+        String redisKey = USAGE_SI_KEY_PREFIX + siId;
         redisStringStringTemplate.opsForValue().increment(redisKey, 1);
     }
 
     @Scheduled(cron = "${task.schedule.cron.albumUsageStatisticService}")
     @Transactional
     public void syncSiaUsageToMySQL() {
-        Set<String> keys = redisStringStringTemplate.keys("sia:usage:*");
+        Set<String> keys = redisStringStringTemplate.keys(USAGE_SIA_KEY_PREFIX + "*");
         for (String key : keys) {
             Integer siaId = Integer.parseInt(key.split(":")[2]);
             String value = redisStringStringTemplate.opsForValue().get(key);
@@ -320,7 +310,7 @@ public class ImgShareService {
     @Scheduled(cron = "${task.schedule.cron.imageUsageStatisticService}")
     @Transactional
     public void syncSiUsageToMySQL() {
-        Set<String> keys = redisStringStringTemplate.keys("si:usage:*");
+        Set<String> keys = redisStringStringTemplate.keys(USAGE_SI_KEY_PREFIX + "*");
 
         for (String key : keys) {
             String rawValue = redisStringStringTemplate.opsForValue().get(key);
@@ -364,23 +354,40 @@ public class ImgShareService {
         }
     }
 
-    private Integer toDecodeId(String encodeId) {
-        return ImgIdEncoderDecoderUtil.decodeImgId(encodeId);
+    private Map<String, Object> validateTokenAndStage(String token) {
+        Map<String, Object> claims = jwtUtil.validateToken(token);
+        if (claims == null) return Map.of(CACHE_KEY_ERROR, ERROR_INVALID_TOKEN);
+
+        String stage = (String) claims.get("stage");
+        if (!ImgSharePersistenceService.STAGE_PASSED_PASSWORD.equals(stage) &&
+                !ImgSharePersistenceService.STAGE_NO_PASSWORD.equals(stage)) {
+            return Map.of(CACHE_KEY_ERROR, ERROR_UNAUTHORIZED);
+        }
+        return claims;
     }
 
-    private void saveResponseToRedis(String key, Map<String, Object> response) throws JsonProcessingException {
-        String jsonResponse = objectMapper.writeValueAsString(response);
-        redisStringStringTemplate.opsForValue().set(key, jsonResponse, TTL_DURATION);
+    private void saveResponseToRedis(String key, Map<String, Object> response) {
+        try {
+            String jsonResponse = objectMapper.writeValueAsString(response);
+            redisStringStringTemplate.opsForValue().set(key, jsonResponse, TTL_DURATION);
+        } catch (JsonProcessingException e) {
+            logger.error("Failed to serialize and cache response for key: {}", key, e);
+        }
     }
 
-    private Map<String, Object> getResponseFromRedis(String key) throws JsonProcessingException {
-        String jsonResponse = redisStringStringTemplate.opsForValue().get(key);
-        if (jsonResponse == null) {
-            logger.debug("Redis cache miss for key: {}", key);
+    private Map<String, Object> getResponseFromRedis(String key) {
+        try {
+            String jsonResponse = redisStringStringTemplate.opsForValue().get(key);
+            if (jsonResponse == null) {
+                logger.debug("Redis cache miss for key: {}", key);
+                return Collections.emptyMap();
+            }
+            return objectMapper.readValue(jsonResponse, new TypeReference<>() {
+            });
+        } catch (Exception e) {
+            logger.warn("Failed to parse Redis cache value for key: {}, fallback to DB.", key, e);
             return Collections.emptyMap();
         }
-        return objectMapper.readValue(jsonResponse, new TypeReference<>() {
-        });
     }
 
 }
