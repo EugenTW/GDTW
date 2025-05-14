@@ -135,4 +135,8 @@ public class RateLimiterService {
         checkLimit(clientIp, RateLimitRule.URLSAFE_GET);
     }
 
+    public void checkCssJsMinifyLimit(String clientIp) {
+        checkLimit(clientIp, RateLimitRule.CSS_JS_MINIFY);
+    }
+
 }

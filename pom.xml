@@ -12,7 +12,7 @@
 
     <groupId>com.GDTW</groupId>
     <artifactId>GDTW_Web</artifactId>
-    <version>1.15.3</version>
+    <version>1.16.0</version>
     <name>GDTW_Web</name>
     <description>GDTW project for Spring Boot</description>
 
@@ -108,6 +108,27 @@
             <groupId>io.github.resilience4j</groupId>
             <artifactId>resilience4j-ratelimiter</artifactId>
             <version>2.3.0</version>
+        </dependency>
+
+        <!-- Closure Compiler (JS) -->
+        <dependency>
+            <groupId>com.google.javascript</groupId>
+            <artifactId>closure-compiler</artifactId>
+            <version>v20250407</version>
+        </dependency>
+
+        <!-- YUI Compressor (CSS) -->
+        <dependency>
+            <groupId>com.yahoo.platform.yui</groupId>
+            <artifactId>yuicompressor</artifactId>
+            <version>2.4.8</version>
+        </dependency>
+
+        <!-- PH CSS (Java CSS 3 parser and builder) -->
+        <dependency>
+            <groupId>com.helger</groupId>
+            <artifactId>ph-css</artifactId>
+            <version>7.0.4</version>
         </dependency>
 
     </dependencies>
