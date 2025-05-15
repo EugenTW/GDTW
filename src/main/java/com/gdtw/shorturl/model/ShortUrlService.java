@@ -2,6 +2,7 @@ package com.gdtw.shorturl.model;
 
 import com.gdtw.general.exception.ShortUrlBannedException;
 import com.gdtw.general.exception.ShortUrlNotFoundException;
+import com.gdtw.general.util.RedisCacheUtil;
 import com.gdtw.general.util.codec.IdEncoderDecoderUtil;
 
 import org.slf4j.Logger;
@@ -25,21 +26,21 @@ public class ShortUrlService {
     private static final String USAGE_KEY_PREFIX = "su:usage:";
 
     private final ShortUrlJpa shortUrlJpa;
+    private final RedisCacheUtil redisCacheUtil;
     private final RedisTemplate<String, String> redisStringStringTemplate;
     private final RedisTemplate<String, Object> universalRedisTemplate;
 
-
-    public ShortUrlService(ShortUrlJpa shortUrlJpa, @Qualifier("redisStringStringTemplate") RedisTemplate<String, String> redisTemplate, @Qualifier("universalRedisTemplate") RedisTemplate<String, Object> universalRedisTemplate) {
+    public ShortUrlService(ShortUrlJpa shortUrlJpa, @Qualifier("redisStringStringTemplate") RedisTemplate<String, String> redisTemplate, @Qualifier("universalRedisTemplate") RedisTemplate<String, Object> universalRedisTemplate, RedisCacheUtil redisCacheUtil) {
         this.shortUrlJpa = shortUrlJpa;
         this.redisStringStringTemplate = redisTemplate;
         this.universalRedisTemplate = universalRedisTemplate;
+        this.redisCacheUtil = redisCacheUtil;
     }
     // ==================================================================
     // Service methods
 
     @Transactional
     public String createNewShortUrl(String originalUrl, String originalIp, String safeUrlResult) {
-
         ShortUrlVO shortUrl = new ShortUrlVO();
         shortUrl.setSuOriginalUrl(originalUrl);
         shortUrl.setSuCreatedIp(originalIp);
@@ -68,7 +69,6 @@ public class ShortUrlService {
     }
 
     public Map.Entry<String, String> getOriginalUrl(String code) {
-
         Integer suId;
         try {
             suId = IdEncoderDecoderUtil.decodeId(code);
@@ -85,7 +85,6 @@ public class ShortUrlService {
         countShortUrlUsage(suId);
         return new AbstractMap.SimpleEntry<>(dto.getSuOriginalUrl(), dto.getSuSafe());
     }
-
 
     public boolean checkCodeValid(String code) {
         Integer suId;
@@ -112,19 +111,19 @@ public class ShortUrlService {
     }
 
     private ShortUrlInfoDTO getOrCacheShortUrlInfo(Integer suId) {
-
         String redisKey = SHORT_URL_INFO_CACHE_PREFIX + suId;
-        Object cached = universalRedisTemplate.opsForValue().get(redisKey);
-        if (cached instanceof ShortUrlInfoDTO dto) {
-            return dto;
+
+        Optional<ShortUrlInfoDTO> optional = redisCacheUtil.getObject(redisKey, ShortUrlInfoDTO.class);
+        if (optional.isPresent()) {
+            return optional.get();
         }
 
-        Optional<ShortUrlVO> optional = shortUrlJpa.findById(suId);
-        if (optional.isEmpty()) {
+        Optional<ShortUrlVO> optionalVO = shortUrlJpa.findById(suId);
+        if (optionalVO.isEmpty()) {
             throw new ShortUrlNotFoundException("此短網址尚未建立! Original URL not found!");
         }
 
-        ShortUrlVO vo = optional.get();
+        ShortUrlVO vo = optionalVO.get();
         ShortUrlInfoDTO dto = new ShortUrlInfoDTO(
                 vo.getSuId(),
                 vo.getSuOriginalUrl(),
@@ -134,7 +133,7 @@ public class ShortUrlService {
                 vo.getSuSafe()
         );
 
-        universalRedisTemplate.opsForValue().set(redisKey, dto, TTL_DURATION);
+        redisCacheUtil.setObject(redisKey, dto, TTL_DURATION);
         return dto;
     }
 
