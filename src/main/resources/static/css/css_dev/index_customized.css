@@ -67,12 +67,14 @@ main {
     aspect-ratio: 1 / 1;
     object-fit: cover;
     border-radius: 8px;
+    border: 3px solid #008cff;
     margin-bottom: 2px;
+    transition: border-color 0.15s, opacity 0.15s;
 }
 
-a img:hover {
-    opacity: 0.95;
-    transition: opacity 0.15s;
+.service-img:hover {
+    border-color: #00ffff;
+    opacity: 0.9;
 }
 
 .service-card a {

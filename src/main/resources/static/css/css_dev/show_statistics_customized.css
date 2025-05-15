@@ -63,7 +63,6 @@ details {
     border-collapse: collapse;
     font-size: 16px;
     margin: 0 auto;
-    border-radius: 8px;
     overflow: hidden;
     word-wrap: break-word;
     word-break: break-word;
@@ -90,22 +89,6 @@ details {
     background-color: #28394f;
 }
 
-.total-cumulative-table th:first-child {
-    border-top-left-radius: 8px;
-}
-
-.total-cumulative-table th:last-child {
-    border-top-right-radius: 8px;
-}
-
-.total-cumulative-table tr:last-child td:first-child {
-    border-bottom-left-radius: 8px;
-}
-
-.total-cumulative-table tr:last-child td:last-child {
-    border-bottom-right-radius: 8px;
-}
-
 .total-cumulative-table th:nth-child(1),
 .total-cumulative-table td:nth-child(1) {
     width: 70%;
@@ -130,7 +113,7 @@ canvas.chart-canvas {
     width: 100%;
     max-width: 100%;
     height: auto;
-    background-color: rgb(29, 2, 29);
+    background-color: #310029;
     border-radius: 5px;
     border: 3px solid #7a0a64;
     margin-bottom: 30px;

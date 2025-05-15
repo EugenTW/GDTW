@@ -19,7 +19,7 @@ h3 {
 }
 
 details,
-#one-content {
+#one-content, #two-content{
     padding: 0 16px;
     max-width: 900px;
     margin: 0 auto;
@@ -162,35 +162,6 @@ details,
 
 .button.green:hover {
     background-color: #05591e;
-}
-
-.button-container-back {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 20px 0;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-.button-back {
-    display: inline-block;
-    width: 100%;
-    max-width: 350px;
-    padding: 12px 20px;
-    background-color: #48007e;
-    color: #ffffff;
-    text-align: center;
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 12px;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: inset 0 0 0 2px #ffffff;
-}
-
-.button-back:hover {
-    background-color: #4a0096;
 }
 
 .final-cover {

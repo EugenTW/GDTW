@@ -45,6 +45,7 @@ public class SitemapService {
         sitemapGen.addUrl("https://gdtw.org/error_403_405");
         sitemapGen.addUrl("https://gdtw.org/error_generic");
         sitemapGen.addUrl("https://gdtw.org/url_safety_check");
+        sitemapGen.addUrl("https://gdtw.org/cs_js_minify");
 
         sitemapGen.write();
     }
