@@ -1,15 +1,14 @@
 package com.gdtw.imgshare.model;
 
 import com.gdtw.dailystatistic.model.DailyStatisticService;
+import com.gdtw.general.util.RedisCacheUtil;
 import com.gdtw.general.util.codec.ImgFilenameEncoderDecoderUtil;
 import com.gdtw.general.util.codec.ImgIdEncoderDecoderUtil;
 import com.gdtw.general.util.jwt.JwtUtil;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,7 +35,7 @@ public class ImgSharePersistenceService {
     private static final Duration TTL_DURATION = Duration.ofMinutes(10);
     private static final Logger logger = LoggerFactory.getLogger(ImgSharePersistenceService.class);
 
-    private final RedisTemplate<String, Object> universalRedisTemplate;
+    private final RedisCacheUtil redisCacheUtil;
     private final ShareImgAlbumJpa shareImgAlbumJpa;
     private final ShareImgJpa shareImgJpa;
     private final DailyStatisticService dailyStatisticService;
@@ -46,13 +45,13 @@ public class ImgSharePersistenceService {
     private String imageStoragePath;
 
     public ImgSharePersistenceService(
-            @Qualifier("universalRedisTemplate") RedisTemplate<String, Object> universalRedisTemplate,
+            RedisCacheUtil redisCacheUtil,
             ShareImgAlbumJpa shareImgAlbumJpa,
             ShareImgJpa shareImgJpa,
             DailyStatisticService dailyStatisticService,
             JwtUtil jwtUtil
     ) {
-        this.universalRedisTemplate = universalRedisTemplate;
+        this.redisCacheUtil = redisCacheUtil;
         this.shareImgAlbumJpa = shareImgAlbumJpa;
         this.shareImgJpa = shareImgJpa;
         this.dailyStatisticService = dailyStatisticService;
@@ -86,7 +85,7 @@ public class ImgSharePersistenceService {
         );
 
         String redisKey = ALBUM_INFO_CACHE_PREFIX + savedAlbum.getSiaId();
-        universalRedisTemplate.opsForValue().set(redisKey, dto, TTL_DURATION);
+        redisCacheUtil.setObject(redisKey, dto, TTL_DURATION);
 
         dailyStatisticService.incrementImgAlbumCreated();
         return savedAlbum;
@@ -130,19 +129,6 @@ public class ImgSharePersistenceService {
 
                 shareImgJpa.save(savedImage);
                 dailyStatisticService.incrementImgCreated();
-
-                ShareImgInfoDTO dto = new ShareImgInfoDTO(
-                        savedImage.getSiId(),
-                        savedImage.getSiCode(),
-                        savedImage.getSiName(),
-                        savedImage.getSiPassword(),
-                        savedImage.getSiEndDate(),
-                        savedImage.getSiTotalVisited(),
-                        savedImage.getSiStatus(),
-                        savedImage.getSiNsfw(),
-                        createdAlbumVO.getSiaId()
-                );
-                cacheImageInfo(dto);
             }
         } catch (IOException e) {
             String filenameInfo = files.stream()
@@ -158,27 +144,21 @@ public class ImgSharePersistenceService {
     }
 
     public Map<String, Object> isShareImageAlbumPasswordProtected(String code) {
-
         Map<String, Object> response = new HashMap<>();
         Integer siaId = ImgIdEncoderDecoderUtil.decodeImgId(code);
         String redisKey = ALBUM_INFO_CACHE_PREFIX + siaId;
 
-        ShareImgAlbumInfoDTO dto = null;
-        Object cached = universalRedisTemplate.opsForValue().get(redisKey);
+        Optional<ShareImgAlbumInfoDTO> dtoOpt = redisCacheUtil.getObject(redisKey, ShareImgAlbumInfoDTO.class);
 
-        if (cached instanceof ShareImgAlbumInfoDTO) {
-            dto = (ShareImgAlbumInfoDTO) cached;
-        }
-
-        if (dto == null) {
+        ShareImgAlbumInfoDTO dto = dtoOpt.orElseGet(() -> {
             Optional<ShareImgAlbumVO> optional = shareImgAlbumJpa.findById(siaId);
             if (optional.isEmpty() || optional.get().getSiaStatus() == 1) {
                 response.put(RESP_IS_VALID, false);
-                return response;
+                return null;
             }
 
             ShareImgAlbumVO album = optional.get();
-            dto = new ShareImgAlbumInfoDTO(
+            ShareImgAlbumInfoDTO generatedDto = new ShareImgAlbumInfoDTO(
                     album.getSiaId(),
                     album.getSiaCode(),
                     album.getSiaPassword(),
@@ -187,9 +167,11 @@ public class ImgSharePersistenceService {
                     album.getSiaStatus(),
                     album.getSiaNsfw()
             );
+            redisCacheUtil.setObject(redisKey, generatedDto, TTL_DURATION);
+            return generatedDto;
+        });
 
-            universalRedisTemplate.opsForValue().set(redisKey, dto, TTL_DURATION);
-        }
+        if (dto == null) return response;
 
         boolean requiresPassword = dto.getSiaPassword() != null && !dto.getSiaPassword().isEmpty();
         response.put(RESP_IS_VALID, true);
@@ -208,22 +190,17 @@ public class ImgSharePersistenceService {
         Integer siId = ImgIdEncoderDecoderUtil.decodeImgId(code);
         String redisKey = IMAGE_INFO_CACHE_PREFIX + siId;
 
-        ShareImgInfoDTO dto = null;
-        Object cached = universalRedisTemplate.opsForValue().get(redisKey);
+        Optional<ShareImgInfoDTO> dtoOpt = redisCacheUtil.getObject(redisKey, ShareImgInfoDTO.class);
 
-        if (cached instanceof ShareImgInfoDTO) {
-            dto = (ShareImgInfoDTO) cached;
-        }
-
-        if (dto == null) {
+        ShareImgInfoDTO dto = dtoOpt.orElseGet(() -> {
             Optional<ShareImgVO> optional = shareImgJpa.findById(siId);
             if (optional.isEmpty() || optional.get().getSiStatus() == 1) {
                 response.put(RESP_IS_VALID, false);
-                return response;
+                return null;
             }
 
             ShareImgVO image = optional.get();
-            dto = new ShareImgInfoDTO(
+            ShareImgInfoDTO generatedDto = new ShareImgInfoDTO(
                     image.getSiId(),
                     image.getSiCode(),
                     image.getSiName(),
@@ -234,9 +211,11 @@ public class ImgSharePersistenceService {
                     image.getSiNsfw(),
                     image.getAlbum() != null ? image.getAlbum().getSiaId() : null
             );
+            redisCacheUtil.setObject(redisKey, generatedDto, TTL_DURATION);
+            return generatedDto;
+        });
 
-            universalRedisTemplate.opsForValue().set(redisKey, dto, TTL_DURATION);
-        }
+        if (dto == null) return response;
 
         boolean requiresPassword = dto.getSiPassword() != null && !dto.getSiPassword().isEmpty();
         response.put(RESP_IS_VALID, true);
@@ -248,12 +227,6 @@ public class ImgSharePersistenceService {
         }
 
         return response;
-    }
-
-    private void cacheImageInfo(ShareImgInfoDTO dto) {
-        if (dto == null || dto.getSiId() == null) return;
-        String redisKey = IMAGE_INFO_CACHE_PREFIX + dto.getSiId();
-        universalRedisTemplate.opsForValue().set(redisKey, dto, TTL_DURATION);
     }
 
     private void cleanupSavedFiles(List<Path> savedFilePaths) {
