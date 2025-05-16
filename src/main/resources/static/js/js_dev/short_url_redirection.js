@@ -1,4 +1,4 @@
-window.addEventListener('load', function () {
+document.addEventListener('DOMContentLoaded', function () {
     const path = window.location.pathname;
     const code = path.split('/')[1];
 
@@ -16,6 +16,7 @@ window.addEventListener('load', function () {
         showError("短網址無效 / Invalid short URL.");
     }
 });
+
 
 function fetchOriginalUrlWithRetry(code, maxRetries, delay) {
     let attempts = 0;
