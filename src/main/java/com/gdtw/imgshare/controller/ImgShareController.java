@@ -22,7 +22,7 @@ public class ImgShareController {
         return "forward:/image_share.html";
     }
 
-    @GetMapping("/image_view")
+    @GetMapping("/img_view")
     public String imageAlbum() {
         return "forward:/image_view.html";
     }

@@ -12,7 +12,7 @@
 
     <groupId>com.GDTW</groupId>
     <artifactId>GDTW_Web</artifactId>
-    <version>1.16.1</version>
+    <version>1.16.2</version>
     <name>GDTW_Web</name>
     <description>GDTW project for Spring Boot</description>
 

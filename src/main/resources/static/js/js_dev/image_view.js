@@ -2,6 +2,12 @@ let authToken;
 
 document.addEventListener('DOMContentLoaded', async function () {
     const path = window.location.pathname;
+
+    if (path === '/img_view') {
+        console.info('/img_view page accessed, skipping image loading logic.');
+        return;
+    }
+
     const isAlbumMode = path.startsWith('/a/');
     const code = path.split('/')[2];
     const statusApiUrl = isAlbumMode ? '/is_api/isAlbumPasswordNeeded' : '/is_api/isImagePasswordNeeded';
@@ -9,7 +15,6 @@ document.addEventListener('DOMContentLoaded', async function () {
     const downloadApiUrl = isAlbumMode ? '/is_api/downloadAlbumImages' : '/is_api/downloadSingleImage';
     const requestData = {code: code};
 
-    // Check if password is needed
     try {
         const response = await fetchWithRetry(statusApiUrl, requestData);
         const result = await response.json();
@@ -19,12 +24,10 @@ document.addEventListener('DOMContentLoaded', async function () {
             return;
         }
 
-        // If a password is required, show password modal
         if (result.requiresPassword) {
             showPasswordModal();
             setupPasswordValidation(passwordApiUrl, code, isAlbumMode);
         } else {
-            // No password needed, store the token and initialize the page
             if (result.token) {
                 authToken = result.token;
             }
@@ -35,7 +38,6 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 });
 
-// Initialize page and fetch images
 async function initPage(downloadApiUrl, isAlbumMode) {
     hidePasswordModal();
     try {
@@ -54,7 +56,6 @@ async function initPage(downloadApiUrl, isAlbumMode) {
             return;
         }
 
-        // Display content based on mode (Album or Single Image)
         if (isAlbumMode) {
             await displayImagesSequentially(result);
         } else {
@@ -66,7 +67,6 @@ async function initPage(downloadApiUrl, isAlbumMode) {
     }
 }
 
-// Function to display album images sequentially
 async function displayImagesSequentially(data) {
     const gallery = document.getElementById('gallery');
     gallery.innerHTML = '';
@@ -92,7 +92,7 @@ async function displayImagesSequentially(data) {
 
     const downloadAlbumButton = document.createElement('button');
     downloadAlbumButton.classList.add('download-album-button');
-    downloadAlbumButton.textContent = '⬇️';
+    downloadAlbumButton.innerHTML = '&#11015;&#65039;';
     downloadAlbumButton.title = '下載所有圖片 - Download Gallery';
     downloadAlbumButton.addEventListener('click', function () {
         downloadEntireAlbum(data.images);
@@ -110,8 +110,6 @@ async function displayImagesSequentially(data) {
     }
 }
 
-
-// Function to load each image sequentially
 function loadImageSequentially(image, gallery, isNsfw) {
     return new Promise((resolve) => {
         const photoDiv = document.createElement('div');
@@ -132,13 +130,11 @@ function loadImageSequentially(image, gallery, isNsfw) {
             const nsfwMask = document.createElement('div');
             nsfwMask.classList.add('nsfw-mask');
             nsfwMask.innerHTML = 'R15 or R18 Content<br>NSFW - Click to reveal';
-
             nsfwMask.addEventListener('click', () => {
                 document.querySelectorAll('.nsfw-mask').forEach(mask => {
                     mask.style.display = 'none';
                 });
             });
-
             photoDiv.appendChild(imgElement);
             photoDiv.appendChild(nsfwMask);
         } else {
@@ -147,7 +143,7 @@ function loadImageSequentially(image, gallery, isNsfw) {
 
         const urlDiv = document.createElement('div');
         urlDiv.classList.add('single-mode-text');
-        urlDiv.innerHTML = `Share URL: ${image.imageSingleModeUrl}`;
+        urlDiv.innerHTML = `Share : ${image.imageSingleModeUrl}`;
         urlDiv.addEventListener('click', function () {
             copyToClipboard(image.imageSingleModeUrl);
             showCopiedMessage(urlDiv);
@@ -155,7 +151,7 @@ function loadImageSequentially(image, gallery, isNsfw) {
 
         const openLink = document.createElement('a');
         openLink.classList.add('open-link-button');
-        openLink.textContent = '🔎';
+        openLink.innerHTML = '&#128269;';
         openLink.title = '原始尺寸 - Full Size';
         openLink.href = image.imageUrl;
         openLink.target = '_blank';
@@ -163,16 +159,13 @@ function loadImageSequentially(image, gallery, isNsfw) {
 
         const downloadLink = document.createElement('a');
         downloadLink.classList.add('download-link-button');
-        downloadLink.textContent = '⬇️';
+        downloadLink.innerHTML = '&#11015;&#65039;';
         downloadLink.title = '下載圖片 - Download';
-
         downloadLink.addEventListener('click', async (event) => {
             event.preventDefault();
-
             try {
                 const response = await fetch(image.imageUrl, { mode: 'cors' });
                 const blob = await response.blob();
-
                 const blobUrl = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = blobUrl;
@@ -250,7 +243,7 @@ function displaySingleImage(data) {
     const currentPageUrl = window.location.href;
     const url = new URL(currentPageUrl);
     const cleanUrl = url.origin + url.pathname;
-    pageUrlDiv.innerHTML = `Share URL: ${cleanUrl}`;
+    pageUrlDiv.innerHTML = `Share: ${cleanUrl}`;
     pageUrlDiv.addEventListener('click', function () {
         copyToClipboard(currentPageUrl);
         showCopiedMessage(pageUrlDiv);
@@ -286,7 +279,7 @@ function displaySingleImage(data) {
 
     const openLink = document.createElement('a');
     openLink.classList.add('open-link-button');
-    openLink.textContent = '🔎';
+    openLink.textContent = '&#128269;'; // 🔎
     openLink.title = '原始尺寸 - Full Size';
     openLink.href = imageUrl;
     openLink.target = '_blank';
@@ -294,7 +287,7 @@ function displaySingleImage(data) {
 
     const downloadLink = document.createElement('a');
     downloadLink.classList.add('download-link-button');
-    downloadLink.textContent = '⬇️';
+    downloadLink.textContent = '&#11015;&#65039;'; // ⬇️
     downloadLink.title = '下載圖片 - Download';
 
     downloadLink.addEventListener('click', async (event) => {
