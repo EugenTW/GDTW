@@ -2,6 +2,12 @@ let authToken;
 
 document.addEventListener('DOMContentLoaded', async function () {
     const path = window.location.pathname;
+
+    if (path === '/img_view') {
+        console.info('/img_view page accessed, skipping image loading logic.');
+        return;
+    }
+
     const isAlbumMode = path.startsWith('/a/');
     const code = path.split('/')[2];
     const statusApiUrl = isAlbumMode ? '/is_api/isAlbumPasswordNeeded' : '/is_api/isImagePasswordNeeded';
