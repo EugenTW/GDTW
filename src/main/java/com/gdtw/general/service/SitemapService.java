@@ -38,8 +38,8 @@ public class SitemapService {
         sitemapGen.addUrl("https://gdtw.org/about_us");
         sitemapGen.addUrl("https://gdtw.org/contact_us");
         sitemapGen.addUrl("https://gdtw.org/error");
-        sitemapGen.addUrl("https://gdtw.org/image_view");
-        sitemapGen.addUrl("https://gdtw.org/image_share");
+        sitemapGen.addUrl("https://gdtw.org/img_upload");
+        sitemapGen.addUrl("https://gdtw.org/img_view");
         sitemapGen.addUrl("https://gdtw.org/error_404");
         sitemapGen.addUrl("https://gdtw.org/error_410");
         sitemapGen.addUrl("https://gdtw.org/error_403_405");
