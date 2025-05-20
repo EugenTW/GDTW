@@ -50,7 +50,8 @@
             <div class="settings-area">
                 <!-- Expiry Days Selection -->
                 <h3>分享期限 (天) - Expiry Date (days):</h3>
-                <select id="expiry-select">
+                <label for="expiry-select"  class="sr-only">過期天數 - Expiry (days):</label>
+                <select id="expiry-select" name="expiry">
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
@@ -74,6 +75,7 @@
                 <hr>
                 <!-- Password Input Field -->
                 <h3>密碼 (4~10位數字) - Password (4-10 digits):</h3>
+                <label for="password-input" class="sr-only">密碼 Password:</label>
                 <input type="text" id="password-input" maxlength="10"
                        placeholder="若不設密碼則不輸入 - Leave blank for no password">
 
@@ -138,8 +140,6 @@
             <img src="/images/uploading03.webp" alt="Uploading..." width="480" height="270">
         </div>
     </div>
-
-    </section>
 
 </main>
 
