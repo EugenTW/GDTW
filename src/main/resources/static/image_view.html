@@ -32,9 +32,9 @@
 
             <div id="password-modal" class="hidden">
                 <form id="password-form" method="get">
-                    <h3>請先輸入瀏覽密碼 - Please Enter Password</h3>
-                    <input type="password" id="password-input" placeholder="輸入4~10位數字 - Enter 4 to 10 digits">
-                    <button type="submit" id="password-submit">驗證 - Submit</button>
+                    <h3>輸入瀏覽密碼 - Enter Password</h3>
+                    <label for="password-input" class="sr-only">密碼 Password:</label>
+                    <input type="password" id="password-input" placeholder="輸入4~10位數字 - Enter 4 to 10 digits" maxlength="10" pattern="\d{4,10}">
                 </form>
             </div>
 
