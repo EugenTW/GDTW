@@ -1,8 +1,33 @@
 let authToken;
 
 document.addEventListener('DOMContentLoaded', async function () {
-    const path = window.location.pathname;
+    // === Back to Top ===
+    const backToTopButton = document.getElementById('scrollToTop');
+    if (backToTopButton) {
+        const minBottom = 175;
+        const maxBottom = 40;
 
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const windowHeight = window.innerHeight;
+            const docHeight = document.documentElement.scrollHeight;
+            const distanceToBottom = docHeight - (scrollTop + windowHeight);
+
+            backToTopButton.style.bottom = distanceToBottom <= minBottom
+                ? `${minBottom}px`
+                : `${maxBottom}px`;
+
+            backToTopButton.classList.toggle('show', scrollTop > 500);
+        });
+
+        backToTopButton.addEventListener('click', () => {
+            document.documentElement.scrollTo({ top: 0, behavior: 'smooth' });
+            document.body.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+
+    // === Image Gallery ===
+    const path = window.location.pathname;
     if (path === '/img_view') {
         console.info('/img_view page accessed, skipping image loading logic.');
         return;
@@ -13,7 +38,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     const statusApiUrl = isAlbumMode ? '/is_api/isAlbumPasswordNeeded' : '/is_api/isImagePasswordNeeded';
     const passwordApiUrl = isAlbumMode ? '/is_api/checkAlbumPassword' : '/is_api/checkImagePassword';
     const downloadApiUrl = isAlbumMode ? '/is_api/downloadAlbumImages' : '/is_api/downloadSingleImage';
-    const requestData = {code: code};
+    const requestData = { code };
 
     try {
         const response = await fetchWithRetry(statusApiUrl, requestData);
@@ -92,7 +117,7 @@ async function displayImagesSequentially(data) {
 
     const downloadAlbumButton = document.createElement('button');
     downloadAlbumButton.classList.add('download-album-button');
-    downloadAlbumButton.innerHTML = '&#11015;&#65039;';
+    downloadAlbumButton.innerHTML = '&#11015;&#65039;'; // ⬇️
     downloadAlbumButton.title = '下載所有圖片 - Download Gallery';
     downloadAlbumButton.addEventListener('click', function () {
         downloadEntireAlbum(data.images);
@@ -151,7 +176,7 @@ function loadImageSequentially(image, gallery, isNsfw) {
 
         const openLink = document.createElement('a');
         openLink.classList.add('open-link-button');
-        openLink.innerHTML = '&#128269;';
+        openLink.innerHTML = '&#128269;'; // 🔎
         openLink.title = '原始尺寸 - Full Size';
         openLink.href = image.imageUrl;
         openLink.target = '_blank';
@@ -159,25 +184,11 @@ function loadImageSequentially(image, gallery, isNsfw) {
 
         const downloadLink = document.createElement('a');
         downloadLink.classList.add('download-link-button');
-        downloadLink.innerHTML = '&#11015;&#65039;';
+        downloadLink.innerHTML = '&#11015;&#65039;'; // ⬇️
         downloadLink.title = '下載圖片 - Download';
         downloadLink.addEventListener('click', async (event) => {
             event.preventDefault();
-            try {
-                const response = await fetch(image.imageUrl, { mode: 'cors' });
-                const blob = await response.blob();
-                const blobUrl = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = blobUrl;
-                a.download = image.siName || 'download.jpg';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(blobUrl);
-            } catch (err) {
-                console.error('Download failed:', err);
-                alert('下載失敗! - Download Failed!');
-            }
+            downloadByUrl(image.imageUrl, image.siName || 'download.jpg');
         });
 
         const urlContainer = document.createElement('div');
@@ -219,7 +230,7 @@ function downloadEntireAlbum(images) {
 
                 if (count === images.length) {
                     zip.generateAsync({ type: "blob" }).then(content => {
-                        saveAs(content, `${albumName}.zip`);
+                        downloadBlob(content, `${albumName}.zip`);
                     });
                 }
             })
@@ -279,7 +290,7 @@ function displaySingleImage(data) {
 
     const openLink = document.createElement('a');
     openLink.classList.add('open-link-button');
-    openLink.textContent = '&#128269;'; // 🔎
+    openLink.innerHTML = '&#128269;'; // 🔎
     openLink.title = '原始尺寸 - Full Size';
     openLink.href = imageUrl;
     openLink.target = '_blank';
@@ -287,28 +298,12 @@ function displaySingleImage(data) {
 
     const downloadLink = document.createElement('a');
     downloadLink.classList.add('download-link-button');
-    downloadLink.textContent = '&#11015;&#65039;'; // ⬇️
+    downloadLink.innerHTML = '&#11015;&#65039;'; // ⬇️
     downloadLink.title = '下載圖片 - Download';
 
     downloadLink.addEventListener('click', async (event) => {
         event.preventDefault();
-
-        try {
-            const response = await fetch(image.imageUrl, { mode: 'cors' });
-            const blob = await response.blob();
-
-            const blobUrl = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = blobUrl;
-            a.download = image.siName || 'download.jpg';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(blobUrl);
-        } catch (err) {
-            console.error('Download failed:', err);
-            alert('下載失敗! - Download Failed!');
-        }
+        downloadByUrl(data.imageUrl, data.siName || 'download.jpg');
     });
 
     const urlContainer = document.createElement('div');
@@ -444,48 +439,32 @@ function showCopiedMessage() {
     }, 1500);
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-    const backToTopButton = document.getElementById('scrollToTop');
+function downloadBlob(blob, filename) {
+    const blobUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = blobUrl;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(blobUrl);
+}
 
-    if (!backToTopButton) {
-        console.error('Back to Top button not found!');
-        return;
+async function downloadByUrl(url, filename) {
+    try {
+        const response = await fetch(url, { mode: 'cors' });
+        const blob = await response.blob();
+        downloadBlob(blob, filename);
+    } catch (err) {
+        console.error('Download failed:', err);
+        alert('下載失敗! - Download Failed!');
     }
+}
 
-    const minBottom = 175;
-    const maxBottom = 40;
 
-    window.addEventListener('scroll', () => {
-        const scrollTop = window.scrollY;
-        const windowHeight = window.innerHeight;
-        const docHeight = document.documentElement.scrollHeight;
-        const distanceToBottom = docHeight - (scrollTop + windowHeight);
 
-        if (distanceToBottom <= minBottom) {
-            backToTopButton.style.bottom = `${minBottom}px`;
-        } else {
-            backToTopButton.style.bottom = `${maxBottom}px`;
-        }
 
-        if (scrollTop > 500) {
-            backToTopButton.classList.add('show');
-        } else {
-            backToTopButton.classList.remove('show');
-        }
-    });
 
-    backToTopButton.addEventListener('click', () => {
-        console.log('Back to Top button clicked!');
-        document.documentElement.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-        document.body.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    });
-});
 
 
 
