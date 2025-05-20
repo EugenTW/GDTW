@@ -60,6 +60,7 @@ public class ImgShareService {
     private final RedisCacheUtil redisCacheUtil;
     private final DailyStatisticService dailyStatisticService;
     private final RedisTemplate<String, String> redisStringStringTemplate;
+    private static final Random RANDOM = new Random();
 
     public ImgShareService(
             ImgSharePersistenceService imgSharePersistenceService,
@@ -120,6 +121,11 @@ public class ImgShareService {
             String token = jwtUtil.generateToken(code, ImgSharePersistenceService.STAGE_PASSED_PASSWORD);
             response.put(ImgSharePersistenceService.DOWNLOAD_TOKEN, token);
         } else {
+            try {
+                Thread.sleep(1000L + RANDOM.nextInt(2000));
+            } catch (InterruptedException ignored) {
+                // just for increasing guessing time
+            }
             response.put(ImgSharePersistenceService.STAGE_CHECK_PASSWORD, false);
         }
         return response;
@@ -142,6 +148,11 @@ public class ImgShareService {
             String token = jwtUtil.generateToken(code, ImgSharePersistenceService.STAGE_PASSED_PASSWORD);
             response.put(ImgSharePersistenceService.DOWNLOAD_TOKEN, token);
         } else {
+            try {
+                Thread.sleep(1000L + RANDOM.nextInt(2000));
+            } catch (InterruptedException ignored) {
+                // just for increasing guessing time
+            }
             response.put(ImgSharePersistenceService.STAGE_CHECK_PASSWORD, false);
         }
         return response;
