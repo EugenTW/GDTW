@@ -33,7 +33,6 @@ public class SecurityConfig {
                         .anyRequest().permitAll()
                 )
                 .httpBasic(Customizer.withDefaults());
-
         return http.build();
     }
 
