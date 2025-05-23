@@ -14,7 +14,7 @@ public class JwtUtil {
     private final JwtEncoder jwtEncoder;
     private final JwtDecoder jwtDecoder;
 
-    private static final long EXPIRATION_TIME_MILLIS = 5L * 60 * 1000;
+    private static final long EXPIRATION_TIME_MILLIS = 3L * 60 * 1000;
 
     public JwtUtil(JwtEncoder jwtEncoder, JwtDecoder jwtDecoder) {
         this.jwtEncoder = jwtEncoder;
