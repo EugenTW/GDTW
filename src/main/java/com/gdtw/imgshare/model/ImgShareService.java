@@ -122,7 +122,7 @@ public class ImgShareService {
             response.put(ImgSharePersistenceService.DOWNLOAD_TOKEN, token);
         } else {
             try {
-                Thread.sleep(1000L + RANDOM.nextInt(2000));
+                Thread.sleep(1000L + RANDOM.nextInt(500));
             } catch (InterruptedException ignored) {
                 // just for increasing guessing time
             }
@@ -149,7 +149,7 @@ public class ImgShareService {
             response.put(ImgSharePersistenceService.DOWNLOAD_TOKEN, token);
         } else {
             try {
-                Thread.sleep(1000L + RANDOM.nextInt(2000));
+                Thread.sleep(500L + RANDOM.nextInt(500));
             } catch (InterruptedException ignored) {
                 // just for increasing guessing time
             }
