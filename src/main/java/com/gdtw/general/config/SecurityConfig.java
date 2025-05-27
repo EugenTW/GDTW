@@ -1,4 +1,4 @@
-package com.gdtw.config;
+package com.gdtw.general.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -29,6 +29,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/sitemap.xml", "/error", "/error/**").permitAll()
+                        .requestMatchers("/.git/**", "/.env", "/.DS_Store", "/.idea/**").denyAll()
                         .requestMatchers(restrictedUrls).authenticated()
                         .anyRequest().permitAll()
                 )

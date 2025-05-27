@@ -1,6 +1,7 @@
 package com.gdtw.imgshare.model;
 
 import com.gdtw.dailystatistic.model.DailyStatisticService;
+import com.gdtw.general.exception.ImageStorageException;
 import com.gdtw.general.util.RedisCacheUtil;
 import com.gdtw.general.util.codec.ImgFilenameEncoderDecoderUtil;
 import com.gdtw.general.util.codec.ImgIdEncoderDecoderUtil;
@@ -137,9 +138,8 @@ public class ImgSharePersistenceService {
                     .filter(Objects::nonNull)
                     .findFirst()
                     .orElse("unknown");
-
-            logger.error("Error saving image file '{}', rolling back transaction.", filenameInfo, e);
             cleanupSavedFiles(savedFilePaths);
+            throw new ImageStorageException("Failed to store image file: " + filenameInfo, e);
         }
     }
 

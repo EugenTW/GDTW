@@ -1,4 +1,4 @@
-package com.gdtw.config;
+package com.gdtw.general.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
