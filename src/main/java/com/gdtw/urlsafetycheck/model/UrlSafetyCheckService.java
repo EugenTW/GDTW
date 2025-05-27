@@ -16,5 +16,4 @@ public class UrlSafetyCheckService {
         return safeBrowsingV4Service.checkUrlSafety(originalUrl);
     }
 
-
 }
