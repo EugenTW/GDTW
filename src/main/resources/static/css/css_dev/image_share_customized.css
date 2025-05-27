@@ -33,7 +33,7 @@ h2.major {
 
 h3 {
     font-size: 20px;
-    margin: 10px 0;
+    margin: 5px 0;
 }
 
 details {
@@ -57,8 +57,9 @@ details {
     width: 100%;
     max-width: 600px;
     padding: 20px;
-    border: 3px dashed #ffffff;
-    background-color: #4d4d4d;
+    border: 3px dashed #00d8ff;
+    border-radius: 5px;
+    background-color: #000da1;
     text-align: center;
     cursor: pointer;
     margin: 15px auto 5px;
@@ -192,6 +193,14 @@ details {
     cursor: not-allowed;
 }
 
+.nsfw-toggle-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    margin: 10px 0;
+}
+
 .final-cover {
     width: 100%;
     padding: 0 10px;
@@ -279,4 +288,9 @@ details {
     .settings-area label {
         font-size: 16px;
     }
+
+    #password-input::placeholder {
+        font-size: 12px;
+    }
+
 }
