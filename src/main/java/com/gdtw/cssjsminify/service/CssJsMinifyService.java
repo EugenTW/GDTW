@@ -1,7 +1,7 @@
 package com.gdtw.cssjsminify.service;
 
-import com.gdtw.general.service.ratelimiter.RateLimiterService;
 import com.google.javascript.jscomp.*;
+import com.google.javascript.jscomp.jarjar.com.google.common.collect.ImmutableList;
 import com.helger.css.ECSSVersion;
 import com.helger.css.decl.CascadingStyleSheet;
 import com.helger.css.reader.CSSReader;
@@ -47,7 +47,8 @@ public class CssJsMinifyService {
 
     private String tryMinifyJs(String jsCode) {
         try {
-            Compiler compiler = new Compiler();
+            Compiler compiler = buildSilentCompiler();
+
             CompilerOptions options = new CompilerOptions();
             CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
 
@@ -58,6 +59,54 @@ public class CssJsMinifyService {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    private Compiler buildSilentCompiler() {
+        Compiler compiler = new Compiler();
+        compiler.setErrorManager(new ErrorManager() {
+            private double typedPercent = 0;
+
+            @Override
+            public void report(CheckLevel level, JSError error) {
+                // Suppressed output
+            }
+
+            @Override
+            public void generateReport() {
+                // Suppressed summary
+            }
+
+            @Override
+            public int getErrorCount() {
+                return 0;
+            }
+
+            @Override
+            public int getWarningCount() {
+                return 0;
+            }
+
+            @Override
+            public ImmutableList<JSError> getErrors() {
+                return ImmutableList.of();
+            }
+
+            @Override
+            public ImmutableList<JSError> getWarnings() {
+                return ImmutableList.of();
+            }
+
+            @Override
+            public void setTypedPercent(double percent) {
+                this.typedPercent = percent;
+            }
+
+            @Override
+            public double getTypedPercent() {
+                return this.typedPercent;
+            }
+        });
+        return compiler;
     }
 
     private boolean isValidCssStrict(String cssCode) {
