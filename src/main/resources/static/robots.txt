@@ -5,4 +5,7 @@ Disallow: /ds_api/
 Disallow: /usc_api/
 Disallow: /cj_api/
 
+Disallow: /a/
+Disallow: /i/
+
 Sitemap: https://gdtw.org/sitemap.xml
