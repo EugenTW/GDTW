@@ -1,4 +1,4 @@
-package com.gdtw.config;
+package com.gdtw.general.util;
 
 import com.gdtw.general.service.RedisService;
 import com.gdtw.general.service.scheduled.ScheduledDailyStatisticService;
@@ -12,16 +12,16 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ShutdownListener implements ApplicationListener<ContextClosedEvent> {
+public class ShutdownListenerUtil implements ApplicationListener<ContextClosedEvent> {
 
-    private static final Logger logger = LoggerFactory.getLogger(ShutdownListener.class);
+    private static final Logger logger = LoggerFactory.getLogger(ShutdownListenerUtil.class);
 
     private final ScheduledDailyStatisticService scheduledDailyStatisticService;
     private final RedisService redisService;
     private final ShortUrlService shortUrlService;
     private final ImgShareService imgShareService;
 
-    public ShutdownListener(ScheduledDailyStatisticService scheduledTaskService, ShortUrlService shortUrlService, RedisService redisService, ImgShareService imgShareService) {
+    public ShutdownListenerUtil(ScheduledDailyStatisticService scheduledTaskService, ShortUrlService shortUrlService, RedisService redisService, ImgShareService imgShareService) {
         this.scheduledDailyStatisticService = scheduledTaskService;
         this.shortUrlService = shortUrlService;
         this.redisService = redisService;
