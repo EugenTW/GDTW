@@ -35,4 +35,5 @@ public class CssJsMinifyRestController {
         Map<String, String> result = minifyService.autoDetectAndMinify(source);
         return ResponseEntity.ok(result);
     }
+
 }
