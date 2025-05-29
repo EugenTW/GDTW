@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const shortenUrlDisplay = document.getElementById('shorten_url');
     const qrcodeContainer = document.getElementById('qrcode');
     const maxRetries = 5;
+    let lastSubmittedUrl = '';
 
     function isValidUrl(url) {
         if (!url || url.length > 200) return false;
@@ -13,10 +14,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function toggleButtonState() {
         const url = longUrlInput.value.trim();
-        generateButton.disabled = !isValidUrl(url);
+        const isValid = isValidUrl(url);
+        generateButton.disabled = !isValid || url === lastSubmittedUrl;
     }
 
     longUrlInput.addEventListener('input', toggleButtonState);
+
+    longUrlInput.addEventListener('paste', function (e) {
+        e.preventDefault();
+        const clipboardData = e.clipboardData || window.clipboardData;
+        const pastedText = clipboardData.getData('text');
+        longUrlInput.value = pastedText.trim();
+        toggleButtonState();
+    });
 
     longUrlInput.addEventListener('blur', function () {
         const url = longUrlInput.value.trim();
@@ -76,6 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         qrcodeContainer.style.display = "block";
 
                         copyToClipboard(shortUrl);
+                        lastSubmittedUrl = longUrl.trim();
                     } else {
                         shortenUrlDisplay.textContent = message;
                         shortenUrlDisplay.style.backgroundColor = "pink";
