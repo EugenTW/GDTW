@@ -55,7 +55,13 @@ a:hover {
     text-decoration: underline;
 }
 
-h2,
+h2{
+    color: #ffffff;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+
 h3 {
     color: #ffffff;
     margin: 10px 0;
