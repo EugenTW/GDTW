@@ -1,6 +1,5 @@
 package com.gdtw.imgshare.model;
 
-import com.gdtw.user.model.WebUserVO;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -37,10 +36,6 @@ public class ShareImgAlbumVO {
 
     @Column(name = "sia_nsfw")
     private Byte siaNsfw = 0;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "u_id", referencedColumnName = "u_id")
-    private WebUserVO user;
 
     public ShareImgAlbumVO() {
     }
@@ -115,14 +110,6 @@ public class ShareImgAlbumVO {
 
     public void setSiaNsfw(Byte siaNsfw) {
         this.siaNsfw = siaNsfw;
-    }
-
-    public WebUserVO getUser() {
-        return user;
-    }
-
-    public void setUser(WebUserVO user) {
-        this.user = user;
     }
 
 }

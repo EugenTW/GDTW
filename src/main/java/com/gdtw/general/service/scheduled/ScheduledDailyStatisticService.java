@@ -43,8 +43,6 @@ public class ScheduledDailyStatisticService {
         Integer imgUsed = statisticService.getStatisticOrDefault("imgUsed");
         Integer imgAlbumCreated = statisticService.getStatisticOrDefault("imgAlbumCreated");
         Integer imgAlbumUsed = statisticService.getStatisticOrDefault("imgAlbumUsed");
-        Integer vidCreated = statisticService.getStatisticOrDefault("vidCreated");
-        Integer vidUsed = statisticService.getStatisticOrDefault("vidUsed");
 
         // Write statistics to MySQL
         if (statistic != null) {
@@ -55,8 +53,6 @@ public class ScheduledDailyStatisticService {
             statistic.setDsImgUsed(statistic.getDsImgUsed() + imgUsed);
             statistic.setDsImgAlbumCreated(statistic.getDsImgAlbumCreated() + imgAlbumCreated);
             statistic.setDsImgAlbumUsed(statistic.getDsImgAlbumUsed() + imgAlbumUsed);
-            statistic.setDsVidCreated(statistic.getDsVidCreated() + vidCreated);
-            statistic.setDsVidUsed(statistic.getDsVidUsed() + vidUsed);
         } else {
             // If there is no data for the current day, create a new record
             statistic = new DailyStatisticVO();
@@ -67,8 +63,6 @@ public class ScheduledDailyStatisticService {
             statistic.setDsImgUsed(imgUsed);
             statistic.setDsImgAlbumCreated(imgAlbumCreated);
             statistic.setDsImgAlbumUsed(imgAlbumUsed);
-            statistic.setDsVidCreated(vidCreated);
-            statistic.setDsVidUsed(vidUsed);
         }
 
         // Save or update data to MySQL

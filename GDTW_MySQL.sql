@@ -7,29 +7,6 @@ database GDTW CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 use
 GDTW;
 
-CREATE TABLE web_user
-(
-    u_id            INT AUTO_INCREMENT PRIMARY KEY,
-    u_nickname      VARCHAR(25),
-    u_email         VARCHAR(100),
-    u_password      VARCHAR(100),
-    u_register_date DATE,
-    u_status        TINYINT DEFAULT 0 CHECK (u_status IN (0, 2))
-);
-ALTER TABLE web_user AUTO_INCREMENT = 1000000;
-
-CREATE TABLE web_admin
-(
-    am_id                INT AUTO_INCREMENT PRIMARY KEY,
-    am_nickname          VARCHAR(30),
-    am_password          VARCHAR(100),
-    am_email             VARCHAR(100),
-    am_last_logined_date DATETIME,
-    am_last_logined_ip   VARCHAR(40),
-    am_status            TINYINT DEFAULT 0
-);
-ALTER TABLE web_admin AUTO_INCREMENT = 100;
-
 CREATE TABLE daily_statistic
 (
     ds_id                INT AUTO_INCREMENT PRIMARY KEY,
@@ -40,8 +17,6 @@ CREATE TABLE daily_statistic
     ds_img_used          INT,
     ds_img_album_created INT,
     ds_img_album_used    INT,
-    ds_vid_created       INT,
-    ds_vid_used          INT
 );
 
 CREATE TABLE short_url
@@ -54,8 +29,7 @@ CREATE TABLE short_url
     su_total_used    INT        DEFAULT 0,
     su_status        TINYINT    DEFAULT 0,
     su_safe          VARCHAR(1) DEFAULT 0,
-    u_id             INT NULL,
-    FOREIGN KEY (u_id) REFERENCES web_user (u_id)
+    su_reported      INT        DEFAULT 0,
 );
 ALTER TABLE short_url AUTO_INCREMENT = 11000000;
 
@@ -70,8 +44,7 @@ CREATE TABLE share_img_album
     sia_total_visited INT         DEFAULT 0,
     sia_status        TINYINT     DEFAULT 0,
     sia_nsfw          TINYINT     DEFAULT 0,
-    u_id              INT NULL,
-    FOREIGN KEY (u_id) REFERENCES web_user (u_id)
+    sia_reported      INT         DEFAULT 0,
 );
 ALTER TABLE share_img_album AUTO_INCREMENT = 11000000;
 
@@ -87,12 +60,22 @@ CREATE TABLE share_img
     si_total_visited INT         DEFAULT 0,
     si_status        TINYINT     DEFAULT 0,
     si_nsfw          TINYINT     DEFAULT 0,
-    u_id             INT NULL,
+    si_reported      INT         DEFAULT 0,
     sia_id           INT NULL,
-    FOREIGN KEY (u_id) REFERENCES web_user (u_id),
     FOREIGN KEY (sia_id) REFERENCES share_img_album (sia_id)
 );
 ALTER TABLE share_img AUTO_INCREMENT = 11000000;
+
+CREATE TABLE violation_report (
+                                  vr_id            INT AUTO_INCREMENT PRIMARY KEY,
+                                  vr_ip            VARCHAR(45) NOT NULL,
+                                  vr_report_type   INT         NOT NULL,
+                                  vr_report_target VARCHAR(20) NOT NULL,
+                                  vr_report_reason INT         NOT NULL,
+                                  vr_created_time  DATETIME    DEFAULT CURRENT_TIMESTAMP,
+                                  UNIQUE KEY uniq_target_ip (vr_report_target, vr_ip)
+);
+ALTER TABLE violation_report AUTO_INCREMENT = 1000000;
 
 
 

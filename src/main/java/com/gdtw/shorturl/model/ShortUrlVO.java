@@ -1,8 +1,6 @@
 package com.gdtw.shorturl.model;
 
-import com.gdtw.user.model.WebUserVO;
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -34,10 +32,6 @@ public class ShortUrlVO {
 
     @Column(name = "su_safe")
     private String suSafe = "0";
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "u_Id", referencedColumnName = "u_id")
-    private WebUserVO user;
 
     public ShortUrlVO() {}
 
@@ -103,14 +97,6 @@ public class ShortUrlVO {
 
     public void setSuSafe(String suSafe) {
         this.suSafe = suSafe;
-    }
-
-    public WebUserVO getUser() {
-        return user;
-    }
-
-    public void setUser(WebUserVO user) {
-        this.user = user;
     }
 
 }
