@@ -37,6 +37,30 @@ main {
     margin: 0 auto;
 }
 
+#one-content,
+details {
+    padding: 0 16px;
+    max-width: 900px;
+    margin: 0 auto;
+    line-height: 1.8;
+    text-align: justify;
+}
+
+h2 {
+    color: #ffffff;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+h3 {
+    color: #ffffff;
+    margin: 10px 0;
+}
+
+#service-topic {
+    text-align: center;
+}
+
 a {
     color: #8dcaff;
     text-decoration: none;
@@ -46,14 +70,135 @@ a:hover {
     text-decoration: underline;
 }
 
-h2,
-h3 {
-    color: #ffffff;
-    margin-top: 30px;
-}
-
 hr {
     border: none;
     border-top: 1px solid #666;
-    margin: 30px 0;
+    margin: 5px 0;
+}
+
+.report-form {
+    background: #202941;
+    border: 3px solid #0027a9;
+    border-radius: 16px;
+    padding: 15px 15px 15px 15px;
+    margin: 20px auto;
+    max-width: 600px;
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-title {
+    font-weight: 600;
+    margin: 15px 0 6px 0;
+    text-align: center;
+    color: #a0c4ff;
+    font-size: 16px;
+}
+
+.report-select,
+.report-input {
+    width: 100%;
+    max-width: 80%;
+    margin: 0 0 10px 0;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1.5px solid #395d91;
+    background: #273862;
+    color: #e4e6eb;
+    text-align: center;
+    font-size: 15px;
+    box-sizing: border-box;
+    outline: none;
+    transition: border 0.2s;
+}
+
+.report-select:focus,
+.report-input:focus {
+    border: 1.5px solid #8dcaff;
+}
+
+.captcha-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 7px;
+}
+
+.captcha-value {
+    font-size: 18px;
+    letter-spacing: 4px;
+    color: #ffcb67;
+    font-family: "Consolas", monospace;
+    background: #000d48;
+    padding: 5px 18px;
+    border-radius: 7px;
+    user-select: all;
+}
+
+#refresh-captcha {
+    margin-left: 8px;
+    padding: 3px 10px;
+    background: #263957;
+    border: none;
+    border-radius: 6px;
+    color: #88bfff;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+#refresh-captcha:hover {
+    background: #365886;
+}
+
+.report-submit {
+    margin-top: 16px;
+    background: #3e77c8;
+    color: #fff;
+    padding: 8px 28px;
+    border: 2px solid #aeeeff;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.report-submit:hover {
+    background: #64a5f5;
+}
+
+.report-submit:disabled {
+    background: #2a548c;
+    cursor: not-allowed;
+}
+
+.sr-only {
+    position: absolute !important;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    border: 0;
+}
+
+@media (max-width: 500px) {
+    .report-form {
+        padding: 5px 5px;
+        max-width: 90%;
+    }
+    .form-title {
+        font-size: 14px;
+    }
+    .report-select,
+    .report-input {
+        font-size: 14px;
+    }
+    .captcha-value {
+        font-size: 14px;
+        padding: 5px 12px;
+    }
 }
