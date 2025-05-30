@@ -115,7 +115,6 @@ public class ShareImgAlbumVO {
         this.siaNsfw = siaNsfw;
     }
 
-
     public Integer getSiaReported() {
         return siaReported;
     }

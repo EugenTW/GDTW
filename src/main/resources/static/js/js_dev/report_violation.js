@@ -14,34 +14,58 @@ const REPORT_REASON_MAP = {
 let _captchaVal = "";
 let targetClearTimeout = null;
 
-function extractTargetId(str) {
+function extractTargetId(str, reportType) {
     let url = str.trim();
     url = url.replace(/^https?:\/\//i, "");
     let match = url.match(/^(gdtw\.org|localhost)(\/.+)?$/i);
-    if (match) {
-        let path = match[2] || "/";
-        path = path.split('?')[0];
-        let segments = path.split('/').filter(seg => seg.length > 0);
-        if (segments.length > 0) {
-            let last = segments[segments.length - 1];
-            if (/^[A-Za-z0-9]+$/.test(last)) {
-                return last;
-            }
+    if (!match) return null;
+    let path = match[2] || "/";
+    path = path.split('?')[0];
+    let segments = path.split('/').filter(seg => seg.length > 0);
+
+    if (reportType === "url") {
+        if (segments.length === 1 && /^[A-Za-z0-9]{4}$/.test(segments[0])) {
+            return segments[0];
+        }
+    } else if (reportType === "album") {
+        if (segments.length === 2 && segments[0] === 'a' && /^[A-Za-z0-9]{6}$/.test(segments[1])) {
+            return segments[1];
+        }
+    } else if (reportType === "image") {
+        if (segments.length === 2 && segments[0] === 'i' && /^[A-Za-z0-9]{6}$/.test(segments[1])) {
+            return segments[1];
         }
     }
     return null;
 }
 
 function isValidTargetUrl(str, reportType) {
-    const targetId = extractTargetId(str);
-    if (!targetId) return false;
     if (!reportType) return true;
-    if (reportType === "url") {
-        return targetId.length === 4;
-    } else if (reportType === "album" || reportType === "image") {
-        return targetId.length === 6;
+    return !!extractTargetId(str, reportType);
+}
+
+function handleTargetInput() {
+    const typeVal = document.getElementById('report-type').value;
+    const targetInput = document.getElementById('report-target');
+    const value = targetInput.value;
+
+    if (targetClearTimeout) {
+        clearTimeout(targetClearTimeout);
+        targetClearTimeout = null;
     }
-    return false;
+
+    if (typeVal && value && !isValidTargetUrl(value, typeVal)) {
+        targetInput.style.borderColor = "#a1002b";
+        targetClearTimeout = setTimeout(function () {
+            targetInput.value = "";
+            targetInput.placeholder = "請輸入正確的目標網址 / Please enter a valid report URL";
+            targetInput.style.borderColor = "#a1002b";
+            checkFormReady();
+        }, 500);
+    } else {
+        targetInput.style.borderColor = "";
+    }
+    checkFormReady();
 }
 
 function generateCaptcha() {
@@ -73,7 +97,7 @@ function showAlert(msg, success = true) {
     document.body.appendChild(alertDiv);
     setTimeout(function () {
         document.body.removeChild(alertDiv);
-    }, 2000);
+    }, 3000);
 }
 
 function isValidCaptcha(val) {
@@ -108,30 +132,6 @@ function checkFormReady() {
         isValidTargetUrl(targetVal, typeVal) &&
         captchaVal.length === 6 &&
         isValidCaptcha(captchaVal));
-}
-
-function handleTargetInput() {
-    const typeVal = document.getElementById('report-type').value;
-    const targetInput = document.getElementById('report-target');
-    const value = targetInput.value;
-
-    if (targetClearTimeout) {
-        clearTimeout(targetClearTimeout);
-        targetClearTimeout = null;
-    }
-
-    if (typeVal && value && !isValidTargetUrl(value, typeVal)) {
-        targetInput.style.borderColor = "#a1002b";
-        targetClearTimeout = setTimeout(function () {
-            targetInput.value = "";
-            targetInput.placeholder = "請輸入正確的目標網址 / Please enter a valid report URL";
-            targetInput.style.borderColor = "#a1002b";
-            checkFormReady();
-        }, 500);
-    } else {
-        targetInput.style.borderColor = "";
-    }
-    checkFormReady();
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -182,7 +182,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const reportTypeStr = document.getElementById('report-type').value;
         const reportReasonStr = document.getElementById('report-reason').value;
         const targetInput = document.getElementById('report-target').value;
-        const targetId = extractTargetId(targetInput);
+        const targetId = extractTargetId(targetInput, reportTypeStr);
 
         const payload = {
             reportType: REPORT_TYPE_MAP[reportTypeStr] || 0,

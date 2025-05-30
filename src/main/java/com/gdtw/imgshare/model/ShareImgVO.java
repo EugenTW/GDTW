@@ -145,4 +145,5 @@ public class ShareImgVO {
     public void setSiReported(Integer siReported) {
         this.siReported = siReported;
     }
+
 }

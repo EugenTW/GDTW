@@ -99,6 +99,26 @@ public class ShortUrlService {
         return dto.getSuStatus() == 0;
     }
 
+    @Transactional
+    public Map<String, String> reportShortUrl(Integer shortUrlId, Map<String, String> result) {
+        int updatedRows = shortUrlJpa.incrementReportIfNotBlocked(shortUrlId);
+
+        if (updatedRows == 1) {
+            result.put("reportStatus", "true");
+            result.put("response", "舉報成功！\nReport successful!");
+        } else {
+            boolean exists = shortUrlJpa.existsById(shortUrlId);
+            result.put("reportStatus", "false");
+            if (!exists) {
+                result.put("response", "查無此短網址。\nShort URL not found.");
+            } else {
+                result.put("response", "該網址已封鎖，無法再次舉報。\nThis URL has been blocked, cannot report again.");
+            }
+        }
+        return result;
+    }
+
+
     // ==================================================================
     // Redis caching methods
 

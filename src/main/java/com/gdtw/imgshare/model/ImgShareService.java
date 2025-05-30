@@ -256,6 +256,55 @@ public class ImgShareService {
         return response;
     }
 
+    public Map<String, String> reportImgAlbum(Integer albumId, Map<String, String> result) {
+        Optional<ShareImgAlbumVO> optional = shareImgAlbumJpa.findBySiaId(albumId);
+        if (optional.isEmpty()) {
+            result.put("reportStatus", "false");
+            result.put("response", "查無此相簿。\nAlbum not found.");
+            return result;
+        }
+
+        ShareImgAlbumVO album = optional.get();
+        if (album.getSiaStatus() != null && album.getSiaStatus() == 1) {
+            result.put("reportStatus", "false");
+            result.put("response", "該相簿已封鎖，無法再次舉報。\nThis album has been blocked, cannot report again.");
+            return result;
+        }
+
+        album.setSiaReported(album.getSiaReported() == null ? 1 : album.getSiaReported() + 1);
+        shareImgAlbumJpa.save(album);
+
+        List<ShareImgVO> images = shareImgJpa.findByAlbum_SiaIdOrderBySiIdAsc(albumId);
+        for (ShareImgVO img : images) {
+            if (img.getSiStatus() != null && img.getSiStatus() == 0) {
+                img.setSiReported(img.getSiReported() == null ? 1 : img.getSiReported() + 1);
+                shareImgJpa.save(img);
+            }
+        }
+
+        result.put("reportStatus", "true");
+        result.put("response", "舉報成功！\nReport successful!");
+        return result;
+    }
+
+    public Map<String, String> reportImage(Integer imageId, Map<String, String> result) {
+        int updatedRows = shareImgJpa.incrementReportIfNotBlocked(imageId);
+
+        if (updatedRows == 1) {
+            result.put("reportStatus", "true");
+            result.put("response", "舉報成功！\nReport successful!");
+        } else {
+            boolean exists = shareImgJpa.existsById(imageId);
+            result.put("reportStatus", "false");
+            if (!exists) {
+                result.put("response", "查無此圖片。\nImage not found.");
+            } else {
+                result.put("response", "該圖片已封鎖，無法再次舉報。\nThis image has been blocked, cannot report again.");
+            }
+        }
+        return result;
+    }
+
     public boolean isValidShareImageAlbum(String code) {
         return Boolean.TRUE.equals(
                 imgSharePersistenceService.isShareImageAlbumPasswordProtected(code)

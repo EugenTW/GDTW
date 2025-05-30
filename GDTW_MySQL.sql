@@ -1,11 +1,7 @@
-drop
-database if exists GDTW;
+DROP DATABASE IF EXISTS GDTW;
 
-create
-database GDTW CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
-use
-GDTW;
+CREATE DATABASE GDTW CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE GDTW;
 
 CREATE TABLE daily_statistic
 (
@@ -16,7 +12,7 @@ CREATE TABLE daily_statistic
     ds_img_created       INT,
     ds_img_used          INT,
     ds_img_album_created INT,
-    ds_img_album_used    INT,
+    ds_img_album_used    INT
 );
 
 CREATE TABLE short_url
@@ -29,7 +25,7 @@ CREATE TABLE short_url
     su_total_used    INT        DEFAULT 0,
     su_status        TINYINT    DEFAULT 0,
     su_safe          VARCHAR(1) DEFAULT 0,
-    su_reported      INT        DEFAULT 0,
+    su_reported      INT        DEFAULT 0
 );
 ALTER TABLE short_url AUTO_INCREMENT = 11000000;
 
@@ -44,7 +40,7 @@ CREATE TABLE share_img_album
     sia_total_visited INT         DEFAULT 0,
     sia_status        TINYINT     DEFAULT 0,
     sia_nsfw          TINYINT     DEFAULT 0,
-    sia_reported      INT         DEFAULT 0,
+    sia_reported      INT         DEFAULT 0
 );
 ALTER TABLE share_img_album AUTO_INCREMENT = 11000000;
 
@@ -73,9 +69,6 @@ CREATE TABLE violation_report (
                                   vr_report_target VARCHAR(20) NOT NULL,
                                   vr_report_reason INT         NOT NULL,
                                   vr_created_time  DATETIME    DEFAULT CURRENT_TIMESTAMP,
-                                  UNIQUE KEY uniq_target_ip (vr_report_target, vr_ip)
+                                  UNIQUE KEY uniq_target_ip_type (vr_report_target, vr_ip, vr_report_type)
 );
 ALTER TABLE violation_report AUTO_INCREMENT = 1000000;
-
-
-
