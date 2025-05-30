@@ -7,7 +7,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories(basePackages = {
         "com.gdtw.dailystatistic.model",
         "com.gdtw.imgshare.model",
-        "com.gdtw.shorturl.model"
+        "com.gdtw.shorturl.model",
+        "com.gdtw.reportviolation.model"
 })
 
 public class JpaConfig {

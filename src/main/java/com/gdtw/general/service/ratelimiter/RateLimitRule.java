@@ -7,7 +7,8 @@ public enum RateLimitRule {
     SHAREIMAGE_GET("shareimage:get", 250, 60),
     STATISTIC_GET("statistic:get", 250, 60),
     URLSAFE_GET("urlsafe:get", 30, 60),
-    CSS_JS_MINIFY("cssjs:monify", 30, 60);
+    CSS_JS_MINIFY_CREATE("cssjs:create", 30, 60),
+    REPORT_VIOLATION_CREATE("reportviolation:create", 10, 60);
 
     public final String actionKey;
     public final int limit;

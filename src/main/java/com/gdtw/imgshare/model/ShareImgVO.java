@@ -40,6 +40,9 @@ public class ShareImgVO {
     @Column(name = "si_nsfw", nullable = false)
     private Byte siNsfw = 0;
 
+    @Column(name = "si_reported")
+    private Integer siReported = 0;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sia_id", referencedColumnName = "sia_id")
     private ShareImgAlbumVO album;
@@ -135,4 +138,11 @@ public class ShareImgVO {
         this.album = album;
     }
 
+    public Integer getSiReported() {
+        return siReported;
+    }
+
+    public void setSiReported(Integer siReported) {
+        this.siReported = siReported;
+    }
 }

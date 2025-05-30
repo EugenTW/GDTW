@@ -202,7 +202,7 @@ document.addEventListener('DOMContentLoaded', function () {
             } catch (err) {
                 data = {};
             }
-            if (data && data.reportStatus === true) {
+            if (data && String(data.reportStatus) === "true") {
                 showAlert("舉報送出成功，謝謝您！<br>Report sent successfully, thank you!");
                 resetForm();
             } else {

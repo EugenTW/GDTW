@@ -1,6 +1,8 @@
 package com.gdtw.reportviolation.controller;
 
+import com.gdtw.general.service.ratelimiter.RateLimiterService;
 import com.gdtw.reportviolation.model.ReportRequestDTO;
+import com.gdtw.reportviolation.model.ReportViolationService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +18,15 @@ import java.util.Map;
 @RequestMapping("/rv_api")
 public class ReportViolationRestController {
 
+    private final RateLimiterService rateLimiterService;
+    private final ReportViolationService reportViolationService;
+
     private static final String HEADER_X_FORWARDED_FOR = "X-Forwarded-For";
+
+    public ReportViolationRestController(RateLimiterService rateLimiterService, ReportViolationService reportViolationService) {
+        this.rateLimiterService = rateLimiterService;
+        this.reportViolationService = reportViolationService;
+    }
 
     @PostMapping("/send_report")
     public ResponseEntity<Map<String, String>> sendReport(
@@ -24,13 +34,11 @@ public class ReportViolationRestController {
             HttpServletRequest request) {
 
         String originalIp = request.getHeader(HEADER_X_FORWARDED_FOR);
-        int reportType = reportRequestDTO.getReportType();
-        int reportReason = reportRequestDTO.getReportReason();
-        String reportTargetUrl = reportRequestDTO.getTargetUrl();
+        rateLimiterService.checkReportViolationLimit(originalIp);
 
-        System.out.println("Report Target URL: " + reportTargetUrl);
+        System.out.println(reportRequestDTO.getTargetUrl() + " " + reportRequestDTO.getReportType() + " " + reportRequestDTO.getReportReason());
 
-        Map<String, String> response = new HashMap<>();
+        Map<String, String> response = reportViolationService.createViolationReport (reportRequestDTO, originalIp);
 
         return ResponseEntity.ok(response);
     }
