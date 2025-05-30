@@ -40,17 +40,23 @@
                 <option value="image">線上圖片 / Online Image</option>
             </select>
 
-            <div class="form-title">舉報理由 - Reason</div>
+            <div class="form-title">舉報目標 - Report Target</div>
+            <label for="report-target" class="sr-only">舉報目標 - Report Target</label>
+            <input type="text" maxlength="50" class="report-input report-target" id="report-target"
+                   placeholder="請輸入目標網址 / Enter the URL of report target" required>
+
+            <div class="form-title">舉報理由 - Report Reason</div>
             <label for="report-reason" class="sr-only">舉報理由 / Reason</label>
             <select class="report-select" id="report-reason" required>
                 <option value="" selected disabled>請選擇 / Please Select</option>
                 <option value="child">兒童色情 / Child Sexual Abuse</option>
                 <option value="violence">血腥暴力 / Violence</option>
-                <option value="hate">仇恨歧視 / Hate/Discrimination</option>
+                <option value="hate">仇恨歧視 / Hate or Discrimination</option>
+                <option value="scam">詐騙內容 / Scam</option>
                 <option value="other">其他 / Other</option>
             </select>
 
-            <div class="form-title">驗證碼 - Captcha</div>
+            <div class="form-title">舉報驗證碼 - Report Captcha</div>
             <div class="captcha-container">
                 <span id="captcha-value" class="captcha-value"></span>
                 <button type="button" id="refresh-captcha" title="換一個">⟳</button>
