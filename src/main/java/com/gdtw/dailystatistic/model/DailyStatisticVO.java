@@ -34,12 +34,6 @@ public class DailyStatisticVO {
     @Column(name = "ds_img_album_used")
     private Integer dsImgAlbumUsed;
 
-    @Column(name = "ds_vid_created")
-    private Integer dsVidCreated;
-
-    @Column(name = "ds_vid_used")
-    private Integer dsVidUsed;
-
     public DailyStatisticVO() {
     }
 
@@ -107,19 +101,4 @@ public class DailyStatisticVO {
         this.dsImgAlbumUsed = dsImgAlbumUsed;
     }
 
-    public Integer getDsVidCreated() {
-        return dsVidCreated;
-    }
-
-    public void setDsVidCreated(Integer dsVidCreated) {
-        this.dsVidCreated = dsVidCreated;
-    }
-
-    public Integer getDsVidUsed() {
-        return dsVidUsed;
-    }
-
-    public void setDsVidUsed(Integer dsVidUsed) {
-        this.dsVidUsed = dsVidUsed;
-    }
 }
