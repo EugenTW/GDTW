@@ -37,6 +37,9 @@ public class ShareImgAlbumVO {
     @Column(name = "sia_nsfw")
     private Byte siaNsfw = 0;
 
+    @Column(name = "sia_reported")
+    private Integer siaReported = 0;
+
     public ShareImgAlbumVO() {
     }
 
@@ -110,6 +113,14 @@ public class ShareImgAlbumVO {
 
     public void setSiaNsfw(Byte siaNsfw) {
         this.siaNsfw = siaNsfw;
+    }
+
+    public Integer getSiaReported() {
+        return siaReported;
+    }
+
+    public void setSiaReported(Integer siaReported) {
+        this.siaReported = siaReported;
     }
 
 }

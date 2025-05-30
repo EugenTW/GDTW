@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-public interface DailyStatisticJpa  extends JpaRepository<DailyStatisticVO, Integer> {
+public interface DailyStatisticJpa extends JpaRepository<DailyStatisticVO, Integer> {
 
     DailyStatisticVO findByDsDate(LocalDate dsDate);
 

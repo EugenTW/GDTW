@@ -33,6 +33,9 @@ public class ShortUrlVO {
     @Column(name = "su_safe")
     private String suSafe = "0";
 
+    @Column(name = "su_reported")
+    private Integer suReported = 0;
+
     public ShortUrlVO() {}
 
     public Integer getSuId() {
@@ -97,6 +100,15 @@ public class ShortUrlVO {
 
     public void setSuSafe(String suSafe) {
         this.suSafe = suSafe;
+    }
+
+
+    public Integer getSuReported() {
+        return suReported;
+    }
+
+    public void setSuReported(Integer suReported) {
+        this.suReported = suReported;
     }
 
 }

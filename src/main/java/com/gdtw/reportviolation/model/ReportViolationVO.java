@@ -28,8 +28,7 @@ public class ReportViolationVO {
     @Column(name = "vr_report_reason", nullable = false)
     private Integer vrReportReason;
 
-    @Column(name = "vr_created_time", nullable = false, updatable = false,
-            columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "vr_created_time", updatable = false, insertable = false)
     private LocalDateTime vrCreatedTime;
 
     public ReportViolationVO() {

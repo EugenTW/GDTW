@@ -136,7 +136,11 @@ public class RateLimiterService {
     }
 
     public void checkCssJsMinifyLimit(String clientIp) {
-        checkLimit(clientIp, RateLimitRule.CSS_JS_MINIFY);
+        checkLimit(clientIp, RateLimitRule.CSS_JS_MINIFY_CREATE);
+    }
+
+    public void checkReportViolationLimit(String clientIp) {
+        checkLimit(clientIp, RateLimitRule.REPORT_VIOLATION_CREATE);
     }
 
 }
