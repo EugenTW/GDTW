@@ -32,6 +32,7 @@
 
         <form class="report-form" autocomplete="off">
             <div class="form-title">舉報類型 - Report Type</div>
+            <label for="report-type" class="sr-only">舉報類型 / Report Type</label>
             <select class="report-select" id="report-type" required>
                 <option value="" selected disabled>請選擇 / Please Select</option>
                 <option value="url">短網址 / Short URL</option>
@@ -40,6 +41,7 @@
             </select>
 
             <div class="form-title">舉報理由 - Reason</div>
+            <label for="report-reason" class="sr-only">舉報理由 / Reason</label>
             <select class="report-select" id="report-reason" required>
                 <option value="" selected disabled>請選擇 / Please Select</option>
                 <option value="child">兒童色情 / Child Sexual Abuse</option>
@@ -53,6 +55,7 @@
                 <span id="captcha-value" class="captcha-value"></span>
                 <button type="button" id="refresh-captcha" title="換一個">⟳</button>
             </div>
+            <label for="captcha-input" class="sr-only">驗證碼 / Captcha</label>
             <input type="text" maxlength="6" inputmode="numeric" pattern="[0-9]{6}" class="report-input" id="captcha-input"
                    placeholder="請輸入上方數字 / Enter above number" required>
 
