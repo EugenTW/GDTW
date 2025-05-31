@@ -1,10 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
     const longUrlInput = document.getElementById('long_url');
-
     if (longUrlInput) {
         function autoResizeTextarea(el) {
-            el.style.height = '40px';
-            el.style.height = el.scrollHeight + 'px';
+            el.style.height = 'auto';
+            el.style.height = Math.max(el.scrollHeight, 50) + 'px';
         }
         autoResizeTextarea(longUrlInput);
         longUrlInput.addEventListener('input', function () {
