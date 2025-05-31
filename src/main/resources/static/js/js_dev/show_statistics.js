@@ -24,6 +24,8 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('total-image-albums-visited').textContent = data.totalImageAlbumsVisited || 0;
             document.getElementById('total-images-created').textContent = data.totalImagesCreated || 0;
             document.getElementById('total-images-visited').textContent = data.totalImagesVisited || 0;
+            document.getElementById('total-css-js-minified').textContent = data.totalCssJsMinified || 0;
+            // document.getElementById('total-webp-converted').textContent = data.totalWebpConverted || 0;
         })
         .catch(error => {
             console.error('Error fetching total statistics:', error);

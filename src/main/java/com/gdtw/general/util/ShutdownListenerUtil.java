@@ -1,7 +1,7 @@
 package com.gdtw.general.util;
 
 import com.gdtw.general.service.RedisService;
-import com.gdtw.general.service.scheduled.ScheduledDailyStatisticService;
+import com.gdtw.general.service.scheduled.ScheduledStatService;
 import com.gdtw.imgshare.model.ImgShareService;
 import com.gdtw.shorturl.model.ShortUrlService;
 import org.slf4j.Logger;
@@ -16,13 +16,13 @@ public class ShutdownListenerUtil implements ApplicationListener<ContextClosedEv
 
     private static final Logger logger = LoggerFactory.getLogger(ShutdownListenerUtil.class);
 
-    private final ScheduledDailyStatisticService scheduledDailyStatisticService;
+    private final ScheduledStatService scheduledStatService;
     private final RedisService redisService;
     private final ShortUrlService shortUrlService;
     private final ImgShareService imgShareService;
 
-    public ShutdownListenerUtil(ScheduledDailyStatisticService scheduledTaskService, ShortUrlService shortUrlService, RedisService redisService, ImgShareService imgShareService) {
-        this.scheduledDailyStatisticService = scheduledTaskService;
+    public ShutdownListenerUtil(ScheduledStatService scheduledTaskService, ShortUrlService shortUrlService, RedisService redisService, ImgShareService imgShareService) {
+        this.scheduledStatService = scheduledTaskService;
         this.shortUrlService = shortUrlService;
         this.redisService = redisService;
         this.imgShareService = imgShareService;
@@ -34,7 +34,7 @@ public class ShutdownListenerUtil implements ApplicationListener<ContextClosedEv
             logger.info("Starting shutdown process...");
 
             // Save daily statistics
-            scheduledDailyStatisticService.saveStatistics();
+            scheduledStatService.saveStatistics();
 
             // Sync Redis 'Short URL' usage data to MySQL
             shortUrlService.syncSuUsageToMySQL();

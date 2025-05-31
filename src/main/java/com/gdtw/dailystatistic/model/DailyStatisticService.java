@@ -63,7 +63,7 @@ public class DailyStatisticService {
         }
 
         Object[] row = (Object[]) result[0];
-        int[] safeValues = new int[7];
+        int[] safeValues = new int[9];
         for (int i = 0; i < safeValues.length; i++) {
             if (row[i] instanceof Number number) {
                 safeValues[i] = number.intValue();
@@ -79,6 +79,8 @@ public class DailyStatisticService {
         totalStatistics.setTotalImageAlbumsCreated(safeValues[4]);
         totalStatistics.setTotalImageAlbumsVisited(safeValues[5]);
         totalStatistics.setTotalWebServiceCount(safeValues[6]);
+        totalStatistics.setTotalCssJsMinified(safeValues[7]);
+        totalStatistics.setTotalWebpConverted(safeValues[8]);
 
         saveTotalServiceStatisticsDtoToRedis(key, totalStatistics);
         return totalStatistics;
@@ -204,13 +206,13 @@ public class DailyStatisticService {
         incrementAndSetTTL(key);
     }
 
-    public void incrementVidCreated() {
-        String key = REDIS_KEY_STATISTIC_PREFIX + getCurrentDate() + ":vidCreated";
+    public void incrementCssJsMinified() {
+        String key = REDIS_KEY_STATISTIC_PREFIX + getCurrentDate() + ":cssJsMinified";
         incrementAndSetTTL(key);
     }
 
-    public void incrementVidUsed() {
-        String key = REDIS_KEY_STATISTIC_PREFIX + getCurrentDate() + ":vidUsed";
+    public void incrementImgToWebpUsed() {
+        String key = REDIS_KEY_STATISTIC_PREFIX + getCurrentDate() + ":imgToWebpUsed";
         incrementAndSetTTL(key);
     }
 
@@ -228,8 +230,8 @@ public class DailyStatisticService {
         redisStringIntegerTemplate.delete(REDIS_KEY_STATISTIC_PREFIX + dateStr + ":imgUsed");
         redisStringIntegerTemplate.delete(REDIS_KEY_STATISTIC_PREFIX + dateStr + ":imgAlbumCreated");
         redisStringIntegerTemplate.delete(REDIS_KEY_STATISTIC_PREFIX + dateStr + ":imgAlbumUsed");
-        redisStringIntegerTemplate.delete(REDIS_KEY_STATISTIC_PREFIX + dateStr + ":vidCreated");
-        redisStringIntegerTemplate.delete(REDIS_KEY_STATISTIC_PREFIX + dateStr + ":vidUsed");
+        redisStringIntegerTemplate.delete(REDIS_KEY_STATISTIC_PREFIX + dateStr + ":cssJsMinified");
+        redisStringIntegerTemplate.delete(REDIS_KEY_STATISTIC_PREFIX + dateStr + ":imgToWebpUsed");
     }
 
     private static String getCurrentDate() {

@@ -34,6 +34,12 @@ public class DailyStatisticVO {
     @Column(name = "ds_img_album_used")
     private Integer dsImgAlbumUsed;
 
+    @Column(name = "ds_css_js_minified")
+    private Integer dsCssJsMinified;
+
+    @Column(name = "ds_img_to_webp_used")
+    private Integer dsImgToWebpUsed;
+
     public DailyStatisticVO() {
     }
 
@@ -99,6 +105,22 @@ public class DailyStatisticVO {
 
     public void setDsImgAlbumUsed(Integer dsImgAlbumUsed) {
         this.dsImgAlbumUsed = dsImgAlbumUsed;
+    }
+
+    public Integer getDsCssJsMinified() {
+        return dsCssJsMinified;
+    }
+
+    public void setDsCssJsMinified(Integer dsCssJsMinified) {
+        this.dsCssJsMinified = dsCssJsMinified;
+    }
+
+    public Integer getDsImgToWebpUsed() {
+        return dsImgToWebpUsed;
+    }
+
+    public void setDsImgToWebpUsed(Integer dsImgToWebpUsed) {
+        this.dsImgToWebpUsed = dsImgToWebpUsed;
     }
 
 }

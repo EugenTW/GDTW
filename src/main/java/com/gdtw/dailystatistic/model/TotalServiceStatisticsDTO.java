@@ -10,8 +10,9 @@ public class TotalServiceStatisticsDTO implements Serializable {
     private int totalImageAlbumsCreated = 0;
     private int totalImageAlbumsVisited = 0;
     private int totalWebServiceCount = 0;
+    private int totalCssJsMinified = 0;
+    private int totalWebpConverted = 0;
 
-    // Getters and setters
     public int getTotalShortUrlsCreated() {
         return totalShortUrlsCreated;
     }
@@ -67,5 +68,22 @@ public class TotalServiceStatisticsDTO implements Serializable {
     public void setTotalWebServiceCount(int totalWebServiceCount) {
         this.totalWebServiceCount = totalWebServiceCount;
     }
+
+    public int getTotalCssJsMinified() {
+        return totalCssJsMinified;
+    }
+
+    public void setTotalCssJsMinified(int totalCssJsMinified) {
+        this.totalCssJsMinified = totalCssJsMinified;
+    }
+
+    public int getTotalWebpConverted() {
+        return totalWebpConverted;
+    }
+
+    public void setTotalWebpConverted(int totalWebpConverted) {
+        this.totalWebpConverted = totalWebpConverted;
+    }
+
 }
 

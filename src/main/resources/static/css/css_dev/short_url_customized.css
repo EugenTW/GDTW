@@ -39,27 +39,31 @@ details {
 #long_url {
     width: 90%;
     min-width: 300px;
-    max-width: 800px;
+    max-width: 600px;
+    min-height: 40px;
     height: 50px;
     padding: 10px;
     font-size: 16px;
-    color: #3DC2EC;
+    color: #affffc;
     background-color: #001557;
-    border: 3px solid #a0fffc;
+    border: 3px solid #3DC2EC;
     border-radius: 5px;
     margin: 10px 0;
     box-sizing: border-box;
+    line-height: 1.2;
+    overflow-y: hidden;
+    resize: none;
 }
 
 #generate {
     width: 300px;
     height: 50px;
     margin: 10px 0;
-    background-color: #480e81;
-    color: #ffd6e8;
+    background-color: #005d15;
+    color: #d6ffe4;
     font-size: 16px;
     border-radius: 10px;
-    border: 3px solid #FF3EA5;
+    border: 3px solid #30ff30;
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -68,11 +72,11 @@ details {
 }
 
 #generate:hover:enabled {
-    background-color: #8838d9;
+    background-color: #00721c;
 }
 
 #generate:disabled {
-    background-color: #480e81;
+    background-color: #005d15;
     cursor: not-allowed;
 }
 
@@ -80,10 +84,10 @@ details {
     width: 300px;
     height: 50px;
     margin: 10px 0;
-    background-color: #E9F5BE;
+    background-color: #fff3c6;
     color: #000000;
     font-size: 16px;
-    border: 3px solid #ff4f5d;
+    border: 3px solid #ff9900;
     border-radius: 10px;
     display: flex;
     justify-content: center;
@@ -94,7 +98,7 @@ details {
 #qrcode {
     display: none;
     margin: 10px 0;
-    border: 2px solid #E9F5BE;
+    border: 3px solid #e600ff;
 }
 
 .reminder {

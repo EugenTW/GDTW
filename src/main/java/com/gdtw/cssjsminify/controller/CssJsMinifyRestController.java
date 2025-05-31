@@ -1,6 +1,7 @@
 package com.gdtw.cssjsminify.controller;
 
 import com.gdtw.cssjsminify.service.CssJsMinifyService;
+import com.gdtw.dailystatistic.model.DailyStatisticService;
 import com.gdtw.general.service.ratelimiter.RateLimiterService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +15,12 @@ public class CssJsMinifyRestController {
 
     private final CssJsMinifyService minifyService;
     private final RateLimiterService rateLimiterService;
+    private final DailyStatisticService dailyStatisticService;
 
-    public CssJsMinifyRestController(CssJsMinifyService minifyService, RateLimiterService rateLimiterService) {
+    public CssJsMinifyRestController(CssJsMinifyService minifyService, RateLimiterService rateLimiterService, DailyStatisticService dailyStatisticService) {
         this.minifyService = minifyService;
         this.rateLimiterService = rateLimiterService;
+        this.dailyStatisticService = dailyStatisticService;
     }
 
     @PostMapping("/css_js_minifier")
@@ -25,9 +28,9 @@ public class CssJsMinifyRestController {
 
         String originalIp = originRequest.getHeader("X-Forwarded-For");
         rateLimiterService.checkCssJsMinifyLimit(originalIp);
+        dailyStatisticService.incrementCssJsMinified();
 
         String source = requestBody.getOrDefault("source", "").trim();
-
         if (source.isBlank()) {
             return ResponseEntity.badRequest().body(Map.of("type", "ERROR", "error", "Empty input."));
         }

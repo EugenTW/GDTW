@@ -22,4 +22,13 @@ public interface ShareImgJpa extends JpaRepository<ShareImgVO, Integer> {
     @Query("UPDATE ShareImgVO s SET s.siReported = COALESCE(s.siReported, 0) + 1 WHERE s.siId = :siId AND (s.siStatus IS NULL OR s.siStatus = 0)")
     int incrementReportIfNotBlocked(@Param("siId") Integer siId);
 
+    @Modifying
+    @Query("UPDATE ShareImgVO s SET s.siStatus = 1 WHERE s.album.siaId IN :albumIds")
+    int blockImagesByAlbumIds(@Param("albumIds") List<Integer> albumIds);
+
+    @Modifying
+    @Query("UPDATE ShareImgVO s SET s.siStatus = 1 WHERE s.siStatus = 0 AND s.siReported > :reportedThreshold AND (s.siTotalVisited IS NOT NULL AND s.siReported * 1.0 / s.siTotalVisited >= :reportedProportion)")
+    int blockReportedImages(@Param("reportedThreshold") int reportedThreshold, @Param("reportedProportion") double reportedProportion);
+
+
 }
