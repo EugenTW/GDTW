@@ -9,6 +9,7 @@ The project currently provides the following features:
 - Free URL safety check (powered by Google Safe Browsing V4).
 - Free CSS & JS Minifier.
 - Daily traffic statistics and total traffic data analytics.
+- Auto 'Report Violation' system.
 
 The backend server runs on Ubuntu + Nginx.  
 The project is live and can be accessed at the following URL:     
@@ -23,7 +24,8 @@ https://gdtw.org/
 - 免費圖片上傳共享服務（包含自動銷毀、密碼保護、NSFW遮罩）。
 - 免費的網址安全性檢查（使用Google Safe Browsing V4）。
 - 免費CSS和JS壓縮服務。
-- 每日流量數據統計和總流量數據統計。 
+- 每日流量數據統計和總流量數據統計。
+- 自動化舉報濫用系統。
 
 伺服器端使用Ubuntu + Nginx。  
 此專案目前已上線，可於此網址訪問：    
