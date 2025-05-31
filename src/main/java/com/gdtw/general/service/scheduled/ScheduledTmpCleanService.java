@@ -11,8 +11,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 @Service
-public class ScheduledCleanTemporaryFilesService {
-    private static final Logger logger = LoggerFactory.getLogger(ScheduledCleanTemporaryFilesService.class);
+public class ScheduledTmpCleanService {
+    private static final Logger logger = LoggerFactory.getLogger(ScheduledTmpCleanService.class);
 
     @Scheduled(cron = "${task.schedule.cron.dailyTemporaryFilesCleanupService}")
     public void scheduledTemporaryFilesCleanupService() {

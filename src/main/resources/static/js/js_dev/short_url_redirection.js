@@ -15,8 +15,53 @@ document.addEventListener('DOMContentLoaded', function () {
     } else {
         showError("短網址無效 / Invalid short URL.");
     }
-});
 
+    function showCopyAlert(msg) {
+        const alertDiv = document.createElement('div');
+        alertDiv.style.position = "fixed";
+        alertDiv.style.left = "50%";
+        alertDiv.style.top = "50%";
+        alertDiv.style.transform = "translate(-50%, -50%)";
+        alertDiv.style.background = "#00FF00";
+        alertDiv.style.color = "#000000";
+        alertDiv.style.padding = "15px 20px";
+        alertDiv.style.border="2px solid #227700";
+        alertDiv.style.borderRadius = "5px";
+        alertDiv.style.fontSize = "16px";
+        alertDiv.style.fontWeight = "bold";
+        alertDiv.style.zIndex = "9999";
+        alertDiv.style.textAlign = "center";
+        alertDiv.innerHTML = msg;
+        document.body.appendChild(alertDiv);
+        setTimeout(function () {
+            document.body.removeChild(alertDiv);
+        }, 1500);
+    }
+
+    function copyTextContent(element, fallbackMsg) {
+        if (!element) return;
+        const text = element.textContent.trim();
+        if (!text) {
+            showCopyAlert(fallbackMsg || "無內容可複製 / Nothing to copy");
+            return;
+        }
+
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(text)
+                .then(() => showCopyAlert("複製成功！<br>Copied to clipboard!"))
+                .catch(() => showCopyAlert("複製失敗 / Copy failed"));
+        }
+    }
+
+    document.querySelector('.shorten-url')?.addEventListener('click', function () {
+        copyTextContent(this, "短網址無內容");
+    });
+
+    document.querySelector('.original-url')?.addEventListener('click', function () {
+        copyTextContent(this, "原始網址無內容");
+    });
+
+});
 
 function fetchOriginalUrlWithRetry(code, maxRetries, delay) {
     let attempts = 0;

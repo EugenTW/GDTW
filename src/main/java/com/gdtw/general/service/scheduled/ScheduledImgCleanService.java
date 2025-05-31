@@ -20,8 +20,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
-public class ScheduledImgCleanupService {
-    private static final Logger logger = LoggerFactory.getLogger(ScheduledImgCleanupService.class);
+public class ScheduledImgCleanService {
+    private static final Logger logger = LoggerFactory.getLogger(ScheduledImgCleanService.class);
 
 
     @Value("${app.imageStoragePath}")
@@ -33,7 +33,7 @@ public class ScheduledImgCleanupService {
     private final ShareImgAlbumJpa shareImgAlbumJpa;
     private final ShareImgJpa shareImgJpa;
 
-    public ScheduledImgCleanupService(ShareImgAlbumJpa shareImgAlbumJpa, ShareImgJpa shareImgJpa) {
+    public ScheduledImgCleanService(ShareImgAlbumJpa shareImgAlbumJpa, ShareImgJpa shareImgJpa) {
         this.shareImgAlbumJpa = shareImgAlbumJpa;
         this.shareImgJpa = shareImgJpa;
     }

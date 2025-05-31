@@ -1,5 +1,19 @@
 document.addEventListener('DOMContentLoaded', function () {
     const longUrlInput = document.getElementById('long_url');
+
+    if (longUrlInput) {
+        function autoResizeTextarea(el) {
+            el.style.height = '40px';
+            el.style.height = el.scrollHeight + 'px';
+        }
+        autoResizeTextarea(longUrlInput);
+        longUrlInput.addEventListener('input', function () {
+            autoResizeTextarea(this);
+        });
+        longUrlInput.addEventListener('paste', function () {
+            setTimeout(() => autoResizeTextarea(this), 0);
+        });
+    }
     const generateButton = document.getElementById('generate');
     const shortenUrlDisplay = document.getElementById('shorten_url');
     const qrcodeContainer = document.getElementById('qrcode');
@@ -125,8 +139,9 @@ document.addEventListener('DOMContentLoaded', function () {
         alertDiv.style.top = "50%";
         alertDiv.style.left = "50%";
         alertDiv.style.transform = "translate(-50%, -50%)";
-        alertDiv.style.backgroundColor = color || "#484848";
-        alertDiv.style.color = "#FFFFFF";
+        alertDiv.style.background = "#00FF00";
+        alertDiv.style.color = "#000000";
+        alertDiv.style.border="2px solid #227700";
         alertDiv.style.padding = "15px";
         alertDiv.style.borderRadius = "5px";
         alertDiv.style.zIndex = "9999";

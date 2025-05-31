@@ -102,7 +102,6 @@ public class ShortUrlVO {
         this.suSafe = suSafe;
     }
 
-
     public Integer getSuReported() {
         return suReported;
     }
