@@ -36,13 +36,9 @@ public class ReportViolationRestController {
         String originalIp = request.getHeader(HEADER_X_FORWARDED_FOR);
         rateLimiterService.checkReportViolationLimit(originalIp);
 
-        System.out.println(reportRequestDTO.getTargetUrl() + " " + reportRequestDTO.getReportType() + " " + reportRequestDTO.getReportReason());
-
         Map<String, String> response = reportViolationService.createViolationReport (reportRequestDTO, originalIp);
 
         return ResponseEntity.ok(response);
     }
-
-
 
 }
