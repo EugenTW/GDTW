@@ -13,6 +13,7 @@ import java.io.IOException;
 public class MethodNotAllowedLoggingFilter implements Filter {
 
     private static final Logger suspiciousLogger = LoggerFactory.getLogger("http405Logger");
+    private static final String HEADER_X_FORWARDED_FOR = "X-Forwarded-For";
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -24,7 +25,7 @@ public class MethodNotAllowedLoggingFilter implements Filter {
         chain.doFilter(request, wrappedResp);
 
         if (wrappedResp.getStatus() == HttpServletResponse.SC_METHOD_NOT_ALLOWED) {
-            String ip = req.getRemoteAddr();
+            String ip = req.getHeader(HEADER_X_FORWARDED_FOR);
             String method = req.getMethod();
             String uri = req.getRequestURI();
             String query = req.getQueryString();
