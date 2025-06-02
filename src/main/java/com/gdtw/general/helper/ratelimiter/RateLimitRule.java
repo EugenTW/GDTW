@@ -1,4 +1,4 @@
-package com.gdtw.general.service.ratelimiter;
+package com.gdtw.general.helper.ratelimiter;
 
 public enum RateLimitRule {
     SHORTURL_CREATE("shorturl:create", 30, 60),

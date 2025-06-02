@@ -1,7 +1,7 @@
 package com.gdtw.reportviolation.model;
 
-import com.gdtw.general.util.codec.IdEncoderDecoderUtil;
-import com.gdtw.general.util.codec.ImgIdEncoderDecoderUtil;
+import com.gdtw.general.util.CodecShortUrlIdUtil;
+import com.gdtw.general.util.CodecImgIdUtil;
 import com.gdtw.imgshare.model.ImgShareService;
 import com.gdtw.reportviolation.dto.ReportRequestDTO;
 import com.gdtw.shorturl.model.ShortUrlService;
@@ -40,15 +40,15 @@ public class ReportViolationService {
 
             switch (reportedType) {
                 case 1:
-                    Integer shortUrlId = IdEncoderDecoderUtil.decodeId(reportedUrl);
+                    Integer shortUrlId = CodecShortUrlIdUtil.decodeId(reportedUrl);
                     shortUrlService.reportShortUrl(shortUrlId, result);
                     break;
                 case 2:
-                    Integer albumId = ImgIdEncoderDecoderUtil.decodeImgId(reportedUrl);
+                    Integer albumId = CodecImgIdUtil.decodeImgId(reportedUrl);
                     imgShareService.reportImgAlbum(albumId, result);
                     break;
                 case 3:
-                    Integer imageId = ImgIdEncoderDecoderUtil.decodeImgId(reportedUrl);
+                    Integer imageId = CodecImgIdUtil.decodeImgId(reportedUrl);
                     imgShareService.reportImage(imageId, result);
                     break;
                 default:

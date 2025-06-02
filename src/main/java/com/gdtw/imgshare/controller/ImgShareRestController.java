@@ -2,7 +2,7 @@ package com.gdtw.imgshare.controller;
 
 import com.gdtw.dailystatistic.model.DailyStatisticService;
 import com.gdtw.general.exception.InsufficientDiskSpaceException;
-import com.gdtw.general.service.ratelimiter.RateLimiterService;
+import com.gdtw.general.helper.ratelimiter.RateLimiterHelper;
 import com.gdtw.general.util.UploadValidatorUtil;
 import com.gdtw.imgshare.dto.AlbumCreationRequestDTO;
 import com.gdtw.imgshare.model.ImgShareService;
@@ -25,17 +25,15 @@ public class ImgShareRestController {
 
     private final ImgShareService imgShareService;
     private final DailyStatisticService dailyStatisticService;
-    private final RateLimiterService rateLimiterService;
-    private final UploadValidatorUtil uploadValidatorUtil;
+    private final RateLimiterHelper rateLimiterService;
 
     private static final String HEADER_X_FORWARDED_FOR = "X-Forwarded-For";
     private static final String ERROR_KEY = "error";
 
-    public ImgShareRestController(ImgShareService imgShareService, DailyStatisticService dailyStatisticService, RateLimiterService rateLimiterService, UploadValidatorUtil uploadValidatorUtil) {
+    public ImgShareRestController(ImgShareService imgShareService, DailyStatisticService dailyStatisticService, RateLimiterHelper rateLimiterService) {
         this.imgShareService = imgShareService;
         this.dailyStatisticService = dailyStatisticService;
         this.rateLimiterService = rateLimiterService;
-        this.uploadValidatorUtil = uploadValidatorUtil;
     }
 
     @PostMapping("/create_new_album")
@@ -49,7 +47,7 @@ public class ImgShareRestController {
         String originalIp = request.getHeader(HEADER_X_FORWARDED_FOR);
         rateLimiterService.checkCreateShareImageLimit(originalIp);
 
-        Optional<String> validationError = uploadValidatorUtil.validateFiles(files);
+        Optional<String> validationError = UploadValidatorUtil.validateFiles(files);
         if (validationError.isPresent()) {
             Map<String, String> response = new HashMap<>();
             response.put(ERROR_KEY, validationError.get());

@@ -1,8 +1,8 @@
-package com.gdtw.general.util.codec;
+package com.gdtw.general.util;
 
 import java.security.SecureRandom;
 
-public class ImgIdEncoderDecoderUtil {
+public class CodecImgIdUtil {
 
     private static final int MIN_ID = 11000000;
     private static final int MAX_ID = 25000000;
@@ -23,7 +23,7 @@ public class ImgIdEncoderDecoderUtil {
     private static final int RANDOM_BASE = RANDOM_CHARS.length();
     private static final SecureRandom RANDOM = new SecureRandom();
 
-    private ImgIdEncoderDecoderUtil() {}
+    private CodecImgIdUtil() {}
 
     public static String encodeImgId(Integer id) {
         if (id < MIN_ID || id > MAX_ID) {

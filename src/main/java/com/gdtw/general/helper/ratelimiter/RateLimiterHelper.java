@@ -1,24 +1,24 @@
-package com.gdtw.general.service.ratelimiter;
+package com.gdtw.general.helper.ratelimiter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Duration;
 
-@Service
-public class RateLimiterService {
+@Component
+public class RateLimiterHelper {
 
     private final RedisTemplate<String, String> redisTemplate;
-    private static final Logger logger = LoggerFactory.getLogger(RateLimiterService.class);
+    private static final Logger logger = LoggerFactory.getLogger(RateLimiterHelper.class);
 
     private volatile long lastRedisErrorLogTime = 0;
 
-    public RateLimiterService(@Qualifier("redisStringStringTemplate") RedisTemplate<String, String> redisTemplate) {
+    public RateLimiterHelper(@Qualifier("redisStringStringTemplate") RedisTemplate<String, String> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
@@ -93,7 +93,7 @@ public class RateLimiterService {
 
         if (violations != null) {
             Long ttl = redisTemplate.getExpire(violationKey);
-            if (ttl == -1L) {
+            if (ttl != null && ttl == -1L) {
                 redisTemplate.expire(violationKey, Duration.ofMinutes(15));
             }
         }

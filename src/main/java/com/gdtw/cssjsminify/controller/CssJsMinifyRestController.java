@@ -2,7 +2,7 @@ package com.gdtw.cssjsminify.controller;
 
 import com.gdtw.cssjsminify.service.CssJsMinifyService;
 import com.gdtw.dailystatistic.model.DailyStatisticService;
-import com.gdtw.general.service.ratelimiter.RateLimiterService;
+import com.gdtw.general.helper.ratelimiter.RateLimiterHelper;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +14,10 @@ import java.util.Map;
 public class CssJsMinifyRestController {
 
     private final CssJsMinifyService minifyService;
-    private final RateLimiterService rateLimiterService;
+    private final RateLimiterHelper rateLimiterService;
     private final DailyStatisticService dailyStatisticService;
 
-    public CssJsMinifyRestController(CssJsMinifyService minifyService, RateLimiterService rateLimiterService, DailyStatisticService dailyStatisticService) {
+    public CssJsMinifyRestController(CssJsMinifyService minifyService, RateLimiterHelper rateLimiterService, DailyStatisticService dailyStatisticService) {
         this.minifyService = minifyService;
         this.rateLimiterService = rateLimiterService;
         this.dailyStatisticService = dailyStatisticService;

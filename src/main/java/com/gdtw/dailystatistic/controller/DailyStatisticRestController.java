@@ -3,7 +3,7 @@ package com.gdtw.dailystatistic.controller;
 import com.gdtw.dailystatistic.dto.ChartDataDTO;
 import com.gdtw.dailystatistic.model.DailyStatisticService;
 import com.gdtw.dailystatistic.dto.TotalServiceStatisticsDTO;
-import com.gdtw.general.service.ratelimiter.RateLimiterService;
+import com.gdtw.general.helper.ratelimiter.RateLimiterHelper;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/ds_api")
 public class DailyStatisticRestController {
 
-    private final RateLimiterService rateLimiterService;
+    private final RateLimiterHelper rateLimiterService;
     private final DailyStatisticService dailyStatisticService;
 
-    public DailyStatisticRestController(RateLimiterService rateLimiterService, DailyStatisticService dailyStatisticService) {
+    public DailyStatisticRestController(RateLimiterHelper rateLimiterService, DailyStatisticService dailyStatisticService) {
         this.rateLimiterService = rateLimiterService;
         this.dailyStatisticService = dailyStatisticService;
     }

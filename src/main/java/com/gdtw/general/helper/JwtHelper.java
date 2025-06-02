@@ -1,4 +1,4 @@
-package com.gdtw.general.util.jwt;
+package com.gdtw.general.helper;
 
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Component;
@@ -9,14 +9,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class JwtUtil {
+public class JwtHelper {
 
     private final JwtEncoder jwtEncoder;
     private final JwtDecoder jwtDecoder;
 
     private static final long EXPIRATION_TIME_MILLIS = 3L * 60 * 1000;
 
-    public JwtUtil(JwtEncoder jwtEncoder, JwtDecoder jwtDecoder) {
+    public JwtHelper(JwtEncoder jwtEncoder, JwtDecoder jwtDecoder) {
         this.jwtEncoder = jwtEncoder;
         this.jwtDecoder = jwtDecoder;
     }

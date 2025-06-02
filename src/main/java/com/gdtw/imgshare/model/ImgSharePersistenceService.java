@@ -2,10 +2,10 @@ package com.gdtw.imgshare.model;
 
 import com.gdtw.dailystatistic.model.DailyStatisticService;
 import com.gdtw.general.exception.ImageStorageException;
-import com.gdtw.general.util.RedisCacheUtil;
-import com.gdtw.general.util.codec.ImgFilenameEncoderDecoderUtil;
-import com.gdtw.general.util.codec.ImgIdEncoderDecoderUtil;
-import com.gdtw.general.util.jwt.JwtUtil;
+import com.gdtw.general.helper.RedisObjectCacheHelper;
+import com.gdtw.general.util.CodecImgFilenameUtil;
+import com.gdtw.general.util.CodecImgIdUtil;
+import com.gdtw.general.helper.JwtHelper;
 import com.gdtw.imgshare.dto.AlbumCreationRequestDTO;
 import com.gdtw.imgshare.dto.ShareImgAlbumInfoDTO;
 import com.gdtw.imgshare.dto.ShareImgInfoDTO;
@@ -39,21 +39,21 @@ public class ImgSharePersistenceService {
     private static final Duration TTL_DURATION = Duration.ofMinutes(10);
     private static final Logger logger = LoggerFactory.getLogger(ImgSharePersistenceService.class);
 
-    private final RedisCacheUtil redisCacheUtil;
+    private final RedisObjectCacheHelper redisCacheUtil;
     private final ShareImgAlbumJpa shareImgAlbumJpa;
     private final ShareImgJpa shareImgJpa;
     private final DailyStatisticService dailyStatisticService;
-    private final JwtUtil jwtUtil;
+    private final JwtHelper jwtUtil;
 
     @Value("${app.imageStoragePath}")
     private String imageStoragePath;
 
     public ImgSharePersistenceService(
-            RedisCacheUtil redisCacheUtil,
+            RedisObjectCacheHelper redisCacheUtil,
             ShareImgAlbumJpa shareImgAlbumJpa,
             ShareImgJpa shareImgJpa,
             DailyStatisticService dailyStatisticService,
-            JwtUtil jwtUtil
+            JwtHelper jwtUtil
     ) {
         this.redisCacheUtil = redisCacheUtil;
         this.shareImgAlbumJpa = shareImgAlbumJpa;
@@ -73,7 +73,7 @@ public class ImgSharePersistenceService {
         shareImgAlbumVO.setSiaStatus((byte) 0);
 
         ShareImgAlbumVO savedAlbum = shareImgAlbumJpa.saveAndFlush(shareImgAlbumVO);
-        String encodedNewAlbumId = ImgIdEncoderDecoderUtil.encodeImgId(savedAlbum.getSiaId());
+        String encodedNewAlbumId = CodecImgIdUtil.encodeImgId(savedAlbum.getSiaId());
 
         savedAlbum.setSiaCode(encodedNewAlbumId);
         shareImgAlbumJpa.save(savedAlbum);
@@ -118,8 +118,8 @@ public class ImgSharePersistenceService {
 
                 ShareImgVO savedImage = shareImgJpa.saveAndFlush(shareImgVO);
 
-                String encodedSiId = ImgIdEncoderDecoderUtil.encodeImgId(savedImage.getSiId());
-                String encodedFilename = ImgFilenameEncoderDecoderUtil.encodeImgFilename(savedImage.getSiId());
+                String encodedSiId = CodecImgIdUtil.encodeImgId(savedImage.getSiId());
+                String encodedFilename = CodecImgFilenameUtil.encodeImgFilename(savedImage.getSiId());
                 String newFilename = encodedFilename + fileExtension;
 
                 savedImage.setSiCode(encodedSiId);
@@ -148,7 +148,7 @@ public class ImgSharePersistenceService {
 
     public Map<String, Object> isShareImageAlbumPasswordProtected(String code) {
         Map<String, Object> response = new HashMap<>();
-        Integer siaId = ImgIdEncoderDecoderUtil.decodeImgId(code);
+        Integer siaId = CodecImgIdUtil.decodeImgId(code);
         String redisKey = ALBUM_INFO_CACHE_PREFIX + siaId;
 
         Optional<ShareImgAlbumInfoDTO> dtoOpt = redisCacheUtil.getObject(redisKey, ShareImgAlbumInfoDTO.class);
@@ -190,7 +190,7 @@ public class ImgSharePersistenceService {
 
     public Map<String, Object> isShareImagePasswordProtected(String code) {
         Map<String, Object> response = new HashMap<>();
-        Integer siId = ImgIdEncoderDecoderUtil.decodeImgId(code);
+        Integer siId = CodecImgIdUtil.decodeImgId(code);
         String redisKey = IMAGE_INFO_CACHE_PREFIX + siId;
 
         Optional<ShareImgInfoDTO> dtoOpt = redisCacheUtil.getObject(redisKey, ShareImgInfoDTO.class);
