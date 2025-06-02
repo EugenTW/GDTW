@@ -1,4 +1,4 @@
-package com.gdtw;
+package com.gdtw.general.controller;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
