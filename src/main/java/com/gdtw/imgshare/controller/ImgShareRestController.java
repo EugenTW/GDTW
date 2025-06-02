@@ -30,6 +30,9 @@ public class ImgShareRestController {
 
     private static final String HEADER_X_FORWARDED_FOR = "X-Forwarded-For";
     private static final String ERROR_KEY = "error";
+    private static final long MAX_FILE_SIZE = 20 * 1024 * 1024L;
+    private static final long MAX_FILES_IN_PACKAGE = 50;
+    private static final long MAX_TOTAL_SIZE = 500 * 1024 * 1024L;
 
     public ImgShareRestController(ImgShareService imgShareService, DailyStatisticService dailyStatisticService, RateLimiterService rateLimiterService) {
         this.imgShareService = imgShareService;
@@ -47,6 +50,27 @@ public class ImgShareRestController {
 
         String originalIp = request.getHeader(HEADER_X_FORWARDED_FOR);
         rateLimiterService.checkCreateShareImageLimit(originalIp);
+
+        for (MultipartFile file : files) {
+            if (file.getSize() > MAX_FILE_SIZE) {
+                Map<String, String> response = new HashMap<>();
+                response.put(ERROR_KEY, "單檔大小超過限制，請縮小檔案或分次上傳。\nThe file exceeds the maximum size limit. Please resize or split and upload again.");
+                return ResponseEntity.badRequest().body(response);
+            }
+        }
+
+        if (files.size() > MAX_FILES_IN_PACKAGE) {
+            Map<String, String> response = new HashMap<>();
+            response.put(ERROR_KEY, "一次最多僅能上傳50張圖片，請減少數量後再試。\nYou can upload up to 50 images at a time. Please reduce the number of files and try again.");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        long totalSize = files.stream().mapToLong(MultipartFile::getSize).sum();
+        if (totalSize > MAX_TOTAL_SIZE) {
+            Map<String, String> response = new HashMap<>();
+            response.put(ERROR_KEY, "單次上傳總容量超過限制，請縮小或分批上傳。\nThe total upload size exceeds the limit. Please reduce or split the files and upload again.");
+            return ResponseEntity.badRequest().body(response);
+        }
 
         AlbumCreationRequestDTO requestDTO = new AlbumCreationRequestDTO(files, expiryDays, nsfw, password, originalIp);
 

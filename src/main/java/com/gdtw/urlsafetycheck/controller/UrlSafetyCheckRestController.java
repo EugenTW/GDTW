@@ -52,6 +52,13 @@ public class UrlSafetyCheckRestController {
         }
 
         String inputUrl = (String) reqMap.get("original_url");
+
+        final int MAX_URL_LENGTH = 200;
+        if (inputUrl != null && inputUrl.length() > MAX_URL_LENGTH) {
+            result.put("safeValue", "0");
+            return result;
+        }
+
         String safeValue = urlSafetyCheckService.checkUrlSafety(inputUrl);
 
         redisStringIntegerTemplate.opsForValue().increment(REDIS_CALL_COUNT_KEY);

@@ -6,10 +6,22 @@ document.addEventListener('DOMContentLoaded', function () {
     const statsDisplay = document.querySelector('.stats-display');
     const copyBtn = document.querySelector('.copy-button');
 
+    const MAX_INPUT_SIZE = 250 * 1024;
+
     let lastInput = "";
 
     function normalizeInput(text) {
-        return text.replace(/\r\n|\r/g, '\n').replace(/[^\x09\x0A\x0D\x20-\x7E\u4E00-\u9FFF]/g, '').trim();
+        let cleaned = text
+            .replace(/\r\n|\r/g, '\n')
+            .replace(/[^\x09\x0A\x0D\x20-\x7E\u4E00-\u9FFF]/g, '')
+            .trim();
+
+        if (cleaned.length > MAX_INPUT_SIZE) {
+            alert("輸入內容過長，請分段壓縮或縮減內容。\nInput is too long, please compress in smaller parts.");
+            cleaned = "";
+        }
+
+        return cleaned;
     }
 
     function clearResultArea() {

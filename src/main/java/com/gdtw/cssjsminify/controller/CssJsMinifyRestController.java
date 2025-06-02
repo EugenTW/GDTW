@@ -31,8 +31,16 @@ public class CssJsMinifyRestController {
         dailyStatisticService.incrementCssJsMinified();
 
         String source = requestBody.getOrDefault("source", "").trim();
+
         if (source.isBlank()) {
             return ResponseEntity.badRequest().body(Map.of("type", "ERROR", "error", "Empty input."));
+        }
+
+        final int MAX_INPUT_SIZE = 250 * 1024;
+        if (source.length() > MAX_INPUT_SIZE) {
+            return ResponseEntity.badRequest().body(
+                    Map.of("type", "ERROR",
+                            "error", "Input too large. Please split and compress separately."));
         }
 
         Map<String, String> result = minifyService.autoDetectAndMinify(source);
