@@ -1,4 +1,4 @@
-package com.gdtw.general.util.jwt;
+package com.gdtw.general.config;
 
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;

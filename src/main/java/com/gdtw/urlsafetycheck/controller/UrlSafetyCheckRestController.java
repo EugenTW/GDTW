@@ -1,6 +1,6 @@
 package com.gdtw.urlsafetycheck.controller;
 
-import com.gdtw.general.service.ratelimiter.RateLimiterService;
+import com.gdtw.general.helper.ratelimiter.RateLimiterHelper;
 import com.gdtw.urlsafetycheck.model.UrlSafetyCheckService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -21,13 +21,13 @@ public class UrlSafetyCheckRestController {
 
     private static final Logger logger = LoggerFactory.getLogger(UrlSafetyCheckRestController.class);
     private final RedisTemplate<String, Integer> redisStringIntegerTemplate;
-    private final RateLimiterService rateLimiterService;
+    private final RateLimiterHelper rateLimiterService;
     private final UrlSafetyCheckService urlSafetyCheckService;
 
     private static final String REDIS_CALL_COUNT_KEY = "URL_SAFETY_API_CALL_COUNT";
     private static final int DAILY_LIMIT = 2400;
 
-    public UrlSafetyCheckRestController(RedisTemplate<String, Integer> redisStringIntegerTemplate, RateLimiterService rateLimiterService, UrlSafetyCheckService urlSafetyCheckService) {
+    public UrlSafetyCheckRestController(RedisTemplate<String, Integer> redisStringIntegerTemplate, RateLimiterHelper rateLimiterService, UrlSafetyCheckService urlSafetyCheckService) {
         this.redisStringIntegerTemplate = redisStringIntegerTemplate;
         this.rateLimiterService = rateLimiterService;
         this.urlSafetyCheckService = urlSafetyCheckService;

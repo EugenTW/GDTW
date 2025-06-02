@@ -1,4 +1,4 @@
-package com.gdtw.general.util;
+package com.gdtw.general.helper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -13,13 +13,13 @@ import java.util.Map;
 import java.util.Optional;
 
 @Component
-public class RedisCacheUtil {
+public class RedisObjectCacheHelper {
 
-    private static final Logger logger = LoggerFactory.getLogger(RedisCacheUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(RedisObjectCacheHelper.class);
     private final RedisTemplate<String, Object> universalRedisTemplate;
     private final ObjectMapper objectMapper;
 
-    public RedisCacheUtil(@Qualifier("universalRedisTemplate") RedisTemplate<String, Object> universalRedisTemplate, ObjectMapper objectMapper) {
+    public RedisObjectCacheHelper(@Qualifier("universalRedisTemplate") RedisTemplate<String, Object> universalRedisTemplate, ObjectMapper objectMapper) {
         this.universalRedisTemplate = universalRedisTemplate;
         this.objectMapper = objectMapper;
     }

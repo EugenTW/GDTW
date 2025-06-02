@@ -2,9 +2,9 @@ package com.gdtw.shorturl.model;
 
 import com.gdtw.general.exception.ShortUrlBannedException;
 import com.gdtw.general.exception.ShortUrlNotFoundException;
-import com.gdtw.general.service.scheduled.ScheduledUsageService;
-import com.gdtw.general.util.RedisCacheUtil;
-import com.gdtw.general.util.codec.IdEncoderDecoderUtil;
+import com.gdtw.general.helper.ServiceUsageCounterHelper;
+import com.gdtw.general.helper.RedisObjectCacheHelper;
+import com.gdtw.general.util.CodecShortUrlIdUtil;
 
 import com.gdtw.shorturl.dto.ShortUrlInfoDTO;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -24,15 +24,15 @@ public class ShortUrlService {
     private static final String USAGE_KEY_PREFIX = "su:usage:";
 
     private final ShortUrlJpa shortUrlJpa;
-    private final ScheduledUsageService scheduledUsageService;
-    private final RedisCacheUtil redisCacheUtil;
+    private final ServiceUsageCounterHelper serviceUsageCounterHelper;
+    private final RedisObjectCacheHelper redisObjectCacheUtil;
     private final RedisTemplate<String,Integer> redisStringIntegerTemplate;
     private final RedisTemplate<String, Object> universalRedisTemplate;
 
-    public ShortUrlService(ShortUrlJpa shortUrlJpa, ScheduledUsageService scheduledUsageService, RedisCacheUtil redisCacheUtil, @Qualifier("redisStringIntegerTemplate") RedisTemplate<String, Integer> redisStringIntegerTemplate, @Qualifier("universalRedisTemplate") RedisTemplate<String, Object> universalRedisTemplate) {
+    public ShortUrlService(ShortUrlJpa shortUrlJpa, ServiceUsageCounterHelper serviceUsageCounterHelper, RedisObjectCacheHelper redisCacheUtil, @Qualifier("redisStringIntegerTemplate") RedisTemplate<String, Integer> redisStringIntegerTemplate, @Qualifier("universalRedisTemplate") RedisTemplate<String, Object> universalRedisTemplate) {
         this.shortUrlJpa = shortUrlJpa;
-        this.scheduledUsageService = scheduledUsageService;
-        this.redisCacheUtil = redisCacheUtil;
+        this.serviceUsageCounterHelper = serviceUsageCounterHelper;
+        this.redisObjectCacheUtil = redisCacheUtil;
         this.redisStringIntegerTemplate = redisStringIntegerTemplate;
         this.universalRedisTemplate = universalRedisTemplate;
     }
@@ -53,7 +53,7 @@ public class ShortUrlService {
         ShortUrlVO saved = shortUrlJpa.save(shortUrl);
         Integer suId = saved.getSuId();
 
-        String encoded = IdEncoderDecoderUtil.encodeId(suId);
+        String encoded = CodecShortUrlIdUtil.encodeId(suId);
         saved.setSuShortenedUrl(encoded);
 
         ShortUrlInfoDTO dto = new ShortUrlInfoDTO(
@@ -72,7 +72,7 @@ public class ShortUrlService {
     public Map.Entry<String, String> getOriginalUrl(String code) {
         Integer suId;
         try {
-            suId = IdEncoderDecoderUtil.decodeId(code);
+            suId = CodecShortUrlIdUtil.decodeId(code);
         } catch (Exception e) {
             throw new ShortUrlNotFoundException("短碼無效! Invalid short code!");
         }
@@ -83,14 +83,14 @@ public class ShortUrlService {
             throw new ShortUrlBannedException("此短網址已失效! The short URL is banned.");
         }
 
-        scheduledUsageService.countServiceUsage(USAGE_KEY_PREFIX, suId);
+        serviceUsageCounterHelper.countServiceUsage(USAGE_KEY_PREFIX, suId);
         return new AbstractMap.SimpleEntry<>(dto.getSuOriginalUrl(), dto.getSuSafe());
     }
 
     public boolean checkCodeValid(String code) {
         Integer suId;
         try {
-            suId = IdEncoderDecoderUtil.decodeId(code);
+            suId = CodecShortUrlIdUtil.decodeId(code);
         } catch (Exception e) {
             return false;
         }
@@ -132,7 +132,7 @@ public class ShortUrlService {
     private ShortUrlInfoDTO getOrCacheShortUrlInfo(Integer suId) {
         String redisKey = SHORT_URL_INFO_CACHE_PREFIX + suId;
 
-        Optional<ShortUrlInfoDTO> optional = redisCacheUtil.getObject(redisKey, ShortUrlInfoDTO.class);
+        Optional<ShortUrlInfoDTO> optional = redisObjectCacheUtil.getObject(redisKey, ShortUrlInfoDTO.class);
         if (optional.isPresent()) {
             return optional.get();
         }
@@ -152,7 +152,7 @@ public class ShortUrlService {
                 vo.getSuSafe()
         );
 
-        redisCacheUtil.setObject(redisKey, dto, TTL_DURATION);
+        redisObjectCacheUtil.setObject(redisKey, dto, TTL_DURATION);
         return dto;
     }
 

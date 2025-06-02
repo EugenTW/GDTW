@@ -1,6 +1,5 @@
 package com.gdtw.general.util;
 
-import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -9,7 +8,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-@Component
 public class UploadValidatorUtil {
 
     private static final long MAX_FILE_SIZE = 20 * 1024 * 1024L;
@@ -19,7 +17,7 @@ public class UploadValidatorUtil {
             "image/jpeg", "image/png", "image/gif", "image/webp"
     );
 
-    public Optional<String> validateFiles(List<MultipartFile> files) {
+    public static Optional<String> validateFiles(List<MultipartFile> files) {
         if (files.size() > MAX_FILES_IN_PACKAGE) {
             return Optional.of("一次最多僅能上傳50張圖片，請減少數量後再試。\nYou can upload up to 50 images at a time. Please reduce the number of files and try again.");
         }
@@ -38,7 +36,7 @@ public class UploadValidatorUtil {
             if (contentType != null) {
                 contentType = contentType.split(";")[0].toLowerCase().trim();
             }
-            if (contentType == null || !ALLOWED_CONTENT_TYPES.contains(contentType.toLowerCase())) {
+            if (contentType == null || !ALLOWED_CONTENT_TYPES.contains(contentType)) {
                 return Optional.of("不支援的檔案格式，請僅上傳 JPG/JPEG/PNG/GIF/WEBP 格式的圖片。\nUnsupported file format. Please upload only JPG/JPEG/PNG/GIF/WEBP images.");
             }
 
@@ -50,7 +48,7 @@ public class UploadValidatorUtil {
         return Optional.empty();
     }
 
-    private boolean isValidMagicNumber(MultipartFile file) {
+    private static boolean isValidMagicNumber(MultipartFile file) {
         try (InputStream is = file.getInputStream()) {
             byte[] header = new byte[12];
             int bytesRead = is.read(header);
@@ -86,6 +84,6 @@ public class UploadValidatorUtil {
         }
     }
 
-
 }
+
 

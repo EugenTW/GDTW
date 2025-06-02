@@ -1,6 +1,6 @@
-package com.gdtw.general.util.codec;
+package com.gdtw.general.util;
 
-public class IdEncoderDecoderUtil {
+public class CodecShortUrlIdUtil {
 
     private static final int MIN_ID = 11000000;
     private static final int MAX_ID = 25000000;
@@ -14,7 +14,7 @@ public class IdEncoderDecoderUtil {
 
     private static final int BASE = ENCRYPT_CHARS[0].length();
 
-    private IdEncoderDecoderUtil() {}
+    private CodecShortUrlIdUtil() {}
 
     public static String encodeId(Integer id) {
         if (id < MIN_ID || id > MAX_ID) {

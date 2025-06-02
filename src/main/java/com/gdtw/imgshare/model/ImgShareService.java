@@ -2,10 +2,10 @@ package com.gdtw.imgshare.model;
 
 import com.gdtw.dailystatistic.model.DailyStatisticService;
 import com.gdtw.general.exception.InsufficientDiskSpaceException;
-import com.gdtw.general.service.scheduled.ScheduledUsageService;
-import com.gdtw.general.util.RedisCacheUtil;
-import com.gdtw.general.util.codec.ImgIdEncoderDecoderUtil;
-import com.gdtw.general.util.jwt.JwtUtil;
+import com.gdtw.general.helper.ServiceUsageCounterHelper;
+import com.gdtw.general.helper.RedisObjectCacheHelper;
+import com.gdtw.general.util.CodecImgIdUtil;
+import com.gdtw.general.helper.JwtHelper;
 import com.gdtw.imgshare.dto.AlbumCreationRequestDTO;
 import com.gdtw.imgshare.dto.ShareImgAlbumInfoDTO;
 import com.gdtw.imgshare.dto.ShareImgInfoDTO;
@@ -57,31 +57,22 @@ public class ImgShareService {
     private static final Duration TTL_DURATION = Duration.ofMinutes(10);
 
     private final ImgSharePersistenceService imgSharePersistenceService;
-    private final ScheduledUsageService scheduledUsageService;
     private final ShareImgAlbumJpa shareImgAlbumJpa;
     private final ShareImgJpa shareImgJpa;
-    private final JwtUtil jwtUtil;
-    private final RedisCacheUtil redisCacheUtil;
+    private final ServiceUsageCounterHelper serviceUsageCounterHelper;
+    private final JwtHelper jwtUtil;
+    private final RedisObjectCacheHelper redisObjectCacheUtil;
     private final DailyStatisticService dailyStatisticService;
     private final RedisTemplate<String, Integer> redisStringIntegerTemplate;
     private static final Random RANDOM = new Random();
 
-    public ImgShareService(
-            ImgSharePersistenceService imgSharePersistenceService,
-            ScheduledUsageService scheduledUsageService,
-            ShareImgAlbumJpa shareImgAlbumJpa,
-            ShareImgJpa shareImgJpa,
-            JwtUtil jwtUtil,
-            RedisCacheUtil redisCacheUtil,
-            DailyStatisticService dailyStatisticService,
-            @Qualifier("redisStringIntegerTemplate") RedisTemplate<String, Integer> redisStringIntegerTemplate
-    ) {
+    public ImgShareService(ImgSharePersistenceService imgSharePersistenceService, ShareImgAlbumJpa shareImgAlbumJpa, ShareImgJpa shareImgJpa, ServiceUsageCounterHelper serviceUsageCounterHelper, JwtHelper jwtUtil, RedisObjectCacheHelper redisObjectCacheUtil, DailyStatisticService dailyStatisticService, @Qualifier("redisStringIntegerTemplate") RedisTemplate<String, Integer> redisStringIntegerTemplate) {
         this.imgSharePersistenceService = imgSharePersistenceService;
-        this.scheduledUsageService = scheduledUsageService;
         this.shareImgAlbumJpa = shareImgAlbumJpa;
         this.shareImgJpa = shareImgJpa;
+        this.serviceUsageCounterHelper = serviceUsageCounterHelper;
         this.jwtUtil = jwtUtil;
-        this.redisCacheUtil = redisCacheUtil;
+        this.redisObjectCacheUtil = redisObjectCacheUtil;
         this.dailyStatisticService = dailyStatisticService;
         this.redisStringIntegerTemplate = redisStringIntegerTemplate;
     }
@@ -112,13 +103,13 @@ public class ImgShareService {
 
     public Map<String, Object> checkAlbumPassword(String code, String password) {
         Map<String, Object> response = new HashMap<>();
-        Integer siaId = ImgIdEncoderDecoderUtil.decodeImgId(code);
+        Integer siaId = CodecImgIdUtil.decodeImgId(code);
         String redisKey = ImgSharePersistenceService.ALBUM_INFO_CACHE_PREFIX + siaId;
 
-        Optional<ShareImgAlbumInfoDTO> dtoOpt = redisCacheUtil.getObject(redisKey, ShareImgAlbumInfoDTO.class);
+        Optional<ShareImgAlbumInfoDTO> dtoOpt = redisObjectCacheUtil.getObject(redisKey, ShareImgAlbumInfoDTO.class);
         if (dtoOpt.isEmpty()) {
             imgSharePersistenceService.isShareImageAlbumPasswordProtected(code);
-            dtoOpt = redisCacheUtil.getObject(redisKey, ShareImgAlbumInfoDTO.class);
+            dtoOpt = redisObjectCacheUtil.getObject(redisKey, ShareImgAlbumInfoDTO.class);
         }
 
         ShareImgAlbumInfoDTO dto = dtoOpt.orElse(null);
@@ -139,13 +130,13 @@ public class ImgShareService {
 
     public Map<String, Object> checkImagePassword(String code, String password) {
         Map<String, Object> response = new HashMap<>();
-        Integer siId = ImgIdEncoderDecoderUtil.decodeImgId(code);
+        Integer siId = CodecImgIdUtil.decodeImgId(code);
         String redisKey = ImgSharePersistenceService.IMAGE_INFO_CACHE_PREFIX + siId;
 
-        Optional<ShareImgInfoDTO> dtoOpt = redisCacheUtil.getObject(redisKey, ShareImgInfoDTO.class);
+        Optional<ShareImgInfoDTO> dtoOpt = redisObjectCacheUtil.getObject(redisKey, ShareImgInfoDTO.class);
         if (dtoOpt.isEmpty()) {
             imgSharePersistenceService.isShareImagePasswordProtected(code);
-            dtoOpt = redisCacheUtil.getObject(redisKey, ShareImgInfoDTO.class);
+            dtoOpt = redisObjectCacheUtil.getObject(redisKey, ShareImgInfoDTO.class);
         }
 
         ShareImgInfoDTO dto = dtoOpt.orElse(null);
@@ -170,10 +161,10 @@ public class ImgShareService {
         if (claims.containsKey(CACHE_KEY_ERROR)) return claims;
 
         String code = (String) claims.get("subject");
-        Integer siaImageId = ImgIdEncoderDecoderUtil.decodeImgId(code);
+        Integer siaImageId = CodecImgIdUtil.decodeImgId(code);
         String redisKey = CACHE_KEY_ALBUM_IMAGES_PREFIX + siaImageId;
 
-        Map<String, Object> cachedResponse = redisCacheUtil.getMap(redisKey);
+        Map<String, Object> cachedResponse = redisObjectCacheUtil.getMap(redisKey);
         if (!cachedResponse.isEmpty()) {
             Object images = cachedResponse.get(CACHE_KEY_IMAGES);
             if (images instanceof List<?> list && !list.isEmpty()) {
@@ -181,12 +172,12 @@ public class ImgShareService {
                     if (item instanceof Map<?, ?> imageMap) {
                         Object siIdObj = imageMap.get("siId");
                         if (siIdObj instanceof Number siId) {
-                            scheduledUsageService.countServiceUsage(USAGE_SI_KEY_PREFIX, siId.intValue());
+                            serviceUsageCounterHelper.countServiceUsage(USAGE_SI_KEY_PREFIX, siId.intValue());
                             dailyStatisticService.incrementImgUsed();
                         }
                     }
                 }
-                scheduledUsageService.countServiceUsage(USAGE_SIA_KEY_PREFIX, siaImageId);
+                serviceUsageCounterHelper.countServiceUsage(USAGE_SIA_KEY_PREFIX, siaImageId);
                 return cachedResponse;
             }
         }
@@ -215,13 +206,13 @@ public class ImgShareService {
             String imageSingleModeUrl = baseUrl + "i/" + image.getSiCode();
             imageMap.put("imageSingleModeUrl", imageSingleModeUrl);
             imageList.add(imageMap);
-            scheduledUsageService.countServiceUsage(USAGE_SI_KEY_PREFIX, image.getSiId());
+            serviceUsageCounterHelper.countServiceUsage(USAGE_SI_KEY_PREFIX, image.getSiId());
             dailyStatisticService.incrementImgUsed();
         }
 
         response.put(CACHE_KEY_IMAGES, imageList);
-        redisCacheUtil.setObject(redisKey, response, TTL_DURATION);
-        scheduledUsageService.countServiceUsage(USAGE_SIA_KEY_PREFIX, siaImageId);
+        redisObjectCacheUtil.setObject(redisKey, response, TTL_DURATION);
+        serviceUsageCounterHelper.countServiceUsage(USAGE_SIA_KEY_PREFIX, siaImageId);
         return response;
     }
 
@@ -231,13 +222,13 @@ public class ImgShareService {
         if (claims.containsKey(CACHE_KEY_ERROR)) return claims;
 
         String code = (String) claims.get("subject");
-        Integer siImageId = ImgIdEncoderDecoderUtil.decodeImgId(code);
+        Integer siImageId = CodecImgIdUtil.decodeImgId(code);
         String redisKey = CACHE_KEY_SINGLE_IMAGE_PREFIX + siImageId;
 
-        Map<String, Object> cachedResponse = redisCacheUtil.getMap(redisKey);
+        Map<String, Object> cachedResponse = redisObjectCacheUtil.getMap(redisKey);
         if (!cachedResponse.isEmpty() && cachedResponse.get("siId") instanceof Number siId) {
 
-            scheduledUsageService.countServiceUsage(USAGE_SI_KEY_PREFIX, siId.intValue());
+            serviceUsageCounterHelper.countServiceUsage(USAGE_SI_KEY_PREFIX, siId.intValue());
             return cachedResponse;
         }
 
@@ -257,8 +248,8 @@ public class ImgShareService {
         String imageUrl = baseUrlForImageDownload + imageNginxStaticPath + image.getSiName();
         response.put("imageUrl", imageUrl);
 
-        redisCacheUtil.setObject(redisKey, response, TTL_DURATION);
-        scheduledUsageService.countServiceUsage(USAGE_SI_KEY_PREFIX, siImageId);
+        redisObjectCacheUtil.setObject(redisKey, response, TTL_DURATION);
+        serviceUsageCounterHelper.countServiceUsage(USAGE_SI_KEY_PREFIX, siImageId);
         return response;
     }
 

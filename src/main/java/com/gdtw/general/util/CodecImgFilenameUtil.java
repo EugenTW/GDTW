@@ -1,8 +1,8 @@
-package com.gdtw.general.util.codec;
+package com.gdtw.general.util;
 
 import java.security.SecureRandom;
 
-public class ImgFilenameEncoderDecoderUtil {
+public class CodecImgFilenameUtil {
 
     private static final int MIN_ID = 11000000;
     private static final int MAX_ID = 25000000;
@@ -24,7 +24,7 @@ public class ImgFilenameEncoderDecoderUtil {
     private static final int ENCODED_LENGTH = ENCRYPT_CHARS.length;
     private static final int RANDOM_PADDING = (TOTAL_LENGTH - ENCODED_LENGTH) / 2;
 
-    private ImgFilenameEncoderDecoderUtil() {}
+    private CodecImgFilenameUtil() {}
 
     public static String encodeImgFilename(Integer id) {
         if (id < MIN_ID || id > MAX_ID) {

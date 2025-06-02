@@ -3,7 +3,7 @@ package com.gdtw.shorturl.controller;
 import com.gdtw.dailystatistic.model.DailyStatisticService;
 import com.gdtw.general.exception.ShortUrlBannedException;
 import com.gdtw.general.exception.ShortUrlNotFoundException;
-import com.gdtw.general.service.ratelimiter.RateLimiterService;
+import com.gdtw.general.helper.ratelimiter.RateLimiterHelper;
 import com.gdtw.general.service.safebrowsing4.SafeBrowsingV4Service;
 import com.gdtw.shorturl.dto.CreateShortUrlRequestDTO;
 import com.gdtw.shorturl.dto.GetOriginalUrlDTO;
@@ -27,9 +27,9 @@ public class ShortUrlRestController {
     private final ShortUrlService shortUrlService;
     private final DailyStatisticService statisticService;
     private final SafeBrowsingV4Service safeBrowsingService;
-    private final RateLimiterService rateLimiterService;
+    private final RateLimiterHelper rateLimiterService;
 
-    public ShortUrlRestController(ShortUrlService shortUrlService, DailyStatisticService statisticService, SafeBrowsingV4Service safeBrowsingService, RateLimiterService rateLimiterService) {
+    public ShortUrlRestController(ShortUrlService shortUrlService, DailyStatisticService statisticService, SafeBrowsingV4Service safeBrowsingService, RateLimiterHelper rateLimiterService) {
         this.shortUrlService = shortUrlService;
         this.statisticService = statisticService;
         this.safeBrowsingService = safeBrowsingService;
