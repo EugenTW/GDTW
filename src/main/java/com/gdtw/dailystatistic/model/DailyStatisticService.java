@@ -2,7 +2,6 @@ package com.gdtw.dailystatistic.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gdtw.dailystatistic.dto.ChartDataDTO;
-import com.gdtw.dailystatistic.dto.DailyStatisticVO;
 import com.gdtw.dailystatistic.dto.TotalServiceStatisticsDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

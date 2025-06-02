@@ -369,7 +369,7 @@ function setupPasswordValidation(passwordApiUrl, code, isAlbumMode) {
         event.preventDefault();
         const password = passwordInput.value.trim();
         if (password === '') return;
-
+        passwordSubmit.disabled = true
         const passwordRequestData = {code: code, password: password};
 
         try {

@@ -12,7 +12,9 @@ CREATE TABLE daily_statistic
     ds_img_created       INT,
     ds_img_used          INT,
     ds_img_album_created INT,
-    ds_img_album_used    INT
+    ds_img_album_used    INT,
+    ds_css_js_minified   INT,
+    ds_img_to_webp_used  INT
 );
 
 CREATE TABLE short_url
