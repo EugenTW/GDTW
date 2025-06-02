@@ -3,6 +3,7 @@ package com.gdtw.general.util;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +19,7 @@ public class RedisCacheUtil {
     private final RedisTemplate<String, Object> universalRedisTemplate;
     private final ObjectMapper objectMapper;
 
-    public RedisCacheUtil(RedisTemplate<String, Object> universalRedisTemplate, ObjectMapper objectMapper) {
+    public RedisCacheUtil(@Qualifier("universalRedisTemplate") RedisTemplate<String, Object> universalRedisTemplate, ObjectMapper objectMapper) {
         this.universalRedisTemplate = universalRedisTemplate;
         this.objectMapper = objectMapper;
     }

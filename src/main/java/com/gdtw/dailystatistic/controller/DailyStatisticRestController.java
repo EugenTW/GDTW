@@ -1,10 +1,9 @@
 package com.gdtw.dailystatistic.controller;
 
-import com.gdtw.dailystatistic.model.ChartDataDTO;
+import com.gdtw.dailystatistic.dto.ChartDataDTO;
 import com.gdtw.dailystatistic.model.DailyStatisticService;
-import com.gdtw.dailystatistic.model.TotalServiceStatisticsDTO;
+import com.gdtw.dailystatistic.dto.TotalServiceStatisticsDTO;
 import com.gdtw.general.service.ratelimiter.RateLimiterService;
-import com.gdtw.reportviolation.model.ReportViolationService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

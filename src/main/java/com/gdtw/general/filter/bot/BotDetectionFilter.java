@@ -68,6 +68,7 @@ public class BotDetectionFilter implements Filter {
 
         boolean matched = config.getProtectedPathPrefixes().stream()
                 .anyMatch(path::startsWith);
+
         if (!matched) {
             chain.doFilter(request, response);
             return;

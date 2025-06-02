@@ -3,6 +3,7 @@ package com.gdtw.reportviolation.model;
 import com.gdtw.general.util.codec.IdEncoderDecoderUtil;
 import com.gdtw.general.util.codec.ImgIdEncoderDecoderUtil;
 import com.gdtw.imgshare.model.ImgShareService;
+import com.gdtw.reportviolation.dto.ReportRequestDTO;
 import com.gdtw.shorturl.model.ShortUrlService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

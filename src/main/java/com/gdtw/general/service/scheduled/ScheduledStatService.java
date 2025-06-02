@@ -2,7 +2,7 @@ package com.gdtw.general.service.scheduled;
 
 import com.gdtw.dailystatistic.model.DailyStatisticJpa;
 import com.gdtw.dailystatistic.model.DailyStatisticService;
-import com.gdtw.dailystatistic.model.DailyStatisticVO;
+import com.gdtw.dailystatistic.dto.DailyStatisticVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;

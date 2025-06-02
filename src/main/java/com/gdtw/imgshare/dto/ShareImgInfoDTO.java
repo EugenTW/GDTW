@@ -1,4 +1,4 @@
-package com.gdtw.imgshare.model;
+package com.gdtw.imgshare.dto;
 
 import java.io.Serializable;
 import java.time.LocalDate;

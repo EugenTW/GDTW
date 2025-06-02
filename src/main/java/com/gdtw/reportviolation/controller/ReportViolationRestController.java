@@ -1,7 +1,7 @@
 package com.gdtw.reportviolation.controller;
 
 import com.gdtw.general.service.ratelimiter.RateLimiterService;
-import com.gdtw.reportviolation.model.ReportRequestDTO;
+import com.gdtw.reportviolation.dto.ReportRequestDTO;
 import com.gdtw.reportviolation.model.ReportViolationService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
 import java.util.Map;
 
 
