@@ -393,6 +393,7 @@ function setupPasswordValidation(passwordApiUrl, code, isAlbumMode) {
             }
         } catch (error) {
             alert('系統錯誤，請稍後再試。\nSystem error, please try again later.');
+            passwordSubmit.disabled = false;
         }
     });
 }
