@@ -46,6 +46,16 @@ public class ShortUrlRestController {
         String originalIp = request.getHeader("X-Forwarded-For");
         rateLimiterService.checkCreateShortUrlLimit(originalIp);
 
+        final int MAX_URL_LENGTH = 200;
+        if (originalUrl != null && originalUrl.length() > MAX_URL_LENGTH) {
+            ReturnCreatedShortUrlDTO errorResponse = new ReturnCreatedShortUrlDTO(
+                    null,
+                    null,
+                    "輸入網址過長，請縮短後再試！\nThe input URL is too long. Please shorten it and try again!"
+            );
+            return ResponseEntity.badRequest().body(errorResponse);
+        }
+
         try {
             if (originalIp == null || originalIp.isEmpty()) {
                 originalIp = request.getRemoteAddr();
