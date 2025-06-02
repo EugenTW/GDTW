@@ -2,15 +2,14 @@ package com.gdtw.shorturl.model;
 
 import com.gdtw.general.exception.ShortUrlBannedException;
 import com.gdtw.general.exception.ShortUrlNotFoundException;
+import com.gdtw.general.service.scheduled.ScheduledUsageService;
 import com.gdtw.general.util.RedisCacheUtil;
 import com.gdtw.general.util.codec.IdEncoderDecoderUtil;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.gdtw.shorturl.dto.ShortUrlInfoDTO;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
@@ -20,22 +19,24 @@ import java.util.*;
 @Service
 public class ShortUrlService {
 
-    private static final Logger logger = LoggerFactory.getLogger(ShortUrlService.class);
     private static final Duration TTL_DURATION = Duration.ofMinutes(10);
     private static final String SHORT_URL_INFO_CACHE_PREFIX = "su:info:";
     private static final String USAGE_KEY_PREFIX = "su:usage:";
 
     private final ShortUrlJpa shortUrlJpa;
+    private final ScheduledUsageService scheduledUsageService;
     private final RedisCacheUtil redisCacheUtil;
-    private final RedisTemplate<String, String> redisStringStringTemplate;
+    private final RedisTemplate<String,Integer> redisStringIntegerTemplate;
     private final RedisTemplate<String, Object> universalRedisTemplate;
 
-    public ShortUrlService(ShortUrlJpa shortUrlJpa, @Qualifier("redisStringStringTemplate") RedisTemplate<String, String> redisTemplate, @Qualifier("universalRedisTemplate") RedisTemplate<String, Object> universalRedisTemplate, RedisCacheUtil redisCacheUtil) {
+    public ShortUrlService(ShortUrlJpa shortUrlJpa, ScheduledUsageService scheduledUsageService, RedisCacheUtil redisCacheUtil, @Qualifier("redisStringIntegerTemplate") RedisTemplate<String, Integer> redisStringIntegerTemplate, @Qualifier("universalRedisTemplate") RedisTemplate<String, Object> universalRedisTemplate) {
         this.shortUrlJpa = shortUrlJpa;
-        this.redisStringStringTemplate = redisTemplate;
-        this.universalRedisTemplate = universalRedisTemplate;
+        this.scheduledUsageService = scheduledUsageService;
         this.redisCacheUtil = redisCacheUtil;
+        this.redisStringIntegerTemplate = redisStringIntegerTemplate;
+        this.universalRedisTemplate = universalRedisTemplate;
     }
+
     // ==================================================================
     // Service methods
 
@@ -82,7 +83,7 @@ public class ShortUrlService {
             throw new ShortUrlBannedException("此短網址已失效! The short URL is banned.");
         }
 
-        countShortUrlUsage(suId);
+        scheduledUsageService.countServiceUsage(USAGE_KEY_PREFIX, suId);
         return new AbstractMap.SimpleEntry<>(dto.getSuOriginalUrl(), dto.getSuSafe());
     }
 
@@ -100,7 +101,7 @@ public class ShortUrlService {
     }
 
     @Transactional
-    public Map<String, String> reportShortUrl(Integer shortUrlId, Map<String, String> result) {
+    public void reportShortUrl(Integer shortUrlId, Map<String, String> result) {
         int updatedRows = shortUrlJpa.incrementReportIfNotBlocked(shortUrlId);
 
         if (updatedRows == 1) {
@@ -115,9 +116,7 @@ public class ShortUrlService {
                 result.put("response", "該網址已封鎖，無法再次舉報。\nThis URL has been blocked, cannot report again.");
             }
         }
-        return result;
     }
-
 
     // ==================================================================
     // Redis caching methods
@@ -160,34 +159,24 @@ public class ShortUrlService {
     // ==================================================================
     // Recording methods
 
-    public void countShortUrlUsage(Integer suId) {
-        String redisKey = USAGE_KEY_PREFIX + suId;
-        redisStringStringTemplate.opsForValue().increment(redisKey, 1);
-    }
-
-    @Scheduled(cron = "${task.schedule.cron.shortUtlUsageStatisticService}")
     @Transactional
     public void syncSuUsageToMySQL() {
-        Set<String> keys = redisStringStringTemplate.keys(USAGE_KEY_PREFIX + "*");
+        Set<String> keys = redisStringIntegerTemplate.keys(USAGE_KEY_PREFIX + "*");
         for (String key : keys) {
             Integer suId = Integer.parseInt(key.split(":")[2]);
-            String rawValue = redisStringStringTemplate.opsForValue().get(key);
-            if (rawValue == null) {
-                logger.warn("Missing Redis value for key '{}', skipping...", key);
-                continue;
-            }
-            Integer usageCount = Integer.parseInt(rawValue);
+            Integer usageCount = redisStringIntegerTemplate.opsForValue().get(key);
+            int usage = (usageCount != null) ? usageCount : 0;
 
             Optional<ShortUrlVO> optionalShortUrl = shortUrlJpa.findById(suId);
+
             if (optionalShortUrl.isPresent()) {
                 ShortUrlVO shortUrl = optionalShortUrl.get();
-                shortUrl.setSuTotalUsed(shortUrl.getSuTotalUsed() + usageCount);
+                shortUrl.setSuTotalUsed(shortUrl.getSuTotalUsed() + usage);
                 shortUrlJpa.save(shortUrl);
                 // delete recorded data in Redis
-                redisStringStringTemplate.delete(key);
+                redisStringIntegerTemplate.delete(key);
             }
         }
-        logger.info("Sync 'Short URL' usage to MySQL!");
     }
 
 }

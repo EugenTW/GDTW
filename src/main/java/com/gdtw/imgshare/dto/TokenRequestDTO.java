@@ -1,4 +1,4 @@
-package com.gdtw.imgshare.model;
+package com.gdtw.imgshare.dto;
 
 public class TokenRequestDTO {
     private String token;

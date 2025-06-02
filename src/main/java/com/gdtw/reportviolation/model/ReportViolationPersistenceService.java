@@ -1,5 +1,6 @@
 package com.gdtw.reportviolation.model;
 
+import com.gdtw.reportviolation.dto.ReportRequestDTO;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 

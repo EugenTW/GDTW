@@ -2,15 +2,18 @@ package com.gdtw.imgshare.model;
 
 import com.gdtw.dailystatistic.model.DailyStatisticService;
 import com.gdtw.general.exception.InsufficientDiskSpaceException;
+import com.gdtw.general.service.scheduled.ScheduledUsageService;
 import com.gdtw.general.util.RedisCacheUtil;
 import com.gdtw.general.util.codec.ImgIdEncoderDecoderUtil;
 import com.gdtw.general.util.jwt.JwtUtil;
+import com.gdtw.imgshare.dto.AlbumCreationRequestDTO;
+import com.gdtw.imgshare.dto.ShareImgAlbumInfoDTO;
+import com.gdtw.imgshare.dto.ShareImgInfoDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,30 +57,33 @@ public class ImgShareService {
     private static final Duration TTL_DURATION = Duration.ofMinutes(10);
 
     private final ImgSharePersistenceService imgSharePersistenceService;
+    private final ScheduledUsageService scheduledUsageService;
     private final ShareImgAlbumJpa shareImgAlbumJpa;
     private final ShareImgJpa shareImgJpa;
     private final JwtUtil jwtUtil;
     private final RedisCacheUtil redisCacheUtil;
     private final DailyStatisticService dailyStatisticService;
-    private final RedisTemplate<String, String> redisStringStringTemplate;
+    private final RedisTemplate<String, Integer> redisStringIntegerTemplate;
     private static final Random RANDOM = new Random();
 
     public ImgShareService(
             ImgSharePersistenceService imgSharePersistenceService,
+            ScheduledUsageService scheduledUsageService,
             ShareImgAlbumJpa shareImgAlbumJpa,
             ShareImgJpa shareImgJpa,
             JwtUtil jwtUtil,
             RedisCacheUtil redisCacheUtil,
             DailyStatisticService dailyStatisticService,
-            @Qualifier("redisStringStringTemplate") RedisTemplate<String, String> redisStringStringTemplate
+            @Qualifier("redisStringIntegerTemplate") RedisTemplate<String, Integer> redisStringIntegerTemplate
     ) {
         this.imgSharePersistenceService = imgSharePersistenceService;
+        this.scheduledUsageService = scheduledUsageService;
         this.shareImgAlbumJpa = shareImgAlbumJpa;
         this.shareImgJpa = shareImgJpa;
         this.jwtUtil = jwtUtil;
         this.redisCacheUtil = redisCacheUtil;
         this.dailyStatisticService = dailyStatisticService;
-        this.redisStringStringTemplate = redisStringStringTemplate;
+        this.redisStringIntegerTemplate = redisStringIntegerTemplate;
     }
 
     @Transactional
@@ -175,12 +181,12 @@ public class ImgShareService {
                     if (item instanceof Map<?, ?> imageMap) {
                         Object siIdObj = imageMap.get("siId");
                         if (siIdObj instanceof Number siId) {
-                            countImageUsage(siId.intValue());
+                            scheduledUsageService.countServiceUsage(USAGE_SI_KEY_PREFIX, siId.intValue());
                             dailyStatisticService.incrementImgUsed();
                         }
                     }
                 }
-                countAlbumUsage(siaImageId);
+                scheduledUsageService.countServiceUsage(USAGE_SIA_KEY_PREFIX, siaImageId);
                 return cachedResponse;
             }
         }
@@ -209,14 +215,13 @@ public class ImgShareService {
             String imageSingleModeUrl = baseUrl + "i/" + image.getSiCode();
             imageMap.put("imageSingleModeUrl", imageSingleModeUrl);
             imageList.add(imageMap);
-
-            countImageUsage(image.getSiId());
+            scheduledUsageService.countServiceUsage(USAGE_SI_KEY_PREFIX, image.getSiId());
             dailyStatisticService.incrementImgUsed();
         }
 
         response.put(CACHE_KEY_IMAGES, imageList);
         redisCacheUtil.setObject(redisKey, response, TTL_DURATION);
-        countAlbumUsage(siaImageId);
+        scheduledUsageService.countServiceUsage(USAGE_SIA_KEY_PREFIX, siaImageId);
         return response;
     }
 
@@ -231,7 +236,8 @@ public class ImgShareService {
 
         Map<String, Object> cachedResponse = redisCacheUtil.getMap(redisKey);
         if (!cachedResponse.isEmpty() && cachedResponse.get("siId") instanceof Number siId) {
-            countImageUsage(siId.intValue());
+
+            scheduledUsageService.countServiceUsage(USAGE_SI_KEY_PREFIX, siId.intValue());
             return cachedResponse;
         }
 
@@ -252,23 +258,23 @@ public class ImgShareService {
         response.put("imageUrl", imageUrl);
 
         redisCacheUtil.setObject(redisKey, response, TTL_DURATION);
-        countImageUsage(siImageId);
+        scheduledUsageService.countServiceUsage(USAGE_SI_KEY_PREFIX, siImageId);
         return response;
     }
 
-    public Map<String, String> reportImgAlbum(Integer albumId, Map<String, String> result) {
+    public void reportImgAlbum(Integer albumId, Map<String, String> result) {
         Optional<ShareImgAlbumVO> optional = shareImgAlbumJpa.findBySiaId(albumId);
         if (optional.isEmpty()) {
             result.put("reportStatus", "false");
             result.put("response", "查無此相簿。\nAlbum not found.");
-            return result;
+            return;
         }
 
         ShareImgAlbumVO album = optional.get();
         if (album.getSiaStatus() != null && album.getSiaStatus() == 1) {
             result.put("reportStatus", "false");
             result.put("response", "該相簿已封鎖，無法再次舉報。\nThis album has been blocked, cannot report again.");
-            return result;
+            return;
         }
 
         album.setSiaReported(album.getSiaReported() == null ? 1 : album.getSiaReported() + 1);
@@ -284,10 +290,9 @@ public class ImgShareService {
 
         result.put("reportStatus", "true");
         result.put("response", "舉報成功！\nReport successful!");
-        return result;
     }
 
-    public Map<String, String> reportImage(Integer imageId, Map<String, String> result) {
+    public void reportImage(Integer imageId, Map<String, String> result) {
         int updatedRows = shareImgJpa.incrementReportIfNotBlocked(imageId);
 
         if (updatedRows == 1) {
@@ -302,7 +307,6 @@ public class ImgShareService {
                 result.put("response", "該圖片已封鎖，無法再次舉報。\nThis image has been blocked, cannot report again.");
             }
         }
-        return result;
     }
 
     public boolean isValidShareImageAlbum(String code) {
@@ -319,63 +323,42 @@ public class ImgShareService {
         );
     }
 
-    public void countAlbumUsage(Integer siaId) {
-        String redisKey = USAGE_SIA_KEY_PREFIX + siaId;
-        redisStringStringTemplate.opsForValue().increment(redisKey, 1);
-    }
-
-    public void countImageUsage(Integer siId) {
-        String redisKey = USAGE_SI_KEY_PREFIX + siId;
-        redisStringStringTemplate.opsForValue().increment(redisKey, 1);
-    }
-
-    @Scheduled(cron = "${task.schedule.cron.albumUsageStatisticService}")
     @Transactional
     public void syncSiaUsageToMySQL() {
-        Set<String> keys = redisStringStringTemplate.keys(USAGE_SIA_KEY_PREFIX + "*");
+        Set<String> keys = redisStringIntegerTemplate.keys(USAGE_SIA_KEY_PREFIX + "*");
         for (String key : keys) {
             Integer siaId = Integer.parseInt(key.split(":")[2]);
-            String value = redisStringStringTemplate.opsForValue().get(key);
-            if (value == null) {
-                logger.warn("Missing Redis value for 'album' key '{}', skipping...", key);
-                continue;
-            }
-            Integer usageCount = Integer.parseInt(value);
+            Integer usageCount = redisStringIntegerTemplate.opsForValue().get(key);
+            int usage = (usageCount != null) ? usageCount : 0;
 
             Optional<ShareImgAlbumVO> optionalSiaObject = shareImgAlbumJpa.findById(siaId);
             if (optionalSiaObject.isPresent()) {
                 ShareImgAlbumVO shareImgAlbumVO = optionalSiaObject.get();
-                shareImgAlbumVO.setSiaTotalVisited(shareImgAlbumVO.getSiaTotalVisited() + usageCount);
+                shareImgAlbumVO.setSiaTotalVisited(shareImgAlbumVO.getSiaTotalVisited() + usage);
                 shareImgAlbumJpa.save(shareImgAlbumVO);
-                redisStringStringTemplate.delete(key);
+                redisStringIntegerTemplate.delete(key);
             }
         }
-        logger.info("Sync 'Image Album' usage to MySQL!");
+
     }
 
-    @Scheduled(cron = "${task.schedule.cron.imageUsageStatisticService}")
     @Transactional
     public void syncSiUsageToMySQL() {
-        Set<String> keys = redisStringStringTemplate.keys(USAGE_SI_KEY_PREFIX + "*");
+        Set<String> keys = redisStringIntegerTemplate.keys(USAGE_SI_KEY_PREFIX + "*");
         for (String key : keys) {
-            String rawValue = redisStringStringTemplate.opsForValue().get(key);
-            if (rawValue == null) {
-                logger.warn("Missing Redis value for 'image' key '{}', skipping...", key);
-                continue;
-            }
-
             Integer siId = Integer.parseInt(key.split(":")[2]);
-            Integer usageCount = Integer.parseInt(rawValue);
+            Integer usageCount = redisStringIntegerTemplate.opsForValue().get(key);
+            int usage = (usageCount != null) ? usageCount : 0;
 
             Optional<ShareImgVO> optionalSiObject = shareImgJpa.findById(siId);
             if (optionalSiObject.isPresent()) {
                 ShareImgVO shareImgVO = optionalSiObject.get();
-                shareImgVO.setSiTotalVisited(shareImgVO.getSiTotalVisited() + usageCount);
+                shareImgVO.setSiTotalVisited(shareImgVO.getSiTotalVisited() + usage);
                 shareImgJpa.save(shareImgVO);
-                redisStringStringTemplate.delete(key);
+                redisStringIntegerTemplate.delete(key);
             }
         }
-        logger.info("Sync 'Single Image' usage to MySQL!");
+
     }
 
     private boolean hasSufficientDiskSpace(String path, long requiredSpace) {

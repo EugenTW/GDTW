@@ -36,4 +36,5 @@ public class RedisService {
             logger.error("Failed to clear Redis database.", e);
         }
     }
+
 }

@@ -18,4 +18,5 @@ public class BotFilterProperties {
     public void setProtectedPathPrefixes(List<String> protectedPathPrefixes) {
         this.protectedPathPrefixes = protectedPathPrefixes;
     }
+
 }
