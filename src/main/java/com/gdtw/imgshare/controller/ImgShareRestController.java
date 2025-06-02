@@ -3,6 +3,7 @@ package com.gdtw.imgshare.controller;
 import com.gdtw.dailystatistic.model.DailyStatisticService;
 import com.gdtw.general.exception.InsufficientDiskSpaceException;
 import com.gdtw.general.service.ratelimiter.RateLimiterService;
+import com.gdtw.general.util.UploadValidatorUtil;
 import com.gdtw.imgshare.dto.AlbumCreationRequestDTO;
 import com.gdtw.imgshare.model.ImgShareService;
 import com.gdtw.imgshare.dto.TokenRequestDTO;
@@ -14,9 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/is_api")
@@ -27,17 +26,16 @@ public class ImgShareRestController {
     private final ImgShareService imgShareService;
     private final DailyStatisticService dailyStatisticService;
     private final RateLimiterService rateLimiterService;
+    private final UploadValidatorUtil uploadValidatorUtil;
 
     private static final String HEADER_X_FORWARDED_FOR = "X-Forwarded-For";
     private static final String ERROR_KEY = "error";
-    private static final long MAX_FILE_SIZE = 20 * 1024 * 1024L;
-    private static final long MAX_FILES_IN_PACKAGE = 50;
-    private static final long MAX_TOTAL_SIZE = 500 * 1024 * 1024L;
 
-    public ImgShareRestController(ImgShareService imgShareService, DailyStatisticService dailyStatisticService, RateLimiterService rateLimiterService) {
+    public ImgShareRestController(ImgShareService imgShareService, DailyStatisticService dailyStatisticService, RateLimiterService rateLimiterService, UploadValidatorUtil uploadValidatorUtil) {
         this.imgShareService = imgShareService;
         this.dailyStatisticService = dailyStatisticService;
         this.rateLimiterService = rateLimiterService;
+        this.uploadValidatorUtil = uploadValidatorUtil;
     }
 
     @PostMapping("/create_new_album")
@@ -51,24 +49,10 @@ public class ImgShareRestController {
         String originalIp = request.getHeader(HEADER_X_FORWARDED_FOR);
         rateLimiterService.checkCreateShareImageLimit(originalIp);
 
-        for (MultipartFile file : files) {
-            if (file.getSize() > MAX_FILE_SIZE) {
-                Map<String, String> response = new HashMap<>();
-                response.put(ERROR_KEY, "單檔大小超過限制，請縮小檔案或分次上傳。\nThe file exceeds the maximum size limit. Please resize or split and upload again.");
-                return ResponseEntity.badRequest().body(response);
-            }
-        }
-
-        if (files.size() > MAX_FILES_IN_PACKAGE) {
+        Optional<String> validationError = uploadValidatorUtil.validateFiles(files);
+        if (validationError.isPresent()) {
             Map<String, String> response = new HashMap<>();
-            response.put(ERROR_KEY, "一次最多僅能上傳50張圖片，請減少數量後再試。\nYou can upload up to 50 images at a time. Please reduce the number of files and try again.");
-            return ResponseEntity.badRequest().body(response);
-        }
-
-        long totalSize = files.stream().mapToLong(MultipartFile::getSize).sum();
-        if (totalSize > MAX_TOTAL_SIZE) {
-            Map<String, String> response = new HashMap<>();
-            response.put(ERROR_KEY, "單次上傳總容量超過限制，請縮小或分批上傳。\nThe total upload size exceeds the limit. Please reduce or split the files and upload again.");
+            response.put(ERROR_KEY, validationError.get());
             return ResponseEntity.badRequest().body(response);
         }
 
