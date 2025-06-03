@@ -316,7 +316,6 @@ public class ImgShareService {
                 redisStringIntegerTemplate.delete(key);
             }
         }
-
     }
 
     @Transactional
@@ -335,7 +334,6 @@ public class ImgShareService {
                 redisStringIntegerTemplate.delete(key);
             }
         }
-
     }
 
     private boolean hasSufficientDiskSpace(String path, long requiredSpace) {
