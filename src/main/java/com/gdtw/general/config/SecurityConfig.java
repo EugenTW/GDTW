@@ -28,7 +28,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .headers(headers -> headers
-                        .referrerPolicy(referrer -> referrer.policy(org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN))
+                        .referrerPolicy(referrer -> referrer.policy(
+                                org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN))
                         .contentSecurityPolicy(csp -> csp
                                 .policyDirectives(
                                         "default-src 'self'; " +
@@ -39,10 +40,10 @@ public class SecurityConfig {
                                                 "connect-src 'self';"
                                 )
                         )
-                        .addHeaderWriter((request, response) -> {
-                            response.setHeader("Permissions-Policy",
-                                    "geolocation=(), microphone=(), camera=(), fullscreen=(self), payment=(), usb=()");
-                        })
+                        .addHeaderWriter((request, response) ->
+                                response.setHeader("Permissions-Policy",
+                                        "geolocation=(), microphone=(), camera=(), fullscreen=(self), payment=(), usb=()")
+                        )
                 )
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/sitemap.xml", "/error", "/error/**").permitAll()
