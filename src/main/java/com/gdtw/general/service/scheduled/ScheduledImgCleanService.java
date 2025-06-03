@@ -21,8 +21,6 @@ import java.util.List;
 
 @Service
 public class ScheduledImgCleanService {
-    private static final Logger logger = LoggerFactory.getLogger(ScheduledImgCleanService.class);
-
 
     @Value("${app.imageStoragePath}")
     private String imageStoragePath;
@@ -30,6 +28,7 @@ public class ScheduledImgCleanService {
     @Value("${app.imageTrashCanPath}")
     private String imageTrashCanPath;
 
+    private static final Logger logger = LoggerFactory.getLogger(ScheduledImgCleanService.class);
     private final ShareImgAlbumJpa shareImgAlbumJpa;
     private final ShareImgJpa shareImgJpa;
 
@@ -47,7 +46,7 @@ public class ScheduledImgCleanService {
 
         List<ShareImgAlbumVO> expiredAlbums = shareImgAlbumJpa.findBySiaEndDateBeforeAndSiaStatus(expiredDate, (byte) 0);
         for (ShareImgAlbumVO album : expiredAlbums) {
-            String note = "  - album ID: " + album.getSiaId().toString() +" (code: " + album.getSiaCode() + ") is expired.";
+            String note = "  - album ID: " + album.getSiaId().toString() + " (code: " + album.getSiaCode() + ") is expired.";
             logger.info(note);
             album.setSiaStatus((byte) 1);
             shareImgAlbumJpa.save(album);
@@ -60,7 +59,7 @@ public class ScheduledImgCleanService {
             String originalSiId = image.getSiId().toString();
             String originalSiCode = image.getSiCode();
 
-            String note = "  - image ID:  " + originalSiId + " (code: " + originalSiCode + "& name:" + originalSiName+ ") is expired.";
+            String note = "  - image ID:  " + originalSiId + " (code: " + originalSiCode + "& name:" + originalSiName + ") is expired.";
             logger.info(note);
 
             image.setSiName(null);
@@ -68,7 +67,8 @@ public class ScheduledImgCleanService {
             shareImgJpa.save(image);
             moveImageFileToTrashCan(originalSiName);
         }
-        logger.info("All expired MySQL image status updated and images removed.");
+        cleanOldFilesInStorage();
+        logger.info("All expired MySQL data updated and images removed.");
     }
 
     private void moveImageFileToTrashCan(String fileName) {
@@ -84,6 +84,36 @@ public class ScheduledImgCleanService {
             Files.move(sourcePath, targetPath);
         } catch (Exception e) {
             logger.error("Failed to move file to trash can: {}.", fileName, e);
+        }
+    }
+
+    private void cleanOldFilesInStorage() {
+        Path storagePath = Paths.get(imageStoragePath);
+        long now = System.currentTimeMillis();
+
+        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(storagePath)) {
+            for (Path file : directoryStream) {
+                try {
+                    if (!Files.isRegularFile(file)) continue;
+
+                    long fileTimeMillis;
+                    try {
+                        fileTimeMillis = Files.readAttributes(file, java.nio.file.attribute.BasicFileAttributes.class)
+                                .creationTime().toMillis();
+                    } catch (UnsupportedOperationException e) {
+                        fileTimeMillis = Files.getLastModifiedTime(file).toMillis();
+                    }
+                    long ageInDays = (now - fileTimeMillis) / (1000L * 60 * 60 * 24);
+                    if (ageInDays > 100) {
+                        Files.deleteIfExists(file);
+                        logger.info("Deleted file older than 100 days: {}", file.getFileName());
+                    }
+                } catch (Exception e) {
+                    logger.error("Failed to delete old file: {}.", file.getFileName(), e);
+                }
+            }
+        } catch (Exception e) {
+            logger.error("Failed to scan storage directory for old files.", e);
         }
     }
 
