@@ -54,7 +54,7 @@ public class ImgShareService {
     private static final String ERROR_IMAGE_NOT_FOUND = "Image not found.";
     private static final String USAGE_SIA_KEY_PREFIX = "sia:usage:";
     private static final String USAGE_SI_KEY_PREFIX = "si:usage:";
-    private static final Duration TTL_DURATION = Duration.ofMinutes(10);
+    private static final Duration TTL_DURATION = Duration.ofMinutes(3);
 
     private final ImgSharePersistenceService imgSharePersistenceService;
     private final ShareImgAlbumJpa shareImgAlbumJpa;

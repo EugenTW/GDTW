@@ -7,15 +7,28 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.regex.Pattern;
 
-public class UploadValidatorUtil {
+public class ImgServiceValidatorUtil {
 
+    private static final Pattern DIGIT_PASSWORD_PATTERN = Pattern.compile("^\\d{4,10}$");
     private static final long MAX_FILE_SIZE = 20 * 1024 * 1024L;
     private static final long MAX_FILES_IN_PACKAGE = 50;
     private static final long MAX_TOTAL_SIZE = 500 * 1024 * 1024L;
     private static final Set<String> ALLOWED_CONTENT_TYPES = Set.of(
             "image/jpeg", "image/png", "image/gif", "image/webp"
     );
+    private static final Pattern CODE_PATTERN = Pattern.compile("^[a-zA-Z0-9]{6}$");
+
+    private ImgServiceValidatorUtil() {}
+
+    public static Optional<String> validatePassword(String password) {
+        if (password == null || password.isEmpty()) return Optional.empty();
+        if (!DIGIT_PASSWORD_PATTERN.matcher(password).matches()) {
+            return Optional.of("Password must be 4~10 digits.");
+        }
+        return Optional.empty();
+    }
 
     public static Optional<String> validateFiles(List<MultipartFile> files) {
         if (files.size() > MAX_FILES_IN_PACKAGE) {
@@ -82,6 +95,16 @@ public class UploadValidatorUtil {
         } catch (IOException e) {
             return false;
         }
+    }
+
+    public static Optional<String> validateShareCode(String code) {
+        if (code == null || code.trim().isEmpty()) {
+            return Optional.of("Code is required.");
+        }
+        if (!CODE_PATTERN.matcher(code).matches()) {
+            return Optional.of("Invalid code format. Must be 6 characters: letters or digits.");
+        }
+        return Optional.empty();
     }
 
 }

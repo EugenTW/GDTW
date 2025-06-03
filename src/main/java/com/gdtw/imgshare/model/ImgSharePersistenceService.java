@@ -36,7 +36,7 @@ public class ImgSharePersistenceService {
     public static final String STAGE_NO_PASSWORD = "noPassword";
     public static final String STAGE_PASSED_PASSWORD = "passwordPassed";
     public static final String DOWNLOAD_TOKEN = "token";
-    private static final Duration TTL_DURATION = Duration.ofMinutes(10);
+    private static final Duration TTL_DURATION = Duration.ofMinutes(3);
     private static final Logger logger = LoggerFactory.getLogger(ImgSharePersistenceService.class);
 
     private final RedisObjectCacheHelper redisCacheUtil;

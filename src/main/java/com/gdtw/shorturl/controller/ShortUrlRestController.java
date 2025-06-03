@@ -5,6 +5,7 @@ import com.gdtw.general.exception.ShortUrlBannedException;
 import com.gdtw.general.exception.ShortUrlNotFoundException;
 import com.gdtw.general.helper.ratelimiter.RateLimiterHelper;
 import com.gdtw.general.service.safebrowsing4.SafeBrowsingV4Service;
+import com.gdtw.general.util.UrlServiceValidatorUtil;
 import com.gdtw.shorturl.dto.CreateShortUrlRequestDTO;
 import com.gdtw.shorturl.dto.GetOriginalUrlDTO;
 import com.gdtw.shorturl.dto.ReturnCreatedShortUrlDTO;
@@ -19,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/su_api")
@@ -46,12 +48,12 @@ public class ShortUrlRestController {
         String originalIp = request.getHeader("X-Forwarded-For");
         rateLimiterService.checkCreateShortUrlLimit(originalIp);
 
-        final int MAX_URL_LENGTH = 200;
-        if (originalUrl != null && originalUrl.length() > MAX_URL_LENGTH) {
+        Optional<String> urlError = UrlServiceValidatorUtil.validateOriginalUrl(originalUrl);
+        if (urlError.isPresent()) {
             ReturnCreatedShortUrlDTO errorResponse = new ReturnCreatedShortUrlDTO(
                     null,
                     null,
-                    "輸入網址過長，請縮短後再試！\nThe input URL is too long. Please shorten it and try again!"
+                    urlError.get()
             );
             return ResponseEntity.badRequest().body(errorResponse);
         }
@@ -90,16 +92,12 @@ public class ShortUrlRestController {
 
         String originalIp = request.getHeader("X-Forwarded-For");
         rateLimiterService.checkGetOriginalUrlLimit(originalIp);
+
         String code = codeRequest.getCode();
-
-        if (!code.matches("^[a-zA-Z0-9]{4}$")) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ReturnOriginalUrlDTO(null, null, "短碼格式錯誤! Invalid short code format!"));
-        }
-
-        if (code.equalsIgnoreCase("short_url_redirection")) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ReturnOriginalUrlDTO(null, null, "無原始網址! No original URL!"));
+        Optional<String> codeError = UrlServiceValidatorUtil.validateShortCode(code);
+        if (codeError.isPresent()) {
+            return ResponseEntity.badRequest()
+                    .body(new ReturnOriginalUrlDTO(null, null, codeError.get()));
         }
 
         try {
