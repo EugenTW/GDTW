@@ -58,8 +58,8 @@ public class ReportViolationService {
             }
 
             if (!result.containsKey("reportStatus")) {
-                result.put("reportStatus", "true");
-                result.put("response", "舉報成功！\nReport submitted!");
+                result.put("reportStatus", "false");
+                result.put("response", "舉報失敗，請稍後再試。\nReport failed, please try again.");
             }
         } catch (DataIntegrityViolationException ex) {
             result.put("reportStatus", "false");
