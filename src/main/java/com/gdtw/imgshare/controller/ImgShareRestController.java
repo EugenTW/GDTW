@@ -3,7 +3,7 @@ package com.gdtw.imgshare.controller;
 import com.gdtw.dailystatistic.model.DailyStatisticService;
 import com.gdtw.general.exception.InsufficientDiskSpaceException;
 import com.gdtw.general.helper.ratelimiter.RateLimiterHelper;
-import com.gdtw.general.util.UploadValidatorUtil;
+import com.gdtw.general.util.ImgServiceValidatorUtil;
 import com.gdtw.imgshare.dto.AlbumCreationRequestDTO;
 import com.gdtw.imgshare.model.ImgShareService;
 import com.gdtw.imgshare.dto.TokenRequestDTO;
@@ -47,7 +47,20 @@ public class ImgShareRestController {
         String originalIp = request.getHeader(HEADER_X_FORWARDED_FOR);
         rateLimiterService.checkCreateShareImageLimit(originalIp);
 
-        Optional<String> validationError = UploadValidatorUtil.validateFiles(files);
+        if (expiryDays < 1 || expiryDays > 90) {
+            Map<String, String> response = new HashMap<>();
+            response.put(ERROR_KEY, "Expiry days must be between 1 and 90.");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        Optional<String> passwordError = ImgServiceValidatorUtil.validatePassword(password);
+        if (passwordError.isPresent()) {
+            Map<String, String> response = new HashMap<>();
+            response.put(ERROR_KEY, passwordError.get());
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        Optional<String> validationError = ImgServiceValidatorUtil.validateFiles(files);
         if (validationError.isPresent()) {
             Map<String, String> response = new HashMap<>();
             response.put(ERROR_KEY, validationError.get());
@@ -77,6 +90,12 @@ public class ImgShareRestController {
         String originalIp = originRequest.getHeader(HEADER_X_FORWARDED_FOR);
         rateLimiterService.checkGetShareImageLimit(originalIp);
         String code = request.get("code");
+        Optional<String> codeError = ImgServiceValidatorUtil.validateShareCode(code);
+        if (codeError.isPresent()) {
+            Map<String, Object> error = new HashMap<>();
+            error.put(ERROR_KEY, codeError.get());
+            return ResponseEntity.badRequest().body(error);
+        }
         Map<String, Object> result = imgShareService.isShareImageAlbumPasswordProtected(code);
         return ResponseEntity.ok(result);
     }
@@ -86,6 +105,12 @@ public class ImgShareRestController {
         String originalIp = originRequest.getHeader(HEADER_X_FORWARDED_FOR);
         rateLimiterService.checkGetShareImageLimit(originalIp);
         String code = request.get("code");
+        Optional<String> codeError = ImgServiceValidatorUtil.validateShareCode(code);
+        if (codeError.isPresent()) {
+            Map<String, Object> error = new HashMap<>();
+            error.put(ERROR_KEY, codeError.get());
+            return ResponseEntity.badRequest().body(error);
+        }
         Map<String, Object> result = imgShareService.isShareImagePasswordProtected(code);
         return ResponseEntity.ok(result);
     }
@@ -98,7 +123,20 @@ public class ImgShareRestController {
 
         // Extract request parameters
         String code = request.get("code");
+        Optional<String> codeError = ImgServiceValidatorUtil.validateShareCode(code);
+        if (codeError.isPresent()) {
+            Map<String, Object> error = new HashMap<>();
+            error.put(ERROR_KEY, codeError.get());
+            return ResponseEntity.badRequest().body(error);
+        }
+
         String password = request.get("password");
+        Optional<String> passwordError = ImgServiceValidatorUtil.validatePassword(password);
+        if (passwordError.isPresent()) {
+            Map<String, Object> error = new HashMap<>();
+            error.put(ERROR_KEY, passwordError.get());
+            return ResponseEntity.badRequest().body(error);
+        }
 
         // Check the album password
         Map<String, Object> result = imgShareService.checkAlbumPassword(code, password);
@@ -113,7 +151,20 @@ public class ImgShareRestController {
 
         // Extract request parameters
         String code = request.get("code");
+        Optional<String> codeError = ImgServiceValidatorUtil.validateShareCode(code);
+        if (codeError.isPresent()) {
+            Map<String, Object> error = new HashMap<>();
+            error.put(ERROR_KEY, codeError.get());
+            return ResponseEntity.badRequest().body(error);
+        }
+
         String password = request.get("password");
+        Optional<String> passwordError = ImgServiceValidatorUtil.validatePassword(password);
+        if (passwordError.isPresent()) {
+            Map<String, Object> error = new HashMap<>();
+            error.put(ERROR_KEY, passwordError.get());
+            return ResponseEntity.badRequest().body(error);
+        }
 
         // Check the image password
         Map<String, Object> result = imgShareService.checkImagePassword(code, password);
@@ -124,9 +175,15 @@ public class ImgShareRestController {
     @PostMapping("/downloadAlbumImages")
     public ResponseEntity<Map<String, Object>> downloadAlbumImages(@RequestBody TokenRequestDTO request, HttpServletRequest originRequest) {
 
-        String token = request.getToken();
         String originalIp = originRequest.getHeader(HEADER_X_FORWARDED_FOR);
         rateLimiterService.checkGetShareImageLimit(originalIp);
+
+        String token = request.getToken();
+        if (token == null || token.trim().isEmpty()) {
+            Map<String, Object> error = new HashMap<>();
+            error.put(ERROR_KEY, "Missing or empty token.");
+            return ResponseEntity.badRequest().body(error);
+        }
 
         Map<String, Object> result = imgShareService.getAlbumImages(token);
         if (result.containsKey(ERROR_KEY)) {
@@ -139,9 +196,15 @@ public class ImgShareRestController {
     @PostMapping("/downloadSingleImage")
     public ResponseEntity<Map<String, Object>> downloadSingleImage(@RequestBody TokenRequestDTO request, HttpServletRequest originRequest) {
 
-        String token = request.getToken();
         String originalIp = originRequest.getHeader(HEADER_X_FORWARDED_FOR);
         rateLimiterService.checkGetShareImageLimit(originalIp);
+
+        String token = request.getToken();
+        if (token == null || token.trim().isEmpty()) {
+            Map<String, Object> error = new HashMap<>();
+            error.put(ERROR_KEY, "Missing or empty token.");
+            return ResponseEntity.badRequest().body(error);
+        }
 
         Map<String, Object> result = imgShareService.getSingleImage(token);
         if (result.containsKey(ERROR_KEY)) {

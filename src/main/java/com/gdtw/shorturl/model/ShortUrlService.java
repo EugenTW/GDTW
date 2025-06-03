@@ -19,7 +19,7 @@ import java.util.*;
 @Service
 public class ShortUrlService {
 
-    private static final Duration TTL_DURATION = Duration.ofMinutes(10);
+    private static final Duration TTL_DURATION = Duration.ofMinutes(5);
     private static final String SHORT_URL_INFO_CACHE_PREFIX = "su:info:";
     private static final String USAGE_KEY_PREFIX = "su:usage:";
 

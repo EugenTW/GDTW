@@ -1,6 +1,7 @@
 package com.gdtw.urlsafetycheck.controller;
 
 import com.gdtw.general.helper.ratelimiter.RateLimiterHelper;
+import com.gdtw.general.util.UrlServiceValidatorUtil;
 import com.gdtw.urlsafetycheck.model.UrlSafetyCheckService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/usc_api")
@@ -25,7 +27,8 @@ public class UrlSafetyCheckRestController {
     private final UrlSafetyCheckService urlSafetyCheckService;
 
     private static final String REDIS_CALL_COUNT_KEY = "URL_SAFETY_API_CALL_COUNT";
-    private static final int DAILY_LIMIT = 2400;
+    private static final String SAFE_VALUE_KEY = "safeValue";
+    private static final int URL_SAFETY_CHECK_DAILY_LIMIT = 2400;
 
     public UrlSafetyCheckRestController(RedisTemplate<String, Integer> redisStringIntegerTemplate, RateLimiterHelper rateLimiterService, UrlSafetyCheckService urlSafetyCheckService) {
         this.redisStringIntegerTemplate = redisStringIntegerTemplate;
@@ -45,24 +48,24 @@ public class UrlSafetyCheckRestController {
 
         Map<String, Object> result = new HashMap<>();
 
-        if (currentCount >= DAILY_LIMIT) {
+        if (currentCount >= URL_SAFETY_CHECK_DAILY_LIMIT) {
             logger.info("Daily API call limit reached: {}", currentCount);
-            result.put("safeValue", "0");
+            result.put(SAFE_VALUE_KEY, "0");
             return result;
         }
 
         String inputUrl = (String) reqMap.get("original_url");
 
-        final int MAX_URL_LENGTH = 200;
-        if (inputUrl != null && inputUrl.length() > MAX_URL_LENGTH) {
-            result.put("safeValue", "0");
+        Optional<String> urlError = UrlServiceValidatorUtil.validateOriginalUrl(inputUrl);
+        if (urlError.isPresent()) {
+            result.put(SAFE_VALUE_KEY, "0");
             return result;
         }
 
         String safeValue = urlSafetyCheckService.checkUrlSafety(inputUrl);
 
         redisStringIntegerTemplate.opsForValue().increment(REDIS_CALL_COUNT_KEY);
-        result.put("safeValue", safeValue);
+        result.put(SAFE_VALUE_KEY, safeValue);
 
         return result;
     }
