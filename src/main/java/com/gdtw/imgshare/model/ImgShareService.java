@@ -300,20 +300,6 @@ public class ImgShareService {
         }
     }
 
-    public boolean isValidShareImageAlbum(String code) {
-        return Boolean.TRUE.equals(
-                imgSharePersistenceService.isShareImageAlbumPasswordProtected(code)
-                        .get(ImgSharePersistenceService.RESP_IS_VALID)
-        );
-    }
-
-    public boolean isValidShareImage(String code) {
-        return Boolean.TRUE.equals(
-                imgSharePersistenceService.isShareImagePasswordProtected(code)
-                        .get(ImgSharePersistenceService.RESP_IS_VALID)
-        );
-    }
-
     @Transactional
     public void syncSiaUsageToMySQL() {
         Set<String> keys = redisStringIntegerTemplate.keys(USAGE_SIA_KEY_PREFIX + "*");

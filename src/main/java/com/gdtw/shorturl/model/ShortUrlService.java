@@ -87,19 +87,6 @@ public class ShortUrlService {
         return new AbstractMap.SimpleEntry<>(dto.getSuOriginalUrl(), dto.getSuSafe());
     }
 
-    public boolean checkCodeValid(String code) {
-        Integer suId;
-        try {
-            suId = CodecShortUrlIdUtil.decodeId(code);
-        } catch (Exception e) {
-            return false;
-        }
-
-        ShortUrlInfoDTO dto = getOrCacheShortUrlInfo(suId);
-
-        return dto.getSuStatus() == 0;
-    }
-
     @Transactional
     public void reportShortUrl(Integer shortUrlId, Map<String, String> result) {
         int updatedRows = shortUrlJpa.incrementReportIfNotBlocked(shortUrlId);
