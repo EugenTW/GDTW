@@ -66,13 +66,13 @@ public class ImgShareService {
     private final RedisTemplate<String, Integer> redisStringIntegerTemplate;
     private static final Random RANDOM = new Random();
 
-    public ImgShareService(ImgSharePersistenceService imgSharePersistenceService, ShareImgAlbumJpa shareImgAlbumJpa, ShareImgJpa shareImgJpa, ServiceUsageCounterHelper serviceUsageCounterHelper, JwtHelper jwtUtil, RedisObjectCacheHelper redisObjectCacheUtil, DailyStatisticService dailyStatisticService, @Qualifier("redisStringIntegerTemplate") RedisTemplate<String, Integer> redisStringIntegerTemplate) {
+    public ImgShareService(ImgSharePersistenceService imgSharePersistenceService, ShareImgAlbumJpa shareImgAlbumJpa, ShareImgJpa shareImgJpa, ServiceUsageCounterHelper serviceUsageCounterHelper, JwtHelper jwtUtil, RedisObjectCacheHelper redisObjectCacheHelper, DailyStatisticService dailyStatisticService, @Qualifier("redisStringIntegerTemplate") RedisTemplate<String, Integer> redisStringIntegerTemplate) {
         this.imgSharePersistenceService = imgSharePersistenceService;
         this.shareImgAlbumJpa = shareImgAlbumJpa;
         this.shareImgJpa = shareImgJpa;
         this.serviceUsageCounterHelper = serviceUsageCounterHelper;
         this.jwtUtil = jwtUtil;
-        this.redisObjectCacheUtil = redisObjectCacheUtil;
+        this.redisObjectCacheUtil = redisObjectCacheHelper;
         this.dailyStatisticService = dailyStatisticService;
         this.redisStringIntegerTemplate = redisStringIntegerTemplate;
     }

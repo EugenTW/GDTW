@@ -29,10 +29,10 @@ public class ShortUrlService {
     private final RedisTemplate<String,Integer> redisStringIntegerTemplate;
     private final RedisTemplate<String, Object> universalRedisTemplate;
 
-    public ShortUrlService(ShortUrlJpa shortUrlJpa, ServiceUsageCounterHelper serviceUsageCounterHelper, RedisObjectCacheHelper redisCacheUtil, @Qualifier("redisStringIntegerTemplate") RedisTemplate<String, Integer> redisStringIntegerTemplate, @Qualifier("universalRedisTemplate") RedisTemplate<String, Object> universalRedisTemplate) {
+    public ShortUrlService(ShortUrlJpa shortUrlJpa, ServiceUsageCounterHelper serviceUsageCounterHelper, RedisObjectCacheHelper redisCacheHelper, @Qualifier("redisStringIntegerTemplate") RedisTemplate<String, Integer> redisStringIntegerTemplate, @Qualifier("universalRedisTemplate") RedisTemplate<String, Object> universalRedisTemplate) {
         this.shortUrlJpa = shortUrlJpa;
         this.serviceUsageCounterHelper = serviceUsageCounterHelper;
-        this.redisObjectCacheUtil = redisCacheUtil;
+        this.redisObjectCacheUtil = redisCacheHelper;
         this.redisStringIntegerTemplate = redisStringIntegerTemplate;
         this.universalRedisTemplate = universalRedisTemplate;
     }
