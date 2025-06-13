@@ -66,11 +66,6 @@ public class ReportViolationService {
             result.put("reportStatus", "false");
             result.put("response", "您已經針對此資源舉報過，不能重複舉報。\nYou have already reported this resource and cannot report again.");
             return result;
-        } catch (Exception e) {
-            logger.error("Create Violation Report Error: ", e);
-            result.put("reportStatus", "false");
-            result.put("response", "伺服器錯誤，請稍後再試。\nServer error, please try again. (" + e.getClass().getSimpleName() + ")");
-            return result;
         }
     }
 
