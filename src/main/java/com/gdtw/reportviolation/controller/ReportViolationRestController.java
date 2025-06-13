@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.Map;
-
 
 @RestController
 @RequestMapping("/rv_api")
@@ -35,9 +35,15 @@ public class ReportViolationRestController {
         String originalIp = request.getHeader(HEADER_X_FORWARDED_FOR);
         rateLimiterService.checkReportViolationLimit(originalIp);
 
-        Map<String, String> response = reportViolationService.createViolationReport (reportRequestDTO, originalIp);
-
-        return ResponseEntity.ok(response);
+        try {
+            Map<String, String> response = reportViolationService.createViolationReport(reportRequestDTO, originalIp);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            Map<String, String> response = new HashMap<>();
+            response.put("reportStatus", "false");
+            response.put("response", "伺服器錯誤，請稍後再試。\nServer error, please try again. (" + e.getClass().getSimpleName() + ")");
+            return ResponseEntity.ok(response);
+        }
     }
 
 }

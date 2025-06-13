@@ -1,7 +1,6 @@
 package com.gdtw.reportviolation.model;
 
 import com.gdtw.reportviolation.dto.ReportRequestDTO;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,7 +12,6 @@ public class ReportViolationPersistenceService {
         this.reportViolationJpa = reportViolationJpa;
     }
 
-    @Transactional
     public void saveReportViolationTransactional(ReportRequestDTO dto, String ip) {
         ReportViolationVO vo = new ReportViolationVO();
         vo.setVrIp(ip);
