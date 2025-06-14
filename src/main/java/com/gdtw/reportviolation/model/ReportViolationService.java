@@ -8,7 +8,9 @@ import com.gdtw.shorturl.model.ShortUrlService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
@@ -62,9 +64,13 @@ public class ReportViolationService {
                 result.put("response", "舉報失敗，請稍後再試。\nReport failed, please try again.");
             }
             return result;
-        } catch (DataIntegrityViolationException ex) {
+        } catch (UnexpectedRollbackException ex) {
             result.put("reportStatus", "false");
             result.put("response", "您已經針對此資源舉報過，不能重複舉報。\nYou have already reported this resource and cannot report again.");
+            return result;
+        } catch (Exception ex) {
+            result.put("reportStatus", "false");
+            result.put("response", "伺服器錯誤，請稍後再試。\nServer error, please try again. (" + ex.getClass().getSimpleName() + ")");
             return result;
         }
     }
