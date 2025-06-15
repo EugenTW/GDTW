@@ -196,19 +196,26 @@ document.addEventListener('DOMContentLoaded', function () {
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(payload)
             });
-            let data;
+            let data = {};
             try {
                 data = await resp.json();
             } catch (err) {
-                data = {};
             }
-            if (data && String(data.reportStatus) === "true") {
+
+            if (resp.ok && String(data.reportStatus) === "true") {
                 showAlert("舉報送出成功，謝謝您！<br>Report sent successfully, thank you!");
                 resetForm();
+            } else if (resp.status === 409) {
+                showAlert("重複舉報 / Duplicated report：<br>" + (data.response), false);
+                resetForm();
+            } else if (resp.status === 500) {
+                showAlert("伺服器錯誤 / Server error:<br>" + (data.response), false);
+                resetForm();
             } else {
-                showAlert("錯誤 / Error: <br>" + (data && data.response ? data.response : "Unknown error"), false);
+                showAlert("錯誤 / Error: <br>" + (data && data.response ? data.response : "未知錯誤!<br>Unknown error!"), false);
                 resetForm();
             }
+
         } catch (err) {
             showAlert("錯誤 / Error:<br> 網路錯誤或無法送出 / Network error or unable to send", false);
             resetForm();
