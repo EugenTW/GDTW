@@ -18,9 +18,7 @@ public class ReportViolationPersistenceService {
         vo.setVrReportType(dto.getReportType());
         vo.setVrReportTarget(dto.getTargetUrl());
         vo.setVrReportReason(dto.getReportReason());
-        System.out.println(">> 準備存檔");
         reportViolationJpa.save(vo);
-        System.out.println(">> 已存檔");
     }
 
 }
