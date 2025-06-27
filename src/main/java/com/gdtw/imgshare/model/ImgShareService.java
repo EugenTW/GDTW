@@ -60,18 +60,18 @@ public class ImgShareService {
     private final ShareImgAlbumJpa shareImgAlbumJpa;
     private final ShareImgJpa shareImgJpa;
     private final ServiceUsageCounterHelper serviceUsageCounterHelper;
-    private final JwtHelper jwtUtil;
+    private final JwtHelper jwtHelper;
     private final RedisObjectCacheHelper redisObjectCacheUtil;
     private final DailyStatisticService dailyStatisticService;
     private final RedisTemplate<String, Integer> redisStringIntegerTemplate;
     private static final Random RANDOM = new Random();
 
-    public ImgShareService(ImgSharePersistenceService imgSharePersistenceService, ShareImgAlbumJpa shareImgAlbumJpa, ShareImgJpa shareImgJpa, ServiceUsageCounterHelper serviceUsageCounterHelper, JwtHelper jwtUtil, RedisObjectCacheHelper redisObjectCacheHelper, DailyStatisticService dailyStatisticService, @Qualifier("redisStringIntegerTemplate") RedisTemplate<String, Integer> redisStringIntegerTemplate) {
+    public ImgShareService(ImgSharePersistenceService imgSharePersistenceService, ShareImgAlbumJpa shareImgAlbumJpa, ShareImgJpa shareImgJpa, ServiceUsageCounterHelper serviceUsageCounterHelper, JwtHelper jwtHelper, RedisObjectCacheHelper redisObjectCacheHelper, DailyStatisticService dailyStatisticService, @Qualifier("redisStringIntegerTemplate") RedisTemplate<String, Integer> redisStringIntegerTemplate) {
         this.imgSharePersistenceService = imgSharePersistenceService;
         this.shareImgAlbumJpa = shareImgAlbumJpa;
         this.shareImgJpa = shareImgJpa;
         this.serviceUsageCounterHelper = serviceUsageCounterHelper;
-        this.jwtUtil = jwtUtil;
+        this.jwtHelper = jwtHelper;
         this.redisObjectCacheUtil = redisObjectCacheHelper;
         this.dailyStatisticService = dailyStatisticService;
         this.redisStringIntegerTemplate = redisStringIntegerTemplate;
@@ -115,7 +115,7 @@ public class ImgShareService {
         ShareImgAlbumInfoDTO dto = dtoOpt.orElse(null);
         if (dto != null && password.equalsIgnoreCase(dto.getSiaPassword())) {
             response.put(ImgSharePersistenceService.STAGE_CHECK_PASSWORD, true);
-            String token = jwtUtil.generateToken(code, ImgSharePersistenceService.STAGE_PASSED_PASSWORD);
+            String token = jwtHelper.generateToken(code, ImgSharePersistenceService.STAGE_PASSED_PASSWORD);
             response.put(ImgSharePersistenceService.DOWNLOAD_TOKEN, token);
         } else {
             try {
@@ -142,7 +142,7 @@ public class ImgShareService {
         ShareImgInfoDTO dto = dtoOpt.orElse(null);
         if (dto != null && password.equals(dto.getSiPassword())) {
             response.put(ImgSharePersistenceService.STAGE_CHECK_PASSWORD, true);
-            String token = jwtUtil.generateToken(code, ImgSharePersistenceService.STAGE_PASSED_PASSWORD);
+            String token = jwtHelper.generateToken(code, ImgSharePersistenceService.STAGE_PASSED_PASSWORD);
             response.put(ImgSharePersistenceService.DOWNLOAD_TOKEN, token);
         } else {
             try {
@@ -358,7 +358,7 @@ public class ImgShareService {
     }
 
     private Map<String, Object> validateTokenAndStage(String token) {
-        Map<String, Object> claims = jwtUtil.validateToken(token);
+        Map<String, Object> claims = jwtHelper.validateToken(token);
         if (claims == null) return Map.of(CACHE_KEY_ERROR, ERROR_INVALID_TOKEN);
 
         String stage = (String) claims.get("stage");
