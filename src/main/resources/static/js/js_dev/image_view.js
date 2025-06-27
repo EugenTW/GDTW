@@ -274,6 +274,11 @@ function displaySingleImage(data) {
     imgElement.src = imageUrl;
     imgElement.alt = data.siName;
     imgElement.id = 'photo-img';
+
+    imgElement.addEventListener('error', function() {
+        this.src = '/images/pic_not_found.webp';
+    });
+
     photoWrapper.appendChild(imgElement);
 
     if (data.siNsfw === 1) {
@@ -461,3 +466,4 @@ async function downloadByUrl(url, filename) {
         alert('下載失敗! - Download Failed!');
     }
 }
+
