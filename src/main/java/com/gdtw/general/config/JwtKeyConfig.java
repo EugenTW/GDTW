@@ -12,6 +12,13 @@ import java.security.interfaces.RSAPublicKey;
 @Configuration
 public class JwtKeyConfig {
 
+    /**
+     * Development default: Generates a new RSA key pair on each application startup.
+     * All JWT tokens are valid for 3 minutes; tokens will become invalid after a restart.
+     * For production deployments, load a persistent key pair from a file or environment variable
+     * to avoid premature token invalidation.
+     */
+
     @Bean
     public KeyPair keyPair() throws NoSuchAlgorithmException {
         KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
