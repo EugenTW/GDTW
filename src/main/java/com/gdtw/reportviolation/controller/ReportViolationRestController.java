@@ -4,6 +4,8 @@ import com.gdtw.general.helper.ratelimiter.RateLimiterHelper;
 import com.gdtw.reportviolation.dto.ReportRequestDTO;
 import com.gdtw.reportviolation.model.ReportViolationService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/rv_api")
 public class ReportViolationRestController {
+
+    private final Logger log = LoggerFactory.getLogger(ReportViolationRestController.class);
 
     private final RateLimiterHelper rateLimiterService;
     private final ReportViolationService reportViolationService;
@@ -36,12 +40,17 @@ public class ReportViolationRestController {
             HttpServletRequest request) {
 
         String originalIp = request.getHeader(HEADER_X_FORWARDED_FOR);
+        if (originalIp == null || originalIp.isBlank()) {
+            originalIp = request.getRemoteAddr();
+        }
+
         rateLimiterService.checkReportViolationLimit(originalIp);
 
         try {
             Map<String, String> response = reportViolationService.createViolationReport(reportRequestDTO, originalIp);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
+            log.error(e.getMessage(), e);
             Throwable throwableError = e;
             Map<String, String> response = new HashMap<>();
             while (throwableError != null) {
