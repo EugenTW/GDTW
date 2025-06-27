@@ -35,7 +35,7 @@ public class SecurityConfig {
                                         "default-src 'self'; " +
                                                 "script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://cdnjs.cloudflare.com; " +
                                                 "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
-                                                "img-src 'self' data: https://gdtw.org; " +
+                                                "img-src 'self' data: https://gdtw.org http://localhost; " +
                                                 "font-src 'self' https://fonts.gstatic.com; " +
                                                 "connect-src 'self';"
                                 )
