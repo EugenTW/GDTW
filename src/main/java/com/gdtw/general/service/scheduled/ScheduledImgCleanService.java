@@ -59,7 +59,7 @@ public class ScheduledImgCleanService {
             String originalSiId = image.getSiId().toString();
             String originalSiCode = image.getSiCode();
 
-            String note = "  - image ID:  " + originalSiId + " (code: " + originalSiCode + "& name:" + originalSiName + ") is expired.";
+            String note = "  - image ID:  " + originalSiId + " (code: " + originalSiCode + " & name:" + originalSiName + ") is expired.";
             logger.info(note);
 
             image.setSiName(null);
