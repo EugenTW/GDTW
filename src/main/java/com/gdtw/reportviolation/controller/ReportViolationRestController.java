@@ -18,7 +18,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/rv_api")
-public class ReportViolationRestController {;
+public class ReportViolationRestController {
 
     private final RateLimiterHelper rateLimiterService;
     private final ReportViolationService reportViolationService;
