@@ -1,6 +1,8 @@
 package com.gdtw.general.service.safebrowsing4;
 
 import com.gdtw.general.util.UrlNormalizerUtil;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,6 +29,8 @@ public class SafeBrowsingV4Service {
         this.webClient = webClientBuilder.baseUrl(safeBrowsingV4ApiUrl).build();
     }
 
+    @CircuitBreaker(name = "safeBrowsingV4", fallbackMethod = "fallbackCheckUrlSafety")
+    @Retry(name = "safeBrowsingV4")
     public String checkUrlSafety(String originalUrl) {
         if (apiKey == null || apiKey.trim().isEmpty()) {
             return "0";
@@ -71,6 +75,11 @@ public class SafeBrowsingV4Service {
             logger.error("Unexpected error: {}", ex.getMessage());
             return "0";
         }
+    }
+
+    public String fallbackCheckUrlSafety(String originalUrl, Throwable ex) {
+        logger.error("SafeBrowsing API fallback triggered. Reason: {}", ex.getMessage());
+        return "0";
     }
 
 }
