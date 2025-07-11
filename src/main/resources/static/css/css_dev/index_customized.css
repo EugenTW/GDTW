@@ -54,7 +54,7 @@ main {
 }
 
 .service-section {
-    background-color: #003f3c;
+    background-color: #abd1c6;
     padding: 30px;
 }
 
@@ -67,8 +67,8 @@ main {
 }
 
 .service-card {
-    background-color: #abd1c6;
-    border: 3px solid #29987b;
+    background-color: #003f3c;
+    border: 3px solid #1f8d73;
     border-radius: 10px;
     padding: 20px;
     text-align: center;
@@ -97,8 +97,8 @@ main {
 
 .service-card h2 {
     font-size: 20px;
-    margin: 2px 0;
-    color: #003433;
+    margin: 3px 0;
+    color: #ccefe5;
 }
 
 .service-btn {
