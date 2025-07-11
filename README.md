@@ -1,11 +1,8 @@
 ================================
 
-This project is an open-source website based on the MIT license. 
-It primarily utilizes Java, Spring Boot, Redis, and MySQL, alongside other open-source software or free services like Google Safe Browsing.
+This project is an open-source website based on the MIT license. It primarily utilizes Java, Spring Boot, Redis, and MySQL, alongside other open-source software or free services like Google Safe Browsing.
 
-This project is licensed under the MIT License.  
-All third-party dependencies are governed by their respective original licenses.  
-For details, please refer to NOTICE-THIRD-PARTY-LICENSES.txt.  
+This project is licensed under the MIT License. All third-party dependencies are governed by their respective original licenses. For details, please refer to NOTICE-THIRD-PARTY-LICENSES.txt.  
 
 The project currently provides the following features: 
 - Free two-step redirect short URL service.
