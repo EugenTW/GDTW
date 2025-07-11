@@ -1,18 +1,32 @@
-body {
+html, body {
+    height: 100%;
     min-height: 100vh;
+    margin: 0;
+    padding: 0;
     display: flex;
     flex-direction: column;
 }
 
 #footer {
-    margin-top: auto;
-}
-
-footer {
     background-color: #001A6E;
     text-align: center;
     height: 60px;
     line-height: 60px;
     font-size: 15px;
     color: #ffffff;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: auto;
+    padding: 0;
+    border: none;
+}
+
+#copyright {
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    font-size: 15px;
 }

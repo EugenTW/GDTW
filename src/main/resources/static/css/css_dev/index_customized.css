@@ -1,10 +1,25 @@
-body {
+html {
+    height: 100%;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
     background-color: #212121;
 }
 
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    background-color: #212121;
+    font-family: sans-serif;
+}
+
 main {
-    flex: 1;
-    padding: 50px 0 0;
+    flex: 1 0 auto;
+    margin-top: 60px;
+    background-color: #212121;
 }
 
 .hero-section {
@@ -39,8 +54,7 @@ main {
 }
 
 .service-section {
-    background-color: #7A73D1;
-    color: #ffffff;
+    background-color: #003f3c;
     padding: 30px;
 }
 
@@ -53,8 +67,8 @@ main {
 }
 
 .service-card {
-    background-color: #211C84;
-    border: 3px solid #B5A8D5;
+    background-color: #abd1c6;
+    border: 3px solid #29987b;
     border-radius: 10px;
     padding: 20px;
     text-align: center;
@@ -67,13 +81,13 @@ main {
     aspect-ratio: 1 / 1;
     object-fit: cover;
     border-radius: 8px;
-    border: 3px solid #008cff;
+    border: 3px solid #ff9900;
     margin-bottom: 2px;
     transition: border-color 0.15s, opacity 0.15s;
 }
 
 .service-img:hover {
-    border-color: #00ffff;
+    border-color: #d22a2b;
     opacity: 0.9;
 }
 
@@ -84,22 +98,13 @@ main {
 .service-card h2 {
     font-size: 20px;
     margin: 2px 0;
-}
-
-.service-card p {
-    font-size: 15px;
-    color: #ffffff;
-    text-align: left;
-    margin: 2px 0;
-    padding: 0 10px;
-
-    line-height: 1.5;
+    color: #003433;
 }
 
 .service-btn {
     display: inline-block;
     padding: 8px 16px;
-    background-color: #B5A8D5;
+    background-color: #ff717c;
     color: #000000;
     border-radius: 4px;
     text-decoration: none;
@@ -108,5 +113,5 @@ main {
 }
 
 .service-btn:hover {
-    background-color: #d6cff6;
+    background-color: #e84e58;
 }
