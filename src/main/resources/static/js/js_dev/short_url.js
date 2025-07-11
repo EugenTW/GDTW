@@ -138,9 +138,9 @@ document.addEventListener('DOMContentLoaded', function () {
         alertDiv.style.top = "50%";
         alertDiv.style.left = "50%";
         alertDiv.style.transform = "translate(-50%, -50%)";
-        alertDiv.style.background = "#00FF00";
+        alertDiv.style.background = "#bbfafa";
         alertDiv.style.color = "#000000";
-        alertDiv.style.border="2px solid #227700";
+        alertDiv.style.border="3px solid #16d4ff";
         alertDiv.style.padding = "15px";
         alertDiv.style.borderRadius = "5px";
         alertDiv.style.zIndex = "9999";
