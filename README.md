@@ -19,7 +19,8 @@ https://gdtw.org/
 ================================
  
 此專案是一個基於MIT協議的開源網站專案，主要使用Java、Spring Boot、Redis和MySQL，並搭配其他開源軟體或免費服務，例如Google Safe Browsing。 
-本專案為 MIT License，依賴之第三方套件則各自適用其原始授權。請參考 NOTICE-THIRD-PARTY-LICENSES.txt。 
+
+本專案為 MIT License，依賴之第三方套件則各自適用其原始授權。請參考 NOTICE-THIRD-PARTY-LICENSES.txt。  
 
 目前本專案提供以下功能： 
 - 免費二段式跳轉短網址服務。 
