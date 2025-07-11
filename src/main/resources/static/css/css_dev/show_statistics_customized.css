@@ -126,7 +126,6 @@ canvas.chart-canvas:empty {
 
 .final-cover {
     width: 100%;
-    margin: 0 auto;
     padding: 0 10px;
     display: flex;
     justify-content: center;
