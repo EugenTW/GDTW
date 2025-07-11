@@ -1,0 +1,35 @@
+NOTICE-THIRD-PARTY-LICENSES
+
+This project uses third-party open source dependencies, each governed by its own license terms.
+Below is a list of major dependencies and their licenses:
+
+- Spring Boot, Spring Security, Spring Data JPA, Spring Web, Spring WebFlux
+  License: Apache License 2.0
+  https://www.apache.org/licenses/LICENSE-2.0
+
+- Spring Cloud Circuit Breaker, Resilience4j
+  License: Apache License 2.0
+  https://www.apache.org/licenses/LICENSE-2.0
+
+- MySQL Connector/J
+  License: GNU General Public License v2 (with FOSS exception)
+  https://www.mysql.com/about/legal/licensing/foss-exception/
+  https://github.com/mysql/mysql-connector-j/blob/8.0/LICENSE
+
+- sitemapgen4j
+  License: Apache License 2.0
+  https://github.com/dfabulich/sitemapgen4j/blob/main/LICENSE.txt
+
+- Google Closure Compiler
+  License: Apache License 2.0
+  https://github.com/google/closure-compiler/blob/master/LICENSE
+
+- YUI Compressor
+  License: BSD License
+  https://github.com/yui/yuicompressor/blob/master/LICENSE.TXT
+
+- ph-css
+  License: Apache License 2.0
+  https://github.com/phax/ph-css/blob/master/LICENSE.txt
+
+All other transitive dependencies are subject to their respective licenses, which can be found in the documentation or repositories of each project.
