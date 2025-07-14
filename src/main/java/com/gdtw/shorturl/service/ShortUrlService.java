@@ -1,4 +1,4 @@
-package com.gdtw.shorturl.model;
+package com.gdtw.shorturl.service;
 
 import com.gdtw.general.exception.ShortUrlBannedException;
 import com.gdtw.general.exception.ShortUrlNotFoundException;
@@ -7,6 +7,8 @@ import com.gdtw.general.helper.RedisObjectCacheHelper;
 import com.gdtw.general.util.CodecShortUrlIdUtil;
 
 import com.gdtw.shorturl.dto.ShortUrlInfoDTO;
+import com.gdtw.shorturl.model.ShortUrlJpa;
+import com.gdtw.shorturl.model.ShortUrlVO;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;

@@ -1,11 +1,11 @@
 package com.gdtw.imgshare.controller;
 
-import com.gdtw.dailystatistic.model.DailyStatisticService;
+import com.gdtw.dailystatistic.service.DailyStatisticService;
 import com.gdtw.general.exception.InsufficientDiskSpaceException;
 import com.gdtw.general.helper.ratelimiter.RateLimiterHelper;
 import com.gdtw.general.util.ImgServiceValidatorUtil;
 import com.gdtw.imgshare.dto.AlbumCreationRequestDTO;
-import com.gdtw.imgshare.model.ImgShareService;
+import com.gdtw.imgshare.service.ImgShareService;
 import com.gdtw.imgshare.dto.TokenRequestDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;

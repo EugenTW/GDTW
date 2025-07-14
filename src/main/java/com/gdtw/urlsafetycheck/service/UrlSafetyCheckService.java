@@ -1,4 +1,4 @@
-package com.gdtw.urlsafetycheck.model;
+package com.gdtw.urlsafetycheck.service;
 
 import com.gdtw.general.service.safebrowsing4.SafeBrowsingV4Service;
 import org.springframework.stereotype.Service;

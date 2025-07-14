@@ -1,7 +1,7 @@
 package com.gdtw.general.service.scheduled;
 
 import com.gdtw.dailystatistic.model.DailyStatisticJpa;
-import com.gdtw.dailystatistic.model.DailyStatisticService;
+import com.gdtw.dailystatistic.service.DailyStatisticService;
 import com.gdtw.dailystatistic.model.DailyStatisticVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
