@@ -1,7 +1,7 @@
 package com.gdtw.general.service.scheduled;
 
-import com.gdtw.imgshare.model.ImgShareService;
-import com.gdtw.shorturl.model.ShortUrlService;
+import com.gdtw.imgshare.service.ImgShareService;
+import com.gdtw.shorturl.service.ShortUrlService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;

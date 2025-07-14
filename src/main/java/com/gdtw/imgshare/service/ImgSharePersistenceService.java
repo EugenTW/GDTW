@@ -1,6 +1,6 @@
-package com.gdtw.imgshare.model;
+package com.gdtw.imgshare.service;
 
-import com.gdtw.dailystatistic.model.DailyStatisticService;
+import com.gdtw.dailystatistic.service.DailyStatisticService;
 import com.gdtw.general.exception.ImageStorageException;
 import com.gdtw.general.helper.RedisObjectCacheHelper;
 import com.gdtw.general.util.CodecImgFilenameUtil;
@@ -9,6 +9,10 @@ import com.gdtw.general.helper.JwtHelper;
 import com.gdtw.imgshare.dto.AlbumCreationRequestDTO;
 import com.gdtw.imgshare.dto.ShareImgAlbumInfoDTO;
 import com.gdtw.imgshare.dto.ShareImgInfoDTO;
+import com.gdtw.imgshare.model.ShareImgAlbumJpa;
+import com.gdtw.imgshare.model.ShareImgAlbumVO;
+import com.gdtw.imgshare.model.ShareImgJpa;
+import com.gdtw.imgshare.model.ShareImgVO;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

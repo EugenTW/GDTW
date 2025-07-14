@@ -2,8 +2,8 @@ package com.gdtw.general.helper;
 
 import com.gdtw.general.service.RedisService;
 import com.gdtw.general.service.scheduled.ScheduledStatService;
-import com.gdtw.imgshare.model.ImgShareService;
-import com.gdtw.shorturl.model.ShortUrlService;
+import com.gdtw.imgshare.service.ImgShareService;
+import com.gdtw.shorturl.service.ShortUrlService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;

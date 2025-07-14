@@ -1,6 +1,6 @@
 package com.gdtw.shorturl.controller;
 
-import com.gdtw.dailystatistic.model.DailyStatisticService;
+import com.gdtw.dailystatistic.service.DailyStatisticService;
 import com.gdtw.general.exception.ShortUrlBannedException;
 import com.gdtw.general.exception.ShortUrlNotFoundException;
 import com.gdtw.general.helper.ratelimiter.RateLimiterHelper;
@@ -10,7 +10,7 @@ import com.gdtw.shorturl.dto.CreateShortUrlRequestDTO;
 import com.gdtw.shorturl.dto.GetOriginalUrlDTO;
 import com.gdtw.shorturl.dto.ReturnCreatedShortUrlDTO;
 import com.gdtw.shorturl.dto.ReturnOriginalUrlDTO;
-import com.gdtw.shorturl.model.*;
+import com.gdtw.shorturl.service.ShortUrlService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
