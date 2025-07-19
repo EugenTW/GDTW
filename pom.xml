@@ -14,7 +14,7 @@
     <artifactId>GDTW_Web</artifactId>
     <version>1.18.0</version>
     <name>GDTW_Web</name>
-    <description>GDTW project for Spring Boot</description>
+    <description>Free Web Service 'GDTW.org'</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
