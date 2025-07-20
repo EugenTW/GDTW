@@ -44,13 +44,17 @@ main {
 }
 
 .hero-text h1 {
-    font-size: 32px;
+    font-size: 40px;
+    margin-top: 15px;
     margin-bottom: 10px;
+    font-weight: bold;
+    color: #000000;
 }
 
 .hero-text p {
-    font-size: 16px;
-    color: #dddddd;
+    font-size: 18px;
+    font-weight: bold;
+    color: #000000;
 }
 
 .service-section {
@@ -114,4 +118,13 @@ main {
 
 .service-btn:hover {
     background-color: #e84e58;
+}
+
+@media (max-width: 768px) {
+    .hero-text h1 {
+        font-size: 30px;
+    }
+    .hero-text p {
+        font-size: 15px;
+    }
 }
