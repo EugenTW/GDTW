@@ -12,14 +12,14 @@
 
     <groupId>com.GDTW</groupId>
     <artifactId>GDTW_Web</artifactId>
-    <version>1.18.0</version>
+    <version>1.19.0</version>
     <name>GDTW_Web</name>
     <description>Free Web Service 'GDTW.org'</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.3</version>
+        <version>3.5.4</version>
     </parent>
 
     <properties>
