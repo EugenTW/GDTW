@@ -1,5 +1,6 @@
-package com.gdtw.imgshare.model;
+package com.gdtw.imgshare.repository;
 
+import com.gdtw.imgshare.model.ShareImgVO;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

@@ -1,4 +1,4 @@
-package com.gdtw.dailystatistic.dto;
+package com.gdtw.dailystatistic.model;
 
 import java.io.Serializable;
 import java.util.*;

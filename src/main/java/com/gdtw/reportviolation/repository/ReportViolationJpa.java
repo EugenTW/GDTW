@@ -1,5 +1,6 @@
-package com.gdtw.reportviolation.model;
+package com.gdtw.reportviolation.repository;
 
+import com.gdtw.reportviolation.model.ReportViolationVO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,6 +1,6 @@
 package com.gdtw.urlsafetycheck.service;
 
-import com.gdtw.general.service.safebrowsing4.SafeBrowsingV4Service;
+import com.gdtw.general.service.safebrowsing4.service.SafeBrowsingV4Service;
 import org.springframework.stereotype.Service;
 
 @Service

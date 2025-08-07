@@ -6,8 +6,8 @@ import com.gdtw.general.helper.ServiceUsageCounterHelper;
 import com.gdtw.general.helper.RedisObjectCacheHelper;
 import com.gdtw.general.util.CodecShortUrlIdUtil;
 
-import com.gdtw.shorturl.dto.ShortUrlInfoDTO;
-import com.gdtw.shorturl.model.ShortUrlJpa;
+import com.gdtw.shorturl.model.ShortUrlInfoDTO;
+import com.gdtw.shorturl.repository.ShortUrlJpa;
 import com.gdtw.shorturl.model.ShortUrlVO;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;

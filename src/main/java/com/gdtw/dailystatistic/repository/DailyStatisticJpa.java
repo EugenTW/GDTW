@@ -1,5 +1,6 @@
-package com.gdtw.dailystatistic.model;
+package com.gdtw.dailystatistic.repository;
 
+import com.gdtw.dailystatistic.model.DailyStatisticVO;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

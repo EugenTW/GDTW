@@ -1,8 +1,8 @@
 package com.gdtw.general.service.scheduled;
 
-import com.gdtw.shorturl.model.ShortUrlJpa;
-import com.gdtw.imgshare.model.ShareImgAlbumJpa;
-import com.gdtw.imgshare.model.ShareImgJpa;
+import com.gdtw.shorturl.repository.ShortUrlJpa;
+import com.gdtw.imgshare.repository.ShareImgAlbumJpa;
+import com.gdtw.imgshare.repository.ShareImgJpa;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -3,7 +3,7 @@ package com.gdtw.reportviolation.service;
 import com.gdtw.general.util.CodecShortUrlIdUtil;
 import com.gdtw.general.util.CodecImgIdUtil;
 import com.gdtw.imgshare.service.ImgShareService;
-import com.gdtw.reportviolation.dto.ReportRequestDTO;
+import com.gdtw.reportviolation.model.ReportRequestDTO;
 import com.gdtw.shorturl.service.ShortUrlService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
