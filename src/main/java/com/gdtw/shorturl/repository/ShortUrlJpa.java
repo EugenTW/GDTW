@@ -1,5 +1,6 @@
-package com.gdtw.shorturl.model;
+package com.gdtw.shorturl.repository;
 
+import com.gdtw.shorturl.model.ShortUrlVO;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

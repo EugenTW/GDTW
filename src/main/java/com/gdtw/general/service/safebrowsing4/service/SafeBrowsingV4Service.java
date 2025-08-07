@@ -1,5 +1,7 @@
-package com.gdtw.general.service.safebrowsing4;
+package com.gdtw.general.service.safebrowsing4.service;
 
+import com.gdtw.general.service.safebrowsing4.model.SafeBrowsingV4RequestDTO;
+import com.gdtw.general.service.safebrowsing4.model.SafeBrowsingV4ResponseDTO;
 import com.gdtw.general.util.UrlNormalizerUtil;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;

@@ -1,7 +1,7 @@
 package com.gdtw.reportviolation.service;
 
-import com.gdtw.reportviolation.dto.ReportRequestDTO;
-import com.gdtw.reportviolation.model.ReportViolationJpa;
+import com.gdtw.reportviolation.model.ReportRequestDTO;
+import com.gdtw.reportviolation.repository.ReportViolationJpa;
 import com.gdtw.reportviolation.model.ReportViolationVO;
 import org.springframework.stereotype.Service;
 

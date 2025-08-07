@@ -1,4 +1,4 @@
-package com.gdtw.reportviolation.dto;
+package com.gdtw.reportviolation.model;
 
 public class ReportRequestDTO {
     private int reportType;

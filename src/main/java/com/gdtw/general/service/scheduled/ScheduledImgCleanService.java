@@ -1,8 +1,8 @@
 package com.gdtw.general.service.scheduled;
 
-import com.gdtw.imgshare.model.ShareImgAlbumJpa;
+import com.gdtw.imgshare.repository.ShareImgAlbumJpa;
 import com.gdtw.imgshare.model.ShareImgAlbumVO;
-import com.gdtw.imgshare.model.ShareImgJpa;
+import com.gdtw.imgshare.repository.ShareImgJpa;
 import com.gdtw.imgshare.model.ShareImgVO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;

@@ -1,4 +1,4 @@
-package com.gdtw.imgshare.dto;
+package com.gdtw.imgshare.model;
 
 import org.springframework.web.multipart.MultipartFile;
 

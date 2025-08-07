@@ -1,4 +1,4 @@
-package com.gdtw.general.service.safebrowsing4;
+package com.gdtw.general.service.safebrowsing4.model;
 
 public class SafeBrowsingV4RequestDTO {
 

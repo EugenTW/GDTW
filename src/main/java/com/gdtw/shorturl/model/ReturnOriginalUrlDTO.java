@@ -1,4 +1,4 @@
-package com.gdtw.shorturl.dto;
+package com.gdtw.shorturl.model;
 
 public class ReturnOriginalUrlDTO {
 
