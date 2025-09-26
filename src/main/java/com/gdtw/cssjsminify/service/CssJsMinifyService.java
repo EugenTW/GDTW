@@ -2,7 +2,6 @@ package com.gdtw.cssjsminify.service;
 
 import com.google.javascript.jscomp.*;
 import com.google.javascript.jscomp.jarjar.com.google.common.collect.ImmutableList;
-import com.helger.css.ECSSVersion;
 import com.helger.css.decl.CascadingStyleSheet;
 import com.helger.css.reader.CSSReader;
 import com.yahoo.platform.yui.compressor.CssCompressor;
@@ -110,7 +109,7 @@ public class CssJsMinifyService {
     }
 
     private boolean isValidCssStrict(String cssCode) {
-        CascadingStyleSheet css = CSSReader.readFromString(cssCode, ECSSVersion.CSS30);
+        CascadingStyleSheet css = CSSReader.readFromString(cssCode);
         return css != null &&
                 (!css.getAllStyleRules().isEmpty()
                         || !css.getAllMediaRules().isEmpty()
