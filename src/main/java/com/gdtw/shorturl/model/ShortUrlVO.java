@@ -1,6 +1,7 @@
 package com.gdtw.shorturl.model;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 
 @Entity
