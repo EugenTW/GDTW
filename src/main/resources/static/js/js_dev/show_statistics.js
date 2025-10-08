@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const ctx = canvas.getContext('2d');
 
         const maxDataValue = Math.max(...dataset.filter(v => v !== null), 10);
-        const suggestedMax = Math.max(maxDataValue + 100, 100);
+        const suggestedMax = Math.max(maxDataValue + 25, 40);
     
         new Chart(ctx, {
             type: 'line',
