@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-
 public class MethodNotAllowedLoggingFilter implements Filter {
 
     private static final Logger suspiciousLogger = LoggerFactory.getLogger("http405Logger");

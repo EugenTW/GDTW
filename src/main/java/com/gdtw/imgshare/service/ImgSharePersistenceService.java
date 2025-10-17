@@ -13,9 +13,12 @@ import com.gdtw.imgshare.repository.ShareImgAlbumJpa;
 import com.gdtw.imgshare.model.ShareImgAlbumVO;
 import com.gdtw.imgshare.repository.ShareImgJpa;
 import com.gdtw.imgshare.model.ShareImgVO;
+
 import jakarta.transaction.Transactional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

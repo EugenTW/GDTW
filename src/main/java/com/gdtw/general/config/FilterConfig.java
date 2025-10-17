@@ -4,6 +4,7 @@ import com.gdtw.general.filter.bot.BotDetectionFilter;
 import com.gdtw.general.filter.bot.BotFilterProperties;
 import com.gdtw.general.filter.http405.MethodNotAllowedLoggingFilter;
 import com.gdtw.general.filter.HostValidationFilter;
+
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
