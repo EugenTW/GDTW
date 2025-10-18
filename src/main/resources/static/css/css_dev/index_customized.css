@@ -25,10 +25,22 @@ main {
 .hero-section {
     position: relative;
     overflow: hidden;
-    background: linear-gradient(90deg, hsl(0,100%,60%), hsl(120,100%,60%), hsl(240,100%,60%));
-    background-size: 400%;
-    filter: hue-rotate(0deg);
-    transition: filter 1s ease-out;
+    background: linear-gradient(
+            90deg,
+            #ff0000,
+            #ff4000,
+            #ff7f00,
+            #ffff00,
+            #40ff00,
+            #00ffff,
+            #0000ff,
+            #8b00ff,
+            #ff00ff,
+            #ff0000
+    );
+    background-size: 600% 600%;
+    animation: rgbFlow 60s linear infinite;
+    filter: saturate(1.5) brightness(1.1);
 }
 
 .hero-section::before {
@@ -37,14 +49,13 @@ main {
     inset: 0;
     background: inherit;
     z-index: 0;
-    filter: hue-rotate(0deg);
-    animation: hueShift 6s linear infinite;
-    will-change: filter;
-    opacity: 0.9;
+    opacity: 0.85;
+    animation: hueShift 60s linear infinite;
 }
 
-.hero-section.animated {
-    animation: rgbFlow 6s linear infinite;
+@keyframes rgbFlow {
+    0%   { background-position: 0% 50%; }
+    100% { background-position: 600% 50%; }
 }
 
 @keyframes hueShift {
@@ -85,6 +96,15 @@ main {
     font-size: 18px;
     font-weight: bold;
     color: #000000;
+}
+
+.hero-text h1,
+.hero-text p {
+    text-shadow:
+            -1px -1px 0 #fff,
+            1px -1px 0 #fff,
+            -1px 1px 0 #fff,
+            1px 1px 0 #fff;
 }
 
 .service-section {
