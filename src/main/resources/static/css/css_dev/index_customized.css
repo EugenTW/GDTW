@@ -23,24 +23,41 @@ main {
 }
 
 .hero-section {
-    color: #ffffff;
-    padding: 15px;
-    background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(90deg, hsl(0,100%,60%), hsl(120,100%,60%), hsl(240,100%,60%));
     background-size: 400%;
-    transition: background-position 0.5s ease-out;
+    filter: hue-rotate(0deg);
+    transition: filter 1s ease-out;
+}
+
+.hero-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: inherit;
+    z-index: 0;
+    filter: hue-rotate(0deg);
+    animation: hueShift 6s linear infinite;
+    will-change: filter;
+    opacity: 0.9;
 }
 
 .hero-section.animated {
     animation: rgbFlow 6s linear infinite;
 }
 
-@keyframes rgbFlow {
-    0% { background-position: 0% 50%; }
-    100% { background-position: 400% 50%; }
+@keyframes hueShift {
+    0% { filter: hue-rotate(0deg); }
+    100% { filter: hue-rotate(360deg); }
 }
 
-
 .hero-container {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 25px 20px;
+    color: white;
     max-width: 1100px;
     margin: 0 auto;
     display: flex;
@@ -53,6 +70,7 @@ main {
     height: 120px;
     object-fit: contain;
     border-radius: 10px;
+    border: 3px solid #ffffff;
 }
 
 .hero-text h1 {
