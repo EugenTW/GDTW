@@ -117,6 +117,7 @@ nav ul li a:hover {
 
 .dropdown-content a:hover {
     background-color: #E1FFBB;
+    border-radius: 0;
     color: #000;
     text-decoration: none;
 }
