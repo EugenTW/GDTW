@@ -25,31 +25,8 @@ main {
 .hero-section {
     position: relative;
     overflow: hidden;
-    background: linear-gradient(90deg, hsl(0,100%,60%), hsl(120,100%,60%), hsl(240,100%,60%));
+    background-color: #2d2d2d;
     background-size: 400%;
-    filter: hue-rotate(0deg);
-    transition: filter 1s ease-out;
-}
-
-.hero-section::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: inherit;
-    z-index: 0;
-    filter: hue-rotate(0deg);
-    animation: hueShift 6s linear infinite;
-    will-change: filter;
-    opacity: 0.9;
-}
-
-.hero-section.animated {
-    animation: rgbFlow 6s linear infinite;
-}
-
-@keyframes hueShift {
-    0% { filter: hue-rotate(0deg); }
-    100% { filter: hue-rotate(360deg); }
 }
 
 .hero-container {
@@ -78,13 +55,13 @@ main {
     margin-top: 15px;
     margin-bottom: 10px;
     font-weight: bold;
-    color: #000000;
+    color: #ffffff;
 }
 
 .hero-text p {
     font-size: 18px;
     font-weight: bold;
-    color: #000000;
+    color: #ffffff;
 }
 
 .service-section {
