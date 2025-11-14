@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 public class ImgServiceValidatorUtil {
 
     private static final Pattern DIGIT_PASSWORD_PATTERN = Pattern.compile("^\\d{4,10}$");
-    private static final long MAX_FILE_SIZE = 20 * 1024 * 1024L;
+    private static final long MAX_FILE_SIZE = 50 * 1024 * 1024L;
     private static final long MAX_FILES_IN_PACKAGE = 50;
     private static final long MAX_TOTAL_SIZE = 500 * 1024 * 1024L;
     private static final Set<String> ALLOWED_CONTENT_TYPES = Set.of(
