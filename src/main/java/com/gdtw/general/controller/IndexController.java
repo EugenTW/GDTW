@@ -52,7 +52,7 @@ public class IndexController {
 
     @GetMapping("/error_403_405")
     public String handleError403405() {
-        return "forward:/error_403&405.html";
+        return "forward:/error_403_405.html";
     }
 
     @GetMapping("/error_generic")

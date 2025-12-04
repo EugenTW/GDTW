@@ -10,8 +10,9 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextClosedEvent;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
+
+import org.jspecify.annotations.NonNull;
 
 @Component
 public class ShutdownListenerHelper implements ApplicationListener<ContextClosedEvent> {
