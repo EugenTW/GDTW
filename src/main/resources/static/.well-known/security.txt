@@ -1,3 +1,4 @@
 # Security Contact for gdtw.org
-Contact: mailto:gdtw2024@gmail.com
-Preferred-Languages: zh, en
+Contact: mailto: gdtw2024@gmail.com
+Preferred-Languages: zh-TW, en
+Policy: https://gdtw.org/terms_of_service
