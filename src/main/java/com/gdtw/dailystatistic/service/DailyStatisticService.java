@@ -1,6 +1,6 @@
 package com.gdtw.dailystatistic.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 
 import com.gdtw.dailystatistic.model.ChartDataDTO;
 import com.gdtw.dailystatistic.model.TotalServiceStatisticsDTO;

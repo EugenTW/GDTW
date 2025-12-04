@@ -3,7 +3,7 @@ package com.gdtw.general.controller;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
 
-import org.springframework.boot.web.servlet.error.ErrorController;
+import org.springframework.boot.webmvc.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +19,7 @@ public class CustomErrorController implements ErrorController {
             if (statusCode == HttpStatus.NOT_FOUND.value()) {
                 return "forward:/error_404.html";
             } else if (statusCode == HttpStatus.FORBIDDEN.value() || statusCode == HttpStatus.METHOD_NOT_ALLOWED.value()) {
-                return "forward:/error_403&405.html";
+                return "forward:/error_403_405.html";
             }
         }
         return "forward:/error_generic.html";
