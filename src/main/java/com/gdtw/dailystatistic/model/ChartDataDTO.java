@@ -40,9 +40,7 @@ public class ChartDataDTO implements Serializable {
         if (incoming == null) {
             return;
         }
-
         this.data.clear();
-
         Map<String, Map<String, List<Integer>>> copiedOuterMap = new HashMap<>();
         for (Map.Entry<String, Map<String, List<Integer>>> outerEntry : incoming.entrySet()) {
             String outerKey = outerEntry.getKey();
@@ -78,4 +76,5 @@ public class ChartDataDTO implements Serializable {
     public void addUsedData(String type, Integer value) {
         data.get(USED).get(type).add(value);
     }
+
 }
