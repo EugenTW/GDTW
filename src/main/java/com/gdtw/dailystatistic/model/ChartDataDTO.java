@@ -1,4 +1,7 @@
+
 package com.gdtw.dailystatistic.model;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 import java.util.*;
@@ -27,8 +30,37 @@ public class ChartDataDTO implements Serializable {
         data.get(USED).put(IMAGE, new ArrayList<>());
     }
 
+    @JsonProperty("data")
     public Map<String, Map<String, List<Integer>>> getData() {
         return data;
+    }
+
+    @JsonProperty("data")
+    public void setData(Map<String, Map<String, List<Integer>>> incoming) {
+        if (incoming == null) {
+            return;
+        }
+
+        this.data.clear();
+
+        Map<String, Map<String, List<Integer>>> copiedOuterMap = new HashMap<>();
+        for (Map.Entry<String, Map<String, List<Integer>>> outerEntry : incoming.entrySet()) {
+            String outerKey = outerEntry.getKey();
+            Map<String, List<Integer>> incomingInnerMap = outerEntry.getValue();
+            Map<String, List<Integer>> copiedInnerMap = new HashMap<>();
+            if (incomingInnerMap != null) {
+                for (Map.Entry<String, List<Integer>> innerEntry : incomingInnerMap.entrySet()) {
+                    String innerKey = innerEntry.getKey();
+                    List<Integer> incomingList = innerEntry.getValue();
+                    List<Integer> copiedList = (incomingList == null)
+                            ? new ArrayList<>()
+                            : new ArrayList<>(incomingList);
+                    copiedInnerMap.put(innerKey, copiedList);
+                }
+            }
+            copiedOuterMap.put(outerKey, copiedInnerMap);
+        }
+        this.data.putAll(copiedOuterMap);
     }
 
     public List<Integer> getCreatedData(String type) {
@@ -46,5 +78,4 @@ public class ChartDataDTO implements Serializable {
     public void addUsedData(String type, Integer value) {
         data.get(USED).get(type).add(value);
     }
-
 }
