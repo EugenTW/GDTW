@@ -12,7 +12,7 @@
 
     <groupId>com.GDTW</groupId>
     <artifactId>GDTW_Web</artifactId>
-    <version>1.22.1</version>
+    <version>1.23.0</version>
     <name>GDTW_Web</name>
     <description>Free Web Service 'GDTW.org'</description>
 
@@ -23,7 +23,7 @@
     </parent>
 
     <properties>
-        <java.version>21</java.version>
+        <java.version>25</java.version>
     </properties>
 
     <dependencyManagement>
