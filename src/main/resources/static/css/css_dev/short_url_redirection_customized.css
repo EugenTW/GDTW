@@ -211,3 +211,8 @@ details,
     display: block;
     margin: 10px auto 0;
 }
+
+.safe-check[hidden] {
+    display: none !important;
+}
+

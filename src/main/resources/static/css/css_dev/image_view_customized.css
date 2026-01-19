@@ -60,7 +60,7 @@ details {
 }
 
 #password-modal {
-    margin: 25px auto;
+    margin: 20px auto;
     width: 90%;
     max-width: 450px;
     text-align: center;
@@ -83,25 +83,28 @@ details {
 }
 
 #password-input {
-    margin: 5px 0;
+    margin: 10px 0;
     width: 80%;
-    height: 50px;
-    padding: 8px;
-    font-size: 1em;
+    min-width: 400px;
+    height: 30px;
+    padding: 5px 0;
+    font-size: 18px;
     text-align: center;
-    background-color: #5e0657;
-    box-shadow: inset 0 0 0 3px #ff06ee;
-    color: white;
+    background-color: #fffccf;
+    box-shadow: inset 0 0 0 3px #ffa600;
+    color: #000000;
     border-radius: 5px;
 }
 
 #password-submit {
-    margin: 5px 0;
-    width: 80%;
-    height: 50px;
-    font-size: 16px;
+    margin: 10px 0;
+    width: 40%;
+    min-width: 250px;
+    height: 45px;
+    padding: 5px 0;
+    font-size: 18px;
     font-weight: bold;
-    border-radius: 10px;
+    border-radius: 5px;
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -119,12 +122,12 @@ details {
 #password-submit:disabled {
     cursor: not-allowed;
     background-color: #001f65;
-    box-shadow: none;
-    color: #818181;
+    box-shadow: inset 0 0 0 3px #028d85;
+    color: #a6a6a6;
 }
 
 #password-submit:disabled:hover {
-    background-color: #002475;
+    background-color: #002785;
 }
 
 .gallery, .photo-url-container, #single-photo {
