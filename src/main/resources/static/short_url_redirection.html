@@ -4,18 +4,20 @@
     <title>GDTW - 安全短網址跳轉 | Secure Short URL Redirection</title>
     <meta charset="utf-8"/>
     <meta name="description"
-          content="使用 GDTW 安全短網址跳轉服務，在前往目的網址前，確認其是否通過 Google Safe Browsing 測試，保障您的安全！Verify the destination URL's safety before proceeding with GDTW Secure Short URL Redirection.">
+          content="使用 GDTW 安全短網址跳轉服務！GDTW Secure Short URL Redirection.">
     <meta name="keywords" content="短網址跳轉, 安全短網址, URL 安全檢測, Short URL Redirection, Secure URL, Google Safe Browsing">
     <meta property="og:title" content="GDTW - 安全短網址跳轉 | Secure Short URL Redirection"/>
     <meta property="og:description"
-          content="使用 GDTW 安全短網址跳轉服務，在前往目的網址前，確認其是否通過 Google Safe Browsing 測試，保障您的安全！"/>
+          content="為提升安全性，本站提供的短網址不會直接跳轉目標網址，而是會先跳轉至本站頁面顯示對應的完整網址，再由使用者自行決定是否前往。 | To enhance security, the short URLs provided by this site will not directly redirect to the target URL. Instead, they will
+            first redirect to a page on this site displaying the full corresponding URL, allowing the user to decide whether to proceed."/>
     <meta property="og:image" content="https://gdtw.org/images/logo_s.webp"/>
     <meta property="og:url" content="https://gdtw.org/short_url_redirection"/>
     <meta property="og:type" content="website"/>
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="GDTW - 安全短網址跳轉 | Secure Short URL Redirection">
     <meta name="twitter:description"
-          content="使用 GDTW 安全短網址跳轉服務，在前往目的網址前，確認其是否通過 Google Safe Browsing 測試，保障您的安全！">
+          content="為提升安全性，本站提供的短網址不會直接跳轉目標網址，而是會先跳轉至本站頁面顯示對應的完整網址，再由使用者自行決定是否前往。 | To enhance security, the short URLs provided by this site will not directly redirect to the target URL. Instead, they will
+            first redirect to a page on this site displaying the full corresponding URL, allowing the user to decide whether to proceed.">
     <meta name="twitter:image" content="https://gdtw.org/images/logo_s.webp">
     <link rel="alternate" hreflang="zh-TW" href="https://gdtw.org/short_url_redirection"/>
     <link rel="alternate" hreflang="en" href="https://gdtw.org/short_url_redirection"/>
@@ -44,7 +46,7 @@
             <div class="data-display large-box original-url" id="the-original-url">
             </div>
 
-            <div class="safe-check">
+            <div class="safe-check" hidden>
                 <div class="google-safe-check" id="safe-check-result">
                     <img id="google-safebrowsing-icon" src="/images/safebrowsing-logo.svg"
                          alt="SafeBrowsingLogo" width="25" height="25">
@@ -55,7 +57,6 @@
                     <img id="google-explanation" src="/images/info.png" alt="Explanation"
                          title="點看檢測說明 - Click For Explanations!" width="20" height="20">
                 </a>
-
             </div>
 
             <div class="button-container">
@@ -79,7 +80,7 @@
 
         <hr>
 
-        <section id="one">
+        <section id="one" hidden>
             <h3>關於Google 安全瀏覽服務 - About Google Safe Browsing</h3>
             <br>
             <p id="one-content">
@@ -138,12 +139,11 @@
 
             <br>
             <hr>
-
-            <div class="final-cover">
-                <span class="image fit"><img src="/images/short_url_redirection_pic01.webp" alt="" width="500" height="281"/></span>
-            </div>
-
         </section>
+
+        <div class="final-cover">
+            <span class="image fit"><img src="/images/short_url_redirection_pic01.webp" alt="" width="500" height="281"/></span>
+        </div>
 
     </div>
 

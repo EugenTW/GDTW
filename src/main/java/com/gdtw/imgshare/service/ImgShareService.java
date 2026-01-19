@@ -119,13 +119,13 @@ public class ImgShareService {
         }
 
         ShareImgAlbumInfoDTO dto = dtoOpt.orElse(null);
-        if (dto != null && password.equalsIgnoreCase(dto.getSiaPassword())) {
+        if (dto != null && password.equals(dto.getSiaPassword())) {
             response.put(ImgSharePersistenceService.STAGE_CHECK_PASSWORD, true);
             String token = jwtHelper.generateToken(code, ImgSharePersistenceService.STAGE_PASSED_PASSWORD);
             response.put(ImgSharePersistenceService.DOWNLOAD_TOKEN, token);
         } else {
             try {
-                Thread.sleep(1500L + RANDOM.nextInt(1000));
+                Thread.sleep(2000L + RANDOM.nextInt(1000));
             } catch (InterruptedException ignored) {
                 // just for increasing guessing time
             }
@@ -152,7 +152,7 @@ public class ImgShareService {
             response.put(ImgSharePersistenceService.DOWNLOAD_TOKEN, token);
         } else {
             try {
-                Thread.sleep(1000L + RANDOM.nextInt(1000));
+                Thread.sleep(2000L + RANDOM.nextInt(1000));
             } catch (InterruptedException ignored) {
                 // just for increasing guessing time
             }

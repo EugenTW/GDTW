@@ -348,11 +348,11 @@ function setupPasswordValidation(passwordApiUrl, code, isAlbumMode) {
     // Validate password input on blur
     passwordInput.addEventListener('blur', function () {
         const password = passwordInput.value.trim();
-        const isValid = /^\d{4,10}$/.test(password);
+        const isValid = /^[A-Za-z0-9]{4,10}$/.test(password);
 
         // If password format is invalid, clear the input and disable the submit button
         if (!isValid && password !== '') {
-            alert('密碼格式不符合，請輸入4~10位數字\nPassword format is incorrect. Please enter 4-10 digits.');
+            alert('密碼格式不符合，請輸入4~10位英數字\nPassword format is incorrect. Please enter 4-10 alphanumeric characters.');
             passwordInput.value = '';
             passwordSubmit.disabled = true;
 
@@ -365,7 +365,7 @@ function setupPasswordValidation(passwordApiUrl, code, isAlbumMode) {
     // Enable the submit button if the input is valid
     passwordInput.addEventListener('input', function () {
         const password = passwordInput.value.trim();
-        const isValid = /^\d{4,10}$/.test(password);
+        const isValid = /^[A-Za-z0-9]{4,10}$/.test(password);
         passwordSubmit.disabled = !isValid;
     });
 

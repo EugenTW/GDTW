@@ -11,21 +11,20 @@ import java.util.regex.Pattern;
 
 public class ImgServiceValidatorUtil {
 
-    private static final Pattern DIGIT_PASSWORD_PATTERN = Pattern.compile("^\\d{4,10}$");
+    private static final Pattern DIGIT_PASSWORD_PATTERN = Pattern.compile("^[A-Za-z0-9]{4,10}$");
+    private static final Pattern CODE_PATTERN = Pattern.compile("^[a-zA-Z0-9]{6}$");
     private static final long MAX_FILE_SIZE = 50 * 1024 * 1024L;
     private static final long MAX_FILES_IN_PACKAGE = 50;
     private static final long MAX_TOTAL_SIZE = 500 * 1024 * 1024L;
-    private static final Set<String> ALLOWED_CONTENT_TYPES = Set.of(
-            "image/jpeg", "image/png", "image/gif", "image/webp"
-    );
-    private static final Pattern CODE_PATTERN = Pattern.compile("^[a-zA-Z0-9]{6}$");
+    private static final Set<String> ALLOWED_CONTENT_TYPES = Set.of("image/jpeg", "image/png", "image/gif", "image/webp");
 
-    private ImgServiceValidatorUtil() {}
+    private ImgServiceValidatorUtil() {
+    }
 
     public static Optional<String> validatePassword(String password) {
         if (password == null || password.isEmpty()) return Optional.empty();
         if (!DIGIT_PASSWORD_PATTERN.matcher(password).matches()) {
-            return Optional.of("Password must be 4~10 digits.");
+            return Optional.of("密碼必須為4~10位英數字。\nPassword must be 4–10 alphanumeric characters.");
         }
         return Optional.empty();
     }
@@ -68,26 +67,26 @@ public class ImgServiceValidatorUtil {
             if (bytesRead < 4) return false;
 
             // JPEG
-            if (header[0] == (byte)0xFF && header[1] == (byte)0xD8 && header[2] == (byte)0xFF) {
+            if (header[0] == (byte) 0xFF && header[1] == (byte) 0xD8 && header[2] == (byte) 0xFF) {
                 return true;
             }
 
             // PNG
-            if (header[0] == (byte)0x89 && header[1] == (byte)0x50 && header[2] == (byte)0x4E && header[3] == (byte)0x47) {
+            if (header[0] == (byte) 0x89 && header[1] == (byte) 0x50 && header[2] == (byte) 0x4E && header[3] == (byte) 0x47) {
                 return true;
             }
 
             // GIF
-            if (header[0] == (byte)0x47 && header[1] == (byte)0x49 && header[2] == (byte)0x46 && header[3] == (byte)0x38) {
+            if (header[0] == (byte) 0x47 && header[1] == (byte) 0x49 && header[2] == (byte) 0x46 && header[3] == (byte) 0x38) {
                 return true;
             }
 
             // WebP
             if (bytesRead >= 12 &&
-                    header[0] == (byte)0x52 && header[1] == (byte)0x49 &&
-                    header[2] == (byte)0x46 && header[3] == (byte)0x46 &&
-                    header[8] == (byte)0x57 && header[9] == (byte)0x45 &&
-                    header[10] == (byte)0x42 && header[11] == (byte)0x50) {
+                    header[0] == (byte) 0x52 && header[1] == (byte) 0x49 &&
+                    header[2] == (byte) 0x46 && header[3] == (byte) 0x46 &&
+                    header[8] == (byte) 0x57 && header[9] == (byte) 0x45 &&
+                    header[10] == (byte) 0x42 && header[11] == (byte) 0x50) {
                 return true;
             }
 

@@ -12,14 +12,14 @@
 
     <groupId>com.GDTW</groupId>
     <artifactId>GDTW_Web</artifactId>
-    <version>1.23.0</version>
+    <version>1.23.1</version>
     <name>GDTW_Web</name>
     <description>Free Web Service 'GDTW.org'</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.0.0</version>
+        <version>4.0.1</version>
     </parent>
 
     <properties>
@@ -104,14 +104,14 @@
         <dependency>
             <groupId>io.gdcc</groupId>
             <artifactId>sitemapgen4j</artifactId>
-            <version>2.1.0</version>
+            <version>2.1.2</version>
         </dependency>
 
         <!-- Closure Compiler (JS) -->
         <dependency>
             <groupId>com.google.javascript</groupId>
             <artifactId>closure-compiler</artifactId>
-            <version>v20250820</version>
+            <version>v20260114</version>
         </dependency>
 
         <!-- YUI Compressor (CSS) -->
@@ -125,7 +125,7 @@
         <dependency>
             <groupId>com.helger</groupId>
             <artifactId>ph-css</artifactId>
-            <version>8.1.0</version>
+            <version>8.1.1</version>
         </dependency>
 
     </dependencies>

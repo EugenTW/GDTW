@@ -38,7 +38,7 @@ details {
 }
 
 .to-short-url {
-    width: 80%;
+    width: 90%;
     margin: 3px auto;
     display: flex;
     flex-direction: column;
@@ -48,26 +48,26 @@ details {
 }
 
 #long_url {
-    width: 90%;
+    width: 100%;
     min-width: 300px;
     max-width: 600px;
-    min-height: 50px;
+    min-height: 75px;
     padding: 10px;
     font-size: 16px;
     color: #affffc;
     background-color: #001557;
     border: 3px solid #3DC2EC;
     border-radius: 5px;
-    margin: 10px 0;
+    margin: 10px;
     box-sizing: border-box;
     overflow-y: hidden;
     resize: none;
 }
 
 #generate {
-    width: 300px;
+    width: 225px;
     height: 50px;
-    margin: 10px 0;
+    margin: 10px;
     background-color: #005d15;
     color: #d6ffe4;
     font-size: 16px;
@@ -81,33 +81,35 @@ details {
 }
 
 #generate:hover:enabled {
-    background-color: #00721c;
+    background-color: #008320;
 }
 
 #generate:disabled {
-    background-color: #005d15;
+    background-color: #00440f;
+    border: 3px solid #009300;
     cursor: not-allowed;
 }
 
 #shorten_url {
-    width: 300px;
+    width: 325px;
     height: 50px;
-    margin: 10px 0;
+    margin: 10px;
     background-color: #fff3c6;
     color: #000000;
     font-size: 16px;
-    border: 3px solid #ff9900;
     border-radius: 10px;
+    border: 3px solid #ff9900;
+    cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
+    text-align: center;
 }
 
 #qrcode {
     display: none;
     margin: 10px 0;
-    border: 3px solid #e600ff;
+    border: 3px solid #969696;
 }
 
 .reminder {

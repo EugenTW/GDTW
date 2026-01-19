@@ -82,8 +82,8 @@
                 <h3>設定密碼</h3>
                 <h3>Password</h3>
                 <label for="password-input" class="sr-only">密碼 - Password</label>
-                <input type="text" id="password-input" maxlength="10"
-                       placeholder="4~10位數字或留空。4~10 digits or leave blank.">
+                <input type="text" id="password-input" maxlength="10" pattern="[A-Za-z0-9]{4,10}"
+                       placeholder="4~10 位英數字或留空。4~10 alphanumeric characters or leave blank.">
 
                 <!-- Upload Button -->
                 <div class="button-container">
@@ -101,7 +101,7 @@
             3. 手動設定圖片存活時間/是否需要NSFW警告/設定閱覽密碼(空白表示無密碼)等選項，再按下上傳按鈕。預設方案是分享期限30天(最長90天)且無閱覽密碼和無NSFW警告。<br>
             4. 分享期限是以「換日」為基準計算，不論上傳時間為何，若設定的分享期限為 1 天，檔案將在隔日午夜失效。閱覽圖片時，畫面上方會顯示「Expiration
             Date」，表示一旦跨日進入該日期，圖片將立即失效，無法再瀏覽。本站使用台灣時區（GMT+8）作為判斷依據。<br>
-            5. 本站提供的密碼設定僅防君子不防小人，請勿用於保護高敏感圖片。如有設定密碼請自行記好，站方不提供人工找回密碼服務。<br>
+            5. 本站提供的密碼設定區分大小寫，請勿用於保護高敏感圖片。如有設定密碼請自行記好，站方不提供人工找回密碼服務。<br>
             6. 上傳成功的檔案無法自行手動刪除，如發現上傳錯誤或想修改，請重新上傳一次正確的圖片即可，所有超過閱覽期限的圖片本站都會自動銷毀，並不會另外保存。<br>
             7. 屬於R15或R18等級的圖片請務必遵守分級法規勾選NSFW選項，並建議使用加密功能保護。<br>
             8. 本服務是善意免費服務，站方已盡最大努力維持軟硬體運行狀態，但仍無法保證因軟硬體故障導致圖檔丟失，請務必自行保存原始圖片檔。另站方有權隨時視需求來調整圖片存活時間且不另行通知。<br>
@@ -119,9 +119,7 @@
             file will expire at midnight on the following day. While viewing the image, an "Expiration Date" is displayed at the top. This
             indicates that once the specified date begins, the image will expire and become inaccessible. The expiration is based on Taiwan
             Time (GMT+8).<br>
-            5. The password protection provided by this site is intended for basic privacy and should not be
-            used for securing highly sensitive images. If you set a password, please remember it yourself, as the
-            site does not offer a password recovery service.<br>
+            5. The passwords provided on this site are case‑sensitive. Please do not use them to protect highly sensitive images. If you set a password, please keep it safe yourself; we do not offer manual password‑recovery services.<br>
             6. Uploaded files cannot be manually deleted. If you find an error in the upload or want to make
             changes, simply re-upload the correct images. All images that exceed the sharing period will be
             automatically deleted and will not be retained.<br>

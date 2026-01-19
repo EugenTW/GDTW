@@ -104,8 +104,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function validatePassword() {
         const passwordValue = passwordInput.value;
-        if (passwordValue && !/^\d{4,10}$/.test(passwordValue)) {
-            alert('密碼限4~10位數字 - Password must be 4 to 10 digits.');
+        if (passwordValue && !/^[A-Za-z0-9]{4,10}$/.test(passwordValue)) {
+            alert('密碼限4~10位英文與數字。 -  Password must be 4–10 alphanumeric characters.');
             passwordInput.value = '';
         }
     }
