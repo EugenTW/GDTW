@@ -38,11 +38,11 @@ public class CssJsMinifyRestController {
             return ResponseEntity.badRequest().body(Map.of("type", "ERROR", "error", "Empty input."));
         }
 
-        final int MAX_INPUT_SIZE = 250 * 1024;
+        final int MAX_INPUT_SIZE = 3 * 1024 * 1024;
         if (source.length() > MAX_INPUT_SIZE) {
             return ResponseEntity.badRequest().body(
                     Map.of("type", "ERROR",
-                            "error", "Input too large. Please split and compress separately."));
+                            "error", "Input too large (>3MB)."));
         }
 
         Map<String, String> result = minifyService.autoDetectAndMinify(source);
