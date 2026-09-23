@@ -54,7 +54,7 @@ gdtw2024@gmail.com
 
 ================================
 
-Website Statistics (Past Year)｜網站近一年統計
+Website Statistics (2024~2025)｜網站2024~2025統計
 <img width="3840" height="9335" alt="Image" src="https://github.com/user-attachments/assets/a760da35-0aef-41d0-b0ed-d21a88c8ce8c"/>
 
 ================================
